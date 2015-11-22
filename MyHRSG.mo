@@ -166,23 +166,23 @@ package MyHRSG
     parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberOfFlueSections = 2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
     /*//**
-                                                                                                                                                                                                                                                                                                                                                                                      //***конструктивные характеристики
-                                                                                                                                                                                                                                                                                                                                                                                      //**
-                                                                                                                                                                                                                                                                                                                                                                                      parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Real zahod = 1 "заходность труб теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Integer z1 = 126 "Число труб по ширине газохода";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                      ///Оребрение
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
-                                                                                                                                                                                                                                                                                                                                                                                      //**/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          //***конструктивные характеристики
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          //**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Real zahod = 1 "заходность труб теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z1 = 126 "Число труб по ширине газохода";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ///Оребрение
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          //**/
     //***
     //**
     ThermoPower.Water.SourceMassFlow flowsource(p0 = pflow, h = hinflow, w0 = wflow, use_in_w0 = false, use_in_h = true, redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -369,20 +369,20 @@ package MyHRSG
     //***конструктивные характеристики
     //**
     /*parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                      parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Real zahod = 1 "заходность труб теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Integer z1 = 126 "Число труб по ширине газохода";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                      ///Оребрение
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                      parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
-                                                                                                                                                                                                                                                                                                                                                                      //**/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Real zahod = 1 "заходность труб теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z1 = 126 "Число труб по ширине газохода";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ///Оребрение
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                          //**/
     //***
     //**
     ThermoPower.Gas.SourceMassFlow gassource(redeclare package Medium = Medium_G, p0 = pgas, T = Tingas, w0 = wgas, use_in_T = true, use_in_X = true) annotation(Placement(visible = true, transformation(origin = {-88, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -543,7 +543,9 @@ package MyHRSG
     parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length ke = 0.0014 "Абсолютная эквивалентная шероховатость";
+    parameter Real lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2 "Коэффициент трения при движении среды по трубам";
+    parameter Real Xi_flow = lambda_tr * Lpipe / Din / numberOfTubeSections "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
     //Константы
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -556,9 +558,12 @@ package MyHRSG
     //**
     //Поток вода/пар
     parameter Medium_F.SpecificEnthalpy h_startTubeFlow[numberOfTubeSections + 1] = linspace(Medium_F.specificEnthalpy_pT(setp_flow, setT_inFlow), Medium_F.specificEnthalpy_pT(setp_flow, setT_outFlow), numberOfTubeSections + 1) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow[numberOfFlueSections, numberOfTubeSections + 1] = array(array(h_startTubeFlow[j] for j in 1:numberOfTubeSections + 1) for i in 1:numberOfFlueSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow[numberOfFlueSections, numberOfTubeSections + 1] = fill(setp_flow, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / numberOfFlueSections, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = array(array(h_startTubeFlow[j] for j in 1:numberOfTubeSections) for i in 1:numberOfFlueSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = array(array(h_startTubeFlow[j] for j in 1:numberOfTubeSections + 1) for i in 1:numberOfFlueSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setp_flow, numberOfFlueSections, numberOfTubeSections) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setp_flow, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / numberOfFlueSections, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / numberOfFlueSections, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
     //Металл
     parameter Modelica.SIunits.Temperature t_startTubeM[numberOfTubeSections] = if numberOfTubeSections == 1 then {(setT_inFlow + setT_outFlow) / 2} else linspace(setT_inFlow, setT_outFlow, numberOfTubeSections) "Начальный вектор температур металла" annotation(Dialog(tab = "Инициализация"));
     parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = array(array(t_startTubeM[j] for j in 1:numberOfTubeSections) for i in 1:numberOfFlueSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
@@ -568,12 +573,16 @@ package MyHRSG
     //Поток вода/пар
     Medium_F.ThermodynamicState stateFlow[numberOfFlueSections, numberOfTubeSections] "Термодинамическое состояние потока вода/пар на участках трубопровода";
     Medium_F.Temperature t_flow[numberOfFlueSections, numberOfTubeSections] "Температура потока вода/пар по участкам трубы";
-    Medium_F.AbsolutePressure p_flow[numberOfFlueSections, numberOfTubeSections + 1](start = p_startFlow) "Давление потока вода/пар по участкам трубы";
-    Medium_F.SpecificEnthalpy h_flow[numberOfFlueSections, numberOfTubeSections + 1](start = h_startFlow) "Энтальпия потока вода/пар по участкам трубы";
-    Medium_F.Density rho_flow[numberOfFlueSections, numberOfTubeSections] "Плотность потока по участкам трубы";
+    Medium_F.AbsolutePressure p_flow_v[numberOfFlueSections, numberOfTubeSections](start = p_startFlow_v) "Давление потока вода/пар по участкам трубы в конечных объемах";
+    Medium_F.AbsolutePressure p_flow_n[numberOfFlueSections, numberOfTubeSections + 1](start = p_startFlow_n) "Давление потока вода/пар по участкам трубы в узловых точках";
+    Medium_F.SpecificEnthalpy h_flow_v[numberOfFlueSections, numberOfTubeSections](start = h_startFlow_v) "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
+    Medium_F.SpecificEnthalpy h_flow_n[numberOfFlueSections, numberOfTubeSections + 1](start = h_startFlow_n) "Энтальпия потока вода/пар по участкам трубы в узловых точках";
+    Medium_F.Density rho_flow_v[numberOfFlueSections, numberOfTubeSections] "Плотность потока по участкам трубы в конечных объемах";
+    Medium_F.Density rho_flow_n[numberOfFlueSections, numberOfTubeSections + 1] "Плотность потока по участкам трубы в узловых точках";
     Modelica.SIunits.DerDensityByEnthalpy drdh_flow[numberOfFlueSections, numberOfTubeSections] "Производная плотности потока по энтальпии на участках ряда труб";
     Modelica.SIunits.DerDensityByPressure drdp_flow[numberOfFlueSections, numberOfTubeSections] "Производная плотности потока по давлению на участках ряда труб";
-    Medium_F.MassFlowRate D_flow[numberOfFlueSections, numberOfTubeSections + 1](start = D_startFlow) "Массовый расход потока вода/пар по участкам ряда труб";
+    Medium_F.MassFlowRate D_flow_v[numberOfFlueSections, numberOfTubeSections](start = D_startFlow_v) "Массовый расход потока вода/пар по участкам ряда труб";
+    Medium_F.MassFlowRate D_flow_n[numberOfFlueSections, numberOfTubeSections + 1](start = D_startFlow_n) "Массовый расход потока вода/пар по участкам ряда труб";
     Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow[numberOfFlueSections, numberOfTubeSections] "Коэффициент теплопередачи со стороны потока вода/пар";
     Medium_F.ThermalConductivity k_flow[numberOfFlueSections, numberOfTubeSections] "Коэффициент теплопроводности для потока вода/пар";
     Medium_F.DynamicViscosity mu_flow[numberOfFlueSections, numberOfTubeSections] "Динамическая вязкость для потока вода/пар";
@@ -584,7 +593,12 @@ package MyHRSG
     //Real C1[numberOfFlueSections, numberOfTubeSections] "Показатель в числителе уравнения сплошности";
     //Real C2[numberOfFlueSections, numberOfTubeSections] "Показатель в знаменателе уравнения сплошности";
     //Boolean hod_flow[numberOfFlueSections] "Текущий ход потока вода/пар (true - нечетный ход, false - четный)";
-    //Integer numberHod_flow[numberOfFlueSections] "Текущий номер потока воды/пар";
+    Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)";
+    Modelica.SIunits.Length H_flow[numberOfFlueSections, numberOfTubeSections + 1] "Высотная отметка каждого узла";
+    Modelica.SIunits.Velocity w_flow_v[numberOfFlueSections, numberOfTubeSections] "Скорость потока вода/пар в конечных объемах";
+    Modelica.SIunits.Velocity w_flow_n[numberOfFlueSections, numberOfTubeSections + 1] "Скорость потока вода/пар в узловых точках";
+    Real dp_fric[numberOfFlueSections, numberOfTubeSections] "Потеря давления из-за сил трения";
+    Real dp_kin[numberOfFlueSections, numberOfTubeSections] "Потеря давления из-за приращения кинетической энергии";
     //**
     //Интерфейс
     //**
@@ -594,101 +608,111 @@ package MyHRSG
   equation
     //*****Уравнения для потока вода/пар и металла
     for i in 1:numberOfFlueSections loop
-      //numberHod_flow[i] = i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod);
-      //hod_flow[i] = if (-1) ^ numberHod_flow[i] < 0 then true else false;
+      hod[i] = (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) "Расчет четный или нечетный текущий ход повехности нагева";
+      //Рачет скорости потока в узловых точках
+      for j in 1:numberOfTubeSections + 1 loop
+        rho_flow_n[i, j] = Medium_F.density_ph(p_flow_n[i, j], h_flow_n[i, j]) "Оасчет плотности вода/пар в узловых точках";
+        w_flow_n[i, j] = D_flow_n[i, j] / rho_flow_n[i, j] / f_flow "Расчет скорости потока вода/пар в узловых точках";
+      end for;
       for j in 1:numberOfTubeSections loop
-        if (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) < 0 then
-          //выбор уравнения в зависимости от четного или нечетного хода потока вода/пар
-          deltaVFlow * rho_flow[i, j] * der(h_flow[i, j + 1]) = alfa_flow[i, j] * deltaSFlow * (t_m[i, j] - t_flow[i, j]) - D_flow[i, j + 1] * (h_flow[i, j + 1] - h_flow[i, j]);
-        else
-          deltaVFlow * rho_flow[i, j] * der(h_flow[i, j]) = alfa_flow[i, j] * deltaSFlow * (t_m[i, j] - t_flow[i, j]) + D_flow[i, j] * (h_flow[i, j + 1] - h_flow[i, j]);
-        end if;
+        //Осреднение по конечному объему
+        p_flow_v[i, j] = (p_flow_n[i, j + 1] + p_flow_n[i, j]) / 2;
+        h_flow_v[i, j] = (h_flow_n[i, j + 1] + h_flow_n[i, j]) / 2;
+        D_flow_v[i, j] = (D_flow_n[i, j + 1] + D_flow_n[i, j]) / 2;
+        //Уравнение баланса тепла теплоносителя (формула 3-1d диссертации Рубашкина)
+        deltaVFlow * rho_flow_v[i, j] * der(h_flow_v[i, j]) = alfa_flow[i, j] * deltaSFlow * (t_m[i, j] - t_flow[i, j]) + hod[i] * D_flow_v[i, j] * (h_flow_n[i, j + 1] - h_flow_n[i, j]) "Уравнение баланса тепла теплоносителя для нечетных ходов";
+        //Основное уравнение гидравлики
+        w_flow_v[i, j] = D_flow_v[i, j] / rho_flow_v[i, j] / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        dp_fric[i, j] = w_flow_v[i, j] ^ 2 * Xi_flow * rho_flow_v[i, j] / 2 / Modelica.Constants.g_n "Потеря давления от трения";
+        dp_kin[i, j] = hod[i] * w_flow_v[i, j] * (w_flow_n[i, j + 1] - w_flow_n[i, j]) * rho_flow_v[i, j] / Modelica.Constants.g_n "Потеря давления из-за приращения кинетической энергии";
+        H_flow[i, j + 1] = H_flow[i, j] + deltaHpipe;
+        //dp_piez[i, j] =
         //der(p_flow[i, j]) * deltaVFlow * drdp_flow[i, j] = D_flow[i, j] - D_flow[i, j + 1] - deltaVFlow * drdh_flow[i, j] * der(h_flow[i, j + 1]) "Уравнение сплошности (формула 3-6 диссертации Рубашкина) drdp_flow[i, j] - абсолютный ноль, смотри уравнения состояния";
         //C1[i, j] = deltaVFlow * drdh_flow[i, j] * (if hod_flow[i] then der(h_flow[i, j + 1]) else der(h_flow[i, j]));
         //C2[i, j] = deltaVFlow * drdp_flow[i, j];
         //abs(p_flow[i, j] - p_flow[i, j + 1]) = D_flow[i, j + 1] ^ 2 / rho_flow[i, j] / Cd_flow[i, j];
-        p_flow[i, j + 1] = p_flow[i, j];
-        D_flow[i, j + 1] = D_flow[i, j];
+        p_flow_n[i, j + 1] = p_flow_n[i, j];
+        D_flow_n[i, j + 1] = D_flow_n[i, j];
         deltaMMetal * C_m * der(t_m[i, j]) = heat[i, j].Q_flow - alfa_flow[i, j] * deltaSFlow * (t_m[i, j] - t_flow[i, j]) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
         heat[i, j].T = t_m[i, j];
         //Уравнения состояния
-        if (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) < 0 then
-          stateFlow[i, j] = Medium_F.setState_ph(p_flow[i, j + 1], h_flow[i, j + 1]);
-        else
-          stateFlow[i, j] = Medium_F.setState_ph(p_flow[i, j], h_flow[i, j]);
-        end if;
+        stateFlow[i, j] = Medium_F.setState_ph(p_flow_v[i, j], h_flow_v[i, j]);
         t_flow[i, j] = Medium_F.temperature(stateFlow[i, j]);
-        rho_flow[i, j] = Medium_F.density(stateFlow[i, j]);
+        rho_flow_v[i, j] = Medium_F.density(stateFlow[i, j]);
         drdp_flow[i, j] = if Medium_F.singleState then 0 else Medium_F.density_derp_h(stateFlow[i, j]);
         drdh_flow[i, j] = Medium_F.density_derh_p(stateFlow[i, j]);
         //Коэффициент теплоотдачи
         k_flow[i, j] = Medium_F.thermalConductivity(stateFlow[i, j]);
         Pr_flow[i, j] = Medium_F.prandtlNumber(stateFlow[i, j]);
         mu_flow[i, j] = Medium_F.dynamicViscosity(stateFlow[i, j]);
-        if (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) < 0 then
-          Re_flow[i, j] = abs(D_flow[i, j + 1] * Din / (f_flow * mu_flow[i, j]));
-        else
-          Re_flow[i, j] = abs(D_flow[i, j] * Din / (f_flow * mu_flow[i, j]));
-        end if;
+        Re_flow[i, j] = abs(D_flow_v[i, j] * Din / (f_flow * mu_flow[i, j]));
         alfa_flow[i, j] = 0.023 * k_flow[i, j] / Din * Re_flow[i, j] ^ 0.8 * Pr_flow[i, j] ^ 0.4;
       end for;
     end for;
     for i in 1:numberOfFlueSections - zahod loop
       //Описание гибов
       if (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) < 0 then
-        D_flow[i, numberOfTubeSections + 1] = D_flow[i + zahod, numberOfTubeSections + 1];
-        p_flow[i, numberOfTubeSections + 1] = p_flow[i + zahod, numberOfTubeSections + 1];
-        h_flow[i, numberOfTubeSections + 1] = h_flow[i + zahod, numberOfTubeSections + 1];
+        D_flow_n[i, numberOfTubeSections + 1] = D_flow_n[i + zahod, numberOfTubeSections + 1];
+        p_flow_n[i, numberOfTubeSections + 1] = p_flow_n[i + zahod, numberOfTubeSections + 1];
+        h_flow_n[i, numberOfTubeSections + 1] = h_flow_n[i + zahod, numberOfTubeSections + 1];
+        H_flow[i, numberOfTubeSections + 1] = h_flow_n[i + zahod, numberOfTubeSections + 1];
+        //Для горизонтальных КУ
       else
-        D_flow[i, 1] = D_flow[i + zahod, 1];
-        p_flow[i, 1] = p_flow[i + zahod, 1];
-        h_flow[i, 1] = h_flow[i + zahod, 1];
+        D_flow_n[i, 1] = D_flow_n[i + zahod, 1];
+        p_flow_n[i, 1] = p_flow_n[i + zahod, 1];
+        h_flow_n[i, 1] = h_flow_n[i + zahod, 1];
+        H_flow[i, 1] = H_flow[i + zahod, 1];
+        //Для горизонтальных КУ
       end if;
     end for;
     //Граничные условия
-    for i in 2:zahod loop
-      D_flow[i - 1, 1] = D_flow[i, 1];
+    //Граничные условия для высотной отметки входного коллектора
+    for i in 1:zahod loop
+      H_flow[i, 1] = 0 "Задание высотной отметки входного коллектора";
     end for;
-    waterIn.m_flow = sum(D_flow[i, 1] for i in 1:zahod);
-    0 = waterOut.m_flow + sum(D_flow[i, numberOfTubeSections + 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections);
+    for i in 2:zahod loop
+      D_flow_n[i - 1, 1] = D_flow_n[i, 1];
+    end for;
+    waterIn.m_flow = sum(D_flow_n[i, 1] for i in 1:zahod);
+    0 = waterOut.m_flow + sum(D_flow_n[i, numberOfTubeSections + 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections);
     if waterIn.m_flow > 0 then
       for i in numberOfFlueSections - zahod + 1:numberOfFlueSections loop
         if (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) < 0 then
-          waterOut.p = p_flow[i, numberOfTubeSections + 1];
+          waterOut.p = p_flow_n[i, numberOfTubeSections + 1];
         else
-          waterOut.p = p_flow[i, 1];
+          waterOut.p = p_flow_n[i, 1];
         end if;
       end for;
-      waterIn.p = sum(p_flow[i, 1] for i in 1:zahod) / zahod;
+      waterIn.p = sum(p_flow_n[i, 1] for i in 1:zahod) / zahod;
     else
       for i in 1:zahod loop
-        waterIn.p = p_flow[i, 1];
+        waterIn.p = p_flow_n[i, 1];
       end for;
       if (-1) ^ (numberOfFlueSections / zahod + (if mod(numberOfFlueSections, zahod) == 0 then 0 else 1 - mod(numberOfFlueSections, zahod) / zahod)) < 0 then
-        waterOut.p = sum(p_flow[i, numberOfTubeSections + 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections) / zahod;
+        waterOut.p = sum(p_flow_n[i, numberOfTubeSections + 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections) / zahod;
       else
-        waterOut.p = sum(p_flow[i, 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections) / zahod;
+        waterOut.p = sum(p_flow_n[i, 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections) / zahod;
       end if;
     end if;
     if waterIn.m_flow > 0 then
       for i in 1:zahod loop
-        h_flow[i, 1] = inStream(waterIn.h_outflow);
+        h_flow_n[i, 1] = inStream(waterIn.h_outflow);
       end for;
     else
       for i in numberOfFlueSections - zahod + 1:numberOfFlueSections loop
         if (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) < 0 then
-          h_flow[i, numberOfTubeSections + 1] = inStream(waterOut.h_outflow);
+          h_flow_n[i, numberOfTubeSections + 1] = inStream(waterOut.h_outflow);
         else
-          h_flow[i, 1] = inStream(waterOut.h_outflow);
+          h_flow_n[i, 1] = inStream(waterOut.h_outflow);
         end if;
       end for;
     end if;
     if (-1) ^ (numberOfFlueSections / zahod + (if mod(numberOfFlueSections, zahod) == 0 then 0 else 1 - mod(numberOfFlueSections, zahod) / zahod)) < 0 then
-      waterOut.h_outflow = sum(array(positiveMax(D_flow[i, numberOfTubeSections + 1]) * h_flow[i, numberOfTubeSections + 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections)) / sum(array(positiveMax(D_flow[i, numberOfTubeSections + 1]) for i in numberOfFlueSections - zahod + 1:numberOfFlueSections));
+      waterOut.h_outflow = sum(array(positiveMax(D_flow_n[i, numberOfTubeSections + 1]) * h_flow_n[i, numberOfTubeSections + 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections)) / sum(array(positiveMax(D_flow_n[i, numberOfTubeSections + 1]) for i in numberOfFlueSections - zahod + 1:numberOfFlueSections));
     else
-      waterOut.h_outflow = sum(array(positiveMax(D_flow[i, 1]) * h_flow[i, 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections)) / sum(array(positiveMax(D_flow[i, 1]) for i in numberOfFlueSections - zahod + 1:numberOfFlueSections));
+      waterOut.h_outflow = sum(array(positiveMax(D_flow_n[i, 1]) * h_flow_n[i, 1] for i in numberOfFlueSections - zahod + 1:numberOfFlueSections)) / sum(array(positiveMax(D_flow_n[i, 1]) for i in numberOfFlueSections - zahod + 1:numberOfFlueSections));
     end if;
-    waterIn.h_outflow = sum(array(positiveMax(D_flow[i, 1]) * h_flow[i, 1] for i in 1:zahod)) / sum(array(positiveMax(D_flow[i, 1]) for i in 1:zahod));
+    waterIn.h_outflow = sum(array(positiveMax(D_flow_n[i, 1]) * h_flow_n[i, 1] for i in 1:zahod)) / sum(array(positiveMax(D_flow_n[i, 1]) for i in 1:zahod));
     annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется неског=лько ходов</html>"), Diagram(graphics), Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
   end onlyFlowHE;
 
@@ -709,28 +733,28 @@ package MyHRSG
     //**
     //***Исходные данные по разбиению
     //**
-    parameter Integer numberOfTubeSections = 5 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева";
+    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева";
     parameter Integer zahod = 2 "заходность труб теплообменника";
     /*//**
-                                                                                                                                                                                                                      //***конструктивные характеристики
-                                                                                                                                                                                                                      //**
-                                                                                                                                                                                                                      parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
-                                                                                                                                                                                                                      parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
-                                                                                                                                                                                                                      parameter Real zahod = 1 "заходность труб теплообменника";
-                                                                                                                                                                                                                      parameter Integer z1 = 126 "Число труб по ширине газохода";
-                                                                                                                                                                                                                      parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
-                                                                                                                                                                                                                      parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
-                                                                                                                                                                                                                      ///Оребрение
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
-                                                                                                                                                                                                                      parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
-                                                                                                                                                                                                                      //**/
+                                                                                                                                                                                                                                                                                                                            //***конструктивные характеристики
+                                                                                                                                                                                                                                                                                                                            //**
+                                                                                                                                                                                                                                                                                                                            parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
+                                                                                                                                                                                                                                                                                                                            parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
+                                                                                                                                                                                                                                                                                                                            parameter Real zahod = 1 "заходность труб теплообменника";
+                                                                                                                                                                                                                                                                                                                            parameter Integer z1 = 126 "Число труб по ширине газохода";
+                                                                                                                                                                                                                                                                                                                            parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
+                                                                                                                                                                                                                                                                                                                            parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                            ///Оребрение
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
+                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+                                                                                                                                                                                                                                                                                                                            //**/
     //***
     //**
     ThermoPower.Water.SourceMassFlow flowsource(p0 = pflow, h = hinflow, w0 = wflow, use_in_w0 = false, use_in_h = true, redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
