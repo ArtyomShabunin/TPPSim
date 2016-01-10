@@ -156,20 +156,20 @@ package MyHRSG
     //***конструктивные характеристики
     //**
     /*parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Real zahod = 1 "заходность труб теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z1 = 126 "Число труб по ширине газохода";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ///Оребрение
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          //**/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Real zahod = 1 "заходность труб теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Integer z1 = 126 "Число труб по ширине газохода";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  ///Оребрение
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  //**/
     //***
     //**
     ThermoPower.Gas.SourceMassFlow gassource(redeclare package Medium = Medium_G, p0 = pgas, T = Tingas, w0 = wgas, use_in_T = true, use_in_X = true) annotation(Placement(visible = true, transformation(origin = {-88, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -523,23 +523,23 @@ package MyHRSG
     parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева";
     parameter Integer zahod = 1 "заходность труб теплообменника";
     /*//**
-                                                                                                                                                                                                                                                                                                                                                                                                                                            //***конструктивные характеристики
-                                                                                                                                                                                                                                                                                                                                                                                                                                            //**
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Real zahod = 1 "заходность труб теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Integer z1 = 126 "Число труб по ширине газохода";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            ///Оребрение
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                                            //**/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    //***конструктивные характеристики
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    //**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Real zahod = 1 "заходность труб теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Integer z1 = 126 "Число труб по ширине газохода";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    ///Оребрение
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    //**/
     //***
     //**
     ThermoPower.Water.SourceMassFlow flowsource(p0 = pflow, h = hinflow, w0 = wflow, use_in_w0 = false, use_in_h = true, redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -578,6 +578,8 @@ package MyHRSG
       y := max(x, 1e-10);
     end positiveMax;
 
+    import MyHRSG.phi_heatedPipe;
+    import MyHRSG.lambda_tr;
     //**
     //***Исходные данные для газовой стороны
     //**
@@ -613,8 +615,8 @@ package MyHRSG
     parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.0014 "Абсолютная эквивалентная шероховатость";
-    parameter Real lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2 "Коэффициент трения при движении среды по трубам";
-    parameter Real Xi_flow = lambda_tr * Lpipe / Din / numberOfTubeSections "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+    //parameter Real lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2 "Коэффициент трения при движении среды по трубам";
+    //parameter Real Xi_flow = lambda_tr * Lpipe / Din / numberOfTubeSections "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
     //Константы
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -657,7 +659,6 @@ package MyHRSG
     Medium_F.ThermalConductivity k_flow[numberOfFlueSections, numberOfTubeSections] "Коэффициент теплопроводности для потока вода/пар";
     Medium_F.DynamicViscosity mu_flow[numberOfFlueSections, numberOfTubeSections] "Динамическая вязкость для потока вода/пар";
     Real Pr_flow[numberOfFlueSections, numberOfTubeSections] "Число Прандтля для потока вода/пар";
-    //Металл
     Real Re_flow[numberOfFlueSections, numberOfTubeSections] "Число Рейнольдса";
     Modelica.SIunits.Temperature t_m[numberOfFlueSections, numberOfTubeSections](start = t_startM) "Температура металла на участках трубопровода";
     Real C1[numberOfFlueSections, numberOfTubeSections] "Показатель в числителе уравнения сплошности";
@@ -670,7 +671,12 @@ package MyHRSG
     Real dp_kin[numberOfFlueSections, numberOfTubeSections] "Потеря давления из-за приращения кинетической энергии";
     Real dp_piez[numberOfFlueSections, numberOfTubeSections] "Перепад давления из-за изменения пьезометрической высоты";
     Medium_F2.SaturationProperties sat_v[numberOfFlueSections, numberOfTubeSections] "State vector to compute saturation properties внутри конечного объема";
-    Real x_v[numberOfFlueSections, numberOfTubeSections];
+    Real wrhop[numberOfFlueSections, numberOfTubeSections] "Произведение массовой скорости на давление внутри конечного объема для поправочного коэффициента phi";
+    Real phi[numberOfFlueSections, numberOfTubeSections] "Коэффициент для расчета гидравлического сопротивления двухфазного потока";
+    Real Xi_flow[numberOfFlueSections, numberOfTubeSections] "Коэффициент гидравлического сопротивления участка трубы";
+    Real x_v[numberOfFlueSections, numberOfTubeSections] "Степень сухости";
+    Medium_F.Density dew_rho_flow_v[numberOfFlueSections, numberOfTubeSections] "Плотность пара на линии насыщения по участкам трубы в конечных объемах";
+    Medium_F.Density bubble_rho_flow_v[numberOfFlueSections, numberOfTubeSections] "Плотность  на воды линии насыщения по участкам трубы в конечных объемах";
     //**
     //Интерфейс
     //**
@@ -695,7 +701,14 @@ package MyHRSG
         deltaVFlow * rho_flow_v[i, j] * der(h_flow_v[i, j]) = alfa_flow[i, j] * deltaSFlow * (t_m[i, j] - t_flow[i, j]) + hod[i] * D_flow_v[i, j] * (h_flow_n[i, j + 1] - h_flow_n[i, j]) "Уравнение баланса тепла теплоносителя для нечетных ходов";
         //Основное уравнение гидравлики
         w_flow_v[i, j] = D_flow_v[i, j] / rho_flow_v[i, j] / f_flow "Расчет скорости потока вода/пар в конечных объемах";
-        dp_fric[i, j] = -1 * hod[i] * w_flow_v[i, j] ^ 2 * Xi_flow * rho_flow_v[i, j] / 2 / Modelica.Constants.g_n "Потеря давления от трения";
+        wrhop[i, j] = w_flow_v[i, j] * rho_flow_v[i, j] * p_flow_v[i, j] * 10 ^ (-5) "Произведение wrhop для расчета phi [кг/(м2*с)*кгс/см2]";
+        Xi_flow[i, j] = lambda_tr(Din, ke, Re_flow[i, j]) * Lpipe / Din / numberOfTubeSections;
+        phi[i, j] = phi_heatedPipe(wrhop[i, j], p_flow_v[i, j] / 100000, x_v[i, j]) "Расчет коэффициента phi";
+        if x_v[i, j] < 1 and x_v[i, j] > 0 then
+          dp_fric[i, j] = -1 * hod[i] * w_flow_v[i, j] ^ 2 * Xi_flow[i, j] * rho_flow_v[i, j] / 2 / Modelica.Constants.g_n * (1 + x_v[i, j] * phi[i, j] * (bubble_rho_flow_v[i, j] / dew_rho_flow_v[i, j] - 1)) "Потеря давления от трения";
+        else
+          dp_fric[i, j] = -1 * hod[i] * w_flow_v[i, j] ^ 2 * Xi_flow[i, j] * rho_flow_v[i, j] / 2 / Modelica.Constants.g_n "Потеря давления от трения";
+        end if;
         dp_kin[i, j] = -1 * hod[i] * w_flow_v[i, j] * (w_flow_n[i, j + 1] - w_flow_n[i, j]) * rho_flow_v[i, j] / Modelica.Constants.g_n "Потеря давления из-за приращения кинетической энергии";
         H_flow[i, j + 1] = H_flow[i, j] + deltaHpipe;
         dp_piez[i, j] = -1 * hod[i] * rho_flow_v[i, j] * (H_flow[i, j + 1] - H_flow[i, j]) "Расчет перепада давления из-за изменения пьезометрической высоты";
@@ -723,6 +736,8 @@ package MyHRSG
         stateFlowTwoPhase[i, j] = Medium_F2.setState_ph(p_flow_v[i, j], h_flow_v[i, j]);
         sat_v[i, j] = Medium_F2.setSat_T(t_flow[i, j]);
         x_v[i, j] = Medium_F2.vapourQuality(stateFlowTwoPhase[i, j]);
+        dew_rho_flow_v[i, j] = Medium_F2.dewDensity(sat_v[i, j]);
+        bubble_rho_flow_v[i, j] = Medium_F2.bubbleDensity(sat_v[i, j]);
       end for;
     end for;
     for i in 1:numberOfFlueSections - zahod loop
@@ -801,7 +816,7 @@ package MyHRSG
     parameter Modelica.SIunits.MassFlowRate wflow = 78 "Номинальный массовый расход воды/пар";
     parameter Modelica.SIunits.Pressure pflow = 13e6 "Начальное давление потока вода/пар";
     parameter SI.Temperature Tinflow = 60 + 273.15 "Начальная входная температура потока воды/пар";
-    parameter SI.Temperature Toutflow = 80 + 273.15 "Начальная выходная температура потока воды/пар";
+    parameter SI.Temperature Toutflow = 290 + 273.15 "Начальная выходная температура потока воды/пар";
     parameter SI.Temperature T2flow = (Tinflow + Toutflow) / 2 "Начальная промежуточная температура потока воды/пар";
     parameter Modelica.SIunits.SpecificEnthalpy hinflow = Medium_F.specificEnthalpy_pT(pflow, Tinflow) "Начальная энтальпия входного потока вода/пар";
     parameter Modelica.SIunits.SpecificEnthalpy houtflow = Medium_F.specificEnthalpy_pT(pflow, Toutflow) "Начальная энтальпия выходного потока вода/пар";
@@ -814,23 +829,23 @@ package MyHRSG
     parameter Integer z2 = 10 "Число труб по ходу газов в данной поверхности нагрева";
     parameter Integer zahod = 1 "заходность труб теплообменника";
     /*//**
-                                                                                                                                                                                                                                                                                                                                                                                                                              //***конструктивные характеристики
-                                                                                                                                                                                                                                                                                                                                                                                                                              //**
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Real zahod = 1 "заходность труб теплообменника";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Integer z1 = 126 "Число труб по ширине газохода";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
-                                                                                                                                                                                                                                                                                                                                                                                                                              ///Оребрение
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                              parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
-                                                                                                                                                                                                                                                                                                                                                                                                                              //**/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //***конструктивные характеристики
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter SI.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter SI.Length delta = 0.003 "Толщина стенки трубки теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length s1 = 82e-3 "Поперечный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length s2 = 110e-3 "Продольный шаг";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Real zahod = 1 "заходность труб теплообменника";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Integer z1 = 126 "Число труб по ширине газохода";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Integer z2_total = 18 "Общее число труб по ходу газов в теплообменнике";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Integer z2 = 1 "Число труб по ходу газов в данной поверхности нагрева";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ///Оребрение
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //**/
     //***
     //**
     ThermoPower.Water.SourceMassFlow flowsource(p0 = pflow, h = hinflow, w0 = wflow, use_in_w0 = false, use_in_h = true, redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-88, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -859,5 +874,403 @@ package MyHRSG
     connect(flowenthalpstep.y, flowsource.in_h) annotation(Line(points = {{-79, 90}, {-74, 90}, {-74, 72}, {-84, 72}, {-84, 68}, {-84, 68}}, color = {0, 0, 127}));
     annotation(Documentation(info = "<HTML>Испытывается модель испарителя</html>"), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), experiment(StartTime = 0, StopTime = 200000, Tolerance = 1e-06, Interval = 400));
   end TestOnlyHEBoil;
+
+  function phi_heatedPipe "Функция для расчета коэффициента phi к формуле расчета потерь трения при течении двухфазного потока в обогреваемой трубе (оцифровка номограммы 5а из гидравлического расчета котельных агрегатов)"
+    extends Modelica.Icons.Function;
+    input Real wrhop;
+    input Real p "Давление в кгс/см2";
+    input Real x;
+    output Real phi;
+  protected
+    Real p_up;
+    Real p_down;
+    Real phi_up "phi расчитанное по ф-ле для wrhop_up для интерполяции";
+    Real phi_down "phi расчитанное по ф-ле для wrop_down для интерполяции";
+    Real wrhop_up "wrhop большее чем заданное, из номограммы 5";
+    Real wrhop_down "wrhop меньшее чем заданное, из номограммы 5";
+    Real phi_less180_up;
+    Real phi_less180_down;
+    Real phi_less180 "phi для давления меньше 180 кгс/см2";
+  algorithm
+    //Оцифровка левой части (Р < 180) диаграммы 5а (Нормативный метод гидравлического расчета котельных агрегатов (1978))
+    if wrhop >= 300 then
+      wrhop_up := 400;
+      phi_less180_up := if x >= 0.077 then 1.7326735348 * x ^ 4 - 4.2892926077 * x ^ 3 + 4.5140570635 * x ^ 2 - 2.6239534310 * x + 1.1783239733 else 1;
+      wrhop_down := 300;
+      phi_less180_down := if x >= 0.077 then 1.7326735348 * x ^ 4 - 4.2892926077 * x ^ 3 + 4.5140570635 * x ^ 2 - 2.6239534310 * x + 1.1783239733 else 1;
+    elseif wrhop < 300 and wrhop >= 260 then
+      wrhop_up := 300;
+      phi_less180_up := if x >= 0.077 then 1.7326735348 * x ^ 4 - 4.2892926077 * x ^ 3 + 4.5140570635 * x ^ 2 - 2.6239534310 * x + 1.1783239733 else 1;
+      wrhop_down := 260;
+      phi_less180_down := if x >= 0.102 then 1.4513971826 * x ^ 4 - 3.5387206445 * x ^ 3 + 3.8180468410 * x ^ 2 - 2.3764538834 * x + 1.2059010954 else 1;
+    elseif wrhop < 260 and wrhop >= 240 then
+      wrhop_up := 260;
+      phi_less180_up := if x >= 0.102 then 1.4513971826 * x ^ 4 - 3.5387206445 * x ^ 3 + 3.8180468410 * x ^ 2 - 2.3764538834 * x + 1.2059010954 else 1;
+      wrhop_down := 240;
+      phi_less180_down := if x >= 0.118 then 1.7337140333 * x ^ 4 - 4.1183545121 * x ^ 3 + 4.2222156937 * x ^ 2 - 2.4782615093 * x + 1.2384507739 else 1;
+    elseif wrhop < 240 and wrhop >= 220 then
+      wrhop_up := 240;
+      phi_less180_up := if x >= 0.118 then 1.7337140333 * x ^ 4 - 4.1183545121 * x ^ 3 + 4.2222156937 * x ^ 2 - 2.4782615093 * x + 1.2384507739 else 1;
+      wrhop_down := 220;
+      phi_less180_down := if x >= 0.134 then 1.8386110496 * x ^ 4 - 4.3424422808 * x ^ 3 + 4.3999276658 * x ^ 2 - 2.5337516786 * x + 1.2690488813 else 1;
+    elseif wrhop < 220 and wrhop >= 200 then
+      wrhop_up := 220;
+      phi_less180_up := if x >= 0.134 then 1.8386110496 * x ^ 4 - 4.3424422808 * x ^ 3 + 4.3999276658 * x ^ 2 - 2.5337516786 * x + 1.2690488813 else 1;
+      wrhop_down := 200;
+      phi_less180_down := if x >= 0.147 then 1.4219712545 * x ^ 4 - 3.3261748246 * x ^ 3 + 3.5532256217 * x ^ 2 - 2.2303203025 * x + 1.2605298510 else 1;
+    elseif wrhop < 200 and wrhop >= 180 then
+      wrhop_up := 200;
+      phi_less180_up := if x >= 0.147 then 1.4219712545 * x ^ 4 - 3.3261748246 * x ^ 3 + 3.5532256217 * x ^ 2 - 2.2303203025 * x + 1.2605298510 else 1;
+      wrhop_down := 180;
+      phi_less180_down := if x >= 0.168 then 1.4930025266 * x ^ 4 - 3.6239432394 * x ^ 3 + 3.8621639609 * x ^ 2 - 2.2996291408 * x + 1.2931208181 else 1;
+    elseif wrhop < 180 and wrhop >= 160 then
+      wrhop_up := 180;
+      phi_less180_up := if x >= 0.168 then 1.4930025266 * x ^ 4 - 3.6239432394 * x ^ 3 + 3.8621639609 * x ^ 2 - 2.2996291408 * x + 1.2931208181 else 1;
+      wrhop_down := 160;
+      phi_less180_down := if x >= 0.19 then 1.4298209842 * x ^ 4 - 3.4050752571 * x ^ 3 + 3.5399754890 * x ^ 2 - 2.0595533382 * x + 1.2840925182 else 1;
+    elseif wrhop < 160 and wrhop >= 150 then
+      wrhop_up := 160;
+      phi_less180_up := if x >= 0.19 then 1.4298209842 * x ^ 4 - 3.4050752571 * x ^ 3 + 3.5399754890 * x ^ 2 - 2.0595533382 * x + 1.2840925182 else 1;
+      wrhop_down := 150;
+      phi_less180_down := if x >= 0.214 then 2.3694725716 * x ^ 4 - 5.3818366810 * x ^ 3 + 4.8445067447 * x ^ 2 - 2.3192050299 * x + 1.3216168513 else 1;
+    elseif wrhop < 150 and wrhop >= 140 then
+      wrhop_up := 150;
+      phi_less180_up := if x >= 0.214 then 2.3694725716 * x ^ 4 - 5.3818366810 * x ^ 3 + 4.8445067447 * x ^ 2 - 2.3192050299 * x + 1.3216168513 else 1;
+      wrhop_down := 140;
+      phi_less180_down := if x >= 0.244 then 0.0853282028 * x ^ 4 + 0.07409610708 * x ^ 3 + 0.1991497509 * x ^ 2 - 0.6125891375 * x + 1.1361515441 else 1;
+    elseif wrhop < 140 and wrhop >= 130 then
+      wrhop_up := 140;
+      phi_less180_up := if x >= 0.244 then 0.0853282028 * x ^ 4 + 0.07409610708 * x ^ 3 + 0.1991497509 * x ^ 2 - 0.6125891375 * x + 1.1361515441 else 1;
+      wrhop_down := 130;
+      phi_less180_down := if x >= 0.304 then 0.6797707858 * x ^ 4 - 1.7043172696 * x ^ 3 + 1.9464370756 * x ^ 2 - 1.2184246841 * x + 1.2322690806 else 1;
+    elseif wrhop < 130 and wrhop >= 125 then
+      wrhop_up := 130;
+      phi_less180_up := if x >= 0.304 then 0.6797707858 * x ^ 4 - 1.7043172696 * x ^ 3 + 1.9464370756 * x ^ 2 - 1.2184246841 * x + 1.2322690806 else 1;
+      wrhop_down := 125;
+      phi_less180_down := if x >= 0.356 then 0.6148375351 * x ^ 4 - 1.5791519021 * x ^ 3 + 1.8400903024 * x ^ 2 - 1.1333788283 * x + 1.2316231629 else 1;
+    elseif wrhop < 125 and wrhop >= 120 then
+      wrhop_up := 125;
+      phi_less180_up := if x >= 0.356 then 0.6148375351 * x ^ 4 - 1.5791519021 * x ^ 3 + 1.8400903024 * x ^ 2 - 1.1333788283 * x + 1.2316231629 else 1;
+      wrhop_down := 120;
+      phi_less180_down := 1;
+    elseif wrhop < 120 and wrhop >= 110 then
+      wrhop_up := 120;
+      phi_less180_up := 1;
+      wrhop_down := 110;
+      phi_less180_down := (-0.0620371743 * x ^ 4) + 0.0143877246 * x ^ 3 + 0.0045396916 * x ^ 2 - 0.0041319291 * x + 1.1023521492;
+    elseif wrhop < 110 and wrhop >= 100 then
+      wrhop_up := 110;
+      phi_less180_up := (-0.0620371743 * x ^ 4) + 0.0143877246 * x ^ 3 + 0.0045396916 * x ^ 2 - 0.0041319291 * x + 1.1023521492;
+      wrhop_down := 100;
+      phi_less180_down := (-0.2125876214 * x ^ 4) + 0.2310174677 * x ^ 3 - 0.0938761376 * x ^ 2 + 0.0171025286 * x + 1.1789805166;
+    elseif wrhop < 100 and wrhop >= 90 then
+      wrhop_up := 100;
+      phi_less180_up := (-0.2125876214 * x ^ 4) + 0.2310174677 * x ^ 3 - 0.0938761376 * x ^ 2 + 0.0171025286 * x + 1.1789805166;
+      wrhop_down := 90;
+      phi_less180_down := (-0.3803668297 * x ^ 4) + 0.5649203234 * x ^ 3 - 0.2855069360 * x ^ 2 + 0.0465697023 * x + 1.2283165978;
+    elseif wrhop < 90 and wrhop >= 80 then
+      wrhop_up := 90;
+      phi_less180_up := (-0.3803668297 * x ^ 4) + 0.5649203234 * x ^ 3 - 0.2855069360 * x ^ 2 + 0.0465697023 * x + 1.2283165978;
+      wrhop_down := 80;
+      phi_less180_down := (-0.4103774225 * x ^ 4) + 0.5791958019 * x ^ 3 - 0.2749076196 * x ^ 2 + 0.0390357265 * x + 1.30025436128;
+    elseif wrhop < 80 and wrhop >= 70 then
+      wrhop_up := 80;
+      phi_less180_up := (-0.4103774225 * x ^ 4) + 0.5791958019 * x ^ 3 - 0.2749076196 * x ^ 2 + 0.0390357265 * x + 1.30025436128;
+      wrhop_down := 70;
+      phi_less180_down := (-0.4876399173 * x ^ 4) + 0.7254330563 * x ^ 3 - 0.3482365887 * x ^ 2 + 0.0491618028 * x + 1.3496682544;
+    elseif wrhop < 70 and wrhop >= 60 then
+      wrhop_up := 70;
+      phi_less180_up := (-0.4876399173 * x ^ 4) + 0.7254330563 * x ^ 3 - 0.3482365887 * x ^ 2 + 0.0491618028 * x + 1.3496682544;
+      wrhop_down := 60;
+      phi_less180_down := (-0.4555512967 * x ^ 4) + 0.6412893137 * x ^ 3 - 0.2929308789 * x ^ 2 + 0.0392568200 * x + 1.3993462281;
+    elseif wrhop < 60 and wrhop >= 50 then
+      wrhop_up := 60;
+      phi_less180_up := (-0.4555512967 * x ^ 4) + 0.6412893137 * x ^ 3 - 0.2929308789 * x ^ 2 + 0.0392568200 * x + 1.3993462281;
+      wrhop_down := 50;
+      phi_less180_down := (-0.6321126834 * x ^ 4) + 0.9668229999 * x ^ 3 - 0.4655184559 * x ^ 2 + 0.0654015637 * x + 1.4396176158;
+    elseif wrhop < 50 and wrhop >= 40 then
+      wrhop_up := 50;
+      phi_less180_up := (-0.6321126834 * x ^ 4) + 0.9668229999 * x ^ 3 - 0.4655184559 * x ^ 2 + 0.0654015637 * x + 1.4396176158;
+      wrhop_down := 40;
+      phi_less180_down := (-0.4670410259 * x ^ 4) + 0.6443808260 * x ^ 3 - 0.2803329356 * x ^ 2 + 0.0367508367 * x + 1.4804057664;
+    elseif wrhop < 40 and wrhop >= 30 then
+      wrhop_up := 40;
+      phi_less180_up := (-0.4670410259 * x ^ 4) + 0.6443808260 * x ^ 3 - 0.2803329356 * x ^ 2 + 0.0367508367 * x + 1.4804057664;
+      wrhop_down := 30;
+      phi_less180_down := (-0.4770593418 * x ^ 4) + 0.6707145924 * x ^ 3 - 0.2782995210 * x ^ 2 + 0.0343904964 * x + 1.4984705199;
+    elseif wrhop < 30 then
+      wrhop_up := 30;
+      phi_less180_up := (-0.4770593418 * x ^ 4) + 0.6707145924 * x ^ 3 - 0.2782995210 * x ^ 2 + 0.0343904964 * x + 1.4984705199;
+      wrhop_down := 20;
+      phi_less180_down := (-0.4770593418 * x ^ 4) + 0.6707145924 * x ^ 3 - 0.2782995210 * x ^ 2 + 0.0343904964 * x + 1.4984705199;
+    end if;
+    phi_less180 := phi_less180_down + (wrhop - wrhop_down) * (phi_less180_up - phi_less180_down) / (wrhop_up - wrhop_down) "Расчет phi для давления меньше 180 кгс/см2";
+    //Оцифровка правой части (Р > 180) диаграммы 5а (Нормативный метод гидравлического расчета котельных агрегатов (1978))
+    if p < 180 then
+      p_up := 180;
+      phi_up := phi_less180;
+      p_down := 170;
+      phi_down := phi_less180;
+    elseif p >= 180 and p < 190 then
+      p_up := 190;
+      phi_up := 0.5519859872 * phi_less180 ^ 3 - 1.6482979996 * phi_less180 ^ 2 + 2.4385239509 * phi_less180 - 0.3418330801;
+      p_down := 180;
+      phi_down := 0.9971503617 * phi_less180 + 0.0042472870;
+    elseif p >= 190 and p < 200 then
+      p_up := 200;
+      phi_up := 0.7054219388 * phi_less180 ^ 3 - 2.1155986359 * phi_less180 ^ 2 + 2.7218648407 * phi_less180 - 0.3075156641;
+      p_down := 190;
+      phi_down := 0.5519859872 * phi_less180 ^ 3 - 1.6482979996 * phi_less180 ^ 2 + 2.4385239509 * phi_less180 - 0.3418330801;
+    elseif p >= 200 and p < 210 then
+      p_up := 210;
+      phi_up := 0.7525810088 * phi_less180 ^ 3 - 2.2381909015 * phi_less180 ^ 2 + 2.5724339224 * phi_less180 - 0.0848064371;
+      p_down := 200;
+      phi_down := 0.7054219388 * phi_less180 ^ 3 - 2.1155986359 * phi_less180 ^ 2 + 2.7218648407 * phi_less180 - 0.3075156641;
+    elseif p >= 210 and p < 220 then
+      p_up := 220;
+      phi_up := 0.4488108026 * phi_less180 ^ 3 - 1.3484765978 * phi_less180 ^ 2 + 1.4418111541 * phi_less180 + 0.4601807173;
+      p_down := 210;
+      phi_down := 0.7525810088 * phi_less180 ^ 3 - 2.2381909015 * phi_less180 ^ 2 + 2.5724339224 * phi_less180 - 0.0848064371;
+    elseif p >= 220 and p < 225 then
+      p_up := 225;
+      phi_up := 1;
+      p_down := 220;
+      phi_down := 0.4488108026 * phi_less180 ^ 3 - 1.3484765978 * phi_less180 ^ 2 + 1.4418111541 * phi_less180 + 0.4601807173;
+    elseif p >= 225 then
+      p_up := 230;
+      phi_up := 1;
+      p_down := 225;
+      phi_down := 1;
+    end if;
+    phi := phi_down + (wrhop - wrhop_down) * (phi_up - phi_down) / (wrhop_up - wrhop_down) "Расчет phi для давления больше 180 кгс/см2 (итоговое phi)";
+    annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+  end phi_heatedPipe;
+
+  function phi_notHeatedPipe "Функция для расчета коэффициента phi к формуле расчета потерь трения при течении двухфазного потока в необогреваемой трубе (оцифровка номограммы 5б из гидравлического расчета котельных агрегатов)"
+    extends Modelica.Icons.Function;
+    input Real wrhop;
+    input Real p "Давление в кгс/см2";
+    input Real x;
+    output Real phi;
+  protected
+    Real p_up;
+    Real p_down;
+    Real phi_up "phi расчитанное по ф-ле для wrhop_up для интерполяции";
+    Real phi_down "phi расчитанное по ф-ле для wrop_down для интерполяции";
+    Real wrhop_up "wrhop большее чем заданное, из номограммы 5";
+    Real wrhop_down "wrhop меньшее чем заданное, из номограммы 5";
+    Real phi_less180_up;
+    Real phi_less180_down;
+    Real phi_less180 "phi для давления меньше 180 кгс/см2";
+  algorithm
+    //Оцифровка левой части (Р < 180) диаграммы 5а (Нормативный метод гидравлического расчета котельных агрегатов (1978))
+    if wrhop >= 300 then
+      wrhop_up := 400;
+      phi_less180_up := if x >= 0.929 then (1.1160112 + 2.7703818 * x ^ 2 - 3.7359854 * x ^ 4) / (1 + 16.431491 * x ^ 2 - 27.563562 * x ^ 4 + 10.289915 * x ^ 6) else 1;
+      wrhop_down := 300;
+      phi_less180_down := if x >= 0.929 then (1.1160112 + 2.7703818 * x ^ 2 - 3.7359854 * x ^ 4) / (1 + 16.431491 * x ^ 2 - 27.563562 * x ^ 4 + 10.289915 * x ^ 6) else 1;
+    elseif wrhop < 300 and wrhop >= 260 then
+      wrhop_up := 300;
+      phi_less180_up := if x >= 0.929 then (1.1160112 + 2.7703818 * x ^ 2 - 3.7359854 * x ^ 4) / (1 + 16.431491 * x ^ 2 - 27.563562 * x ^ 4 + 10.289915 * x ^ 6) else 1;
+      wrhop_down := 260;
+      phi_less180_down := if x >= 0.108 then (0.89708298 + 4.7982936 * x - 5.5133864 * x ^ 2 - 0.1447869 * x ^ 3) / (1 - 0.34467125 * x + 41.209031 * x ^ 2 - 75.500433 * x ^ 3 + 33.673279 * x ^ 4) else 1;
+    elseif wrhop < 260 and wrhop >= 240 then
+      wrhop_up := 260;
+      phi_less180_up := if x >= 0.108 then (0.89708298 + 4.7982936 * x - 5.5133864 * x ^ 2 - 0.1447869 * x ^ 3) / (1 - 0.34467125 * x + 41.209031 * x ^ 2 - 75.500433 * x ^ 3 + 33.673279 * x ^ 4) else 1;
+      wrhop_down := 240;
+      phi_less180_down := if x >= 0.115 then (0.97663388 - 9.9736014 * x + 59.557372 * x ^ 2 - 125.45315 * x ^ 3 + 131.23507 * x ^ 4 - 55.657059 * x ^ 5) / (1 - 10.258929 * x + 55.422401 * x ^ 2 - 75.587534 * x ^ 3 + 61.763853 * x ^ 4 - 31.654485 * x ^ 5) else 1;
+    elseif wrhop < 240 and wrhop >= 220 then
+      wrhop_up := 240;
+      phi_less180_up := if x >= 0.115 then (0.97663388 - 9.9736014 * x + 59.557372 * x ^ 2 - 125.45315 * x ^ 3 + 131.23507 * x ^ 4 - 55.657059 * x ^ 5) / (1 - 10.258929 * x + 55.422401 * x ^ 2 - 75.587534 * x ^ 3 + 61.763853 * x ^ 4 - 31.654485 * x ^ 5) else 1;
+      wrhop_down := 220;
+      phi_less180_down := if x >= 0.132 then ((-10.228577) + 4319.6549 * x ^ 2 + 24312.406 * x ^ 4 + 8579.2181 * x ^ 6 - 28234.741 * x ^ 8) / (1 + 2900.7944 * x ^ 2 + 69269.534 * x ^ 4 - 18788.349 * x ^ 6 - 44408.746 * x ^ 8) else 1;
+    elseif wrhop < 220 and wrhop >= 200 then
+      wrhop_up := 220;
+      phi_less180_up := if x >= 0.132 then ((-10.228577) + 4319.6549 * x ^ 2 + 24312.406 * x ^ 4 + 8579.2181 * x ^ 6 - 28234.741 * x ^ 8) / (1 + 2900.7944 * x ^ 2 + 69269.534 * x ^ 4 - 18788.349 * x ^ 6 - 44408.746 * x ^ 8) else 1;
+      wrhop_down := 200;
+      phi_less180_down := if x >= 0.156 then (0.66843259 - 2.7713756 * x ^ 0.5 + 4.4386535 * x - 2.2781927 * x ^ 1.5) / (1 - 4.9010314 * x ^ 0.5 + 8.6644624 * x - 4.7063616 * x ^ 1.5) else 1;
+    elseif wrhop < 200 and wrhop >= 180 then
+      wrhop_up := 200;
+      phi_less180_up := if x >= 0.156 then (0.66843259 - 2.7713756 * x ^ 0.5 + 4.4386535 * x - 2.2781927 * x ^ 1.5) / (1 - 4.9010314 * x ^ 0.5 + 8.6644624 * x - 4.7063616 * x ^ 1.5) else 1;
+      wrhop_down := 180;
+      phi_less180_down := if x >= 0.171 then ((-105.09791) + 1693.3173 * x - 4686.1774 * x ^ 2 + 5625.4262 * x ^ 3 - 2917.844 * x ^ 4 + 528.13081 * x ^ 5) / (1 + 4.3959294 * x + 4334.0874 * x ^ 2 - 13495.12 * x ^ 3 + 15239.466 * x ^ 4 - 5946.089 * x ^ 5) else 1;
+    elseif wrhop < 180 and wrhop >= 160 then
+      wrhop_up := 180;
+      phi_less180_up := if x >= 0.171 then ((-105.09791) + 1693.3173 * x - 4686.1774 * x ^ 2 + 5625.4262 * x ^ 3 - 2917.844 * x ^ 4 + 528.13081 * x ^ 5) / (1 + 4.3959294 * x + 4334.0874 * x ^ 2 - 13495.12 * x ^ 3 + 15239.466 * x ^ 4 - 5946.089 * x ^ 5) else 1;
+      wrhop_down := 160;
+      phi_less180_down := if x >= 0.191 then (1.3019518 - 5.8689682 * x + 11.073734 * x ^ 2 - 9.6200996 * x ^ 3 + 3.1209569 * x ^ 4) / (1 - 3.1240685 * x + 3.1773507 * x ^ 2 + 1.2499544 * x ^ 3 - 4.3773472 * x ^ 4 + 2.0816853 * x ^ 5) else 1;
+    elseif wrhop < 160 and wrhop >= 150 then
+      wrhop_up := 160;
+      phi_less180_up := if x >= 0.191 then (1.3019518 - 5.8689682 * x + 11.073734 * x ^ 2 - 9.6200996 * x ^ 3 + 3.1209569 * x ^ 4) / (1 - 3.1240685 * x + 3.1773507 * x ^ 2 + 1.2499544 * x ^ 3 - 4.3773472 * x ^ 4 + 2.0816853 * x ^ 5) else 1;
+      wrhop_down := 150;
+      phi_less180_down := if x >= 0.214 then 1.1679896 - 4.6977502 * x ^ 2 + 26.60315 * x ^ 4 - 112.12267 * x ^ 6 + 371.00488 * x ^ 8 - 891.73597 * x ^ 10 + 1472.4046 * x ^ 12 - 1608.2865 * x ^ 14 + 1103.7726 * x ^ 16 - 428.09003 * x ^ 18 + 70.97972 * x ^ 20 else 1;
+    elseif wrhop < 150 and wrhop >= 140 then
+      wrhop_up := 150;
+      phi_less180_up := if x >= 0.214 then 1.1679896 - 4.6977502 * x ^ 2 + 26.60315 * x ^ 4 - 112.12267 * x ^ 6 + 371.00488 * x ^ 8 - 891.73597 * x ^ 10 + 1472.4046 * x ^ 12 - 1608.2865 * x ^ 14 + 1103.7726 * x ^ 16 - 428.09003 * x ^ 18 + 70.97972 * x ^ 20 else 1;
+      wrhop_down := 140;
+      phi_less180_down := if x >= 0.237 then 1.1802356 - 4.2276943 * x ^ 2 + 20.300278 * x ^ 4 - 45.089744 * x ^ 6 + 17.620965 * x ^ 8 + 137.10003 * x ^ 10 - 324.4792 * x ^ 12 + 329.13172 * x ^ 14 - 161.31303 * x ^ 16 + 30.776496 * x ^ 18 else 1;
+    elseif wrhop < 140 and wrhop >= 130 then
+      wrhop_up := 140;
+      phi_less180_up := if x >= 0.237 then 1.1802356 - 4.2276943 * x ^ 2 + 20.300278 * x ^ 4 - 45.089744 * x ^ 6 + 17.620965 * x ^ 8 + 137.10003 * x ^ 10 - 324.4792 * x ^ 12 + 329.13172 * x ^ 14 - 161.31303 * x ^ 16 + 30.776496 * x ^ 18 else 1;
+      wrhop_down := 130;
+      phi_less180_down := if x >= 0.263 then 1.2828416 - 7.046377 * x ^ 2 + 58.757998 * x ^ 4 - 284.95031 * x ^ 6 + 857.02366 * x ^ 8 - 1635.9503 * x ^ 10 + 1978.2262 * x ^ 12 - 1464.9664 * x ^ 14 + 605.8126 * x ^ 16 - 107.18998 * x ^ 18 else 1;
+    elseif wrhop < 130 and wrhop >= 125 then
+      wrhop_up := 130;
+      phi_less180_up := if x >= 0.263 then 1.2828416 - 7.046377 * x ^ 2 + 58.757998 * x ^ 4 - 284.95031 * x ^ 6 + 857.02366 * x ^ 8 - 1635.9503 * x ^ 10 + 1978.2262 * x ^ 12 - 1464.9664 * x ^ 14 + 605.8126 * x ^ 16 - 107.18998 * x ^ 18 else 1;
+      wrhop_down := 125;
+      phi_less180_down := if x >= 0.282 then 14.944683 - 239.05789 * x + 1811.9863 * x ^ 2 - 7974.3565 * x ^ 3 + 22512.542 * x ^ 4 - 42560.432 * x ^ 5 + 54537.298 * x ^ 6 - 46751.885 * x ^ 7 + 25647.917 * x ^ 8 - 8126.1591 * x ^ 9 + 1128.202 * x ^ 10 else 1;
+    elseif wrhop < 125 and wrhop >= 120 then
+      wrhop_up := 125;
+      phi_less180_up := if x >= 0.282 then 14.944683 - 239.05789 * x + 1811.9863 * x ^ 2 - 7974.3565 * x ^ 3 + 22512.542 * x ^ 4 - 42560.432 * x ^ 5 + 54537.298 * x ^ 6 - 46751.885 * x ^ 7 + 25647.917 * x ^ 8 - 8126.1591 * x ^ 9 + 1128.202 * x ^ 10 else 1;
+      wrhop_down := 120;
+      phi_less180_down := 1;
+    elseif wrhop < 120 and wrhop >= 110 then
+      wrhop_up := 120;
+      phi_less180_up := 1;
+      wrhop_down := 110;
+      phi_less180_down := 1.1000165 + 0.00035623019 * x ^ 2 - 0.068572729 * x ^ 4 + 0.92075497 * x ^ 6 - 3.9692 * x ^ 8 + 6.6865532 * x ^ 10 - 5.1926831 * x ^ 12 + 1.5227299 * x ^ 14;
+    elseif wrhop < 110 and wrhop >= 100 then
+      wrhop_up := 110;
+      phi_less180_up := 1.1000165 + 0.00035623019 * x ^ 2 - 0.068572729 * x ^ 4 + 0.92075497 * x ^ 6 - 3.9692 * x ^ 8 + 6.6865532 * x ^ 10 - 5.1926831 * x ^ 12 + 1.5227299 * x ^ 14;
+      wrhop_down := 100;
+      phi_less180_down := (1.176932 - 7.7893552 * x ^ 2 + 21.118695 * x ^ 4 - 21.656887 * x ^ 6 + 7.5845347 * x ^ 8) / (1 - 6.6156743 * x ^ 2 + 17.919908 * x ^ 4 - 18.359876 * x ^ 6 + 6.4895739 * x ^ 8);
+    elseif wrhop < 100 and wrhop >= 90 then
+      wrhop_up := 100;
+      phi_less180_up := (1.176932 - 7.7893552 * x ^ 2 + 21.118695 * x ^ 4 - 21.656887 * x ^ 6 + 7.5845347 * x ^ 8) / (1 - 6.6156743 * x ^ 2 + 17.919908 * x ^ 4 - 18.359876 * x ^ 6 + 6.4895739 * x ^ 8);
+      wrhop_down := 90;
+      phi_less180_down := (1.2311741 - 9.5633564 * x ^ 2 + 28.305015 * x ^ 4 - 39.306465 * x ^ 6 + 25.987068 * x ^ 8 - 6.6531902 * x ^ 10) / (1 - 7.7715677 * x ^ 2 + 23.02875 * x ^ 4 - 32.064249 * x ^ 6 + 21.319708 * x ^ 8 - 5.5123967 * x ^ 10);
+    elseif wrhop < 90 and wrhop >= 80 then
+      wrhop_up := 90;
+      phi_less180_up := (1.2311741 - 9.5633564 * x ^ 2 + 28.305015 * x ^ 4 - 39.306465 * x ^ 6 + 25.987068 * x ^ 8 - 6.6531902 * x ^ 10) / (1 - 7.7715677 * x ^ 2 + 23.02875 * x ^ 4 - 32.064249 * x ^ 6 + 21.319708 * x ^ 8 - 5.5123967 * x ^ 10);
+      wrhop_down := 80;
+      phi_less180_down := (1.300727618 - 7.19037357 * x ^ 0.5 + 15.88632448 * x - 17.5216916 * x ^ 1.5 + 9.64255146 * x ^ 2 - 2.1175309 * x ^ 2.5) / (1 - 5.52752683 * x ^ 0.5 + 12.21139391 * x - 13.4672713 * x ^ 1.5 + 7.410713972 * x ^ 2 - 1.6273023 * x ^ 2.5);
+    elseif wrhop < 80 and wrhop >= 70 then
+      wrhop_up := 80;
+      phi_less180_up := (1.300727618 - 7.19037357 * x ^ 0.5 + 15.88632448 * x - 17.5216916 * x ^ 1.5 + 9.64255146 * x ^ 2 - 2.1175309 * x ^ 2.5) / (1 - 5.52752683 * x ^ 0.5 + 12.21139391 * x - 13.4672713 * x ^ 1.5 + 7.410713972 * x ^ 2 - 1.6273023 * x ^ 2.5);
+      wrhop_down := 70;
+      phi_less180_down := (1.3511004 + 1.709817 * x - 6.8822576 * x ^ 2 + 3.8771043 * x ^ 3) / (1 + 1.2702537 * x - 5.1206003 * x ^ 2 + 2.9061398 * x ^ 3);
+    elseif wrhop < 70 and wrhop >= 60 then
+      wrhop_up := 70;
+      phi_less180_up := (1.3511004 + 1.709817 * x - 6.8822576 * x ^ 2 + 3.8771043 * x ^ 3) / (1 + 1.2702537 * x - 5.1206003 * x ^ 2 + 2.9061398 * x ^ 3);
+      wrhop_down := 60;
+      phi_less180_down := 1.3991448 + 0.02911584 * x ^ 2 - 1.181137 * x ^ 4 + 17.50421 * x ^ 6 - 126.72684 * x ^ 8 + 513.32985 * x ^ 10 - 1242.665 * x ^ 12 + 1825.7391 * x ^ 14 - 1590.4492 * x ^ 16 + 752.87429 * x ^ 18 - 148.85355 * x ^ 20;
+    elseif wrhop < 60 and wrhop >= 50 then
+      wrhop_up := 60;
+      phi_less180_up := 1.3991448 + 0.02911584 * x ^ 2 - 1.181137 * x ^ 4 + 17.50421 * x ^ 6 - 126.72684 * x ^ 8 + 513.32985 * x ^ 10 - 1242.665 * x ^ 12 + 1825.7391 * x ^ 14 - 1590.4492 * x ^ 16 + 752.87429 * x ^ 18 - 148.85355 * x ^ 20;
+      wrhop_down := 50;
+      phi_less180_down := (1.441734 - 6.4053556 * x + 10.566088 * x ^ 2 - 7.6647504 * x ^ 3 + 2.0641227 * x ^ 4) / (1 - 4.4371009 * x + 7.2911442 * x ^ 2 - 5.2248014 * x ^ 3 + 1.3339947 * x ^ 4 + 0.038603441 * x ^ 5);
+    elseif wrhop < 50 and wrhop >= 40 then
+      wrhop_up := 50;
+      phi_less180_up := (1.441734 - 6.4053556 * x + 10.566088 * x ^ 2 - 7.6647504 * x ^ 3 + 2.0641227 * x ^ 4) / (1 - 4.4371009 * x + 7.2911442 * x ^ 2 - 5.2248014 * x ^ 3 + 1.3339947 * x ^ 4 + 0.038603441 * x ^ 5);
+      wrhop_down := 40;
+      phi_less180_down := (1.4795265 - 7.1692594 * x ^ 2 + 12.697645 * x ^ 4 - 9.6627311 * x ^ 6 + 2.6719018 * x ^ 8) / (1 - 4.8441344 * x ^ 2 + 8.5640741 * x ^ 4 - 6.4576876 * x ^ 6 + 1.6869312 * x ^ 8 + 0.067906062 * x ^ 10);
+    elseif wrhop < 40 and wrhop >= 30 then
+      wrhop_up := 40;
+      phi_less180_up := (1.4795265 - 7.1692594 * x ^ 2 + 12.697645 * x ^ 4 - 9.6627311 * x ^ 6 + 2.6719018 * x ^ 8) / (1 - 4.8441344 * x ^ 2 + 8.5640741 * x ^ 4 - 6.4576876 * x ^ 6 + 1.6869312 * x ^ 8 + 0.067906062 * x ^ 10);
+      wrhop_down := 30;
+      phi_less180_down := (1.5002909 - 8.7863495 * x ^ 2 + 20.649298 * x ^ 4 - 24.343014 * x ^ 6 + 14.39313 * x ^ 8 - 3.4128172 * x ^ 10) / (1 - 5.853886 * x ^ 2 + 13.74732 * x ^ 4 - 16.187379 * x ^ 6 + 9.5541865 * x ^ 8 - 2.2597026 * x ^ 10);
+    elseif wrhop < 30 then
+      wrhop_up := 30;
+      phi_less180_up := (1.5002909 - 8.7863495 * x ^ 2 + 20.649298 * x ^ 4 - 24.343014 * x ^ 6 + 14.39313 * x ^ 8 - 3.4128172 * x ^ 10) / (1 - 5.853886 * x ^ 2 + 13.74732 * x ^ 4 - 16.187379 * x ^ 6 + 9.5541865 * x ^ 8 - 2.2597026 * x ^ 10);
+      wrhop_down := 20;
+      phi_less180_down := (1.5002909 - 8.7863495 * x ^ 2 + 20.649298 * x ^ 4 - 24.343014 * x ^ 6 + 14.39313 * x ^ 8 - 3.4128172 * x ^ 10) / (1 - 5.853886 * x ^ 2 + 13.74732 * x ^ 4 - 16.187379 * x ^ 6 + 9.5541865 * x ^ 8 - 2.2597026 * x ^ 10);
+    end if;
+    phi_less180 := phi_less180_down + (wrhop - wrhop_down) * (phi_less180_up - phi_less180_down) / (wrhop_up - wrhop_down) "Расчет phi для давления меньше 180 кгс/см2";
+    //Оцифровка правой части (Р > 180) диаграммы 5б (Нормативный метод гидравлического расчета котельных агрегатов (1978))
+    if p < 180 then
+      p_up := 180;
+      phi_up := phi_less180;
+      p_down := 170;
+      phi_down := phi_less180;
+    elseif p >= 180 and p < 190 then
+      p_up := 190;
+      phi_up := ((-0.38727116) + 3.7172002 * phi_less180 ^ 2 - 5.7810724 * phi_less180 ^ 4 + 2.6277926 * phi_less180 ^ 6 - 0.0074910401 * phi_less180 ^ 8) / (1 + 0.35659014 * phi_less180 ^ 2 - 3.7227101 * phi_less180 ^ 4 + 3.2206161 * phi_less180 ^ 6 - 0.77120666 * phi_less180 ^ 8 + 0.085440751 * phi_less180 ^ 10);
+      p_down := 180;
+      phi_down := 1.6683 * phi_less180 - 0.6669;
+    elseif p >= 190 and p < 200 then
+      p_up := 200;
+      phi_up := ((-0.56499308) + 3.8637496 * phi_less180 - 9.170028 * phi_less180 ^ 2 + 10.20122 * phi_less180 ^ 3 - 5.4998541 * phi_less180 ^ 4 + 1.1716854 * phi_less180 ^ 5) / (1 - 3.237545 * phi_less180 + 3.8132513 * phi_less180 ^ 2 - 1.771051 * phi_less180 ^ 3 + 0.076441418 * phi_less180 ^ 4 + 0.12067979 * phi_less180 ^ 5);
+      p_down := 190;
+      phi_down := ((-0.38727116) + 3.7172002 * phi_less180 ^ 2 - 5.7810724 * phi_less180 ^ 4 + 2.6277926 * phi_less180 ^ 6 - 0.0074910401 * phi_less180 ^ 8) / (1 + 0.35659014 * phi_less180 ^ 2 - 3.7227101 * phi_less180 ^ 4 + 3.2206161 * phi_less180 ^ 6 - 0.77120666 * phi_less180 ^ 8 + 0.085440751 * phi_less180 ^ 10);
+    elseif p >= 200 and p < 210 then
+      p_up := 210;
+      phi_up := ((-0.23022792) + 1.8670365 * phi_less180 - 2.7284609 * phi_less180 ^ 2 + 1.1370724 * phi_less180 ^ 3 + 0.030002178 * phi_less180 ^ 4) / (1 - 2.3906129 * phi_less180 + 3.3062657 * phi_less180 ^ 2 - 3.4844912 * phi_less180 ^ 3 + 2.0905602 * phi_less180 ^ 4 - 0.44638264 * phi_less180 ^ 5);
+      p_down := 200;
+      phi_down := ((-0.56499308) + 3.8637496 * phi_less180 - 9.170028 * phi_less180 ^ 2 + 10.20122 * phi_less180 ^ 3 - 5.4998541 * phi_less180 ^ 4 + 1.1716854 * phi_less180 ^ 5) / (1 - 3.237545 * phi_less180 + 3.8132513 * phi_less180 ^ 2 - 1.771051 * phi_less180 ^ 3 + 0.076441418 * phi_less180 ^ 4 + 0.12067979 * phi_less180 ^ 5);
+    elseif p >= 210 and p < 220 then
+      p_up := 220;
+      phi_up := 268.19561 - 2496.4334 * phi_less180 ^ 0.5 + 9729.2434 * phi_less180 - 19838.828 * phi_less180 ^ 1.5 + 19977.25 * phi_less180 ^ 2 - 977.21967 * phi_less180 ^ 2.5 - 23104.339 * phi_less180 ^ 3 + 29777.716 * phi_less180 ^ 3.5 - 18552.804 * phi_less180 ^ 4 + 6045.8435 * phi_less180 ^ 4.5 - 827.62478 * phi_less180 ^ 5;
+      p_down := 210;
+      phi_down := ((-0.23022792) + 1.8670365 * phi_less180 - 2.7284609 * phi_less180 ^ 2 + 1.1370724 * phi_less180 ^ 3 + 0.030002178 * phi_less180 ^ 4) / (1 - 2.3906129 * phi_less180 + 3.3062657 * phi_less180 ^ 2 - 3.4844912 * phi_less180 ^ 3 + 2.0905602 * phi_less180 ^ 4 - 0.44638264 * phi_less180 ^ 5);
+    elseif p >= 220 and p < 225 then
+      p_up := 225;
+      phi_up := 1;
+      p_down := 220;
+      phi_down := 268.19561 - 2496.4334 * phi_less180 ^ 0.5 + 9729.2434 * phi_less180 - 19838.828 * phi_less180 ^ 1.5 + 19977.25 * phi_less180 ^ 2 - 977.21967 * phi_less180 ^ 2.5 - 23104.339 * phi_less180 ^ 3 + 29777.716 * phi_less180 ^ 3.5 - 18552.804 * phi_less180 ^ 4 + 6045.8435 * phi_less180 ^ 4.5 - 827.62478 * phi_less180 ^ 5;
+    elseif p >= 225 then
+      p_up := 230;
+      phi_up := 1;
+      p_down := 225;
+      phi_down := 1;
+    end if;
+    phi := phi_down + (wrhop - wrhop_down) * (phi_up - phi_down) / (wrhop_up - wrhop_down) "Расчет phi для давления больше 180 кгс/см2 (итоговое phi)";
+    annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+  end phi_notHeatedPipe;
+
+  function lambda_tr "Функция для расчета коэффициента трения (лямбда)"
+    extends Modelica.Icons.Function;
+
+    function lambda_tr_per "Функция для расчета коэффициента трения (лямбда) в переходной зоне"
+      input Modelica.SIunits.Length dn "расчетный внутренний диаметр трубы";
+      input Modelica.SIunits.Length ke "абсолютная эквивалентная шероховатость";
+      input Real Re "Число Рейнольдса";
+      output Real lambda_tr;
+    protected
+      Real Re_I "Нижняя граница переходной области (по числу Рейнольдса)";
+      Real Re_II "Верхняя граница переходной области (по числу Рейнольдса)";
+      Real lambda_tr_I "Нижняя граница переходной области (по коэффициенту трения)";
+      Real lambda_tr_II "Верхняя граница переходной области (по коэффициенту трения)";
+    algorithm
+      Re_I := 2300;
+      Re_II := (120 * dn / ke) ^ 1.125;
+      lambda_tr_I := lambda_tr_lessReI(Re_I);
+      lambda_tr_II := lambda_tr_moreReII(dn, ke);
+      lambda_tr := lambda_tr_I + (Re - Re_I) * (lambda_tr_II - lambda_tr_I) / (Re_II - Re_I);
+    end lambda_tr_per;
+
+    function lambda_tr_lessReI "Функция для расчета коэффициента трения при Re меньше Re_I"
+      input Real Re "Число Рейнольдса";
+      output Real lambda_tr;
+    algorithm
+      lambda_tr := 64 / Re;
+    end lambda_tr_lessReI;
+
+    function lambda_tr_moreReII "Функция для расчета коэффициента трения при Re больше Re_II"
+      input Modelica.SIunits.Length dn "расчетный внутренний диаметр трубы";
+      input Modelica.SIunits.Length ke "абсолютная эквивалентная шероховатость";
+      output Real lambda_tr;
+    algorithm
+      lambda_tr := 1 / (1.14 + 2 * log10(dn / ke)) ^ 2;
+    end lambda_tr_moreReII;
+
+    input Modelica.SIunits.Length dn "расчетный внутренний диаметр трубы";
+    input Modelica.SIunits.Length ke "абсолютная эквивалентная шероховатость";
+    input Real Re "Число Рейнольдса";
+    output Real lambda_tr;
+  protected
+    Real Re_I "Нижняя граница переходной области (по числу Рейнольдса)";
+    Real Re_II "Верхняя граница переходной области (по числу Рейнольдса)";
+  algorithm
+    Re_I := 2300;
+    Re_II := (120 * dn / ke) ^ 1.125;
+    if Re < Re_I then
+      lambda_tr := lambda_tr_lessReI(Re);
+    elseif Re > Re_II then
+      lambda_tr := lambda_tr_moreReII(dn, ke);
+    else
+      lambda_tr := lambda_tr_per(dn, ke, Re);
+    end if;
+    annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+  end lambda_tr;
   annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
 end MyHRSG;
