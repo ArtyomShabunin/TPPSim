@@ -3210,14 +3210,14 @@ end if;*/
     sat = Medium.setSat_p(ps);
     h_dew = Medium.dewEnthalpy(sat);
     h_bubble = Medium.bubbleEnthalpy(sat);
-    Dsteam = if inStream(fedWater.h_outflow) > h_dew then D_fw else max(m_flow_small, D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble));
+    Dsteam = if noEvent(inStream(fedWater.h_outflow)) > h_dew then D_fw else max(m_flow_small, D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble));
 //Питательная вода
     fedWater.h_outflow = h_bubble;
     fedWater.p = ps;
     fedWater.m_flow = D_fw;
 //Выход насыщенного пара
     ps = steam.p;
-    steam.h_outflow = if inStream(fedWater.h_outflow) > h_dew then inStream(fedWater.h_outflow) else h_dew;
+    steam.h_outflow = if noEvent(inStream(fedWater.h_outflow)) > h_dew then inStream(fedWater.h_outflow) else h_dew;
     steam.m_flow = -Dsteam;
     annotation(uses(Modelica(version = "3.2.1")));
   end Separator2;
@@ -4724,13 +4724,17 @@ end if;*/
       Modelica.SIunits.DerDensityByEnthalpy drdh_n[2] "Производная плотности потока по энтальпии на участках ряда труб";
       Modelica.SIunits.DerDensityByPressure drdp_v "Производная плотности потока по давлению на участках ряда труб";
       Modelica.SIunits.DerDensityByPressure drdp_n[2] "Производная плотности потока по давлению на участках ряда труб";
+      Modelica.SIunits.DerDensityByEnthalpy drdh_new;
+      Modelica.SIunits.DerDensityByPressure drdp_new;
       Medium_F.MassFlowRate D_flow_v(start = D_startFlow_v) "Массовый расход потока вода/пар по участкам ряда труб";
       Medium_F.MassFlowRate D_flow_n[2](start = D_startFlow_n) "Массовый расход потока вода/пар по участкам ряда труб";
       Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
+      Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow_eco;
+      Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow_sh;
       Medium_F.ThermalConductivity k_flow_eco "Коэффициент теплопроводности для потока вода/пар";
       Medium_F.ThermalConductivity k_flow_sh;
       Medium_F.DynamicViscosity mu_flow_eco "Динамическая вязкость для потока вода/пар";
-      Medium_F.DynamicViscosity mu_flow_sh;  
+      Medium_F.DynamicViscosity mu_flow_sh;
       Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
       Real Pr_flow_eco "Число Прандтля для потока вода/пар";
       Real Pr_flow_sh;
@@ -4768,7 +4772,6 @@ end if;*/
       Real AA1;
       Real timeZ;
       Real derpZ;
-      
       Real A_alfa;
       Real C_alfa;
       //**
@@ -4801,95 +4804,162 @@ end if;*/
 //Уравнения состояния
       t_flow = Medium_F.temperature(Medium_F.setState_ph(p_v, h_v));
       stateFlow = Medium_F.setState_ph(p_v, h_v);
-    
-      k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
-      k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));  
-      
-      Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
-      Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));  
-      
-      mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
-      mu_flow_sh= max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
-        
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
-      w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";  
-      w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
-        
-      Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
-      Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);  
 //alfa_flow = if D_flow_n[1] > 0.011 then 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4 else 0;
 //alfa_flow = 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4;
-      //alfa_flow = if noEvent(h_n[1] < hl and h_n[2] < hl or h_n[1] > hv and h_n[2] > hv) then 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4 else 20000;
-       
-       A_alfa = min(max((hl - h_n[1]) / max((h_n[2] - h_n[1]), 0.01), 0), 1);   
-       C_alfa = min(max((h_n[2] - hv) / max((h_n[2] - h_n[1]), 0.01), 0), 1);
-       
-       alfa_flow = (-(6/3) * A_alfa ^ 3 + (6/2) * A_alfa ^ 2)*(0.023 * k_flow_eco / Din * Re_flow_eco ^ 0.8 * Pr_flow_eco ^ 0.4) + (-(6/3) * C_alfa ^ 3 + (6/2) * C_alfa ^ 2)*(0.023 * k_flow_sh / Din * Re_flow_sh ^ 0.8 * Pr_flow_sh ^ 0.4) + (1 - (-(6/3) * A_alfa ^ 3 + (6/2) * A_alfa ^ 2) - (-(6/3) * C_alfa ^ 3 + (6/2) * C_alfa ^ 2)) * 20000;
-      
-      
+//alfa_flow = if noEvent(h_n[1] < hl and h_n[2] < hl or h_n[1] > hv and h_n[2] > hv) then 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4 else 20000;
+      A_alfa = min(max((hl - h_n[1]) / max(h_n[2] - h_n[1], 0.01), 0), 1);
+      C_alfa = min(max((h_n[2] - hv) / max(h_n[2] - h_n[1], 0.01), 0), 1);
+      alfa_flow_eco = 0.023 * k_flow_eco / Din * Re_flow_eco ^ 0.8 * Pr_flow_eco ^ 0.4;
+      alfa_flow_sh = 0.023 * k_flow_sh / Din * Re_flow_sh ^ 0.8 * Pr_flow_sh ^ 0.4;
+      alfa_flow = ((-6 / 3 * A_alfa ^ 3) + 6 / 2 * A_alfa ^ 2) * alfa_flow_eco + ((-6 / 3 * C_alfa ^ 3) + 6 / 2 * C_alfa ^ 2) * alfa_flow_sh + (1 - ((-6 / 3 * A_alfa ^ 3) + 6 / 2 * A_alfa ^ 2) - ((-6 / 3 * C_alfa ^ 3) + 6 / 2 * C_alfa ^ 2)) * 20000;
 //Про две фазы
 //stateFlowTwoPhase[i, j] = Medium_F2.setState_ph(p_v, h_v[i, j]);
       x_v = if h_v < hl then 0 elseif h_v > hv then 1 else (h_v - hl) / (hv - hl);
       D_flow_v = (D_flow_n[2] + D_flow_n[1]) / 2;
 //Уравнения из ThermoPower.Water.Flow1DFEM2ph
       D_flow_n[2] = D_flow_n[1] - C1 - C2 "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
-      C1 = deltaVFlow * ((-1e-7) * der_h_n[1] + (-1e-7) * der_h_n[2]);
-      C2 = deltaVFlow * 1e-8 * der(p_v);
-      if avoidInletEnthalpyDerivative then
+//C1 = deltaVFlow * ((-1e-7) * der_h_n[1] + (-1e-7) * der_h_n[2]);
+//C2 = deltaVFlow * 1e-8 * der(p_v);
+      C1 = deltaVFlow * drdh_new * der(h_v);
+      C2 = deltaVFlow * drdp_new * der(p_v);
+      drdh_new = if abs(h_n[2] - h_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[1]))) / (h_n[2] - h_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[2] - 0.01))) / 0.01;
+      drdp_new = if abs(p_n[2] - p_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[1], h_v))) / (p_n[2] - p_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[2] - 0.01, h_v))) / 0.01;
+//if avoidInletEnthalpyDerivative then
 // first volume properties computed by the outlet properties
-        rho_v = rho_n[2];
-        drdp_v = drdp_n[2];
-        drdh_v1 = 0;
-        drdh_v2 = drdh_n[2];
-      elseif noEvent(h_n[1] < hl and h_n[2] < hl or h_n[1] > hv and h_n[2] > hv or p_v >= pc - pzero or abs(h_n[2] - h_n[1]) < hzero) then
+//rho_v = rho_n[2];
+//drdp_v = drdp_n[2];
+//drdh_v1 = 0;
+//drdh_v2 = drdh_n[2];
+      if noEvent(h_n[1] < hl and h_n[2] < hl or h_n[1] > hv and h_n[2] > hv or p_v >= pc - pzero or abs(h_n[2] - h_n[1]) < hzero) then
 // 1-phase or almost uniform properties
         rho_v = (rho_n[1] + rho_n[2]) / 2;
         drdp_v = (drdp_n[1] + drdp_n[2]) / 2;
         drdh_v1 = drdh_n[1] / 2;
         drdh_v2 = drdh_n[2] / 2;
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, h_v));
+        k_flow_sh = k_flow_eco;
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, h_v));
+        Pr_flow_sh = Pr_flow_eco;
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, h_v)), 1.503e-004);
+        mu_flow_sh = mu_flow_eco;
+        w_flow_v_eco = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = w_flow_v_eco "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * rho_v / mu_flow_eco);
+        Re_flow_sh = Re_flow_eco;
       elseif noEvent(h_n[1] >= hl and h_n[1] <= hv and h_n[2] >= hl and h_n[2] <= hv) then
 // 2-phase
         rho_v = AA * log(rho_n[1] / rho_n[2]) / (h_n[2] - h_n[1]);
         drdp_v = (AA1 * log(rho_n[1] / rho_n[2]) + AA * (1 / rho_n[1] * drdp_n[1] - 1 / rho_n[2] * drdp_n[2])) / (h_n[2] - h_n[1]);
         drdh_v1 = (rho_v - rho_n[1]) / (h_n[2] - h_n[1]);
         drdh_v2 = (rho_n[2] - rho_v) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, h_v));
+        k_flow_sh = k_flow_eco;
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, h_v));
+        Pr_flow_sh = Pr_flow_eco;
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, h_v)), 1.503e-004);
+        mu_flow_sh = mu_flow_eco;
+        w_flow_v_eco = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = w_flow_v_eco "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * rho_v / mu_flow_eco);
+        Re_flow_sh = Re_flow_eco;
       elseif noEvent(h_n[1] < hl and h_n[2] >= hl and h_n[2] <= hv) then
 // liquid/2-phase
         rho_v = ((rho_n[1] + rhol) * (hl - h_n[1]) / 2 + AA * log(rhol / rho_n[2])) / (h_n[2] - h_n[1]);
         drdp_v = ((drdp_n[1] + drldp) * (hl - h_n[1]) / 2 + (rho_n[1] + rhol) / 2 * dhldp + AA1 * log(rhol / rho_n[2]) + AA * (1 / rhol * drldp - 1 / rho_n[2] * drdp_n[2])) / (h_n[2] - h_n[1]);
         drdh_v1 = (rho_v - (rho_n[1] + rhol) / 2 + drdh_n[1] * (hl - h_n[1]) / 2) / (h_n[2] - h_n[1]);
         drdh_v2 = (rho_n[2] - rho_v) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);
       elseif noEvent(h_n[1] >= hl and h_n[1] <= hv and h_n[2] > hv) then
 // 2-phase/vapour
         rho_v = (AA * log(rho_n[1] / rhov) + (rhov + rho_n[2]) * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
         drdp_v = (AA1 * log(rho_n[1] / rhov) + AA * (1 / rho_n[1] * drdp_n[1] - 1 / rhov * drvdp) + (drvdp + drdp_n[2]) * (h_n[2] - hv) / 2 - (rhov + rho_n[2]) / 2 * dhvdp) / (h_n[2] - h_n[1]);
         drdh_v1 = (rho_v - rho_n[1]) / (h_n[2] - h_n[1]);
         drdh_v2 = ((rhov + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);
       elseif noEvent(h_n[1] < hl and h_n[2] > hv) then
 // liquid/2-phase/vapour
         rho_v = ((rho_n[1] + rhol) * (hl - h_n[1]) / 2 + AA * log(rhol / rhov) + (rhov + rho_n[2]) * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
         drdp_v = ((drdp_n[1] + drldp) * (hl - h_n[1]) / 2 + (rho_n[1] + rhol) / 2 * dhldp + AA1 * log(rhol / rhov) + AA * (1 / rhol * drldp - 1 / rhov * drvdp) + (drvdp + drdp_n[2]) * (h_n[2] - hv) / 2 - (rhov + rho_n[2]) / 2 * dhvdp) / (h_n[2] - h_n[1]);
         drdh_v1 = (rho_v - (rho_n[1] + rhol) / 2 + drdh_n[1] * (hl - h_n[1]) / 2) / (h_n[2] - h_n[1]);
         drdh_v2 = ((rhov + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);
       elseif noEvent(h_n[1] >= hl and h_n[1] <= hv and h_n[2] < hl) then
 // 2-phase/liquid
         rho_v = (AA * log(rho_n[1] / rhol) + (rhol + rho_n[2]) * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
         drdp_v = (AA1 * log(rho_n[1] / rhol) + AA * (1 / rho_n[1] * drdp_n[1] - 1 / rhol * drldp) + (drldp + drdp_n[2]) * (h_n[2] - hl) / 2 - (rhol + rho_n[2]) / 2 * dhldp) / (h_n[2] - h_n[1]);
         drdh_v1 = (rho_v - rho_n[1]) / (h_n[2] - h_n[1]);
         drdh_v2 = ((rhol + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[2] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[1])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[2] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[1]) / mu_flow_sh);
       elseif noEvent(h_n[1] > hv and h_n[2] < hl) then
 // vapour/2-phase/liquid
         rho_v = ((rho_n[1] + rhov) * (hv - h_n[1]) / 2 + AA * log(rhov / rhol) + (rhol + rho_n[2]) * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
         drdp_v = ((drdp_n[1] + drvdp) * (hv - h_n[1]) / 2 + (rho_n[1] + rhov) / 2 * dhvdp + AA1 * log(rhov / rhol) + AA * (1 / rhov * drvdp - 1 / rhol * drldp) + (drldp + drdp_n[2]) * (h_n[2] - hl) / 2 - (rhol + rho_n[2]) / 2 * dhldp) / (h_n[2] - h_n[1]);
         drdh_v1 = (rho_v - (rho_n[1] + rhov) / 2 + drdh_n[1] * (hv - h_n[1]) / 2) / (h_n[2] - h_n[1]);
         drdh_v2 = ((rhol + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[2] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[1])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[2] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[1]) / mu_flow_sh);
       else
 // vapour/2-phase
         rho_v = ((rho_n[1] + rhov) * (hv - h_n[1]) / 2 + AA * log(rhov / rho_n[2])) / (h_n[2] - h_n[1]);
         drdp_v = ((drdp_n[1] + drvdp) * (hv - h_n[1]) / 2 + (rho_n[1] + rhov) / 2 * dhvdp + AA1 * log(rhov / rho_n[2]) + AA * (1 / rhov * drvdp - 1 / rho_n[2] * drdp_n[2])) / (h_n[2] - h_n[1]);
-        drdh_v1 = (rho_v - (rho_n[1] + rhov) / 2 + drdh_n[1] * (hv - h_n[1]) / 2) / (drdp_n[1] - h_n[1]);
+        drdh_v1 = (rho_v - (rho_n[1] + rhov) / 2 + drdh_n[1] * (hv - h_n[1]) / 2) / (h_n[2] - h_n[1]);
 //ПОДОЗРИТЕЛЬНАЯ Ф-ЛА!!!
         drdh_v2 = (rho_n[2] - rho_v) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[2] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[1])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[2] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[1]) / mu_flow_sh);
       end if;
       for i in 1:2 loop
         stateFlow_n[i] = Medium_F.setState_ph(p_v, h_n[i]);
@@ -4912,7 +4982,8 @@ end if;*/
       AA1 = ((dhvdp - dhldp) * (rhol - rhov) * rhol * rhov - (hv - hl) * (rhov ^ 2 * drldp - rhol ^ 2 * drvdp)) / (rhol - rhov) ^ 2;
 //Уравнения для расчета процессов массообмена
 //Осреднение по конечному объему
-      p_v = (p_n[1] + p_n[2]) / 2;
+      //p_v = (p_n[1] + p_n[2]) / 2;
+      p_v = p_n[1];
       timeZ = time;
       derpZ = (p_v - pre(p_v)) / max(abs(timeZ - pre(timeZ)), 1e-6);
 //Основное уравнение гидравлики
@@ -4929,7 +5000,8 @@ end if;*/
 //dp_fric = w_flow_v_av ^ 2 * Xi_flow * max(rhol, rho_v_av) / 2 / Modelica.Constants.g_n * (1 + x_v_av * 1 * (rhol / rhov - 1));
 //dp_fric = w_flow_v ^ 2 * Xi_flow * max(rhol, rho_v) / 2 / Modelica.Constants.g_n;
       dp_fric = w_flow_v ^ 2 * Xi_flow * rho_v / 2 / Modelica.Constants.g_n;
-      p_n[1] - p_n[2] = dp_fric + dp_piez "Формула 2-1 из книги Рудомино, Ремжин";
+      //p_n[1] - p_n[2] = dp_fric + dp_piez "Формула 2-1 из книги Рудомино, Ремжин";
+      p_n[1] - p_n[2] = dp_fric;
       if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
         H_flow[2] = H_flow[1] - hod * deltaHpipe "Расчет высотных отметок для горизонтального КУ";
       elseif HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalTop then
@@ -5322,10 +5394,8 @@ end if;*/
         Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        //Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  //Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
         //Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        //Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = 10.01e5 - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        //Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         MyHRSG_lite.Separator2 separator21 annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
         connect(SH.flowOut, flowSink.ports[1]) annotation(Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
@@ -5459,7 +5529,7 @@ end if;*/
         parameter Modelica.SIunits.Length delta_sh = 0.002 "Толщина стенки трубки теплообменника";
         parameter Modelica.SIunits.Length s1_sh = 91.09e-3 "Поперечный шаг";
         parameter Modelica.SIunits.Length s2_sh = 79e-3 "Продольный шаг";
-        parameter Integer zahod_sh = 1 "заходность труб теплообменника";
+        parameter Integer zahod_sh = 2 "заходность труб теплообменника";
         parameter Integer z1_sh = 58 "Число труб по ширине газохода";
         parameter Integer z2_sh = 8 "Число труб по ходу газов в теплообменнике";
         ///Оребрение труб пароперегревателя (SH)
@@ -5488,7 +5558,7 @@ end if;*/
         Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
         Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         MyHRSG_lite.liteModels.GF_HE_lite OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_9 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
         Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
         Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -5496,21 +5566,19 @@ end if;*/
         MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         //Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
         //Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, allowFlowReversal = false, dp(fixed = false, start = 0), dp_nominal (displayUnit = "Pa") = 67e5 - system.p_ambient, m_flow(fixed = false, start = 0.01), m_flow_nominal = 40, m_flow_small = 0.015) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constCV2(k = 1)  annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        //Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = 10.01e5 - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        //Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         MyHRSG_lite.Separator2 separator21 annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {50, 86}, {50, 68}, {48, 68}, {48, 62}, {48, 62}}, color = {0, 0, 127}));
-        connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 58}, {60, 58}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 24}, {38, 56}, {42, 56}, {42, 58}}, color = {0, 127, 255}));
+        connect(SH.flowOut, flowSink.ports[1]) annotation(Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
         connect(separator21.steam, SH.flowIn) annotation(Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-      //connect(separator21.steam, CV1.port_a) annotation(Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
+//connect(separator21.steam, CV1.port_a) annotation(Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
         connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
-      //connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
-      //connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
-      //connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
-      //connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
-      //connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+//connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
+//connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
+//connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
+//connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
+//connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
         connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
         connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
         connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
@@ -5788,7 +5856,8 @@ end if;*/
       AA1 = ((dhvdp - dhldp) * (rhol - rhov) * rhol * rhov - (hv - hl) * (rhov ^ 2 * drldp - rhol ^ 2 * drvdp)) / (rhol - rhov) ^ 2;
 //Уравнения для расчета процессов массообмена
 //Осреднение по конечному объему
-      p_v = (p_n[1] + p_n[2]) / 2;
+      //p_v = (p_n[1] + p_n[2]) / 2;
+      p_v =  p_n[1];
       timeZ = time;
       derpZ = (p_v - pre(p_v)) / max(abs(timeZ - pre(timeZ)), 1e-6);
 //Основное уравнение гидравлики
@@ -5830,13 +5899,15 @@ end if;*/
       end if;
       waterIn.m_flow = D_flow_n[1];
       waterOut.m_flow = -D_flow_n[2];
-      waterOut.p = p_n[2];
+      //waterOut.p = p_n[2];
+    
+      p_n[2] = waterOut.p + 7.7e6 * D_flow_n[2] / 40;    
+      
       waterIn.p = p_n[1];
       h_n[1] = inStream(waterIn.h_outflow);
       waterOut.h_outflow = h_n[2];
       waterIn.h_outflow = h_n[1];
     initial equation
-//alfa_flow = 0;
       der(h_v) = 0;
       der(t_m) = 0;
       der(p_v) = 0;
@@ -5844,6 +5915,410 @@ end if;*/
       der(h_n[2]) = 0;
       annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end onlyFlowHE_SH_lite;
+
+    model onlyFlowHE_ECO_lite
+      //**
+      //***Исходные данные для газовой стороны
+      //**
+      parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
+      //**
+      //***Исходные данные по стороне вода/пар
+      //**
+      replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
+      replaceable package Medium_F2 = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
+      constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
+      constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
+      constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
+      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
+      parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
+      parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
+      //**
+      //***Характеристики металла
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+      //**
+      //**
+      //Конструктивные характеристики
+      //**
+      //Параметры
+      parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
+      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
+      //Поток вода/пар
+      parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 * z2 "Внутренняя площадь одного участка ряда труб";
+      parameter Modelica.SIunits.Volume deltaVFlow = Lpipe * Modelica.Constants.pi * Din ^ 2 * z1 * z2 / 4 "Внутренний объем одного участка ряда труб";
+      parameter Modelica.SIunits.Mass deltaMMetal = rho_m * Lpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) * z1 * z2 / 4 "Масса металла участка ряда труб";
+      parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 * z1 * zahod / 4 "Площадь для прохода теплоносителя";
+      parameter Boolean avoidInletEnthalpyDerivative = false "Avoid inlet enthalpy derivative";
+      //**
+      //Начальные значения
+      //**
+      //Поток вода/пар
+      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+      //Металл
+      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      //**
+      //Переменные
+      //**
+      Modelica.SIunits.Length deltaHpipe "Разность высот на участке ряда труб";
+      //Поток вода/пар
+      Medium_F.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
+      Medium_F.ThermodynamicState stateFlow_n[2] "Термодинамическое состояние потока вода/пар на участках трубопровода";
+      //Medium_F2.ThermodynamicState stateFlowTwoPhase[numberOfFlueSections, numberOfTubeSections] "Термодинамическое состояние потока вода/пар на участках трубопровода";
+      Medium_F.Temperature t_flow "Температура потока вода/пар по участкам трубы";
+      Medium_F.AbsolutePressure p_v(start = p_startFlow_v) "Давление потока вода/пар по участкам трубы в конечных объемах";
+      Medium_F.AbsolutePressure p_n[2](start = p_startFlow_n) "Давление потока вода/пар по участкам трубы в узловых точках";
+      Medium_F.SpecificEnthalpy h_v(start = h_startFlow_v) "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
+      Medium_F.SpecificEnthalpy h_n[2](start = h_startFlow_n) "Энтальпия потока вода/пар по участкам трубы в узловых точках";
+      Real der_h_n[2] "Производняа энтальпии потока вода/пар";
+      Medium_F.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
+      Medium_F.Density rho_n[2] "Плотность потока по участкам трубы в конечных объемах";
+      //Medium_F.Density rho_v_av "Осредненная по заходу плотность потока по участкам трубы в конечных объемах";
+      //Medium_F.Density rho_n[2] "Плотность потока по участкам трубы в узловых точках";
+      Modelica.SIunits.DerDensityByEnthalpy drdh_v1 "Производная плотности потока по энтальпии на участках ряда труб";
+      Modelica.SIunits.DerDensityByEnthalpy drdh_v2 "Производная плотности потока по энтальпии на участках ряда труб";
+      Modelica.SIunits.DerDensityByEnthalpy drdh_n[2] "Производная плотности потока по энтальпии на участках ряда труб";
+      Modelica.SIunits.DerDensityByPressure drdp_v "Производная плотности потока по давлению на участках ряда труб";
+      Modelica.SIunits.DerDensityByPressure drdp_n[2] "Производная плотности потока по давлению на участках ряда труб";
+      Modelica.SIunits.DerDensityByEnthalpy drdh_new;
+      Modelica.SIunits.DerDensityByPressure drdp_new;
+      Medium_F.MassFlowRate D_flow_v(start = D_startFlow_v) "Массовый расход потока вода/пар по участкам ряда труб";
+      Medium_F.MassFlowRate D_flow_n[2](start = D_startFlow_n) "Массовый расход потока вода/пар по участкам ряда труб";
+      Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
+      Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow_eco;
+      Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow_sh;
+      Medium_F.ThermalConductivity k_flow_eco "Коэффициент теплопроводности для потока вода/пар";
+      Medium_F.ThermalConductivity k_flow_sh;
+      Medium_F.DynamicViscosity mu_flow_eco "Динамическая вязкость для потока вода/пар";
+      Medium_F.DynamicViscosity mu_flow_sh;
+      Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
+      Real Pr_flow_eco "Число Прандтля для потока вода/пар";
+      Real Pr_flow_sh;
+      Real Re_flow_eco "Число Рейнольдса";
+      Real Re_flow_sh;
+      //Real Re_flow_av "Число Рейнольдса осредненное по заходу";
+      Modelica.SIunits.Temperature t_m(start = t_startM) "Температура металла на участках трубопровода";
+      Real C1 "Показатель в числителе уравнения сплошности";
+      Real C2 "Показатель в знаменателе уравнения сплошности";
+      Real hod "Четность или не четность последнего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)";
+      Modelica.SIunits.Length H_flow[2] "Высотная отметка каждого узла";
+      Modelica.SIunits.Velocity w_flow_v "Скорость потока вода/пар в конечных объемах";
+      Modelica.SIunits.Velocity w_flow_v_eco;
+      Modelica.SIunits.Velocity w_flow_v_sh;
+      //Modelica.SIunits.Velocity w_flow_v_av "Средняя по заходу скорость потока вода/пар в конечных объемах";
+      Real dp_fric "Потеря давления из-за сил трения";
+      Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
+      Medium_F2.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
+      //Real wrhop "Произведение массовой скорости на давление внутри конечного объема для поправочного коэффициента phi";
+      //Real phi "Коэффициент для расчета гидравлического сопротивления двухфазного потока";
+      Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";
+      Real lambda_tr "Коэффициент трения";
+      Real x_v "Степень сухости";
+      //Real x_v_av "Степень сухости осредненная по заходу";
+      Medium_F.Density rhov "Плотность пара на линии насыщения по участкам трубы в конечных объемах";
+      Medium_F.Density rhol "Плотность  на воды линии насыщения по участкам трубы в конечных объемах";
+      //Medium_F.Temperature Ts "Температура на линии насыщения";
+      Medium_F.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
+      Medium_F.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+      Modelica.SIunits.DerDensityByPressure drldp;
+      Modelica.SIunits.DerDensityByPressure drvdp;
+      Modelica.SIunits.DerDensityByEnthalpy dhldp;
+      Modelica.SIunits.DerDensityByEnthalpy dhvdp;
+      Real AA;
+      Real AA1;
+      Real timeZ;
+      Real derpZ;
+      Real A_alfa;
+      Real C_alfa;
+      //**
+      //Интерфейс
+      //**
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    equation
+      if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
+        deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
+      elseif HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalTop then
+        deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
+      elseif HRSG_type == MyHRSG_lite.Choices.HRSG_type.verticalBottom then
+        deltaHpipe = s2 "Разность высотных отметок труб для вертикального КУ";
+      else
+        deltaHpipe = s2 "Разность высотных отметок труб для вертикального КУ";
+      end if;
+    //*****Уравнения для потока вода/пар и металла
+      hod = (-1) ^ (z2 / zahod + (if mod(z2, zahod) == 0 then 0 else 1 - mod(z2, zahod) / zahod)) "Расчет четный или нечетный последний ход повехности нагева";
+    //Уравнения для расчета процессов теплообмена
+    //Осреднение по конечному объему
+      0.5 * deltaVFlow * rho_v * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+      0.5 * deltaVFlow * rho_v * der_h_n[2] = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
+    //Уравнение теплового баланса металла
+      deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - t_flow) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+    //Уравнения для heat
+      heat.Q_flow = Q_flow;
+      heat.T = t_m;
+    //Уравнения состояния
+      t_flow = Medium_F.temperature(Medium_F.setState_ph(p_v, h_v));
+      stateFlow = Medium_F.setState_ph(p_v, h_v);
+      w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+    //alfa_flow = if D_flow_n[1] > 0.011 then 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4 else 0;
+    //alfa_flow = 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4;
+    //alfa_flow = if noEvent(h_n[1] < hl and h_n[2] < hl or h_n[1] > hv and h_n[2] > hv) then 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4 else 20000;
+      A_alfa = min(max((hl - h_n[1]) / max(h_n[2] - h_n[1], 0.01), 0), 1);
+      C_alfa = min(max((h_n[2] - hv) / max(h_n[2] - h_n[1], 0.01), 0), 1);
+      alfa_flow_eco = 0.023 * k_flow_eco / Din * Re_flow_eco ^ 0.8 * Pr_flow_eco ^ 0.4;
+      alfa_flow_sh = 0.023 * k_flow_sh / Din * Re_flow_sh ^ 0.8 * Pr_flow_sh ^ 0.4;
+      alfa_flow = ((-6 / 3 * A_alfa ^ 3) + 6 / 2 * A_alfa ^ 2) * alfa_flow_eco + ((-6 / 3 * C_alfa ^ 3) + 6 / 2 * C_alfa ^ 2) * alfa_flow_sh + (1 - ((-6 / 3 * A_alfa ^ 3) + 6 / 2 * A_alfa ^ 2) - ((-6 / 3 * C_alfa ^ 3) + 6 / 2 * C_alfa ^ 2)) * 20000;
+    //Про две фазы
+    //stateFlowTwoPhase[i, j] = Medium_F2.setState_ph(p_v, h_v[i, j]);
+      x_v = if h_v < hl then 0 elseif h_v > hv then 1 else (h_v - hl) / (hv - hl);
+      D_flow_v = (D_flow_n[2] + D_flow_n[1]) / 2;
+    //Уравнения из ThermoPower.Water.Flow1DFEM2ph
+      D_flow_n[2] = D_flow_n[1] - C1 - C2 "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
+    //C1 = deltaVFlow * ((-1e-7) * der_h_n[1] + (-1e-7) * der_h_n[2]);
+    //C2 = deltaVFlow * 1e-8 * der(p_v);
+      C1 = 0;
+      C2 = 0;
+      drdh_new = if abs(h_n[2] - h_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[1]))) / (h_n[2] - h_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[2] - 0.01))) / 0.01;
+      drdp_new = if abs(p_n[2] - p_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[1], h_v))) / (p_n[2] - p_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[2] - 0.01, h_v))) / 0.01;
+    //if avoidInletEnthalpyDerivative then
+    // first volume properties computed by the outlet properties
+    //rho_v = rho_n[2];
+    //drdp_v = drdp_n[2];
+    //drdh_v1 = 0;
+    //drdh_v2 = drdh_n[2];
+      if noEvent(h_n[1] < hl and h_n[2] < hl or h_n[1] > hv and h_n[2] > hv or p_v >= pc - pzero or abs(h_n[2] - h_n[1]) < hzero) then
+    // 1-phase or almost uniform properties
+        rho_v = (rho_n[1] + rho_n[2]) / 2;
+        drdp_v = (drdp_n[1] + drdp_n[2]) / 2;
+        drdh_v1 = drdh_n[1] / 2;
+        drdh_v2 = drdh_n[2] / 2;
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, h_v));
+        k_flow_sh = k_flow_eco;
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, h_v));
+        Pr_flow_sh = Pr_flow_eco;
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, h_v)), 1.503e-004);
+        mu_flow_sh = mu_flow_eco;
+        w_flow_v_eco = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = w_flow_v_eco "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * rho_v / mu_flow_eco);
+        Re_flow_sh = Re_flow_eco;
+      elseif noEvent(h_n[1] >= hl and h_n[1] <= hv and h_n[2] >= hl and h_n[2] <= hv) then
+    // 2-phase
+        rho_v = AA * log(rho_n[1] / rho_n[2]) / (h_n[2] - h_n[1]);
+        drdp_v = (AA1 * log(rho_n[1] / rho_n[2]) + AA * (1 / rho_n[1] * drdp_n[1] - 1 / rho_n[2] * drdp_n[2])) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - rho_n[1]) / (h_n[2] - h_n[1]);
+        drdh_v2 = (rho_n[2] - rho_v) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, h_v));
+        k_flow_sh = k_flow_eco;
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, h_v));
+        Pr_flow_sh = Pr_flow_eco;
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, h_v)), 1.503e-004);
+        mu_flow_sh = mu_flow_eco;
+        w_flow_v_eco = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = w_flow_v_eco "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * rho_v / mu_flow_eco);
+        Re_flow_sh = Re_flow_eco;
+      elseif noEvent(h_n[1] < hl and h_n[2] >= hl and h_n[2] <= hv) then
+    // liquid/2-phase
+        rho_v = ((rho_n[1] + rhol) * (hl - h_n[1]) / 2 + AA * log(rhol / rho_n[2])) / (h_n[2] - h_n[1]);
+        drdp_v = ((drdp_n[1] + drldp) * (hl - h_n[1]) / 2 + (rho_n[1] + rhol) / 2 * dhldp + AA1 * log(rhol / rho_n[2]) + AA * (1 / rhol * drldp - 1 / rho_n[2] * drdp_n[2])) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - (rho_n[1] + rhol) / 2 + drdh_n[1] * (hl - h_n[1]) / 2) / (h_n[2] - h_n[1]);
+        drdh_v2 = (rho_n[2] - rho_v) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);
+      elseif noEvent(h_n[1] >= hl and h_n[1] <= hv and h_n[2] > hv) then
+    // 2-phase/vapour
+        rho_v = (AA * log(rho_n[1] / rhov) + (rhov + rho_n[2]) * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
+        drdp_v = (AA1 * log(rho_n[1] / rhov) + AA * (1 / rho_n[1] * drdp_n[1] - 1 / rhov * drvdp) + (drvdp + drdp_n[2]) * (h_n[2] - hv) / 2 - (rhov + rho_n[2]) / 2 * dhvdp) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - rho_n[1]) / (h_n[2] - h_n[1]);
+        drdh_v2 = ((rhov + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);
+      elseif noEvent(h_n[1] < hl and h_n[2] > hv) then
+    // liquid/2-phase/vapour
+        rho_v = ((rho_n[1] + rhol) * (hl - h_n[1]) / 2 + AA * log(rhol / rhov) + (rhov + rho_n[2]) * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
+        drdp_v = ((drdp_n[1] + drldp) * (hl - h_n[1]) / 2 + (rho_n[1] + rhol) / 2 * dhldp + AA1 * log(rhol / rhov) + AA * (1 / rhol * drldp - 1 / rhov * drvdp) + (drvdp + drdp_n[2]) * (h_n[2] - hv) / 2 - (rhov + rho_n[2]) / 2 * dhvdp) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - (rho_n[1] + rhol) / 2 + drdh_n[1] * (hl - h_n[1]) / 2) / (h_n[2] - h_n[1]);
+        drdh_v2 = ((rhov + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hv) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[1] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[2]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[1] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[2])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[1] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[2]) / mu_flow_sh);
+      elseif noEvent(h_n[1] >= hl and h_n[1] <= hv and h_n[2] < hl) then
+    // 2-phase/liquid
+        rho_v = (AA * log(rho_n[1] / rhol) + (rhol + rho_n[2]) * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
+        drdp_v = (AA1 * log(rho_n[1] / rhol) + AA * (1 / rho_n[1] * drdp_n[1] - 1 / rhol * drldp) + (drldp + drdp_n[2]) * (h_n[2] - hl) / 2 - (rhol + rho_n[2]) / 2 * dhldp) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - rho_n[1]) / (h_n[2] - h_n[1]);
+        drdh_v2 = ((rhol + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[2] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[1])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[2] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[1]) / mu_flow_sh);
+      elseif noEvent(h_n[1] > hv and h_n[2] < hl) then
+    // vapour/2-phase/liquid
+        rho_v = ((rho_n[1] + rhov) * (hv - h_n[1]) / 2 + AA * log(rhov / rhol) + (rhol + rho_n[2]) * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
+        drdp_v = ((drdp_n[1] + drvdp) * (hv - h_n[1]) / 2 + (rho_n[1] + rhov) / 2 * dhvdp + AA1 * log(rhov / rhol) + AA * (1 / rhov * drvdp - 1 / rhol * drldp) + (drldp + drdp_n[2]) * (h_n[2] - hl) / 2 - (rhol + rho_n[2]) / 2 * dhldp) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - (rho_n[1] + rhov) / 2 + drdh_n[1] * (hv - h_n[1]) / 2) / (h_n[2] - h_n[1]);
+        drdh_v2 = ((rhol + rho_n[2]) / 2 - rho_v + drdh_n[2] * (h_n[2] - hl) / 2) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[2] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[1])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[2] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[1]) / mu_flow_sh);
+      else
+    // vapour/2-phase
+        rho_v = ((rho_n[1] + rhov) * (hv - h_n[1]) / 2 + AA * log(rhov / rho_n[2])) / (h_n[2] - h_n[1]);
+        drdp_v = ((drdp_n[1] + drvdp) * (hv - h_n[1]) / 2 + (rho_n[1] + rhov) / 2 * dhvdp + AA1 * log(rhov / rho_n[2]) + AA * (1 / rhov * drvdp - 1 / rho_n[2] * drdp_n[2])) / (h_n[2] - h_n[1]);
+        drdh_v1 = (rho_v - (rho_n[1] + rhov) / 2 + drdh_n[1] * (hv - h_n[1]) / 2) / (h_n[2] - h_n[1]);
+    //ПОДОЗРИТЕЛЬНАЯ Ф-ЛА!!!
+        drdh_v2 = (rho_n[2] - rho_v) / (h_n[2] - h_n[1]);
+        k_flow_eco = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        k_flow_sh = Medium_F.thermalConductivity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        Pr_flow_eco = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl)));
+        Pr_flow_sh = Medium_F.prandtlNumber(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1])));
+        mu_flow_eco = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (h_n[2] + hl))), 1.503e-004);
+        mu_flow_sh = max(Medium_F.dynamicViscosity(Medium_F.setState_ph(p_v, 0.5 * (hv + h_n[1]))), 1.503e-004);
+        w_flow_v_eco = D_flow_v / (0.5 * (rho_n[2] + rhol)) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        w_flow_v_sh = D_flow_v / (0.5 * (rhov + rho_n[1])) / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+        Re_flow_eco = abs(w_flow_v_eco * Din * 0.5 * (rho_n[2] + rhol) / mu_flow_eco);
+        Re_flow_sh = abs(w_flow_v_sh * Din * 0.5 * (rhov + rho_n[1]) / mu_flow_sh);
+      end if;
+      for i in 1:2 loop
+        stateFlow_n[i] = Medium_F.setState_ph(p_v, h_n[i]);
+        drdp_n[i] = Medium_F.density_derp_h(stateFlow_n[i]);
+        drdh_n[i] = Medium_F.density_derh_p(stateFlow_n[i]);
+        rho_n[i] = Medium_F.density(stateFlow_n[i]);
+        
+      end for;
+      der_h_n[1] = der(h_n[1]);
+      der_h_n[2] = 0;
+      sat_v = Medium_F2.setSat_p(p_v);
+    //Ts = sat_v.Tsat;
+      rhol = Medium_F2.bubbleDensity(sat_v);
+      rhov = Medium_F2.dewDensity(sat_v);
+      hl = Medium_F2.bubbleEnthalpy(sat_v);
+      hv = Medium_F2.dewEnthalpy(sat_v);
+      drldp = Medium_F2.dBubbleDensity_dPressure(sat_v);
+      drvdp = Medium_F2.dDewDensity_dPressure(sat_v);
+      dhldp = Medium_F2.dBubbleEnthalpy_dPressure(sat_v);
+      dhvdp = Medium_F2.dDewEnthalpy_dPressure(sat_v);
+      AA = (hv - hl) / (1 / rhov - 1 / rhol);
+      AA1 = ((dhvdp - dhldp) * (rhol - rhov) * rhol * rhov - (hv - hl) * (rhov ^ 2 * drldp - rhol ^ 2 * drvdp)) / (rhol - rhov) ^ 2;
+    //Уравнения для расчета процессов массообмена
+    //Осреднение по конечному объему
+      //p_v = (p_n[1] + p_n[2]) / 2;
+      p_v = p_n[1];
+      timeZ = time;
+      derpZ = (p_v - pre(p_v)) / max(abs(timeZ - pre(timeZ)), 1e-6);
+    //Основное уравнение гидравлики
+    //w_flow_v_av = sum(w_flow_v[i, j] for i in 1:numberOfFlueSections, j in 1:numberOfTubeSections) / numberOfFlueSections / numberOfTubeSections;
+    //rho_v_av = sum(rho_v[i, j] for i in 1:numberOfFlueSections, j in 1:numberOfTubeSections) / numberOfFlueSections / numberOfTubeSections;
+    //Re_flow_av = sum(Re_flow[i, j] for i in 1:numberOfFlueSections, j in 1:numberOfTubeSections) / numberOfFlueSections / numberOfTubeSections;
+    //x_v_av = sum(x_v[i, j] for i in 1:numberOfFlueSections, j in 1:numberOfTubeSections) / numberOfFlueSections / numberOfTubeSections;
+    //wrhop = w_flow_v_av * rho_v_av * p_v * 10 ^ (-5) "Произведение wrhop для расчета phi [кг/(м2*с)*кгс/см2]";
+    //Xi_flow = lambda_tr(Din, ke, Re_flow_av) * Lpipe * numberOfFlueSections / zahod / Din;
+    //phi = phi_heatedPipe(wrhop, p_v / 100000, x_v_av) "Расчет коэффициента phi";
+    //dp_fric = homotopy(if x_v_av < 1 then w_flow_v_av ^ 2 * Xi_flow * max(rhol, rho_v_av) / 2 / Modelica.Constants.g_n * (1 + x_v_av * phi * (rhol / rhov - 1)) else w_flow_v_av ^ 2 * Xi_flow * rho_v_av / 2 / Modelica.Constants.g_n, 100000 * waterIn.m_flow / setD_flow) "Потеря давления от трения";
+      lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
+      Xi_flow = lambda_tr * Lpipe * z2 / zahod / Din;
+    //dp_fric = w_flow_v_av ^ 2 * Xi_flow * max(rhol, rho_v_av) / 2 / Modelica.Constants.g_n * (1 + x_v_av * 1 * (rhol / rhov - 1));
+    //dp_fric = w_flow_v ^ 2 * Xi_flow * max(rhol, rho_v) / 2 / Modelica.Constants.g_n;
+      dp_fric = w_flow_v ^ 2 * Xi_flow * rho_v / 2 / Modelica.Constants.g_n;
+      //p_n[1] - p_n[2] = dp_fric + dp_piez "Формула 2-1 из книги Рудомино, Ремжин";
+      p_n[1] - p_n[2] = dp_fric;
+      if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
+        H_flow[2] = H_flow[1] - hod * deltaHpipe "Расчет высотных отметок для горизонтального КУ";
+      elseif HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalTop then
+        H_flow[2] = H_flow[1] + hod * deltaHpipe "Расчет высотных отметок для горизонтального КУ";
+      elseif HRSG_type == MyHRSG_lite.Choices.HRSG_type.verticalBottom then
+        H_flow[2] = H_flow[1] + deltaHpipe * (z2 - 1) "Расчет высотных отметок для вертикального КУ";
+      else
+        H_flow[2] = H_flow[1] - deltaHpipe * (z2 - 1) "Расчет высотных отметок для вертикального КУ";
+      end if;
+      dp_piez = (rho_n[2] * H_flow[2] - rho_n[1] * H_flow[1]) * Modelica.Constants.g_n "Расчет перепада давления из-за изменения пьезометрической высоты";
+    //Граничные условия
+    //Граничные условия для высотной отметки входного коллектора
+      if HRSG_type == MyHRSG_lite.Choices.HRSG_type.verticalBottom then
+        H_flow[1] = 0 "Задание высотной отметки входного коллектора";
+      elseif HRSG_type == Choices.HRSG_type.horizontalBottom then
+        H_flow[1] = 0 "Задание высотной отметки входного коллектора";
+      elseif HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalTop then
+        H_flow[1] = Lpipe "Задание высотной отметки входного коллектора";
+      else
+        H_flow[1] = deltaHpipe * (numberOfFlueSections - 1) "Задание высотной отметки входного коллектора";
+      end if;
+      waterIn.m_flow = D_flow_n[1];
+      waterOut.m_flow = -D_flow_n[2];
+      waterOut.p = p_n[2];
+      waterIn.p = p_n[1];
+      h_n[1] = inStream(waterIn.h_outflow);
+      waterOut.h_outflow = h_n[2];
+      waterIn.h_outflow = h_n[1];
+    initial equation
+      der(h_v) = 0;
+      der(t_m) = 0;
+      //der(p_v) = 0;
+    
+      der(h_n[1]) = 0;
+      //der(h_n[2]) = 0;  
+      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    end onlyFlowHE_ECO_lite;
   end liteModels;
-  annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+  annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), uses(Modelica(version = "3.2.2"), ThermoPower(version = "3.1")));
 end MyHRSG_lite;
