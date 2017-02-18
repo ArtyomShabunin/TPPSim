@@ -2,7 +2,8 @@ package MyHRSG_lite
   model ExhaustGas
     import Modelica.Media.IdealGases.Common;
     extends Modelica.Media.IdealGases.Common.MixtureGasNasa(mediumName = "ExhaustGas", data = {Common.SingleGasesData.O2, Common.SingleGasesData.CO2, Common.SingleGasesData.H2O, Common.SingleGasesData.N2, Common.SingleGasesData.Ar, Common.SingleGasesData.SO2}, fluidConstants = {Common.FluidData.O2, Common.FluidData.CO2, Common.FluidData.H2O, Common.FluidData.N2, Common.FluidData.Ar, Common.FluidData.SO2}, substanceNames = {"Oxygen", "Carbondioxide", "Water", "Nitrogen", "Argon", "Sulfurdioxide"}, reference_X = {0.1383, 0.032, 0.0688, 1 - 0.1383 - 0.032 - 0.0688 - 0.0000000001 - 0.0000000001, 0.0000000001, 0.0000000001});
-    annotation(Documentation(info = "<html>
+    annotation(
+      Documentation(info = "<html>
 </html>"));
   end ExhaustGas;
 
@@ -174,7 +175,9 @@ package MyHRSG_lite
       phi_down := 1;
     end if;
     phi := phi_down + (wrhop - wrhop_down) * (phi_up - phi_down) / (wrhop_up - wrhop_down) "Расчет phi для давления больше 180 кгс/см2 (итоговое phi)";
-    annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+    annotation(
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+      Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
   end phi_heatedPipe;
 
   function phi_notHeatedPipe "Функция для расчета коэффициента phi к формуле расчета потерь трения при течении двухфазного потока в необогреваемой трубе (оцифровка номограммы 5б из гидравлического расчета котельных агрегатов)"
@@ -345,7 +348,9 @@ package MyHRSG_lite
       phi_down := 1;
     end if;
     phi := phi_down + (wrhop - wrhop_down) * (phi_up - phi_down) / (wrhop_up - wrhop_down) "Расчет phi для давления больше 180 кгс/см2 (итоговое phi)";
-    annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+    annotation(
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+      Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
   end phi_notHeatedPipe;
 
   function lambda_tr "Функция для расчета коэффициента трения (лямбда)"
@@ -420,7 +425,9 @@ package MyHRSG_lite
     else
       lambda_tr := lambda_polinom(dn, ke, Re);
     end if;
-    annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
+    annotation(
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+      Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})));
   end lambda_tr;
 
   model onlyGasHE "Используется аналогия с SiemensPower.Components.Junctions.SplitterMixer"
@@ -436,30 +443,49 @@ package MyHRSG_lite
     //***Исходные данные для газовой стороны
     //**
     replaceable package Medium_G = MyHRSG_lite.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-    parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(Dialog(group = "Параметры стороны газов"));
-    parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(Dialog(group = "Параметры стороны газов"));
-    parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
-    parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
     parameter Medium_G.MassFraction setX_gas[Medium_G.nXi] = Medium_G.reference_X;
-    parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+    parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
     //**
     //Конструктивные характеристики
     //**
     //Параметры
-    parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = numberOfFlueSections "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 79 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = numberOfFlueSections "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 79 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     //Поток газов
     parameter Modelica.SIunits.Volume deltaVGas = Lpipe * (s1 * s2 * z1 - Modelica.Constants.pi * Dout ^ 2 / 4) / numberOfTubeSections "Объем одного участка газового тракта";
     parameter Modelica.SIunits.Area deltaSGas = Lpipe * Modelica.Constants.pi * Dout * z1 / numberOfTubeSections "Наружная площадь одного участка ряда труб";
@@ -467,18 +493,29 @@ package MyHRSG_lite
     //**
     //Характеристики оребрения
     //
-    parameter Modelica.SIunits.Length delta_fin = 0.0009 "Средняя толщина ребра, м" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Modelica.SIunits.Length hfin = 0.014 "Высота ребра, м" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Modelica.SIunits.Length sfin = 0.004 "Шаг ребер, м" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Real psi_fin = 1 / (2 * Dout * sfin) * (Dfin ^ 2 - Dout ^ 2 + 2 * Dfin * delta_fin) + 1 - delta_fin / sfin "Коэффициент оребрения, равный отношению полной поверхности пучка к поверхности несущих труб на оребренном участке" annotation(Dialog(group = "Характеристики оребрения"));
+    parameter Modelica.SIunits.Length delta_fin = 0.0009 "Средняя толщина ребра, м" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Modelica.SIunits.Length hfin = 0.014 "Высота ребра, м" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Modelica.SIunits.Length sfin = 0.004 "Шаг ребер, м" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Real psi_fin = 1 / (2 * Dout * sfin) * (Dfin ^ 2 - Dout ^ 2 + 2 * Dfin * delta_fin) + 1 - delta_fin / sfin "Коэффициент оребрения, равный отношению полной поверхности пучка к поверхности несущих труб на оребренном участке" annotation(
+      Dialog(group = "Характеристики оребрения"));
     //формула 7.22а нормативного метода
-    parameter Real sigma1 = s1 / Dout "Относительный поперечный шаг" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Real sigma2 = s2 / Dout "Относительный продольный шаг" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Real sigma3 = sqrt(0.25 * sigma1 ^ 2 + sigma2) "Средний относительный диагональный шаг труб" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Real xfin = sigma1 / sigma2 - 1.26 / psi_fin - 2 "Параметр 'x' для шахматного пучка" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Real phi_fin = Modelica.Math.tanh(xfin) "Некий параметр 'фи'" annotation(Dialog(group = "Характеристики оребрения"));
-    parameter Real n_fin = 0.7 + 0.08 * phi_fin + 0.005 * psi_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(Dialog(group = "Характеристики оребрения"));
+    parameter Real sigma1 = s1 / Dout "Относительный поперечный шаг" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Real sigma2 = s2 / Dout "Относительный продольный шаг" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Real sigma3 = sqrt(0.25 * sigma1 ^ 2 + sigma2) "Средний относительный диагональный шаг труб" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Real xfin = sigma1 / sigma2 - 1.26 / psi_fin - 2 "Параметр 'x' для шахматного пучка" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Real phi_fin = Modelica.Math.tanh(xfin) "Некий параметр 'фи'" annotation(
+      Dialog(group = "Характеристики оребрения"));
+    parameter Real n_fin = 0.7 + 0.08 * phi_fin + 0.005 * psi_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(
+      Dialog(group = "Характеристики оребрения"));
     parameter Real Cs = (1.36 - phi_fin) * (11 / (psi_fin + 8) - 0.14) "Коэффициент, определяемый в зависимости от от относительного поперечного и продольного шага труб в пучке, типа пучка и коэффициента оребрения";
     parameter Real Cz = if z2 < 8 and sigma1 / sigma2 < 2 then 3.15 * z2 ^ 0.05 - 2.5 elseif z2 < 8 and sigma1 / sigma2 >= 2 then 3.5 * z2 ^ 0.03 - 2.72 else 1 "Поправка на число рядов труб по ходу газов";
     parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + 2 * Modelica.Constants.pi * (Dfin ^ 2 - Dout ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin * (Lpipe / sfin)) * z1 "Площадь оребренной поверхности";
@@ -487,9 +524,12 @@ package MyHRSG_lite
     //**
     //Поток газов
     parameter Medium_G.MassFlowRate deltaDGasStart = setD_gas / numberOfTubeSections "Расход газов через один участок разбиения";
-    parameter Medium_G.SpecificEnthalpy h_startTubeGas[numberOfFlueSections + 1] = linspace(Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas), numberOfFlueSections + 1) "Начальный вектор энальпии потока газов вдоль газохода" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_G.SpecificEnthalpy h_startGas[numberOfFlueSections + 1, numberOfTubeSections] = array(array(h_startTubeGas[i] for j in 1:numberOfTubeSections) for i in 1:numberOfFlueSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_G.AbsolutePressure p_startGas[numberOfFlueSections + 1, numberOfTubeSections] = fill(setp_gas, numberOfFlueSections + 1, numberOfTubeSections) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_G.SpecificEnthalpy h_startTubeGas[numberOfFlueSections + 1] = linspace(Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas), numberOfFlueSections + 1) "Начальный вектор энальпии потока газов вдоль газохода" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_G.SpecificEnthalpy h_startGas[numberOfFlueSections + 1, numberOfTubeSections] = array(array(h_startTubeGas[i] for j in 1:numberOfTubeSections) for i in 1:numberOfFlueSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_G.AbsolutePressure p_startGas[numberOfFlueSections + 1, numberOfTubeSections] = fill(setp_gas, numberOfFlueSections + 1, numberOfTubeSections) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -507,9 +547,12 @@ package MyHRSG_lite
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+      Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+      Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
   equation
 //*****Уравнения для потока газов
     for j in 1:numberOfTubeSections loop
@@ -544,7 +587,9 @@ package MyHRSG_lite
     gasIn.m_flow - sum(deltaDGas[1, j] for j in 1:numberOfTubeSections) = 0;
     gasOut.m_flow + sum(deltaDGas[numberOfFlueSections + 1, j] for j in 1:numberOfTubeSections) = 0;
     gasOut.p = gasIn.p;
-    annotation(Diagram(graphics), Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
+    annotation(
+      Diagram(graphics),
+      Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
   end onlyGasHE;
 
   model onlyFlowHEBoil
@@ -597,45 +642,66 @@ package MyHRSG_lite
     //**
     //***Исходные данные для газовой стороны
     //**
-    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
     //**
     //***Исходные данные по стороне вода/пар
     //**
     replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
     replaceable package Medium_F2 = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberOfTubeNodes = numberOfTubeSectionsForMT + 1 "Число узлов в одной трубе";
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -651,14 +717,21 @@ package MyHRSG_lite
     //parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = array(array((h_startFlow_n[i, j + 1] + h_startFlow_n[i, j]) / 2 for j in 1:numberOfTubeSections) for i in 1:numberOfFlueSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
     //parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = MyHRSG_lite.razbivka_n(setp_flow_in, setp_flow_out,zahod, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
     //parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = MyHRSG_lite.razbivka_v(setp_flow_in, setp_flow_out,zahod, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -705,9 +778,12 @@ package MyHRSG_lite
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
     if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
       deltaHpipe = Lpipe / numberOfTubeSections * numberPMCalcSections "Разность высотных отметок элементов труб для горизонтального КУ";
@@ -853,7 +929,11 @@ package MyHRSG_lite
     end if;
     waterOut.h_outflow = sum(array(positiveMax(D_flow_n[i, numberOfTubeSectionsForMT + 1]) * h_flow_n[i, numberOfTubeSections + 1] for i in numberFirstTubeInLastZahod:numberOfFlueSections)) / sum(array(positiveMax(D_flow_n[i, numberOfTubeSectionsForMT + 1]) for i in numberFirstTubeInLastZahod:numberOfFlueSections));
     waterIn.h_outflow = sum(array(positiveMax(D_flow_n[i, 1]) * h_flow_n[i, 1] for i in 1:zahod)) / sum(array(positiveMax(D_flow_n[i, 1]) for i in 1:zahod));
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoil;
 
   model GF_HE
@@ -884,9 +964,12 @@ package MyHRSG_lite
     //**
     //***Исходные данные по разбиению
     //**
-    parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     //**
     //***конструктивные характеристики
     //**
@@ -906,47 +989,74 @@ package MyHRSG_lite
     ////
     //////
     ////
-    Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    onlyGasHE gasHE(redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, delta_fin = delta_fin, hfin = hfin, sfin = sfin) annotation(Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-    replaceable onlyFlowHEBoil flowHE(setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small) annotation(Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
+    Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+      Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+      Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    onlyGasHE gasHE(redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, delta_fin = delta_fin, hfin = hfin, sfin = sfin) annotation(
+      Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+    replaceable onlyFlowHEBoil flowHE(setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small) annotation(
+      Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
   equation
-    connect(gasHE.gasOut, gasOut) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-    connect(gasIn, gasHE.gasIn) annotation(Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
+    connect(gasHE.gasOut, gasOut) annotation(
+      Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+    connect(gasIn, gasHE.gasIn) annotation(
+      Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
     for j in 1:numberOfTubeSections loop
       for i in 1:numberOfFlueSections loop
         connect(flowHE.heat[i, j], gasHE.heat[i, j]);
       end for;
     end for;
-    connect(flowHE.waterOut, flowOut) annotation(Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
-    connect(flowIn, flowHE.waterIn) annotation(Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+    connect(flowHE.waterOut, flowOut) annotation(
+      Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
+    connect(flowIn, flowHE.waterIn) annotation(
+      Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      version = "",
+      uses);
   end GF_HE;
 
   model pipe
     //***Исходные данные
     replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-    parameter Modelica.SIunits.MassFlowRate setD = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp = 10e5 "Начальное давление потока вода/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp = 10e5 "Начальное давление потока вода/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //Конструктивные характеристики
     //**
     //Параметры
-    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Hpipe_in = 0 "Высотная отметка входа трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Hpipe_out = 18.4 "Высотная отметка выхода трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Hpipe_in = 0 "Высотная отметка входа трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Hpipe_out = 18.4 "Высотная отметка выхода трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din / numberOfTubeSections "Внутренняя площадь одного участка трубы";
     parameter Modelica.SIunits.Volume deltaVFlow = Lpipe * Modelica.Constants.pi * Din ^ 2 / 4 / numberOfTubeSections "Внутренний объем одного участка трубы";
     parameter Modelica.SIunits.Mass deltaMMetal = rho_m * Lpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 / numberOfTubeSections "Масса металла участка трубы";
@@ -957,23 +1067,30 @@ package MyHRSG_lite
     //**
     //Поток вода/пар
     //parameter Medium_F.SpecificEnthalpy h_start_v[numberOfTubeSections] = fill(Medium_F.specificEnthalpy_pT(setp, setT), numberOfTubeSections) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_start_v[numberOfTubeSections] = fill(Medium_F.bubbleEnthalpy(Medium_F.setSat_p(setp)), numberOfTubeSections) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_start_v[numberOfTubeSections] = fill(Medium_F.bubbleEnthalpy(Medium_F.setSat_p(setp)), numberOfTubeSections) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(
+      Dialog(tab = "Инициализация"));
     /*!!!!!!!!!!!!
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        !!!!!!!!!!!!
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        !!!!!!!!!!!!
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ПОМЕНЯЙ СТРОКИ ВЫШЕ ДЛЯ ЭКО И ПЕ*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                !!!!!!!!!!!!
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                !!!!!!!!!!!!
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ПОМЕНЯЙ СТРОКИ ВЫШЕ ДЛЯ ЭКО И ПЕ*/
     //parameter Medium_F.SpecificEnthalpy h_start_n[numberOfTubeSections + 1] = fill(Medium_F.specificEnthalpy_pT(setp, setT), numberOfTubeSections + 1) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_start_n[numberOfTubeSections + 1] = fill(Medium_F.bubbleEnthalpy(Medium_F.setSat_p(setp)), numberOfTubeSections + 1) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_start_n[numberOfTubeSections + 1] = fill(Medium_F.bubbleEnthalpy(Medium_F.setSat_p(setp)), numberOfTubeSections + 1) "Начальный вектор энальпии потока вода/пар вдоль трубы" annotation(
+      Dialog(tab = "Инициализация"));
     /*!!!!!!!!!!!!
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        !!!!!!!!!!!!
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        !!!!!!!!!!!!
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ПОМЕНЯЙ СТРОКИ ВЫШЕ ДЛЯ ЭКО И ПЕ*/
-    parameter Medium_F.AbsolutePressure p_start_v[numberOfTubeSections] = fill(setp, numberOfTubeSections) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_start_n[numberOfTubeSections + 1] = fill(setp, numberOfTubeSections + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_start_v[numberOfTubeSections] = fill(setD, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_start_n[numberOfTubeSections + 1] = fill(setD, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                !!!!!!!!!!!!
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                !!!!!!!!!!!!
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ПОМЕНЯЙ СТРОКИ ВЫШЕ ДЛЯ ЭКО И ПЕ*/
+    parameter Medium_F.AbsolutePressure p_start_v[numberOfTubeSections] = fill(setp, numberOfTubeSections) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_start_n[numberOfTubeSections + 1] = fill(setp, numberOfTubeSections + 1) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_start_v[numberOfTubeSections] = fill(setD, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_start_n[numberOfTubeSections + 1] = fill(setD, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfTubeSections] = fill(setT, numberOfTubeSections) "Начальный вектор температур металла" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfTubeSections] = fill(setT, numberOfTubeSections) "Начальный вектор температур металла" annotation(
+      Dialog(tab = "Инициализация"));
     parameter Modelica.SIunits.Time Tstab "Интервал времени в начале расчета в течение которого все производные равны нулю";
     //**
     //Переменные
@@ -1015,8 +1132,10 @@ package MyHRSG_lite
     //**
     //Интерфейс
     //**
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {112, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0), iconTransformation(origin = {130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-112, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {112, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0), iconTransformation(origin = {130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {-112, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0), iconTransformation(origin = {-130, 0}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
   equation
 //Рачет скорости потока в узловых точках
     for i in 1:numberOfTubeSections + 1 loop
@@ -1101,7 +1220,10 @@ package MyHRSG_lite
       der(h_flow_v[i]) = 0;
       der(t_m[i]) = 0;
     end for;
-    annotation(defaultComponentName = "pipe", Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 40}, {100, -40}}, fillPattern = FillPattern.Solid, fillColor = {95, 95, 95}, pattern = LinePattern.None), Rectangle(extent = {{-100, 44}, {100, -44}}, lineColor = {0, 0, 0}, fillPattern = FillPattern.HorizontalCylinder, fillColor = {0, 127, 255})}), Documentation(info = "<html>
+    annotation(
+      defaultComponentName = "pipe",
+      Icon(coordinateSystem(preserveAspectRatio = false, extent = {{-100, -100}, {100, 100}}), graphics = {Rectangle(extent = {{-100, 40}, {100, -40}}, fillPattern = FillPattern.Solid, fillColor = {95, 95, 95}, pattern = LinePattern.None), Rectangle(extent = {{-100, 44}, {100, -44}}, lineColor = {0, 0, 0}, fillPattern = FillPattern.HorizontalCylinder, fillColor = {0, 127, 255})}),
+      Documentation(info = "<html>
 
 </html>"));
   end pipe;
@@ -1168,8 +1290,10 @@ package MyHRSG_lite
     parameter Modelica.SIunits.Length delta "Толщина стенки барабана";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
     //**
     //Начальные значения
     //**
@@ -1225,12 +1349,18 @@ package MyHRSG_lite
     Boolean Hysteresis;
     parameter Modelica.SIunits.Time Tstab "Интервал времени в начале расчета в течение которого все производные равны нулю";
     //***Интерфейс
-    Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {70, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b downStr(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a upStr(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {70, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(Placement(visible = true, transformation(origin = {112, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput FW_feedback annotation(Placement(visible = true, transformation(origin = {112, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {70, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b downStr(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {-62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a upStr(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {70, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
+      Placement(visible = true, transformation(origin = {112, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput FW_feedback annotation(
+      Placement(visible = true, transformation(origin = {112, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
 //Временные ур-я
 //Hw = 0.5;
@@ -1314,15 +1444,23 @@ end if;*/
     upStr.p = pw;
 //upStr.p = ps_start; //!!!!!!!!ЗАМЕНА
     upStr.m_flow = D_upStr;
-    annotation(Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), uses(Modelica(version = "3.2.1")));
+    annotation(
+      Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+      uses(Modelica(version = "3.2.1")));
   end simpleDrum;
 
   model HE_Icon
-    annotation(Icon(graphics = {Rectangle(lineColor = {255, 85, 0}, fillColor = {255, 255, 0}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, borderPattern = BorderPattern.Raised, extent = {{-52, 100}, {52, -100}}), Rectangle(origin = {-40, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {0, -89}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-52, -11}, {52, 5}}), Rectangle(lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {-20, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {20, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {40, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {0, 95}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-52, -11}, {52, 5}}), Text(origin = {1, 3}, extent = {{-35, 21}, {35, -21}}, textString = "%name")}, coordinateSystem(initialScale = 0.1)), Diagram(coordinateSystem(extent = {{-52, -130}, {52, 130}})), version = "", uses);
+    annotation(
+      Icon(graphics = {Rectangle(lineColor = {255, 85, 0}, fillColor = {255, 255, 0}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, borderPattern = BorderPattern.Raised, extent = {{-52, 100}, {52, -100}}), Rectangle(origin = {-40, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {0, -89}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-52, -11}, {52, 5}}), Rectangle(lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {-20, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {20, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {40, 0}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.VerticalCylinder, extent = {{-5, 84}, {5, -84}}), Rectangle(origin = {0, 95}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-52, -11}, {52, 5}}), Text(origin = {1, 3}, extent = {{-35, 21}, {35, -21}}, textString = "%name")}, coordinateSystem(initialScale = 0.1)),
+      Diagram(coordinateSystem(extent = {{-52, -130}, {52, 130}})),
+      version = "",
+      uses);
   end HE_Icon;
 
   model Drum_Icon
-    annotation(Diagram(coordinateSystem(initialScale = 0.1)), Icon(graphics = {Ellipse(origin = {-92, 11}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 69}, {32, -91}}, endAngle = 360), Ellipse(origin = {68, 11}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 69}, {32, -91}}, endAngle = 360), Rectangle(fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-80, 80}, {80, -80}}), Ellipse(origin = {-77, 0}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-17, 74}, {13, -74}}, endAngle = 360), Ellipse(origin = {81, 0}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-17, 74}, {13, -74}}, endAngle = 360), Rectangle(lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-80, 74}, {80, -74}}), Polygon(origin = {0, -33}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-80, -41}, {-84, -37}, {-88, -27}, {-90, -17}, {-92, -7}, {-94, 15}, {-94, 35}, {-88, 37}, {-78, 39}, {-70, 39}, {-62, 37}, {-54, 33}, {-44, 29}, {-34, 27}, {-22, 29}, {-14, 33}, {-4, 37}, {10, 37}, {20, 33}, {34, 29}, {42, 29}, {56, 31}, {64, 35}, {70, 39}, {76, 41}, {84, 41}, {92, 39}, {94, 37}, {94, 27}, {94, 13}, {92, -5}, {90, -17}, {88, -27}, {86, -33}, {84, -37}, {80, -41}, {-80, -41}}), Ellipse(origin = {-77, -27}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {-67, -5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-67, -5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-3, -13}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {19, -53}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {-69, -61}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-41, -23}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {45, -29}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {1, -43}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-33, -55}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {63, -45}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {79, -13}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {45, -65}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
+    annotation(
+      Diagram(coordinateSystem(initialScale = 0.1)),
+      Icon(graphics = {Ellipse(origin = {-92, 11}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 69}, {32, -91}}, endAngle = 360), Ellipse(origin = {68, 11}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 69}, {32, -91}}, endAngle = 360), Rectangle(fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-80, 80}, {80, -80}}), Ellipse(origin = {-77, 0}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-17, 74}, {13, -74}}, endAngle = 360), Ellipse(origin = {81, 0}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-17, 74}, {13, -74}}, endAngle = 360), Rectangle(lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-80, 74}, {80, -74}}), Polygon(origin = {0, -33}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-80, -41}, {-84, -37}, {-88, -27}, {-90, -17}, {-92, -7}, {-94, 15}, {-94, 35}, {-88, 37}, {-78, 39}, {-70, 39}, {-62, 37}, {-54, 33}, {-44, 29}, {-34, 27}, {-22, 29}, {-14, 33}, {-4, 37}, {10, 37}, {20, 33}, {34, 29}, {42, 29}, {56, 31}, {64, 35}, {70, 39}, {76, 41}, {84, 41}, {92, 39}, {94, 37}, {94, 27}, {94, 13}, {92, -5}, {90, -17}, {88, -27}, {86, -33}, {84, -37}, {80, -41}, {-80, -41}}), Ellipse(origin = {-77, -27}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {-67, -5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-67, -5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-3, -13}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {19, -53}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {-69, -61}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-41, -23}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {45, -29}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {1, -43}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {-33, -55}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {63, -45}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {5, -5}}, endAngle = 360), Ellipse(origin = {79, -13}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {45, -65}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
   end Drum_Icon;
 
   package Choices
@@ -1330,7 +1468,8 @@ end if;*/
   end Choices;
 
   model Separator_Icon
-    annotation(Icon(graphics = {Ellipse(origin = {0, 95}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, 31}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 63}, {40, -61}}), Ellipse(origin = {0, -29}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, -64}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-10, 34}, {10, -34}}), Ellipse(origin = {1, -99}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-11, -1}, {9, 3}}, endAngle = 360), Ellipse(origin = {-3, 91}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-35, 7}, {41, -5}}, endAngle = 360), Ellipse(origin = {0, -28}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 4}, {38, -4}}, endAngle = 360), Rectangle(origin = {0, 32}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 60}, {38, -60}}), Rectangle(origin = {0, -64}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 34}, {8, -32}}), Ellipse(origin = {0, -97}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 3}, {8, -1}}, endAngle = 360), Ellipse(origin = {-60, 70}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-1, 6}, {1, -4}}, endAngle = 360), Rectangle(extent = {{-68, 74}, {-68, 74}}), Polygon(origin = {-49, 68}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{11, 2}, {-11, 8}, {-11, -2}, {11, -8}, {11, 2}}), Ellipse(extent = {{-60, 76}, {-60, 76}}, endAngle = 360), Ellipse(origin = {-59.2, 70.8}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-1, 4.2}, {1, -4.2}}, endAngle = 360), Polygon(origin = {-48.2, 68}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-11, 7}, {-11, 7}, {11, 1}, {11, -7.4}, {-11, -1.4}, {-11, 7}}), Polygon(origin = {0, 57}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-38, -35}, {-38, 35}, {-36, 37}, {-28, 39}, {-10, 41}, {10, 41}, {28, 39}, {36, 37}, {38, 35}, {38, -37}, {34, -35}, {26, -33}, {18, -33}, {12, -35}, {6, -39}, {-2, -41}, {-10, -41}, {-18, -39}, {-24, -37}, {-34, -35}, {-38, -35}, {-38, -35}}), Polygon(origin = {-11.28, 51.17}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-26.7236, 18}, {11.2764, 6.83018}, {27.2764, -1.16982}, {9.27639, 4.83018}, {23.2764, -7.16982}, {5.27639, 2.83018}, {19.2764, -9.16982}, {-0.723607, 2.83018}, {13.2764, -11.1698}, {-4.72361, 0.830179}, {5.27639, -13.1698}, {-2.72361, -5.16982}, {3.27639, -19.1698}, {-10.7236, -1.16982}, {-0.723607, -19.1698}, {-14.7236, -1.16982}, {-4.72361, -19.1698}, {-16.7236, -3.16982}, {-12.7236, -19.1698}, {-18.7236, -3.16982}, {-18.7236, -19.1698}, {-22.7236, -1.16982}, {-26.7236, 9.5}, {-26.7236, 18}}), Ellipse(origin = {-28, 8}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {24, 6}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {-25, -15}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {1, 5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {10, -14}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-2, 2}, {2, -2}}, endAngle = 360), Ellipse(origin = {30, -24}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
+    annotation(
+      Icon(graphics = {Ellipse(origin = {0, 95}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, 31}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 63}, {40, -61}}), Ellipse(origin = {0, -29}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, -64}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-10, 34}, {10, -34}}), Ellipse(origin = {1, -99}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-11, -1}, {9, 3}}, endAngle = 360), Ellipse(origin = {-3, 91}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-35, 7}, {41, -5}}, endAngle = 360), Ellipse(origin = {0, -28}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 4}, {38, -4}}, endAngle = 360), Rectangle(origin = {0, 32}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 60}, {38, -60}}), Rectangle(origin = {0, -64}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 34}, {8, -32}}), Ellipse(origin = {0, -97}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 3}, {8, -1}}, endAngle = 360), Ellipse(origin = {-60, 70}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-1, 6}, {1, -4}}, endAngle = 360), Rectangle(extent = {{-68, 74}, {-68, 74}}), Polygon(origin = {-49, 68}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{11, 2}, {-11, 8}, {-11, -2}, {11, -8}, {11, 2}}), Ellipse(extent = {{-60, 76}, {-60, 76}}, endAngle = 360), Ellipse(origin = {-59.2, 70.8}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-1, 4.2}, {1, -4.2}}, endAngle = 360), Polygon(origin = {-48.2, 68}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-11, 7}, {-11, 7}, {11, 1}, {11, -7.4}, {-11, -1.4}, {-11, 7}}), Polygon(origin = {0, 57}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-38, -35}, {-38, 35}, {-36, 37}, {-28, 39}, {-10, 41}, {10, 41}, {28, 39}, {36, 37}, {38, 35}, {38, -37}, {34, -35}, {26, -33}, {18, -33}, {12, -35}, {6, -39}, {-2, -41}, {-10, -41}, {-18, -39}, {-24, -37}, {-34, -35}, {-38, -35}, {-38, -35}}), Polygon(origin = {-11.28, 51.17}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-26.7236, 18}, {11.2764, 6.83018}, {27.2764, -1.16982}, {9.27639, 4.83018}, {23.2764, -7.16982}, {5.27639, 2.83018}, {19.2764, -9.16982}, {-0.723607, 2.83018}, {13.2764, -11.1698}, {-4.72361, 0.830179}, {5.27639, -13.1698}, {-2.72361, -5.16982}, {3.27639, -19.1698}, {-10.7236, -1.16982}, {-0.723607, -19.1698}, {-14.7236, -1.16982}, {-4.72361, -19.1698}, {-16.7236, -3.16982}, {-12.7236, -19.1698}, {-18.7236, -3.16982}, {-18.7236, -19.1698}, {-22.7236, -1.16982}, {-26.7236, 9.5}, {-26.7236, 18}}), Ellipse(origin = {-28, 8}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {24, 6}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {-25, -15}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {1, 5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {10, -14}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-2, 2}, {2, -2}}, endAngle = 360), Ellipse(origin = {30, -24}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
   end Separator_Icon;
 
   model Separator
@@ -1374,8 +1513,10 @@ end if;*/
     parameter Modelica.SIunits.Length delta "Толщина стенки сепаратора";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
     //**
     //Начальные значения
     //**
@@ -1421,12 +1562,18 @@ end if;*/
     Medium.Density rhow_bubble "Плотность пара на линии насыщения в водяном объеме сепаратора";
     Real alpha_cond;
     //***Интерфейс
-    Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b downStr(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput steamFeedback annotation(Placement(visible = true, transformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Blocks.Interfaces.RealOutput drainFeedback annotation(Placement(visible = true, transformation(origin = {110, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b downStr(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {-62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
+      Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput steamFeedback annotation(
+      Placement(visible = true, transformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Blocks.Interfaces.RealOutput drainFeedback annotation(
+      Placement(visible = true, transformation(origin = {110, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
 //Временные ур-я
     fedWater.m_flow = D_fw;
@@ -1484,7 +1631,8 @@ end if;*/
     der(ps) = 0;
 //der(Gw) = 0;
     der(hw) = 0;
-    annotation(uses(Modelica(version = "3.2.1")));
+    annotation(
+      uses(Modelica(version = "3.2.1")));
   end Separator;
 
   function razbivka_n
@@ -1579,46 +1727,67 @@ end if;*/
     //**
     //***Исходные данные для газовой стороны
     //**
-    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
     //**
     //***Исходные данные по стороне вода/пар
     //**
     parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
     replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
     replaceable package Medium_F2 = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberOfTubeNodes = numberOfTubeSectionsForMT + 1 "Число узлов в одной трубе";
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -1630,14 +1799,21 @@ end if;*/
     //Начальные значения
     //**
     //Поток вода/пар
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow / zahod "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow / zahod, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow / zahod "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow / zahod, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -1678,9 +1854,12 @@ end if;*/
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
 //*****Уравнения для потока вода/пар и металла
 //rho_flow_n[1] = Medium_F.density_ph(p_flow_n[1], h_flow_n[1, 1]) "Расчет плотности вода/пар в узловых точках";
@@ -1759,7 +1938,11 @@ end if;*/
     end for;
     waterOut.h_outflow = sum(array(D_flow_n[2] * h_flow_n[i, numberOfTubeSections + 1] for i in numberFirstTubeInLastZahod:numberOfFlueSections)) / sum(array(D_flow_n[2] for i in numberFirstTubeInLastZahod:numberOfFlueSections));
     waterIn.h_outflow = sum(array(D_flow_n[1] * h_flow_n[i, 1] for i in 1:zahod)) / sum(array(D_flow_n[1] for i in 1:zahod));
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoilLite;
 
   package onceThrough
@@ -1794,9 +1977,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 7.7e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -1820,9 +2006,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №1 (OTE1)
-      parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_ote1 = 7.7e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_ote1 = Toutflow_eco "Начальная входная температура потока воды/пар";
@@ -1846,9 +2035,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №2 (OTE2)
-      parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для испарителя №2
       parameter Modelica.SIunits.Pressure pflow_ote2 = 5.5e5 "Начальное давление потока вода/пар перед OTE2";
       parameter Modelica.SIunits.Temperature Tinflow_ote2 = Toutflow_ote1 "Начальная входная температура потока воды/пар";
@@ -1872,9 +2064,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
       //Исходные данные по разбиению пароперегревателя (SH)
-      parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для пароперегревателя
       parameter Modelica.SIunits.Pressure pflow_sh = 3.7e5 "Начальное давление потока вода/пар перед SH";
       parameter Modelica.SIunits.Temperature Tinflow_sh = Toutflow_ote2 "Начальная входная температура потока воды/пар";
@@ -1885,52 +2080,94 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_sh = 200 + 273.15 "Начальная входная температура газов";
       parameter Modelica.SIunits.Temperature Toutgas_sh = 199 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      MyHRSG_lite.Separator separator(redeclare package Medium = Medium_F, Din = Dsep, L = Lsep, n_sep = n_sep_set, ps_start = pflow_ote2, delta = deltaSep, Hw_start = Hw_start_set, sat_start = sat_start, t_start = Medium_F.saturationTemperature_sat(sat_start)) annotation(Placement(visible = true, transformation(origin = {20, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_h waterSink(redeclare package Medium = Medium_F, h = hflow_eco_in, nPorts = 1, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 110, height = -140, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = pflow_sh - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(
+        Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out) annotation(
+        Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out) annotation(
+        Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out) annotation(
+        Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      MyHRSG_lite.Separator separator(redeclare package Medium = Medium_F, Din = Dsep, L = Lsep, n_sep = n_sep_set, ps_start = pflow_ote2, delta = deltaSep, Hw_start = Hw_start_set, sat_start = sat_start, t_start = Medium_F.saturationTemperature_sat(sat_start)) annotation(
+        Placement(visible = true, transformation(origin = {20, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_h waterSink(redeclare package Medium = Medium_F, h = hflow_eco_in, nPorts = 1, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(
+        Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 110, height = -140, offset = Tingas_sh, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out) annotation(
+        Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+        Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = pflow_sh - system.p_ambient, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV2 annotation(
+        Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(
+        Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(ramp1.y, flowSource.T_in) annotation(Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
-      connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
-      connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
-      connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
-      connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
-      connect(CV1.port_a, separator.steam) annotation(Line(points = {{18, 68}, {14, 68}, {14, 58}, {20, 58}, {20, 54}, {20, 54}, {20, 54}}, color = {0, 127, 255}));
-      connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+      connect(ramp1.y, flowSource.T_in) annotation(
+        Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
+      connect(constCV2.y, CV2.opening) annotation(
+        Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
+      connect(CV2.port_b, flowSink.ports[1]) annotation(
+        Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
+      connect(SH.flowOut, CV2.port_a) annotation(
+        Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
+      connect(constCV1.y, CV1.opening) annotation(
+        Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
+      connect(CV1.port_a, separator.steam) annotation(
+        Line(points = {{18, 68}, {14, 68}, {14, 58}, {20, 58}, {20, 54}, {20, 54}, {20, 54}}, color = {0, 127, 255}));
+      connect(CV1.port_b, SH.flowIn) annotation(
+        Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
 //separator.steam.p = pflow_eco;
 //SH.flowIn.m_flow = wsteam;
 //SH.flowIn.h_outflow = hflow_sh_in;
-      connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-      connect(separator.downStr, waterSink.ports[1]) annotation(Line(points = {{20, 32}, {48, 32}, {48, 22}, {60, 22}, {60, 22}}, color = {0, 127, 255}));
-      connect(OTE2.flowOut, separator.fedWater) annotation(Line(points = {{6.2, 23}, {6.2, 49}, {13, 49}}, color = {0, 127, 255}));
-      connect(separator.drainFeedback, waterSink.m_flow_in) annotation(Line(points = {{25, 45}, {89, 45}, {89, 28}, {84.5, 28}, {84.5, 30}, {80, 30}}, color = {0, 0, 127}));
-      connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-      connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-      connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-      connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-      connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-      connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-      connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+      connect(SH.gasOut, OTE2.gasIn) annotation(
+        Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], SH.gasIn) annotation(
+        Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+      connect(separator.downStr, waterSink.ports[1]) annotation(
+        Line(points = {{20, 32}, {48, 32}, {48, 22}, {60, 22}, {60, 22}}, color = {0, 127, 255}));
+      connect(OTE2.flowOut, separator.fedWater) annotation(
+        Line(points = {{6.2, 23}, {6.2, 49}, {13, 49}}, color = {0, 127, 255}));
+      connect(separator.drainFeedback, waterSink.m_flow_in) annotation(
+        Line(points = {{25, 45}, {89, 45}, {89, 28}, {84.5, 28}, {84.5, 30}, {80, 30}}, color = {0, 0, 127}));
+      connect(gasSource.T_in, rampGasTemp.y) annotation(
+        Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+        Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+      connect(OTE1.flowOut, temperature2.port_a) annotation(
+        Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+      connect(temperature2.port_b, OTE2.flowIn) annotation(
+        Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+      connect(temperature1.port_b, OTE1.flowIn) annotation(
+        Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+      connect(ECO.flowOut, temperature1.port_a) annotation(
+        Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+      connect(OTE1.gasIn, OTE2.gasOut) annotation(
+        Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+      connect(ECO.gasIn, OTE1.gasOut) annotation(
+        Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
     initial equation
       for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -1979,7 +2216,9 @@ end if;*/
 //der(SH.flowHE.p_flow_v) = 0;
       der(separator.ps) = 0;
       der(separator.hw) = 0;
-      annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+      annotation(
+        uses(Modelica(version = "3.2.1")),
+        Documentation(info = "<html>
     <p>
     Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
     </p>
@@ -2016,9 +2255,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2043,9 +2285,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №1 (OTE1)
-      parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2070,9 +2315,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №2 (OTE2)
-      parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для испарителя №2
       parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
       parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2097,9 +2345,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
       //Исходные данные по разбиению пароперегревателя (SH)
-      parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для пароперегревателя
       parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
       parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2111,47 +2362,87 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
       parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      MyHRSG_lite.Separator separator(redeclare package Medium = Medium_F, Din = Dsep, L = Lsep, n_sep = n_sep_set, ps_start = pflow_ote2, delta = deltaSep, Hw_start = Hw_start_set, sat_start = sat_start, t_start = Medium_F.saturationTemperature_sat(sat_start)) annotation(Placement(visible = true, transformation(origin = {20, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_h waterSink(redeclare package Medium = Medium_F, h = hflow_eco_in, nPorts = 1, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = 10.01e5 - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+        Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco) annotation(
+        Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(
+        Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(
+        Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      MyHRSG_lite.Separator separator(redeclare package Medium = Medium_F, Din = Dsep, L = Lsep, n_sep = n_sep_set, ps_start = pflow_ote2, delta = deltaSep, Hw_start = Hw_start_set, sat_start = sat_start, t_start = Medium_F.saturationTemperature_sat(sat_start)) annotation(
+        Placement(visible = true, transformation(origin = {20, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_h waterSink(redeclare package Medium = Medium_F, h = hflow_eco_in, nPorts = 1, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 22}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(
+        Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+        Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = 10.01e5 - system.p_ambient, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV2 annotation(
+        Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
-      connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
-      connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
-      connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
-      connect(CV1.port_a, separator.steam) annotation(Line(points = {{18, 68}, {14, 68}, {14, 58}, {20, 58}, {20, 54}, {20, 54}, {20, 54}}, color = {0, 127, 255}));
-      connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-      connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-      connect(separator.downStr, waterSink.ports[1]) annotation(Line(points = {{20, 32}, {48, 32}, {48, 22}, {60, 22}, {60, 22}}, color = {0, 127, 255}));
-      connect(OTE2.flowOut, separator.fedWater) annotation(Line(points = {{6.2, 23}, {6.2, 49}, {13, 49}}, color = {0, 127, 255}));
-      connect(separator.drainFeedback, waterSink.m_flow_in) annotation(Line(points = {{25, 45}, {89, 45}, {89, 28}, {84.5, 28}, {84.5, 30}, {80, 30}}, color = {0, 0, 127}));
-      connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-      connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-      connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-      connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-      connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-      connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-      connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+      connect(constCV2.y, CV2.opening) annotation(
+        Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
+      connect(CV2.port_b, flowSink.ports[1]) annotation(
+        Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
+      connect(SH.flowOut, CV2.port_a) annotation(
+        Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
+      connect(constCV1.y, CV1.opening) annotation(
+        Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
+      connect(CV1.port_a, separator.steam) annotation(
+        Line(points = {{18, 68}, {14, 68}, {14, 58}, {20, 58}, {20, 54}, {20, 54}, {20, 54}}, color = {0, 127, 255}));
+      connect(CV1.port_b, SH.flowIn) annotation(
+        Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+      connect(SH.gasOut, OTE2.gasIn) annotation(
+        Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], SH.gasIn) annotation(
+        Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+      connect(separator.downStr, waterSink.ports[1]) annotation(
+        Line(points = {{20, 32}, {48, 32}, {48, 22}, {60, 22}, {60, 22}}, color = {0, 127, 255}));
+      connect(OTE2.flowOut, separator.fedWater) annotation(
+        Line(points = {{6.2, 23}, {6.2, 49}, {13, 49}}, color = {0, 127, 255}));
+      connect(separator.drainFeedback, waterSink.m_flow_in) annotation(
+        Line(points = {{25, 45}, {89, 45}, {89, 28}, {84.5, 28}, {84.5, 30}, {80, 30}}, color = {0, 0, 127}));
+      connect(gasSource.T_in, rampGasTemp.y) annotation(
+        Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+        Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+      connect(OTE1.flowOut, temperature2.port_a) annotation(
+        Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+      connect(temperature2.port_b, OTE2.flowIn) annotation(
+        Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+      connect(temperature1.port_b, OTE1.flowIn) annotation(
+        Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+      connect(ECO.flowOut, temperature1.port_a) annotation(
+        Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+      connect(OTE1.gasIn, OTE2.gasOut) annotation(
+        Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+      connect(ECO.gasIn, OTE1.gasOut) annotation(
+        Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
     initial equation
       for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -2207,7 +2498,9 @@ end if;*/
       der(SH.flowHE.p_flow_v) = 0;
       der(separator.ps) = 0;
       der(separator.hw) = 0;
-      annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+      annotation(
+        uses(Modelica(version = "3.2.1")),
+        Documentation(info = "<html>
     <p>
     Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
     </p>
@@ -2246,9 +2539,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 7.7e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2272,9 +2568,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №1 (OTE1)
-      parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_ote1 = 7.7e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_ote1 = Toutflow_eco "Начальная входная температура потока воды/пар";
@@ -2298,9 +2597,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №2 (OTE2)
-      parameter Integer numberOfTubeSections_ote2 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote2 = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для испарителя №2
       parameter Modelica.SIunits.Pressure pflow_ote2 = 5.5e5 "Начальное давление потока вода/пар перед OTE2";
       parameter Modelica.SIunits.Temperature Tinflow_ote2 = Toutflow_ote1 "Начальная входная температура потока воды/пар";
@@ -2324,9 +2626,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
       //Исходные данные по разбиению пароперегревателя (SH)
-      parameter Integer numberOfTubeSections_sh = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_sh = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для пароперегревателя
       parameter Modelica.SIunits.Pressure pflow_sh = 3.7e5 "Начальное давление потока вода/пар перед SH";
       parameter Modelica.SIunits.Temperature Tinflow_sh = Toutflow_ote2 "Начальная входная температура потока воды/пар";
@@ -2337,49 +2642,88 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_sh = 200 + 273.15 "Начальная входная температура газов";
       parameter Modelica.SIunits.Temperature Toutgas_sh = 199 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false, m_flow_small = m_flow_small) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoilLite_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_9 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_9 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 400, height = -140, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = pflow_sh - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Separator2 separator21(redeclare package Medium = Medium_F, Dsteam_start = wsteam, ps_start = pflow_ote2, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {16, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false, m_flow_small = m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(
+        Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoilLite_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_9 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_9 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(
+        Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 400, height = -140, offset = Tingas_sh, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+        Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = pflow_sh - system.p_ambient, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV2 annotation(
+        Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(
+        Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Separator2 separator21(redeclare package Medium = Medium_F, Dsteam_start = wsteam, ps_start = pflow_ote2, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {16, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(separator21.steam, CV1.port_a) annotation(Line(points = {{16, 55}, {16, 66}, {18, 66}, {18, 68}}, color = {0, 127, 255}));
-      connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 51}, {9, 51}}, color = {0, 127, 255}));
-      connect(ramp1.y, flowSource.T_in) annotation(Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
-      connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
-      connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
-      connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
-      connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
-      connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+      connect(separator21.steam, CV1.port_a) annotation(
+        Line(points = {{16, 55}, {16, 66}, {18, 66}, {18, 68}}, color = {0, 127, 255}));
+      connect(OTE2.flowOut, separator21.fedWater) annotation(
+        Line(points = {{6, 24}, {6, 51}, {9, 51}}, color = {0, 127, 255}));
+      connect(ramp1.y, flowSource.T_in) annotation(
+        Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
+      connect(constCV2.y, CV2.opening) annotation(
+        Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
+      connect(CV2.port_b, flowSink.ports[1]) annotation(
+        Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
+      connect(SH.flowOut, CV2.port_a) annotation(
+        Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
+      connect(constCV1.y, CV1.opening) annotation(
+        Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
+      connect(CV1.port_b, SH.flowIn) annotation(
+        Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
 //separator.steam.p = pflow_eco;
 //SH.flowIn.m_flow = wsteam;
 //SH.flowIn.h_outflow = hflow_sh_in;
-      connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-      connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-      connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-      connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-      connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-      connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-      connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-      connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+      connect(SH.gasOut, OTE2.gasIn) annotation(
+        Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], SH.gasIn) annotation(
+        Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+      connect(gasSource.T_in, rampGasTemp.y) annotation(
+        Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+        Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+      connect(OTE1.flowOut, temperature2.port_a) annotation(
+        Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+      connect(temperature2.port_b, OTE2.flowIn) annotation(
+        Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+      connect(temperature1.port_b, OTE1.flowIn) annotation(
+        Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+      connect(ECO.flowOut, temperature1.port_a) annotation(
+        Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+      connect(OTE1.gasIn, OTE2.gasOut) annotation(
+        Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+      connect(ECO.gasIn, OTE1.gasOut) annotation(
+        Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
     initial equation
       for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -2430,11 +2774,15 @@ end if;*/
         end for;
       end for;
       der(SH.flowHE.p_flow_v) = 0;
-      annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+      annotation(
+        uses(Modelica(version = "3.2.1")),
+        Documentation(info = "<html>
     <p>
     Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
     </p>
-    </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-10, Interval = 0.005), __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS"));
+    </html>"),
+        experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-10, Interval = 0.005),
+        __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS"));
     end onceThrough_12;
 
     model onceThrough_13
@@ -2467,9 +2815,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2494,9 +2845,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №1 (OTE1)
-      parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2521,9 +2875,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №2 (OTE2)
-      parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для испарителя №2
       parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
       parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2548,9 +2905,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
       //Исходные данные по разбиению пароперегревателя (SH)
-      parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для пароперегревателя
       parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
       parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2562,44 +2922,81 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
       parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_7 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_7 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_7 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = 10.01e5 - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.Separator2 separator21 annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+        Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_7 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco) annotation(
+        Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE1(redeclare onlyFlowHEBoil_7 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(
+        Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE OTE2(redeclare onlyFlowHEBoil_7 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(
+        Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(
+        Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+        Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = 10.01e5 - system.p_ambient, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV2 annotation(
+        Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.Separator2 separator21 annotation(
+        Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(separator21.steam, CV1.port_a) annotation(Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
-      connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
-      connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
-      connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
-      connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
-      connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
-      connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-      connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-      connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-      connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-      connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-      connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-      connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-      connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-      connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+      connect(separator21.steam, CV1.port_a) annotation(
+        Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
+      connect(OTE2.flowOut, separator21.fedWater) annotation(
+        Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
+      connect(constCV2.y, CV2.opening) annotation(
+        Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
+      connect(CV2.port_b, flowSink.ports[1]) annotation(
+        Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
+      connect(SH.flowOut, CV2.port_a) annotation(
+        Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
+      connect(constCV1.y, CV1.opening) annotation(
+        Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
+      connect(CV1.port_b, SH.flowIn) annotation(
+        Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+      connect(SH.gasOut, OTE2.gasIn) annotation(
+        Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], SH.gasIn) annotation(
+        Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+      connect(gasSource.T_in, rampGasTemp.y) annotation(
+        Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+        Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+      connect(OTE1.flowOut, temperature2.port_a) annotation(
+        Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+      connect(temperature2.port_b, OTE2.flowIn) annotation(
+        Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+      connect(temperature1.port_b, OTE1.flowIn) annotation(
+        Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+      connect(ECO.flowOut, temperature1.port_a) annotation(
+        Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+      connect(OTE1.gasIn, OTE2.gasOut) annotation(
+        Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+      connect(ECO.gasIn, OTE1.gasOut) annotation(
+        Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
     initial equation
       for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -2656,7 +3053,9 @@ end if;*/
         end for;
       end for;
       der(SH.flowHE.p_flow_v) = 0;
-      annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+      annotation(
+        uses(Modelica(version = "3.2.1")),
+        Documentation(info = "<html>
 <p>
 Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
 </p>
@@ -2695,9 +3094,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 7.7e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -2721,9 +3123,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №1 (OTE1)
-      parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_ote1 = 7.7e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_ote1 = Toutflow_eco "Начальная входная температура потока воды/пар";
@@ -2747,9 +3152,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
       //Исходные данные по разбиению испарителя №2 (OTE2)
-      parameter Integer numberOfTubeSections_ote2 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_ote2 = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для испарителя №2
       parameter Modelica.SIunits.Pressure pflow_ote2 = 5.5e5 "Начальное давление потока вода/пар перед OTE2";
       parameter Modelica.SIunits.Temperature Tinflow_ote2 = Toutflow_ote1 "Начальная входная температура потока воды/пар";
@@ -2773,9 +3181,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
       //Исходные данные по разбиению пароперегревателя (SH)
-      parameter Integer numberOfTubeSections_sh = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_sh = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для пароперегревателя
       parameter Modelica.SIunits.Pressure pflow_sh = 3.7e5 "Начальное давление потока вода/пар перед SH";
       parameter Modelica.SIunits.Temperature Tinflow_sh = Toutflow_ote2 "Начальная входная температура потока воды/пар";
@@ -2786,49 +3197,88 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_sh = 200 + 273.15 "Начальная входная температура газов";
       parameter Modelica.SIunits.Temperature Toutgas_sh = 199 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false, m_flow_small = m_flow_small) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.liteModels.GF_HE_lite ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.liteModels.GF_HE_lite OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      MyHRSG_lite.liteModels.GF_HE_lite OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 400, height = -140, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = pflow_sh - system.p_ambient, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-      Modelica.Blocks.Sources.Constant constCV2 annotation(Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Separator2 separator21(redeclare package Medium = Medium_F, Dsteam_start = wsteam, ps_start = pflow_ote2, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {16, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false, m_flow_small = m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(
+        Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.liteModels.GF_HE_lite ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+        Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.liteModels.GF_HE_lite OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      MyHRSG_lite.liteModels.GF_HE_lite OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(
+        Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 400, height = -140, offset = Tingas_sh, startTime = 10) annotation(
+        Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      GF_HE SH(redeclare onlyFlowHEBoilLite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+        Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Valves.ValveLinear CV2(redeclare package Medium = Medium_F, dp_nominal = pflow_sh - system.p_ambient, m_flow_nominal = wsteam) annotation(
+        Placement(visible = true, transformation(origin = {47, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+      Modelica.Blocks.Sources.Constant constCV2 annotation(
+        Placement(visible = true, transformation(origin = {36, 86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(
+        Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Separator2 separator21(redeclare package Medium = Medium_F, Dsteam_start = wsteam, ps_start = pflow_ote2, m_flow_small = system.m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {16, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(separator21.steam, CV1.port_a) annotation(Line(points = {{16, 55}, {16, 66}, {18, 66}, {18, 68}}, color = {0, 127, 255}));
-      connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 51}, {9, 51}}, color = {0, 127, 255}));
-      connect(ramp1.y, flowSource.T_in) annotation(Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
-      connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
-      connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
-      connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
-      connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
-      connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+      connect(separator21.steam, CV1.port_a) annotation(
+        Line(points = {{16, 55}, {16, 66}, {18, 66}, {18, 68}}, color = {0, 127, 255}));
+      connect(OTE2.flowOut, separator21.fedWater) annotation(
+        Line(points = {{6, 24}, {6, 51}, {9, 51}}, color = {0, 127, 255}));
+      connect(ramp1.y, flowSource.T_in) annotation(
+        Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
+      connect(constCV2.y, CV2.opening) annotation(
+        Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
+      connect(CV2.port_b, flowSink.ports[1]) annotation(
+        Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
+      connect(SH.flowOut, CV2.port_a) annotation(
+        Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
+      connect(constCV1.y, CV1.opening) annotation(
+        Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
+      connect(CV1.port_b, SH.flowIn) annotation(
+        Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
 //separator.steam.p = pflow_eco;
 //SH.flowIn.m_flow = wsteam;
 //SH.flowIn.h_outflow = hflow_sh_in;
-      connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-      connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-      connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-      connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-      connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-      connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-      connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-      connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+      connect(SH.gasOut, OTE2.gasIn) annotation(
+        Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], SH.gasIn) annotation(
+        Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+      connect(gasSource.T_in, rampGasTemp.y) annotation(
+        Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+      connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+        Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+      connect(OTE1.flowOut, temperature2.port_a) annotation(
+        Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+      connect(temperature2.port_b, OTE2.flowIn) annotation(
+        Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+      connect(temperature1.port_b, OTE1.flowIn) annotation(
+        Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+      connect(ECO.flowOut, temperature1.port_a) annotation(
+        Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+      connect(OTE1.gasIn, OTE2.gasOut) annotation(
+        Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+      connect(ECO.gasIn, OTE1.gasOut) annotation(
+        Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
     initial equation
       for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -2879,11 +3329,15 @@ end if;*/
         end for;
       end for;
       der(SH.flowHE.p_flow_v) = 0;
-      annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+      annotation(
+        uses(Modelica(version = "3.2.1")),
+        Documentation(info = "<html>
     <p>
     Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
     </p>
-    </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-10, Interval = 0.005), __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS"));
+    </html>"),
+        experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-10, Interval = 0.005),
+        __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS"));
     end onceThrough_12_lite;
   end onceThrough;
 
@@ -2937,45 +3391,66 @@ end if;*/
     //**
     //***Исходные данные для газовой стороны
     //**
-    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
     //**
     //***Исходные данные по стороне вода/пар
     //**
     replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
     replaceable package Medium_F2 = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberOfTubeNodes = numberOfTubeSectionsForMT + 1 "Число узлов в одной трубе";
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -2987,14 +3462,21 @@ end if;*/
     //Начальные значения
     //**
     //Поток вода/пар
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setp_flow_in, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSectionsForMT] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSectionsForMT + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSectionsForMT + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -3040,9 +3522,12 @@ end if;*/
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
     if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
       deltaHpipe = Lpipe / numberOfTubeSections * numberPMCalcSections "Разность высотных отметок элементов труб для горизонтального КУ";
@@ -3184,7 +3669,11 @@ end if;*/
     end if;
     waterOut.h_outflow = sum(array(positiveMax(D_flow_n[i, numberOfTubeSectionsForMT + 1]) * h_flow_n[i, numberOfTubeSections + 1] for i in numberFirstTubeInLastZahod:numberOfFlueSections)) / sum(array(positiveMax(D_flow_n[i, numberOfTubeSectionsForMT + 1]) for i in numberFirstTubeInLastZahod:numberOfFlueSections));
     waterIn.h_outflow = sum(array(positiveMax(D_flow_n[i, 1]) * h_flow_n[i, 1] for i in 1:zahod)) / sum(array(positiveMax(D_flow_n[i, 1]) for i in 1:zahod));
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoil_2;
 
   model Separator2
@@ -3205,8 +3694,10 @@ end if;*/
     Medium.SpecificEnthalpy h_dew "Энтальпия пара на линии насыщения при давлении в сепараторе";
     Medium.SpecificEnthalpy h_bubble "Энтальпия воды на линии насыщения при давлении в сепараторе";
     //***Интерфейс
-    Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   equation
     sat = Medium.setSat_p(ps);
     h_dew = Medium.dewEnthalpy(sat);
@@ -3220,7 +3711,8 @@ end if;*/
     ps = steam.p;
     steam.h_outflow = if noEvent(inStream(fedWater.h_outflow)) > h_dew then inStream(fedWater.h_outflow) else h_dew;
     steam.m_flow = -Dsteam;
-    annotation(uses(Modelica(version = "3.2.1")));
+    annotation(
+      uses(Modelica(version = "3.2.1")));
   end Separator2;
 
   package Tests
@@ -3247,9 +3739,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 8e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 140 + 273.15 "Начальная входная температура потока воды/пар";
@@ -3260,17 +3755,27 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_eco = 190.4 + 273.15 "Начальная входная температура газов (по расчетам Березенца за ИВД при 15С в номинале ТЭЦ-12";
       parameter Modelica.SIunits.Temperature Toutgas_eco = 180.7 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_eco = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_eco, nPorts = 1, p = pflow_eco, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {90, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_8 flowHE, Din = Dout_eco - 2 * delta_eco, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, Lpipe = Lpipe, Tinflow = Tinflow_eco, Tingas = Tingas_eco, Toutflow = Tinflow_eco, Toutgas = Tingas_eco, delta = delta_eco, delta_fin = delta_fin_eco, hfin = hfin_eco, k_gamma_gas = k_gamma_gas_eco, numberOfFlueSections = numberOfFlueSections_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, pflow_in = pflow_eco, pflow_out = pflow_eco, pgas = pgas, s1 = s1_eco, s2 = s2_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, sfin = sfin_eco, wflow = wflow, wgas = wgas, z1 = z1_eco, z2 = z2_eco, zahod = zahod_eco) annotation(Placement(visible = true, transformation(origin = {-14, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wgas, T = Tingas_eco) annotation(Placement(visible = true, transformation(origin = {70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+        Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_eco, nPorts = 1, p = pflow_eco, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {90, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_8 flowHE, Din = Dout_eco - 2 * delta_eco, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, Lpipe = Lpipe, Tinflow = Tinflow_eco, Tingas = Tingas_eco, Toutflow = Tinflow_eco, Toutgas = Tingas_eco, delta = delta_eco, delta_fin = delta_fin_eco, hfin = hfin_eco, k_gamma_gas = k_gamma_gas_eco, numberOfFlueSections = numberOfFlueSections_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, pflow_in = pflow_eco, pflow_out = pflow_eco, pgas = pgas, s1 = s1_eco, s2 = s2_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, sfin = sfin_eco, wflow = wflow, wgas = wgas, z1 = z1_eco, z2 = z2_eco, zahod = zahod_eco) annotation(
+        Placement(visible = true, transformation(origin = {-14, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wgas, T = Tingas_eco) annotation(
+        Placement(visible = true, transformation(origin = {70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(flowSink.ports[1], ECO.flowOut) annotation(Line(points = {{80, 30}, {-10, 30}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], ECO.gasIn) annotation(Line(points = {{60, -30}, {32, -30}, {32, -12}, {-8, -12}, {-8, -12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -30}, {-40, -30}, {-40, -12}, {-20, -12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-60, 30}, {-18, 30}, {-18, -1}}, color = {0, 127, 255}));
+      connect(flowSink.ports[1], ECO.flowOut) annotation(
+        Line(points = {{80, 30}, {-10, 30}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], ECO.gasIn) annotation(
+        Line(points = {{60, -30}, {32, -30}, {32, -12}, {-8, -12}, {-8, -12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -30}, {-40, -30}, {-40, -12}, {-20, -12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-60, 30}, {-18, 30}, {-18, -1}}, color = {0, 127, 255}));
     initial equation
 /*for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -3286,7 +3791,8 @@ end if;*/
           der(ECO.gasHE.h_gas[i + 1, j]) = 0;
         end for;
       end for;
-      annotation(uses(Modelica(version = "3.2.1")));
+      annotation(
+        uses(Modelica(version = "3.2.1")));
     end testGFHE_1;
 
     model testGFHE_2
@@ -3312,9 +3818,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 2 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 2 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 100 + 273.15 "Начальная входная температура потока воды/пар";
@@ -3326,17 +3835,27 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_eco = 90 + 273.15 "Начальная входная температура газов (по расчетам Березенца за ИВД при 15С в номинале ТЭЦ-12";
       parameter Modelica.SIunits.Temperature Toutgas_eco = 90 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_eco = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_eco, nPorts = 1, p = pflow_eco, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {90, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_5 flowHE, Din = Dout_eco - 2 * delta_eco, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, Lpipe = Lpipe, Tinflow = Tinflow_eco, Tingas = Tingas_eco, Toutflow = Toutflow_eco, Toutgas = Toutgas_eco, delta = delta_eco, delta_fin = delta_fin_eco, hfin = hfin_eco, k_gamma_gas = k_gamma_gas_eco, numberOfFlueSections = numberOfFlueSections_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, pflow_in = pflow_eco, pflow_out = pflow_eco, pgas = pgas, s1 = s1_eco, s2 = s2_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, sfin = sfin_eco, wflow = wflow, wgas = wgas, z1 = z1_eco, z2 = z2_eco, zahod = zahod_eco, setTm = setTm_eco) annotation(Placement(visible = true, transformation(origin = {-14, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wgas, T = Tingas_eco) annotation(Placement(visible = true, transformation(origin = {70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+        Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_eco, nPorts = 1, p = pflow_eco, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {90, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.GF_HE ECO(redeclare onlyFlowHEBoil_5 flowHE, Din = Dout_eco - 2 * delta_eco, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, Lpipe = Lpipe, Tinflow = Tinflow_eco, Tingas = Tingas_eco, Toutflow = Toutflow_eco, Toutgas = Toutgas_eco, delta = delta_eco, delta_fin = delta_fin_eco, hfin = hfin_eco, k_gamma_gas = k_gamma_gas_eco, numberOfFlueSections = numberOfFlueSections_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, pflow_in = pflow_eco, pflow_out = pflow_eco, pgas = pgas, s1 = s1_eco, s2 = s2_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, sfin = sfin_eco, wflow = wflow, wgas = wgas, z1 = z1_eco, z2 = z2_eco, zahod = zahod_eco, setTm = setTm_eco) annotation(
+        Placement(visible = true, transformation(origin = {-14, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wgas, T = Tingas_eco) annotation(
+        Placement(visible = true, transformation(origin = {70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(flowSink.ports[1], ECO.flowOut) annotation(Line(points = {{80, 30}, {-10, 30}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], ECO.gasIn) annotation(Line(points = {{60, -30}, {32, -30}, {32, -12}, {-8, -12}, {-8, -12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -30}, {-40, -30}, {-40, -12}, {-20, -12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-60, 30}, {-18, 30}, {-18, -1}}, color = {0, 127, 255}));
+      connect(flowSink.ports[1], ECO.flowOut) annotation(
+        Line(points = {{80, 30}, {-10, 30}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], ECO.gasIn) annotation(
+        Line(points = {{60, -30}, {32, -30}, {32, -12}, {-8, -12}, {-8, -12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -30}, {-40, -30}, {-40, -12}, {-20, -12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-60, 30}, {-18, 30}, {-18, -1}}, color = {0, 127, 255}));
     initial equation
       for i in 1:numberOfFlueSections_eco loop
         for j in 1:numberOfTubeSections_eco loop
@@ -3351,7 +3870,8 @@ end if;*/
         der(ECO.flowHE.p_flow_v[i]) = 0;
 //der(ECO.flowHE.p_flow_v[i + integer(numberOfFlueSections_eco / 2) - integer(zahod_eco / 2), integer(integer(numberOfTubeSections_eco / numberPMCalcSections_eco) / 2) + 1]) = 0;
       end for;
-      annotation(uses(Modelica(version = "3.2.1")));
+      annotation(
+        uses(Modelica(version = "3.2.1")));
     end testGFHE_2;
 
     model testGFHE_3
@@ -3377,9 +3897,12 @@ end if;*/
       parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
       parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
       //Исходные данные по разбиению экономайзера
-      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections_eco = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections_eco = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Исходные данные вода/пар для экономайзера
       parameter Modelica.SIunits.Pressure pflow_eco = 8e5 "Начальное давление потока вода/пар перед ECO";
       parameter Modelica.SIunits.Temperature Tinflow_eco = 140 + 273.15 "Начальная входная температура потока воды/пар";
@@ -3390,18 +3913,29 @@ end if;*/
       parameter Modelica.SIunits.Temperature Tingas_eco = 190.4 + 273.15 "Начальная входная температура газов (по расчетам Березенца за ИВД при 15С в номинале ТЭЦ-12";
       parameter Modelica.SIunits.Temperature Toutgas_eco = 180.7 + 273.15 "Начальная выходная температура газов";
       parameter Real k_gamma_gas_eco = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_eco, nPorts = 1, p = pflow_eco, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {90, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      MyHRSG_lite.liteModels.GF_HE_lite ECO(Din = Dout_eco - 2 * delta_eco, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, Lpipe = Lpipe, Tinflow = Tinflow_eco, Tingas = Tingas_eco, Toutflow = Tinflow_eco, Toutgas = Tingas_eco, delta = delta_eco, delta_fin = delta_fin_eco, hfin = hfin_eco, k_gamma_gas = k_gamma_gas_eco, numberOfFlueSections = numberOfFlueSections_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, pflow_in = pflow_eco, pflow_out = pflow_eco, pgas = pgas, s1 = s1_eco, s2 = s2_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, sfin = sfin_eco, wflow = wflow, wgas = wgas, z1 = z1_eco, z2 = z2_eco, zahod = zahod_eco) annotation(Placement(visible = true, transformation(origin = {-14, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wgas, T = Tingas_eco) annotation(Placement(visible = true, transformation(origin = {70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+        Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+        Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_eco, nPorts = 1, p = pflow_eco, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {90, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      MyHRSG_lite.liteModels.GF_HE_lite ECO(Din = Dout_eco - 2 * delta_eco, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, Lpipe = Lpipe, Tinflow = Tinflow_eco, Tingas = Tingas_eco, Toutflow = Tinflow_eco, Toutgas = Tingas_eco, delta = delta_eco, delta_fin = delta_fin_eco, hfin = hfin_eco, k_gamma_gas = k_gamma_gas_eco, numberOfFlueSections = numberOfFlueSections_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, pflow_in = pflow_eco, pflow_out = pflow_eco, pgas = pgas, s1 = s1_eco, s2 = s2_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, sfin = sfin_eco, wflow = wflow, wgas = wgas, z1 = z1_eco, z2 = z2_eco, zahod = zahod_eco) annotation(
+        Placement(visible = true, transformation(origin = {-14, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wgas, T = Tingas_eco) annotation(
+        Placement(visible = true, transformation(origin = {70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+      Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+        Placement(visible = true, transformation(origin = {-90, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      connect(flowSink.ports[1], ECO.flowOut) annotation(Line(points = {{80, 30}, {-10, 30}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
-      connect(gasSource.ports[1], ECO.gasIn) annotation(Line(points = {{60, -30}, {32, -30}, {32, -12}, {-8, -12}, {-8, -12}}, color = {0, 127, 255}));
-      connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -30}, {-40, -30}, {-40, -12}, {-20, -12}}, color = {0, 127, 255}));
-      connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-60, 30}, {-18, 30}, {-18, -1}}, color = {0, 127, 255}));
-      annotation(uses(Modelica(version = "3.2.1")));
+      connect(flowSink.ports[1], ECO.flowOut) annotation(
+        Line(points = {{80, 30}, {-10, 30}, {-10, 0}, {-10, 0}}, color = {0, 127, 255}));
+      connect(gasSource.ports[1], ECO.gasIn) annotation(
+        Line(points = {{60, -30}, {32, -30}, {32, -12}, {-8, -12}, {-8, -12}}, color = {0, 127, 255}));
+      connect(gasSink.ports[1], ECO.gasOut) annotation(
+        Line(points = {{-80, -30}, {-40, -30}, {-40, -12}, {-20, -12}}, color = {0, 127, 255}));
+      connect(flowSource.ports[1], ECO.flowIn) annotation(
+        Line(points = {{-60, 30}, {-18, 30}, {-18, -1}}, color = {0, 127, 255}));
+      annotation(
+        uses(Modelica(version = "3.2.1")));
     end testGFHE_3;
   end Tests;
 
@@ -3417,37 +3951,56 @@ end if;*/
     //**
     replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
     replaceable package Medium_F2 = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -3458,14 +4011,21 @@ end if;*/
     //Начальные значения
     //**
     //Поток вода/пар
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -3514,9 +4074,12 @@ end if;*/
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
     if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
       deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
@@ -3626,7 +4189,11 @@ end if;*/
     end for;
     waterOut.h_outflow = sum(array(max(D_flow_n[i, numberOfTubeSections + 1], m_flow_small) * h_flow_n[i, numberOfTubeSections + 1] for i in numberFirstTubeInLastZahod:numberOfFlueSections)) / sum(array(max(D_flow_n[i, numberOfTubeSections + 1], m_flow_small) for i in numberFirstTubeInLastZahod:numberOfFlueSections));
     waterIn.h_outflow = sum(array(max(D_flow_n[i, 1], m_flow_small) * h_flow_n[i, 1] for i in 1:zahod)) / sum(array(max(D_flow_n[i, 1], m_flow_small) for i in 1:zahod));
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoil_7;
 
   model onlyFlowHEBoil_8 "По аналогии с ThermoPower.Water.Flow1DFEM2ph"
@@ -3644,37 +4211,56 @@ end if;*/
     constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
     constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
     constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -3686,14 +4272,21 @@ end if;*/
     //Начальные значения
     //**
     //Поток вода/пар
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -3755,9 +4348,12 @@ end if;*/
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
     if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
       deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
@@ -3941,7 +4537,11 @@ end if;*/
       end for;
     end for;
     der(p_v) = 0;
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoil_8;
 
   model onlyFlowHEBoilLite_ECO
@@ -3950,7 +4550,8 @@ end if;*/
     //**
     //***Исходные данные для газовой стороны
     //**
-    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+    parameter Modelica.SIunits.Power setQ_gas = 100 "тепловой поток со стороны газов" annotation(
+      Dialog(group = "Параметры стороны газов"));
     //**
     //***Исходные данные по стороне вода/пар
     //**
@@ -3960,39 +4561,59 @@ end if;*/
     constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
     constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
     constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 2 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSectionsForMT = integer(numberOfTubeSections / numberPMCalcSections) "Число участков разбиения трубы для расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberOfTubeNodes = numberOfTubeSectionsForMT + 1 "Число узлов в одной трубе";
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 2 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -4005,14 +4626,21 @@ end if;*/
     //Начальные значения
     //**
     //Поток вода/пар
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow / zahod "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow / zahod, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow / zahod "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow / zahod, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -4061,9 +4689,12 @@ end if;*/
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
 //*****Уравнения для потока вода/пар и металла
 //rho_flow_n[1] = Medium_F.density_ph(p_flow_n[1], h_flow_n[1, 1]) "Расчет плотности вода/пар в узловых точках";
@@ -4181,7 +4812,11 @@ end if;*/
     end for;
     waterOut.h_outflow = sum(array(max(D_flow_n[2], m_flow_small) * h_flow_n[i, numberOfTubeSections + 1] for i in numberFirstTubeInLastZahod:numberOfFlueSections)) / sum(array(max(D_flow_n[2], m_flow_small) for i in numberFirstTubeInLastZahod:numberOfFlueSections));
     waterIn.h_outflow = sum(array(max(D_flow_n[1], m_flow_small) * h_flow_n[i, 1] for i in 1:zahod)) / sum(array(max(D_flow_n[1], m_flow_small) for i in 1:zahod));
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoilLite_ECO;
 
   model onlyFlowHEBoil_9
@@ -4199,37 +4834,56 @@ end if;*/
     constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
     constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
     constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
+    parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+      Dialog(group = "Параметры стороны вода/пар"));
     parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
     parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
     parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
     //**
     //***Характеристики металла
-    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+    parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+      Dialog(group = "Металл"));
+    parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+      Dialog(group = "Металл"));
     //**
     //**
     //Конструктивные характеристики
     //**
     //Параметры
     parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+    parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+      Dialog(group = "Конструктивные характеристики"));
+    parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+      Dialog(group = "Конструктивные характеристики"));
     parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
     //Поток вода/пар
     parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 / numberOfTubeSections "Внутренняя площадь одного участка ряда труб";
@@ -4241,14 +4895,21 @@ end if;*/
     //Начальные значения
     //**
     //Поток вода/пар
-    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(seth_in, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(seth_in, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_v[numberOfFlueSections, numberOfTubeSections] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+      Dialog(tab = "Инициализация"));
+    parameter Medium_F.MassFlowRate D_startFlow_n[numberOfFlueSections, numberOfTubeSections + 1] = fill(setD_flow / zahod, numberOfFlueSections, numberOfTubeSections + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+      Dialog(tab = "Инициализация"));
     //Металл
-    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+    parameter Modelica.SIunits.Temperature t_startM[numberOfFlueSections, numberOfTubeSections] = fill(setTm, numberOfFlueSections, numberOfTubeSections) "Начальный вектор энальпии потока газов" annotation(
+      Dialog(tab = "Инициализация"));
     //**
     //Переменные
     //**
@@ -4315,9 +4976,12 @@ end if;*/
     //**
     //Интерфейс
     //**
-    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfFlueSections, numberOfTubeSections] annotation(
+      Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   equation
 //p_v_lin = razbivka_v(p_n[1], p_n[2], zahod, numberOfFlueSections, numberOfTubeSections);
 //p_n_lin = razbivka_n(p_n[1], p_n[2], zahod, numberOfFlueSections, numberOfTubeSections + 1);
@@ -4513,7 +5177,11 @@ end if;*/
       end for;
     end for;
     der(p_v) = 0;
-    annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+    annotation(
+      Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+      Diagram(graphics),
+      experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+      Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
   end onlyFlowHEBoil_9;
 
   package liteModels
@@ -4530,30 +5198,49 @@ end if;*/
       //***Исходные данные для газовой стороны
       //**
       replaceable package Medium_G = MyHRSG_lite.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-      parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
       parameter Medium_G.MassFraction setX_gas[Medium_G.nXi] = Medium_G.reference_X;
-      parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+      parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
       //**
       //Конструктивные характеристики
       //**
       //Параметры
-      parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer zahod = numberOfFlueSections "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z1 = 79 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = numberOfFlueSections "заходность труб теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 79 "Число труб по ширине газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Поток газов
       parameter Modelica.SIunits.Volume deltaVGas = z2 * Lpipe * (s1 * s2 * z1 - Modelica.Constants.pi * Dout ^ 2 / 4) "Объем одного участка газового тракта";
       parameter Modelica.SIunits.Area deltaSGas = Lpipe * Modelica.Constants.pi * Dout * z1 "Наружная площадь одного участка ряда труб";
@@ -4561,18 +5248,29 @@ end if;*/
       //**
       //Характеристики оребрения
       //
-      parameter Modelica.SIunits.Length delta_fin = 0.0009 "Средняя толщина ребра, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Modelica.SIunits.Length hfin = 0.014 "Высота ребра, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Modelica.SIunits.Length sfin = 0.004 "Шаг ребер, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real psi_fin = 1 / (2 * Dout * sfin) * (Dfin ^ 2 - Dout ^ 2 + 2 * Dfin * delta_fin) + 1 - delta_fin / sfin "Коэффициент оребрения, равный отношению полной поверхности пучка к поверхности несущих труб на оребренном участке" annotation(Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length delta_fin = 0.0009 "Средняя толщина ребра, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length hfin = 0.014 "Высота ребра, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length sfin = 0.004 "Шаг ребер, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real psi_fin = 1 / (2 * Dout * sfin) * (Dfin ^ 2 - Dout ^ 2 + 2 * Dfin * delta_fin) + 1 - delta_fin / sfin "Коэффициент оребрения, равный отношению полной поверхности пучка к поверхности несущих труб на оребренном участке" annotation(
+        Dialog(group = "Характеристики оребрения"));
       //формула 7.22а нормативного метода
-      parameter Real sigma1 = s1 / Dout "Относительный поперечный шаг" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real sigma2 = s2 / Dout "Относительный продольный шаг" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real sigma3 = sqrt(0.25 * sigma1 ^ 2 + sigma2) "Средний относительный диагональный шаг труб" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real xfin = sigma1 / sigma2 - 1.26 / psi_fin - 2 "Параметр 'x' для шахматного пучка" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real phi_fin = Modelica.Math.tanh(xfin) "Некий параметр 'фи'" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real n_fin = 0.7 + 0.08 * phi_fin + 0.005 * psi_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(Dialog(group = "Характеристики оребрения"));
+      parameter Real sigma1 = s1 / Dout "Относительный поперечный шаг" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real sigma2 = s2 / Dout "Относительный продольный шаг" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real sigma3 = sqrt(0.25 * sigma1 ^ 2 + sigma2) "Средний относительный диагональный шаг труб" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real xfin = sigma1 / sigma2 - 1.26 / psi_fin - 2 "Параметр 'x' для шахматного пучка" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real phi_fin = Modelica.Math.tanh(xfin) "Некий параметр 'фи'" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real n_fin = 0.7 + 0.08 * phi_fin + 0.005 * psi_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(
+        Dialog(group = "Характеристики оребрения"));
       parameter Real Cs = (1.36 - phi_fin) * (11 / (psi_fin + 8) - 0.14) "Коэффициент, определяемый в зависимости от от относительного поперечного и продольного шага труб в пучке, типа пучка и коэффициента оребрения";
       parameter Real Cz = if z2 < 8 and sigma1 / sigma2 < 2 then 3.15 * z2 ^ 0.05 - 2.5 elseif z2 < 8 and sigma1 / sigma2 >= 2 then 3.5 * z2 ^ 0.03 - 2.72 else 1 "Поправка на число рядов труб по ходу газов";
       parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + 2 * Modelica.Constants.pi * (Dfin ^ 2 - Dout ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin * (Lpipe / sfin)) * z1 * z2 "Площадь оребренной поверхности";
@@ -4580,9 +5278,11 @@ end if;*/
       //Начальные значения
       //**
       //Поток газов
-      parameter Medium_G.SpecificEnthalpy h_startGas[2] = {Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas)} "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_G.SpecificEnthalpy h_startGas[2] = {Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas)} "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       parameter Medium_G.SpecificEnthalpy h_v_startGas = 0.5 * (Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas) + Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas));
-      parameter Medium_G.AbsolutePressure p_startGas[2] = fill(setp_gas, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_G.AbsolutePressure p_startGas[2] = fill(setp_gas, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -4601,9 +5301,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(
+        Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
     equation
 //*****Уравнения для потока газов
 //deltaVGas * gas.d * der(h_gas[2]) = deltaDGas[1] * (h_gas[1] - h_gas[2]) + heat.Q_flow "Уавнение теплового баланса газов (формула 3-15 диссертации Рубашкина)";
@@ -4636,7 +5339,9 @@ end if;*/
     initial equation
       der(h_gas[2]) = 0;
       der(h_gas_v) = 0;
-      annotation(Diagram(graphics), Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
+      annotation(
+        Diagram(graphics),
+        Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
     end onleGasHE_lite;
 
     model onlyFlowHE_lite
@@ -4652,37 +5357,56 @@ end if;*/
       constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
       constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
       constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
       parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
       parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
       parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
       //**
       //***Характеристики металла
-      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+        Dialog(group = "Металл"));
       //**
       //**
       //Конструктивные характеристики
       //**
       //Параметры
       parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
       //Поток вода/пар
       parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 * z2 "Внутренняя площадь одного участка ряда труб";
@@ -4694,14 +5418,21 @@ end if;*/
       //Начальные значения
       //**
       //Поток вода/пар
-      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+        Dialog(tab = "Инициализация"));
       //Металл
-      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -4778,9 +5509,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+        Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
         deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
@@ -5038,7 +5772,11 @@ end if;*/
       for i in 1:2 loop
         der(h_n[i]) = 0;
       end for;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end onlyFlowHE_lite;
 
     model GF_HE_lite
@@ -5069,9 +5807,12 @@ end if;*/
       //**
       //***Исходные данные по разбиению
       //**
-      parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //**
       //***конструктивные характеристики
       //**
@@ -5091,19 +5832,33 @@ end if;*/
       ////
       //////
       ////
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      onleGasHE_lite gasHE(redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, delta_fin = delta_fin, hfin = hfin, sfin = sfin) annotation(Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable onlyFlowHE_lite flowHE(setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small) annotation(Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      onleGasHE_lite gasHE(redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, delta_fin = delta_fin, hfin = hfin, sfin = sfin) annotation(
+        Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+      replaceable onlyFlowHE_lite flowHE(setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
     equation
-      connect(gasHE.gasOut, gasOut) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-      connect(gasIn, gasHE.gasIn) annotation(Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
+      connect(gasHE.gasOut, gasOut) annotation(
+        Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+      connect(gasIn, gasHE.gasIn) annotation(
+        Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
       connect(flowHE.heat, gasHE.heat);
-      connect(flowHE.waterOut, flowOut) annotation(Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
-      connect(flowIn, flowHE.waterIn) annotation(Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+      connect(flowHE.waterOut, flowOut) annotation(
+        Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
+      connect(flowIn, flowHE.waterIn) annotation(
+        Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        version = "",
+        uses);
     end GF_HE_lite;
 
     package Tests
@@ -5139,9 +5894,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_eco = 7.7e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5165,9 +5923,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 7.7e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = Toutflow_eco "Начальная входная температура потока воды/пар";
@@ -5191,9 +5952,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 5.5e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = Toutflow_ote1 "Начальная входная температура потока воды/пар";
@@ -5217,9 +5981,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfTubeSections_sh = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_sh = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 3.7e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = Toutflow_ote2 "Начальная входная температура потока воды/пар";
@@ -5230,31 +5997,51 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 200 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 199 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false, m_flow_small = m_flow_small) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, m_flow_small = system.m_flow_small) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 400, height = -140, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false, m_flow_small = m_flow_small) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = true, use_m_flow_in = false) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, m_flow_small = system.m_flow_small) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 0, height = 0, offset = wgas, startTime = 0) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 400, height = -140, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp ramp1(duration = 0, height = 0, offset = Tinflow_eco, startTime = 0) annotation(
+          Placement(visible = true, transformation(origin = {-90, 92}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(ECO.flowOut, flowSink.ports[1]) annotation(Line(points = {{-42, 24}, {-42, 24}, {-42, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, gasSource.ports[1]) annotation(Line(points = {{-40, 12}, {38, 12}, {38, -6}, {60, -6}, {60, -6}}, color = {0, 127, 255}));
-        connect(ramp1.y, flowSource.T_in) annotation(Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
+        connect(ECO.flowOut, flowSink.ports[1]) annotation(
+          Line(points = {{-42, 24}, {-42, 24}, {-42, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, gasSource.ports[1]) annotation(
+          Line(points = {{-40, 12}, {38, 12}, {38, -6}, {60, -6}, {60, -6}}, color = {0, 127, 255}));
+        connect(ramp1.y, flowSource.T_in) annotation(
+          Line(points = {{-78, 92}, {-72, 92}, {-72, 72}, {-98, 72}, {-98, 54}, {-96, 54}}, color = {0, 0, 127}));
 //separator.steam.p = pflow_eco;
 //SH.flowIn.m_flow = wsteam;
 //SH.flowIn.h_outflow = hflow_sh_in;
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-10, Interval = 0.005), __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS"));
+      </html>"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-10, Interval = 0.005),
+          __OpenModelica_simulationFlags(jacobian = "coloredNumerical", s = "dassl", lv = "LOG_STATS"));
       end Test1;
 
       model startUpTest1
@@ -5287,9 +6074,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5314,9 +6104,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5341,9 +6134,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5368,9 +6164,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5382,49 +6181,81 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(
+          Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         //Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
         //Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.Separator2 separator21 annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.Separator2 separator21 annotation(
+          Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(SH.flowOut, flowSink.ports[1]) annotation(Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(separator21.steam, SH.flowIn) annotation(Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+        connect(SH.flowOut, flowSink.ports[1]) annotation(
+          Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(separator21.steam, SH.flowIn) annotation(
+          Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
 //connect(separator21.steam, CV1.port_a) annotation(Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
-        connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
+        connect(OTE2.flowOut, separator21.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
 //connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
 //connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
 //connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
 //connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
 //connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-        connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(OTE1.flowOut, temperature2.port_a) annotation(
+          Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+        connect(temperature2.port_b, OTE2.flowIn) annotation(
+          Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(temperature1.port_b, OTE1.flowIn) annotation(
+          Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, temperature1.port_a) annotation(
+          Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, OTE1.gasOut) annotation(
+          Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-6, Interval = 0.005));
+      </html>"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-6, Interval = 0.005));
       end startUpTest1;
 
       model startUpTest2
@@ -5457,9 +6288,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5484,9 +6318,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5511,9 +6348,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5538,9 +6378,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5552,49 +6395,81 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite2 ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 2) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite2 OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfVolumes = 10) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite2 OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfVolumes = 10) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite2 ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 2) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite2 OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfVolumes = 10) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite2 OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfVolumes = 10) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(
+          Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         //Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
         //Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.Separator2 separator21 annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.Separator2 separator21 annotation(
+          Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(SH.flowOut, flowSink.ports[1]) annotation(Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(separator21.steam, SH.flowIn) annotation(Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+        connect(SH.flowOut, flowSink.ports[1]) annotation(
+          Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(separator21.steam, SH.flowIn) annotation(
+          Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
 //connect(separator21.steam, CV1.port_a) annotation(Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
-        connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
+        connect(OTE2.flowOut, separator21.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
 //connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
 //connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
 //connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
 //connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
 //connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-        connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(OTE1.flowOut, temperature2.port_a) annotation(
+          Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+        connect(temperature2.port_b, OTE2.flowIn) annotation(
+          Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(temperature1.port_b, OTE1.flowIn) annotation(
+          Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, temperature1.port_a) annotation(
+          Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, OTE1.gasOut) annotation(
+          Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-6, Interval = 0.005));
+      </html>"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-6, Interval = 0.005));
       end startUpTest2;
 
       model startUpTest3
@@ -5627,9 +6502,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_eco = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_eco = z2_eco "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5654,9 +6532,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote1 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote1 = z2_ote1 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5681,9 +6562,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_ote2 = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_ote2 = z2_ote2 "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5708,9 +6592,12 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_sh = 3 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberPMCalcSections_sh = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfFlueSections_sh = z2_sh "Число участков разбиения газохода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -5722,49 +6609,81 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite3 ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 2) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite3 OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfVolumes = 10) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite3 OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfVolumes = 10) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite3 ECO(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, numberOfTubeSections = numberOfTubeSections_eco, numberPMCalcSections = numberPMCalcSections_eco, numberOfFlueSections = numberOfFlueSections_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 2) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite3 OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, numberOfTubeSections = numberOfTubeSections_ote1, numberPMCalcSections = numberPMCalcSections_ote1, numberOfFlueSections = numberOfFlueSections_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfVolumes = 10) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite3 OTE2(redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, numberOfTubeSections = numberOfTubeSections_ote2, numberPMCalcSections = numberPMCalcSections_ote2, numberOfFlueSections = numberOfFlueSections_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfVolumes = 10) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sensors.TemperatureTwoPort temperature1(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-38, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Fluid.Sensors.TemperatureTwoPort temperature2(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.liteModels.GF_HE_lite SH(redeclare MyHRSG_lite.liteModels.onlyFlowHE_SH_lite flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, numberOfTubeSections = numberOfTubeSections_sh, numberPMCalcSections = numberPMCalcSections_sh, numberOfFlueSections = numberOfFlueSections_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2) annotation(
+          Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         //Modelica.Fluid.Valves.ValveLinear CV1(redeclare package Medium = Medium_F, dp_nominal = 1000, m_flow_nominal = wsteam) annotation(Placement(visible = true, transformation(origin = {23, 67}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
         //Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {-2, 80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.Separator2 separator21 annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.Separator2 separator21 annotation(
+          Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       equation
-        connect(SH.flowOut, flowSink.ports[1]) annotation(Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(separator21.steam, SH.flowIn) annotation(Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+        connect(SH.flowOut, flowSink.ports[1]) annotation(
+          Line(points = {{38, 24}, {38, 24}, {38, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(separator21.steam, SH.flowIn) annotation(
+          Line(points = {{14, 52}, {14, 52}, {14, 54}, {30, 54}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
 //connect(separator21.steam, CV1.port_a) annotation(Line(points = {{14, 51}, {14, 68}, {18, 68}}, color = {0, 127, 255}));
-        connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
+        connect(OTE2.flowOut, separator21.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 47}, {7, 47}}, color = {0, 127, 255}));
 //connect(constCV2.y, CV2.opening) annotation(Line(points = {{48, 86}, {54, 86}, {54, 70}, {46, 70}, {46, 62}, {48, 62}}, color = {0, 0, 127}));
 //connect(CV2.port_b, flowSink.ports[1]) annotation(Line(points = {{52, 57}, {56, 57}, {56, 56}, {60, 56}}, color = {0, 127, 255}));
 //connect(SH.flowOut, CV2.port_a) annotation(Line(points = {{38, 24}, {38, 57}, {42, 57}}, color = {0, 127, 255}));
 //connect(constCV1.y, CV1.opening) annotation(Line(points = {{10, 80}, {24, 80}, {24, 72}, {24, 72}}, color = {0, 0, 127}));
 //connect(CV1.port_b, SH.flowIn) annotation(Line(points = {{28, 68}, {32, 68}, {32, 38}, {30, 38}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(OTE1.flowOut, temperature2.port_a) annotation(Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
-        connect(temperature2.port_b, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(temperature1.port_b, OTE1.flowIn) annotation(Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, temperature1.port_a) annotation(Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(OTE1.flowOut, temperature2.port_a) annotation(
+          Line(points = {{-17.8, 23}, {-17.8, 26.5}, {-17.8, 26.5}, {-17.8, 30}, {-13.8, 30}}, color = {0, 127, 255}));
+        connect(temperature2.port_b, OTE2.flowIn) annotation(
+          Line(points = {{-6, 30}, {-2, 30}, {-2, 26}, {-2, 26}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(temperature1.port_b, OTE1.flowIn) annotation(
+          Line(points = {{-34, 30}, {-26, 30}, {-26, 26.5}, {-26, 26.5}, {-26, 23}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, temperature1.port_a) annotation(
+          Line(points = {{-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 23}, {-41.8, 31}, {-41.8, 31}, {-41.8, 29}, {-41.8, 29}}, color = {0, 127, 255}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, OTE1.gasOut) annotation(
+          Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
+      </html>"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
       end startUpTest3;
     end Tests;
 
@@ -5781,37 +6700,56 @@ end if;*/
       constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
       constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
       constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
       parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
       parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
       parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
       //**
       //***Характеристики металла
-      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+        Dialog(group = "Металл"));
       //**
       //**
       //Конструктивные характеристики
       //**
       //Параметры
       parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
       //Поток вода/пар
       parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 * z2 "Внутренняя площадь одного участка ряда труб";
@@ -5823,14 +6761,21 @@ end if;*/
       //Начальные значения
       //**
       //Поток вода/пар
-      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+        Dialog(tab = "Инициализация"));
       //Металл
-      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -5897,9 +6842,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+        Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
         deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
@@ -6080,7 +7028,11 @@ end if;*/
       der(p_v) = 0;
       der(h_n[1]) = 0;
       der(h_n[2]) = 0;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end onlyFlowHE_SH_lite;
 
     model onlyFlowHE_ECO_lite
@@ -6096,37 +7048,56 @@ end if;*/
       constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
       constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
       constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
       parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
       parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
       parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
       //**
       //***Характеристики металла
-      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+        Dialog(group = "Металл"));
       //**
       //**
       //Конструктивные характеристики
       //**
       //Параметры
       parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
       //Поток вода/пар
       parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 * z2 "Внутренняя площадь одного участка ряда труб";
@@ -6138,14 +7109,21 @@ end if;*/
       //Начальные значения
       //**
       //Поток вода/пар
-      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+        Dialog(tab = "Инициализация"));
       //Металл
-      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -6222,9 +7200,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+        Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       if HRSG_type == MyHRSG_lite.Choices.HRSG_type.horizontalBottom then
         deltaHpipe = Lpipe "Разность высотных отметок труб для горизонтального КУ";
@@ -6482,7 +7463,11 @@ end if;*/
 //der(p_v) = 0;
       der(h_n[1]) = 0;
 //der(h_n[2]) = 0;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end onlyFlowHE_ECO_lite;
 
     model onlyFlowHEBoil_lite2
@@ -6498,38 +7483,57 @@ end if;*/
       constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
       constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
       constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
+      parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+        Dialog(group = "Параметры стороны вода/пар"));
       parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
       parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
       parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
       //**
       //***Характеристики металла
-      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+        Dialog(group = "Металл"));
       //**
       //**
       //Конструктивные характеристики
       //**
       //Параметры
       parameter MyHRSG_lite.Choices.HRSG_type HRSG_type = MyHRSG_lite.Choices.HRSG_type.horizontalBottom "Тип КУ";
-      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 1 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberFirstTubeInLastZahod = integer(numberOfFlueSections - zahod + 1) "Номер первой трубы в последнем заходе";
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода (число заходов труб)" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberOfVolumes = 5 "Число участков разбиения";
-      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = 1 "заходность труб теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 78 "Число труб по ширине газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 2 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
       //Поток вода/пар
       parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din * z1 * z2 / numberOfVolumes "Внутренняя площадь одного участка ряда труб";
@@ -6541,14 +7545,21 @@ end if;*/
       //Начальные значения
       //**
       //Поток вода/пар
-      parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfVolumes + 1] = fill(seth_in, numberOfVolumes + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfVolumes] = fill(seth_in, numberOfVolumes) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfVolumes] = fill(setp_flow_in, numberOfVolumes) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfVolumes + 1] = fill(setp_flow_in, numberOfVolumes + 1) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_v[numberOfVolumes] = fill(setD_flow, numberOfVolumes) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-      parameter Medium_F.MassFlowRate D_startFlow_n[numberOfVolumes + 1] = fill(setD_flow, numberOfVolumes + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_n[numberOfVolumes + 1] = fill(seth_in, numberOfVolumes + 1) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.SpecificEnthalpy h_startFlow_v[numberOfVolumes] = fill(seth_in, numberOfVolumes) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_v[numberOfVolumes] = fill(setp_flow_in, numberOfVolumes) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.AbsolutePressure p_startFlow_n[numberOfVolumes + 1] = fill(setp_flow_in, numberOfVolumes + 1) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_v[numberOfVolumes] = fill(setD_flow, numberOfVolumes) "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+        Dialog(tab = "Инициализация"));
+      parameter Medium_F.MassFlowRate D_startFlow_n[numberOfVolumes + 1] = fill(setD_flow, numberOfVolumes + 1) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+        Dialog(tab = "Инициализация"));
       //Металл
-      parameter Modelica.SIunits.Temperature t_startM[numberOfVolumes] = fill(setTm, numberOfVolumes) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Modelica.SIunits.Temperature t_startM[numberOfVolumes] = fill(setTm, numberOfVolumes) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -6617,9 +7628,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfVolumes] annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat[numberOfVolumes] annotation(
+        Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       timeZ = time;
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
@@ -6873,7 +7887,11 @@ end if;*/
       for i in 2:numberOfVolumes + 1 loop
         der(h_n[i]) = 0;
       end for;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end onlyFlowHEBoil_lite2;
 
     model onlyGasHE_lite2
@@ -6889,31 +7907,50 @@ end if;*/
       //***Исходные данные для газовой стороны
       //**
       replaceable package Medium_G = MyHRSG_lite.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-      parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
       parameter Medium_G.MassFraction setX_gas[Medium_G.nXi] = Medium_G.reference_X;
-      parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+      parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
       //**
       //Конструктивные характеристики
       //**
       //Параметры
-      parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 10 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberOfVolumes = 2 "Число участков разбиения";
-      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer zahod = numberOfFlueSections "заходность труб теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z1 = 79 "Число труб по ширине газохода" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s1 = 79e-3 "Поперечный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length s2 = 92.2e-3 "Продольный шаг" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer zahod = numberOfFlueSections "заходность труб теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z1 = 79 "Число труб по ширине газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer z2 = 14 "Число труб по ходу газов в данной поверхности нагрева" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Lpipe = 18.4 "Длина теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length Hpipe = Lpipe "Разность высотных отметов выхода и входа теплообменной трубки" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Поток газов
       parameter Modelica.SIunits.Volume deltaVGas = z2 * Lpipe * (s1 * s2 * z1 - Modelica.Constants.pi * Dout ^ 2 / 4) / numberOfVolumes "Объем одного участка газового тракта";
       parameter Modelica.SIunits.Area deltaSGas = Lpipe * Modelica.Constants.pi * Dout * z1 / numberOfVolumes "Наружная площадь одного участка ряда труб";
@@ -6921,18 +7958,29 @@ end if;*/
       //**
       //Характеристики оребрения
       //
-      parameter Modelica.SIunits.Length delta_fin = 0.0009 "Средняя толщина ребра, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Modelica.SIunits.Length hfin = 0.014 "Высота ребра, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Modelica.SIunits.Length sfin = 0.004 "Шаг ребер, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real psi_fin = 1 / (2 * Dout * sfin) * (Dfin ^ 2 - Dout ^ 2 + 2 * Dfin * delta_fin) + 1 - delta_fin / sfin "Коэффициент оребрения, равный отношению полной поверхности пучка к поверхности несущих труб на оребренном участке" annotation(Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length delta_fin = 0.0009 "Средняя толщина ребра, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length hfin = 0.014 "Высота ребра, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length sfin = 0.004 "Шаг ребер, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real psi_fin = 1 / (2 * Dout * sfin) * (Dfin ^ 2 - Dout ^ 2 + 2 * Dfin * delta_fin) + 1 - delta_fin / sfin "Коэффициент оребрения, равный отношению полной поверхности пучка к поверхности несущих труб на оребренном участке" annotation(
+        Dialog(group = "Характеристики оребрения"));
       //формула 7.22а нормативного метода
-      parameter Real sigma1 = s1 / Dout "Относительный поперечный шаг" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real sigma2 = s2 / Dout "Относительный продольный шаг" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real sigma3 = sqrt(0.25 * sigma1 ^ 2 + sigma2) "Средний относительный диагональный шаг труб" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real xfin = sigma1 / sigma2 - 1.26 / psi_fin - 2 "Параметр 'x' для шахматного пучка" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real phi_fin = Modelica.Math.tanh(xfin) "Некий параметр 'фи'" annotation(Dialog(group = "Характеристики оребрения"));
-      parameter Real n_fin = 0.7 + 0.08 * phi_fin + 0.005 * psi_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(Dialog(group = "Характеристики оребрения"));
+      parameter Real sigma1 = s1 / Dout "Относительный поперечный шаг" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real sigma2 = s2 / Dout "Относительный продольный шаг" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real sigma3 = sqrt(0.25 * sigma1 ^ 2 + sigma2) "Средний относительный диагональный шаг труб" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real xfin = sigma1 / sigma2 - 1.26 / psi_fin - 2 "Параметр 'x' для шахматного пучка" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real phi_fin = Modelica.Math.tanh(xfin) "Некий параметр 'фи'" annotation(
+        Dialog(group = "Характеристики оребрения"));
+      parameter Real n_fin = 0.7 + 0.08 * phi_fin + 0.005 * psi_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(
+        Dialog(group = "Характеристики оребрения"));
       parameter Real Cs = (1.36 - phi_fin) * (11 / (psi_fin + 8) - 0.14) "Коэффициент, определяемый в зависимости от от относительного поперечного и продольного шага труб в пучке, типа пучка и коэффициента оребрения";
       parameter Real Cz = if z2 < 8 and sigma1 / sigma2 < 2 then 3.15 * z2 ^ 0.05 - 2.5 elseif z2 < 8 and sigma1 / sigma2 >= 2 then 3.5 * z2 ^ 0.03 - 2.72 else 1 "Поправка на число рядов труб по ходу газов";
       parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + 2 * Modelica.Constants.pi * (Dfin ^ 2 - Dout ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin * (Lpipe / sfin)) * z1 * z2 / numberOfVolumes "Площадь оребренной поверхности";
@@ -6940,9 +7988,11 @@ end if;*/
       //Начальные значения
       //**
       //Поток газов
-      parameter Medium_G.SpecificEnthalpy h_startGas[numberOfVolumes + 1] = fill(Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), numberOfVolumes + 1) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_G.SpecificEnthalpy h_startGas[numberOfVolumes + 1] = fill(Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), numberOfVolumes + 1) "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       parameter Medium_G.SpecificEnthalpy h_v_startGas[numberOfVolumes] = fill(Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), numberOfVolumes);
-      parameter Medium_G.AbsolutePressure p_startGas[2] = fill(setp_gas, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_G.AbsolutePressure p_startGas[2] = fill(setp_gas, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -6961,9 +8011,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat[numberOfVolumes] annotation(Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat[numberOfVolumes] annotation(
+        Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
     equation
       for i in 1:numberOfVolumes loop
 //*****Уравнения для потока газов
@@ -7000,7 +8053,9 @@ end if;*/
         der(h_gas[i + 1]) = 0;
 //der(h_gas_v[i]) = 0;
       end for;
-      annotation(Diagram(graphics), Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
+      annotation(
+        Diagram(graphics),
+        Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
     end onlyGasHE_lite2;
 
     model GF_HE_lite2
@@ -7031,9 +8086,12 @@ end if;*/
       //**
       //***Исходные данные по разбиению
       //**
-      parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberOfVolumes = 2 "Число участков разбиения";
       //**
       //***конструктивные характеристики
@@ -7054,19 +8112,33 @@ end if;*/
       ////
       //////
       ////
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      onlyGasHE_lite2 gasHE(redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, delta_fin = delta_fin, hfin = hfin, sfin = sfin, numberOfVolumes = numberOfVolumes) annotation(Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable onlyFlowHEBoil_lite2 flowHE(setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small, numberOfVolumes = numberOfVolumes) annotation(Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      onlyGasHE_lite2 gasHE(redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, delta_fin = delta_fin, hfin = hfin, sfin = sfin, numberOfVolumes = numberOfVolumes) annotation(
+        Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+      replaceable onlyFlowHEBoil_lite2 flowHE(setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small, numberOfVolumes = numberOfVolumes) annotation(
+        Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
     equation
-      connect(gasHE.gasOut, gasOut) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-      connect(gasIn, gasHE.gasIn) annotation(Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
+      connect(gasHE.gasOut, gasOut) annotation(
+        Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+      connect(gasIn, gasHE.gasIn) annotation(
+        Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
       connect(flowHE.heat, gasHE.heat);
-      connect(flowHE.waterOut, flowOut) annotation(Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
-      connect(flowIn, flowHE.waterIn) annotation(Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+      connect(flowHE.waterOut, flowOut) annotation(
+        Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
+      connect(flowIn, flowHE.waterIn) annotation(
+        Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        version = "",
+        uses);
     end GF_HE_lite2;
 
     model GF_HE_lite3
@@ -7097,9 +8169,12 @@ end if;*/
       //**
       //***Исходные данные по разбиению
       //**
-      parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 3 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberPMCalcSections = 3 "Число участков разбиения трубы входящих в один участок расчета процессов массообмена" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Integer numberOfVolumes = 2 "Число участков разбиения";
       //**
       //***конструктивные характеристики
@@ -7120,25 +8195,41 @@ end if;*/
       ////
       //////
       ////
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      onleGasHE_lite gasHE[numberOfVolumes](redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe / numberOfVolumes, delta_fin = delta_fin, hfin = hfin, sfin = sfin) annotation(Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable onlyFlowHE_lite flowHE[numberOfVolumes](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe / numberOfVolumes, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small) annotation(Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      onleGasHE_lite gasHE[numberOfVolumes](redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfTubeSections = numberOfTubeSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe / numberOfVolumes, delta_fin = delta_fin, hfin = hfin, sfin = sfin) annotation(
+        Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+      replaceable onlyFlowHE_lite flowHE[numberOfVolumes](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, numberOfTubeSections = numberOfTubeSections, numberPMCalcSections = numberPMCalcSections, Din = Din, delta = delta, s1 = s1, s2 = s2, zahod = zahod, z1 = z1, z2 = z2, Lpipe = Lpipe / numberOfVolumes, seth_in = seth_in, seth_out = seth_out, HRSG_type = HRSG_type_set, setTm = setTm, m_flow_small = m_flow_small) annotation(
+        Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
     equation
       for i in 1:numberOfVolumes - 1 loop
-        connect(gasHE[i].gasOut, gasHE[i + 1].gasIn) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-        connect(flowHE[i].waterOut, flowHE[i + 1].waterIn) annotation(Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
+        connect(gasHE[i].gasOut, gasHE[i + 1].gasIn) annotation(
+          Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+        connect(flowHE[i].waterOut, flowHE[i + 1].waterIn) annotation(
+          Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
       end for;
       for i in 1:numberOfVolumes loop
         connect(flowHE[i].heat, gasHE[numberOfVolumes + 1 - i].heat);
       end for;
-      connect(gasHE[numberOfVolumes].gasOut, gasOut) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-      connect(gasIn, gasHE[1].gasIn) annotation(Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
-      connect(flowHE[numberOfVolumes].waterOut, flowOut) annotation(Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
-      connect(flowIn, flowHE[1].waterIn) annotation(Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+      connect(gasHE[numberOfVolumes].gasOut, gasOut) annotation(
+        Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+      connect(gasIn, gasHE[1].gasIn) annotation(
+        Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
+      connect(flowHE[numberOfVolumes].waterOut, flowOut) annotation(
+        Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
+      connect(flowIn, flowHE[1].waterIn) annotation(
+        Line(points = {{-90, -50}, {-34, -50}, {-34, -50}, {-34, -50}}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        version = "",
+        uses);
     end GF_HE_lite3;
   end liteModels;
 
@@ -7204,7 +8295,11 @@ end if;*/
       if DynamicMomentum then
         der(D_flow_n[2]) = 0;
       end if;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end flowSide_OTE;
 
     model gasSideHE
@@ -7213,24 +8308,33 @@ end if;*/
       //***Исходные данные для газовой стороны
       //**
       replaceable package Medium_G = MyHRSG_lite.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-      parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
-      parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.MassFlowRate setD_gas = 509 "Номинальный (и начальный) массовый расход газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Pressure setp_gas = 3e3 "Начальное давление газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Temperature setT_inGas = 184 + 273.15 "Начальная входная температура газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
+      parameter Modelica.SIunits.Temperature setT_outGas = 170 + 273.15 "Начальная выходная температура газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
       parameter Medium_G.MassFraction setX_gas[Medium_G.nXi] = Medium_G.reference_X;
-      parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(Dialog(group = "Параметры стороны газов"));
+      parameter Real k_alfaGas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
+        Dialog(group = "Параметры стороны газов"));
       //**
       //Конструктивные характеристики
       //**
       //Параметры
-      parameter Integer numberOfVolumes = 10 "Число участков разбиения" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Diameter Dout "Наружный диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfVolumes = 10 "Число участков разбиения" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Diameter Dout "Наружный диаметр трубок теплообменника" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Real Xi_flow = 0.3 "Коэффициент гидравлического сопротивления участка трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       //Поток газов
       parameter Modelica.SIunits.Volume deltaVGas "Объем одного участка газового тракта";
       parameter Modelica.SIunits.Area f_gas "Площадь для прохода газов на одном участке разбиения";
       //Характеристики оребрения
-      parameter Real n_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(Dialog(group = "Характеристики оребрения"));
+      parameter Real n_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(
+        Dialog(group = "Характеристики оребрения"));
       parameter Real Cs "Коэффициент, определяемый в зависимости от от относительного поперечного и продольного шага труб в пучке, типа пучка и коэффициента оребрения";
       parameter Real Cz "Поправка на число рядов труб по ходу газов";
       parameter Real H_fin "Площадь оребренной поверхности";
@@ -7239,9 +8343,11 @@ end if;*/
       //Начальные значения
       //**
       //Поток газов
-      parameter Medium_G.SpecificEnthalpy h_startGas[2] = {Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas)} "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_G.SpecificEnthalpy h_startGas[2] = {Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas), Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas)} "Начальный вектор энальпии потока газов" annotation(
+        Dialog(tab = "Инициализация"));
       parameter Medium_G.SpecificEnthalpy h_v_startGas = 0.5 * (Medium_G.specificEnthalpy_pTX(setp_gas, setT_inGas, setX_gas) + Medium_G.specificEnthalpy_pTX(setp_gas, setT_outGas, setX_gas));
-      parameter Medium_G.AbsolutePressure p_startGas[2] = fill(setp_gas, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
+      parameter Medium_G.AbsolutePressure p_startGas[2] = fill(setp_gas, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        Dialog(tab = "Инициализация"));
       //**
       //Переменные
       //**
@@ -7262,9 +8368,12 @@ end if;*/
       //**
       //Интерфейс
       //**
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(
+        Placement(visible = false, transformation(origin = {0, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {98, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-140, -20}, {-100, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{100, -20}, {140, 20}}, rotation = 0)));
     equation
 //*****Уравнения для потока газов
       deltaVGas * gas.d * der(t_gas) = deltaDGas[1] * (h_gas[1] - h_gas[2]) + heat.Q_flow;
@@ -7299,7 +8408,9 @@ end if;*/
     initial equation
       der(gas.p) = 0;
       der(t_gas) = 0;
-      annotation(Diagram(graphics), Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
+      annotation(
+        Diagram(graphics),
+        Icon(graphics = {Rectangle(extent = {{-100, 100}, {100, -100}}, lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(extent = {{-100, -115}, {100, -145}}, lineColor = {85, 170, 255}, textString = "%name")}));
     end gasSideHE;
 
     model GFHE
@@ -7317,21 +8428,33 @@ end if;*/
       parameter Modelica.SIunits.Area f_gas = (1 - Dout / s1 * (1 + 2 * hfin * delta_fin / sfin / Dout)) * Lpipe * s2 * z1 "Площадь для прохода газов";
       //Характеристики оребрения
       parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + (2 * Modelica.Constants.pi * (Dfin ^ 2 - Dout ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin) * (Lpipe / sfin)) * z1 * z2 / numberOfVolumes "Площадь оребренной поверхности";
-      gasSideHE gasHE[numberOfVolumes](redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfVolumes = numberOfVolumes, Dout = Dout, deltaVGas = deltaVGas, f_gas = f_gas, n_fin = n_fin, Cs = Cs, Cz = Cz, H_fin = H_fin, Kaer = Kaer) annotation(Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable MyHRSG_lite.cleanCopy.flowSide_OTE flowHE[numberOfVolumes](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = DynamicMomentum) annotation(Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
+      gasSideHE gasHE[numberOfVolumes](redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfVolumes = numberOfVolumes, Dout = Dout, deltaVGas = deltaVGas, f_gas = f_gas, n_fin = n_fin, Cs = Cs, Cz = Cz, H_fin = H_fin, Kaer = Kaer) annotation(
+        Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+      replaceable MyHRSG_lite.cleanCopy.flowSide_OTE flowHE[numberOfVolumes](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = DynamicMomentum) annotation(
+        Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
     equation
-      connect(flowIn, flowHE[1].waterIn) annotation(Line(points = {{-90, -50}, {-36, -50}}));
-      connect(flowHE[numberOfVolumes].waterOut, flowOut) annotation(Line(points = {{36, -50}, {94, -50}}, color = {0, 127, 255}));
+      connect(flowIn, flowHE[1].waterIn) annotation(
+        Line(points = {{-90, -50}, {-36, -50}}));
+      connect(flowHE[numberOfVolumes].waterOut, flowOut) annotation(
+        Line(points = {{36, -50}, {94, -50}}, color = {0, 127, 255}));
       for i in 1:numberOfVolumes - 1 loop
-        connect(gasHE[i].gasOut, gasHE[i + 1].gasIn) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-        connect(flowHE[i].waterOut, flowHE[i + 1].waterIn) annotation(Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
+        connect(gasHE[i].gasOut, gasHE[i + 1].gasIn) annotation(
+          Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+        connect(flowHE[i].waterOut, flowHE[i + 1].waterIn) annotation(
+          Line(points = {{36, -50}, {94, -50}, {94, -50}, {94, -50}}, color = {0, 127, 255}));
       end for;
       for i in 1:numberOfVolumes loop
         connect(flowHE[i].heat, gasHE[numberOfVolumes + 1 - i].heat);
       end for;
-      connect(gasHE[numberOfVolumes].gasOut, gasOut) annotation(Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
-      connect(gasIn, gasHE[1].gasIn) annotation(Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+      connect(gasHE[numberOfVolumes].gasOut, gasOut) annotation(
+        Line(points = {{36, 50}, {92, 50}, {92, 48}, {92, 48}}, color = {0, 127, 255}));
+      connect(gasIn, gasHE[1].gasIn) annotation(
+        Line(points = {{-90, 50}, {-34, 50}, {-34, 48}, {-34, 48}}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        version = "",
+        uses);
     end GFHE;
 
     package Tests
@@ -7365,7 +8488,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfVolumes_eco = 4 "Число участков разбиения теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_eco = 4 "Число участков разбиения теплообменника" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7390,7 +8514,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfVolumes_ote1 = 10 "Число участков разбиения теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_ote1 = 10 "Число участков разбиения теплообменника" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7415,7 +8540,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfVolumes_ote2 = 10 "Число участков разбиения теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_ote2 = 10 "Число участков разбиения теплообменника" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7440,7 +8566,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения теплообменника" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7452,43 +8579,77 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = numberOfVolumes_eco) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfVolumes = numberOfVolumes_ote1) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_ote2) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.flowPipe flowPipe1(setD_flow = wflow, setp_flow_in = pflow_ote2, setp_flow_out = pflow_ote2, setT_inFlow = Tinflow_ote2, setT_outFlow = Tinflow_ote2, Din = 0.3, delta = 0.01, Lpipe = 10, seth_in = hflow_ote2_in, seth_out = hflow_ote2_in, setTm = setTm_ote2, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, m_flow_small = 0.001, DynamicMomentum = true) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        MyHRSG_lite.Separator2 separator21(m_flow_small = 0.001) annotation(Placement(visible = true, transformation(origin = {20, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = numberOfVolumes_eco) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfVolumes = numberOfVolumes_ote1) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_ote2) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.flowPipe flowPipe1(setD_flow = wflow, setp_flow_in = pflow_ote2, setp_flow_out = pflow_ote2, setT_inFlow = Tinflow_ote2, setT_outFlow = Tinflow_ote2, Din = 0.3, delta = 0.01, Lpipe = 10, seth_in = hflow_ote2_in, seth_out = hflow_ote2_in, setTm = setTm_ote2, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-10, 30}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, m_flow_small = 0.001, DynamicMomentum = true) annotation(
+          Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        MyHRSG_lite.Separator2 separator21(m_flow_small = 0.001) annotation(
+          Placement(visible = true, transformation(origin = {20, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+          Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
       equation
-        connect(OTE2.flowOut, separator21.fedWater) annotation(Line(points = {{6, 24}, {6, 24}, {6, 48}, {14, 48}, {14, 48}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, OTE1.flowIn) annotation(Line(points = {{-42, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
-        connect(separator21.steam, SH.flowIn) annotation(Line(points = {{20, 51}, {20, 54}, {30, 54}, {30, 24}}, color = {0, 127, 255}));
-        connect(flowPipe1.waterOut, OTE2.flowIn) annotation(Line(points = {{-6, 30}, {-2, 30}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(OTE1.flowOut, flowPipe1.waterIn) annotation(Line(points = {{-18, 24}, {-18, 30}, {-15, 30}}, color = {0, 127, 255}));
-        connect(constCV1.y, CV1.opening) annotation(Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
-        connect(CV1.port_a, SH.flowOut) annotation(Line(points = {{42, 56}, {38, 56}, {38, 24}, {38, 24}}, color = {0, 127, 255}));
-        connect(CV1.port_b, flowSink.ports[1]) annotation(Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(OTE2.flowOut, separator21.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 24}, {6, 48}, {14, 48}, {14, 48}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, OTE1.flowIn) annotation(
+          Line(points = {{-42, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
+        connect(separator21.steam, SH.flowIn) annotation(
+          Line(points = {{20, 51}, {20, 54}, {30, 54}, {30, 24}}, color = {0, 127, 255}));
+        connect(flowPipe1.waterOut, OTE2.flowIn) annotation(
+          Line(points = {{-6, 30}, {-2, 30}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(OTE1.flowOut, flowPipe1.waterIn) annotation(
+          Line(points = {{-18, 24}, {-18, 30}, {-15, 30}}, color = {0, 127, 255}));
+        connect(constCV1.y, CV1.opening) annotation(
+          Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
+        connect(CV1.port_a, SH.flowOut) annotation(
+          Line(points = {{42, 56}, {38, 56}, {38, 24}, {38, 24}}, color = {0, 127, 255}));
+        connect(CV1.port_b, flowSink.ports[1]) annotation(
+          Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, OTE1.gasOut) annotation(
+          Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
+      </html>"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
       end startUpTest_1;
 
       model startUpTest_2
@@ -7521,7 +8682,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
         parameter Modelica.SIunits.Temperature Toutflow_eco = 60 + 273.15 "Начальная выходная температура потока воды/пар";
@@ -7545,7 +8707,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7570,7 +8733,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7595,7 +8759,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7607,44 +8772,79 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE_new OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE_new OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, DynamicMomentum = true, m_flow_small = 0.01) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        MyHRSG_lite.Separator separator(redeclare package Medium = Medium_F, Din = Dsep, L = Lsep, n_sep = n_sep_set, ps_start = pflow_ote2, delta = deltaSep, Hw_start = Hw_start_set, sat_start = sat_start, t_start = Medium_F.saturationTemperature_sat(sat_start)) annotation(Placement(visible = true, transformation(origin = {18, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T drainSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {26, -18}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE_new OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE_new OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, DynamicMomentum = true, m_flow_small = 0.01) annotation(
+          Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+          Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        MyHRSG_lite.Separator separator(redeclare package Medium = Medium_F, Din = Dsep, L = Lsep, n_sep = n_sep_set, ps_start = pflow_ote2, delta = deltaSep, Hw_start = Hw_start_set, sat_start = sat_start, t_start = Medium_F.saturationTemperature_sat(sat_start)) annotation(
+          Placement(visible = true, transformation(origin = {18, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T drainSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {26, -18}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
       equation
-        connect(OTE1.flowOut, OTE2.flowIn) annotation(Line(points = {{-18, 24}, {-2, 24}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, OTE1.flowIn) annotation(Line(points = {{-42, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
-        connect(separator.drainFeedback, drainSink.m_flow_in) annotation(Line(points = {{24, 44}, {24, 44}, {24, -4}, {32, -4}, {32, -14}, {32, -14}}, color = {0, 0, 127}));
-        connect(separator.downStr, drainSink.ports[1]) annotation(Line(points = {{18, 30}, {18, 30}, {18, -18}, {20, -18}, {20, -18}}, color = {0, 127, 255}));
-        connect(separator.steam, SH.flowIn) annotation(Line(points = {{18, 52}, {30, 52}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-        connect(OTE2.flowOut, separator.fedWater) annotation(Line(points = {{6, 24}, {6, 24}, {6, 48}, {12, 48}, {12, 48}}, color = {0, 127, 255}));
-        connect(CV1.port_b, flowSink.ports[1]) annotation(Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(constCV1.y, CV1.opening) annotation(Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
-        connect(CV1.port_a, SH.flowOut) annotation(Line(points = {{42, 56}, {38, 56}, {38, 24}, {38, 24}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(OTE1.flowOut, OTE2.flowIn) annotation(
+          Line(points = {{-18, 24}, {-2, 24}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, OTE1.flowIn) annotation(
+          Line(points = {{-42, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
+        connect(separator.drainFeedback, drainSink.m_flow_in) annotation(
+          Line(points = {{24, 44}, {24, 44}, {24, -4}, {32, -4}, {32, -14}, {32, -14}}, color = {0, 0, 127}));
+        connect(separator.downStr, drainSink.ports[1]) annotation(
+          Line(points = {{18, 30}, {18, 30}, {18, -18}, {20, -18}, {20, -18}}, color = {0, 127, 255}));
+        connect(separator.steam, SH.flowIn) annotation(
+          Line(points = {{18, 52}, {30, 52}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+        connect(OTE2.flowOut, separator.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 24}, {6, 48}, {12, 48}, {12, 48}}, color = {0, 127, 255}));
+        connect(CV1.port_b, flowSink.ports[1]) annotation(
+          Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(constCV1.y, CV1.opening) annotation(
+          Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
+        connect(CV1.port_a, SH.flowOut) annotation(
+          Line(points = {{42, 56}, {38, 56}, {38, 24}, {38, 24}}, color = {0, 127, 255}));
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, OTE1.gasOut) annotation(
+          Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
+      </html>"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
       end startUpTest_2;
 
       model startUpTest_11 "Модель прямоточной части КУ со сложной разбивкой OTE и упрощенной моделью сепаратора"
@@ -7677,7 +8877,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
         parameter Modelica.SIunits.Temperature Toutflow_eco = 60 + 273.15 "Начальная выходная температура потока воды/пар";
@@ -7701,7 +8902,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7726,7 +8928,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7751,7 +8954,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7763,45 +8967,81 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE_new OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE_new OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, DynamicMomentum = true, m_flow_small = 0.001) annotation(Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.Separator2 separator(m_flow_small = 0.001) annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, nPorts = 1, use_T_in = false, use_m_flow_in = false, m_flow = wflow, T = Tinflow_eco) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-46, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE_new OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE_new OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, DynamicMomentum = true, m_flow_small = 0.001) annotation(
+          Placement(visible = true, transformation(origin = {34, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.Separator2 separator(m_flow_small = 0.001) annotation(
+          Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+          Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       equation
-        connect(separator.steam, SH.flowIn) annotation(Line(points = {{14, 52}, {30, 52}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
-        connect(OTE2.flowOut, separator.fedWater) annotation(Line(points = {{6, 24}, {6, 24}, {6, 48}, {8, 48}}, color = {0, 127, 255}));
-        connect(OTE1.flowOut, OTE2.flowIn) annotation(Line(points = {{-18, 24}, {-2, 24}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, OTE1.flowIn) annotation(Line(points = {{-42, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
-        connect(CV1.port_b, flowSink.ports[1]) annotation(Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(constCV1.y, CV1.opening) annotation(Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
-        connect(CV1.port_a, SH.flowOut) annotation(Line(points = {{42, 56}, {38, 56}, {38, 24}, {38, 24}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, OTE1.gasOut) annotation(Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
-        connect(gasSink.ports[1], ECO.gasOut) annotation(Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(separator.steam, SH.flowIn) annotation(
+          Line(points = {{14, 52}, {30, 52}, {30, 24}, {30, 24}}, color = {0, 127, 255}));
+        connect(OTE2.flowOut, separator.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 24}, {6, 48}, {8, 48}}, color = {0, 127, 255}));
+        connect(OTE1.flowOut, OTE2.flowIn) annotation(
+          Line(points = {{-18, 24}, {-2, 24}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, OTE1.flowIn) annotation(
+          Line(points = {{-42, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
+        connect(CV1.port_b, flowSink.ports[1]) annotation(
+          Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(constCV1.y, CV1.opening) annotation(
+          Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
+        connect(CV1.port_a, SH.flowOut) annotation(
+          Line(points = {{42, 56}, {38, 56}, {38, 24}, {38, 24}}, color = {0, 127, 255}));
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{28, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {40, 12}, {40, 12}}, color = {0, 127, 255}));
+        connect(gasSource.T_in, rampGasTemp.y) annotation(
+          Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
+        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(
+          Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-15.8, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, OTE1.gasOut) annotation(
+          Line(points = {{-39.8, 12}, {-27.8, 12}}, color = {0, 127, 255}));
+        connect(gasSink.ports[1], ECO.gasOut) annotation(
+          Line(points = {{-80, -6}, {-60, -6}, {-60, 12}, {-52, 12}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-50, 50}, {-50, 23}}, color = {0, 127, 255}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       </p>
-      </html>", revisions = "Модель со сложным разбиением и упрощенным сепаратором"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
+      </html>", revisions = "Модель со сложным разбиением и упрощенным сепаратором"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
       end startUpTest_11;
 
       model startUpControlTest_1
         package Medium_F = Modelica.Media.Water.WaterIF97_ph;
+        parameter Real temperature_exh[:, 2] = {{0.0, 2.57}, {11.94, 3.46}, {17.9104, 4.23}, {17.9105, 7.32}, {20.8955, 15.79}, {20.8956, 40.82}, {23.8806, 45.44}, {23.8807, 52.75}, {26.8657, 52.75}, {26.8658, 57.89}, {29.8507, 60.97}, {32.84, 62.25}, {35.82, 64.3}, {38.81, 66.2}, {44.78, 67.51}, {50.75, 68.79}, {53.73, 70.08}, {59.7, 71.23}, {68.66, 72.39}, {74.63, 73.16}, {80.6, 73.67}, {92.54, 74.57}, {107.46, 75.47}, {122.39, 76.23}, {143.28, 76.88}, {155.22, 77.0}, {170.15, 76.87}, {191.05, 76.36}, {205.97, 75.46}, {217.91, 74.69}, {229.85, 73.66}, {238.81, 72.76}, {244.78, 71.86}, {253.73, 70.71}, {259.7, 69.42}, {265.67, 68.65}, {274.63, 67.75}, {280.6, 66.6}, {286.57, 65.19}, {295.52, 63.77}, {301.49, 62.49}, {310.45, 60.56}, {316.42, 59.41}, {334.33, 57.74}, {382.09, 57.74}, {382.0901, 60.3}, {841.79, 100.58}, {1671.64, 100.58}, {2361.19, 100.74}, {2492.54, 100.74}, {2782.09, 100.0}, {2933.39, 100.0}};
+        parameter Real flow_exh[:, 2] = {{0.0, 0.0}, {11.94, 2.31}, {32.84, 7.83}, {50.75, 10.27}, {74.63, 13.09}, {107.46, 16.29}, {140.3, 18.99}, {176.12, 22.58}, {197.02, 25.53}, {217.91, 29.12}, {235.82, 31.82}, {244.78, 34.51}, {256.72, 38.1}, {274.63, 42.21}, {292.54, 46.19}, {307.46, 51.06}, {319.4, 55.69}, {328.36, 60.18}, {334.33, 58.38}, {382.09, 58.38}, {385.08, 58.51}, {838.81, 58.73}, {1677.61, 99.88}, {2922.39, 100.0}};
+        parameter Real Tnom = 517.2 + 273.15;
+        parameter Real Gnom = 1292.6 / 3.6;
         parameter Modelica.SIunits.MassFlowRate wflow = 58 / 3.6 "Пусковой массовый расход воды на входе в сепаратор";
         parameter Modelica.SIunits.MassFlowRate wsteam = 0.01 "Расход пара на выходе из сепаратора";
         replaceable package Medium_G = MyHRSG_lite.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
@@ -7830,7 +9070,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
         parameter Modelica.SIunits.Temperature Toutflow_eco = 60 + 273.15 "Начальная выходная температура потока воды/пар";
@@ -7854,7 +9095,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_ote1 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7879,7 +9121,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
         parameter Modelica.SIunits.Temperature Tinflow_ote2 = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7904,7 +9147,8 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
         parameter Modelica.SIunits.Temperature Tinflow_sh = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -7916,63 +9160,195 @@ end if;*/
         parameter Modelica.SIunits.Temperature Tingas_sh = 60 + 273.15 "Начальная входная температура газов";
         parameter Modelica.SIunits.Temperature Toutgas_sh = 60 + 273.15 "Начальная выходная температура газов";
         parameter Real k_gamma_gas_sh = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
-        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = false, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-52, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE_new OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE_new OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, DynamicMomentum = false) annotation(Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, DynamicMomentum = true, m_flow_small = 0.001) annotation(Placement(visible = true, transformation(origin = {38, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.Separator2 separator(m_flow_small = 0.001) annotation(Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-        Modelica.Fluid.Sensors.Pressure ECO_out_press(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-37, 37}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Fluid.Sensors.SpecificEnthalpy ECO_in_ent(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-7, 37}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Fluid.Sensors.SpecificEnthalpy ECO_gasout_ent(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-65, -9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        Modelica.Fluid.Sensors.MassFlowRate ECO_gasout_flow(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-67, 11}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
-        Modelica.Fluid.Sensors.MassFlowRate ECO_gasin_flow(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-39, 13}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
-        Modelica.Fluid.Sensors.SpecificEnthalpy ECO_gasin_ent(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-47, -9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.FWControl fWControl annotation(Placement(visible = true, transformation(origin = {-24, -38}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        inner Modelica.Fluid.System system(allowFlowReversal = false) annotation(
+          Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = false, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-52, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+          Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE_new OTE1(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE_new OTE2(redeclare MyHRSG_lite.cleanCopy.flowSide_OTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, DynamicMomentum = false) annotation(
+          Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasFlow(duration = 600, height = 1000, offset = wgas, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -66}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Ramp rampGasTemp(duration = 40, height = 200, offset = Tingas_sh, startTime = 10) annotation(
+          Placement(visible = true, transformation(origin = {70, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.GFHE SH(redeclare MyHRSG_lite.cleanCopy.flowSide_SH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, pgas = pgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Dout_sh - 2 * delta_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, DynamicMomentum = true, m_flow_small = 0.001) annotation(
+          Placement(visible = true, transformation(origin = {38, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        MyHRSG_lite.Separator2 separator(m_flow_small = 0.001) annotation(
+          Placement(visible = true, transformation(origin = {14, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant constCV1(k = 1) annotation(
+          Placement(visible = true, transformation(origin = {35, 69}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Fluid.Valves.ValveCompressible CV1(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+          Placement(visible = true, transformation(origin = {46, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+        Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = Toutflow_ote1, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+          Placement(visible = true, transformation(origin = {70, 56}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Fluid.Sensors.Pressure ECO_out_press(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-37, 37}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Fluid.Sensors.SpecificEnthalpy ECO_in_ent(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-7, 37}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Fluid.Sensors.SpecificEnthalpy ECO_gasout_ent(redeclare package Medium = Medium_G) annotation(
+          Placement(visible = true, transformation(origin = {-65, -9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Fluid.Sensors.MassFlowRate ECO_gasout_flow(redeclare package Medium = Medium_G) annotation(
+          Placement(visible = true, transformation(origin = {-67, 11}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+        Modelica.Fluid.Sensors.MassFlowRate ECO_gasin_flow(redeclare package Medium = Medium_G) annotation(
+          Placement(visible = true, transformation(origin = {-39, 13}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+        Modelica.Fluid.Sensors.SpecificEnthalpy ECO_gasin_ent(redeclare package Medium = Medium_G) annotation(
+          Placement(visible = true, transformation(origin = {-47, -9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        MyHRSG_lite.cleanCopy.FWControl fWControl annotation(
+          Placement(visible = true, transformation(origin = {-24, -38}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.TimeTable tempTable(table = temperature_exh) annotation(
+          Placement(visible = true, transformation(origin = {-78, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.TimeTable flowTable(table = flow_exh) annotation(
+          Placement(visible = true, transformation(origin = {-78, -86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain temp_gain(k = Tnom / 100) annotation(
+          Placement(visible = true, transformation(origin = {-52, -58}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain flow_gain(k = Gnom / 100) annotation(
+          Placement(visible = true, transformation(origin = {-52, -86}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Math.Max max1 annotation(
+          Placement(visible = true, transformation(origin = {-15, -61}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Math.Max max2 annotation(
+          Placement(visible = true, transformation(origin = {-15, -89}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant minT(k = Tingas_sh) annotation(
+          Placement(visible = true, transformation(origin = {-37, -71}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant minG(k = 10) annotation(
+          Placement(visible = true, transformation(origin = {-37, -93}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Continuous.Filter filter1(f_cut = 1) annotation(
+          Placement(visible = true, transformation(origin = {7, -61}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+        Modelica.Blocks.Continuous.Filter filter2(f_cut = 1) annotation(
+          Placement(visible = true, transformation(origin = {7, -77}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
       equation
-        connect(ECO_gasout_flow.m_flow, fWControl.gasFlow_out) annotation(Line(points = {{-66, 16}, {-60, 16}, {-60, -18}, {-6, -18}, {-6, -32}, {-12, -32}, {-12, -32}}, color = {0, 0, 127}));
-        connect(ECO_gasout_ent.h_out, fWControl.gasEnt_out) annotation(Line(points = {{-60, -8}, {-56, -8}, {-56, -50}, {-6, -50}, {-6, -40}, {-12, -40}, {-12, -40}}, color = {0, 0, 127}));
-        connect(ECO_gasin_flow.m_flow, fWControl.gasFlow_in) annotation(Line(points = {{-38, 18}, {-36, 18}, {-36, -4}, {-8, -4}, {-8, -28}, {-12, -28}, {-12, -28}}, color = {0, 0, 127}));
-        connect(ECO_gasin_ent.h_out, fWControl.gasEnt_in) annotation(Line(points = {{-42, -8}, {-2, -8}, {-2, -36}, {-12, -36}, {-12, -36}}, color = {0, 0, 127}));
-        connect(ECO_gasout_ent.port, ECO.gasOut) annotation(Line(points = {{-64, -14}, {-72, -14}, {-72, 0}, {-58, 0}, {-58, 12}, {-58, 12}}, color = {0, 127, 255}));
-        connect(SH.gasOut, OTE2.gasIn) annotation(Line(points = {{32, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
-        connect(ECO_gasout_flow.port_b, gasSink.ports[1]) annotation(Line(points = {{-72, 12}, {-74, 12}, {-74, -6}, {-80, -6}, {-80, -6}}, color = {0, 127, 255}));
-        connect(ECO.gasOut, ECO_gasout_flow.port_a) annotation(Line(points = {{-58, 12}, {-62, 12}, {-62, 12}, {-62, 12}}, color = {0, 127, 255}));
-        connect(ECO_in_ent.port, ECO.flowIn) annotation(Line(points = {{-6, 32}, {-22, 32}, {-22, 44}, {-52, 44}, {-52, 24}, {-56, 24}, {-56, 24}}, color = {0, 127, 255}));
-        connect(ECO.gasIn, ECO_gasin_ent.port) annotation(Line(points = {{-46, 12}, {-46, 12}, {-46, -2}, {-54, -2}, {-54, -14}, {-46, -14}, {-46, -14}}, color = {0, 127, 255}));
-        connect(OTE1.gasOut, ECO_gasin_flow.port_a) annotation(Line(points = {{-28, 12}, {-34, 12}, {-34, 14}, {-34, 14}}, color = {0, 127, 255}));
-        connect(OTE1.flowIn, ECO_out_press.port) annotation(Line(points = {{-26, 24}, {-38, 24}, {-38, 32}, {-36, 32}}, color = {0, 127, 255}));
-        connect(ECO_in_ent.h_out, fWControl.flowEnt_in) annotation(Line(points = {{-1.5, 37}, {2, 37}, {2, -48}, {-12, -48}}, color = {0, 0, 127}));
-        connect(OTE2.flowOut, separator.fedWater) annotation(Line(points = {{6, 24}, {6, 24}, {6, 48}, {8, 48}, {8, 48}}, color = {0, 127, 255}));
-        connect(OTE1.flowOut, OTE2.flowIn) annotation(Line(points = {{-18, 24}, {-2, 24}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
-        connect(ECO.flowOut, OTE1.flowIn) annotation(Line(points = {{-48, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
-        connect(flowSource.m_flow_in, fWControl.FWflow) annotation(Line(points = {{-94, 58}, {-100, 58}, {-100, -38}, {-36, -38}, {-36, -38}}, color = {0, 0, 127}));
-        connect(ECO_out_press.p, fWControl.flowPress_out) annotation(Line(points = {{-32, 38}, {-32, 38}, {-32, -22}, {0, -22}, {0, -44}, {-12, -44}, {-12, -44}}, color = {0, 0, 127}));
-        connect(ECO.gasIn, ECO_gasin_flow.port_b) annotation(Line(points = {{-46, 12}, {-44, 12}, {-44, 13}}, color = {0, 127, 255}));
-        connect(flowSource.ports[1], ECO.flowIn) annotation(Line(points = {{-74, 50}, {-56, 50}, {-56, 23}}, color = {0, 127, 255}));
-        connect(gasSource.ports[1], SH.gasIn) annotation(Line(points = {{60, -6}, {48, -6}, {48, 12}, {44, 12}}, color = {0, 127, 255}));
-        connect(CV1.port_a, SH.flowOut) annotation(Line(points = {{42, 56}, {42, 23}}, color = {0, 127, 255}));
-        connect(separator.steam, SH.flowIn) annotation(Line(points = {{14, 52}, {34, 52}, {34, 23}}, color = {0, 127, 255}));
-        connect(OTE1.gasIn, OTE2.gasOut) annotation(Line(points = {{-16, 12}, {-3.8, 12}}, color = {0, 127, 255}));
-        connect(CV1.port_b, flowSink.ports[1]) annotation(Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
-        connect(constCV1.y, CV1.opening) annotation(Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
-        connect(gasSource.T_in, rampGasTemp.y) annotation(Line(points = {{82, -2}, {87, -2}, {87, -2}, {92, -2}, {92, -34}, {82, -34}, {82, -34}}, color = {0, 0, 127}));
-        connect(rampGasFlow.y, gasSource.m_flow_in) annotation(Line(points = {{81, -66}, {89, -66}, {89, -66}, {97, -66}, {97, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}, {79, 2}}, color = {0, 0, 127}));
-        annotation(uses(Modelica(version = "3.2.1")), Documentation(info = "<html>
+        connect(filter2.y, gasSource.m_flow_in) annotation(
+          Line(points = {{12, -76}, {52, -76}, {52, -52}, {92, -52}, {92, 2}, {80, 2}, {80, 2}}, color = {0, 0, 127}));
+        connect(max2.y, filter2.u) annotation(
+          Line(points = {{-10, -88}, {-8, -88}, {-8, -76}, {0, -76}, {0, -76}}, color = {0, 0, 127}));
+        connect(filter1.y, gasSource.T_in) annotation(
+          Line(points = {{12, -60}, {48, -60}, {48, -50}, {88, -50}, {88, -2}, {82, -2}, {82, -2}}, color = {0, 0, 127}));
+        connect(max1.y, filter1.u) annotation(
+          Line(points = {{-10, -60}, {0, -60}, {0, -60}, {0, -60}}, color = {0, 0, 127}));
+        connect(minG.y, max2.u2) annotation(
+          Line(points = {{-32, -92}, {-22, -92}, {-22, -92}, {-22, -92}}, color = {0, 0, 127}));
+        connect(flow_gain.y, max2.u1) annotation(
+          Line(points = {{-46, -86}, {-22, -86}, {-22, -86}, {-22, -86}}, color = {0, 0, 127}));
+        connect(minT.y, max1.u2) annotation(
+          Line(points = {{-32, -70}, {-28, -70}, {-28, -64}, {-22, -64}, {-22, -64}}, color = {0, 0, 127}));
+        connect(temp_gain.y, max1.u1) annotation(
+          Line(points = {{-46, -58}, {-22, -58}, {-22, -58}, {-22, -58}}, color = {0, 0, 127}));
+        connect(flowTable.y, flow_gain.u) annotation(
+          Line(points = {{-67, -86}, {-59, -86}}, color = {0, 0, 127}));
+        connect(tempTable.y, temp_gain.u) annotation(
+          Line(points = {{-67, -58}, {-63, -58}, {-63, -58}, {-59, -58}, {-59, -58}, {-61, -58}}, color = {0, 0, 127}));
+        connect(ECO_gasout_flow.m_flow, fWControl.gasFlow_out) annotation(
+          Line(points = {{-66, 16}, {-60, 16}, {-60, -18}, {-6, -18}, {-6, -32}, {-12, -32}, {-12, -32}}, color = {0, 0, 127}));
+        connect(ECO_gasout_ent.h_out, fWControl.gasEnt_out) annotation(
+          Line(points = {{-60, -8}, {-56, -8}, {-56, -50}, {-6, -50}, {-6, -40}, {-12, -40}, {-12, -40}}, color = {0, 0, 127}));
+        connect(ECO_gasin_flow.m_flow, fWControl.gasFlow_in) annotation(
+          Line(points = {{-38, 18}, {-36, 18}, {-36, -4}, {-8, -4}, {-8, -28}, {-12, -28}, {-12, -28}}, color = {0, 0, 127}));
+        connect(ECO_gasin_ent.h_out, fWControl.gasEnt_in) annotation(
+          Line(points = {{-42, -8}, {-2, -8}, {-2, -36}, {-12, -36}, {-12, -36}}, color = {0, 0, 127}));
+        connect(ECO_gasout_ent.port, ECO.gasOut) annotation(
+          Line(points = {{-64, -14}, {-72, -14}, {-72, 0}, {-58, 0}, {-58, 12}, {-58, 12}}, color = {0, 127, 255}));
+        connect(SH.gasOut, OTE2.gasIn) annotation(
+          Line(points = {{32, 12}, {8, 12}, {8, 12}, {8, 12}}, color = {0, 127, 255}));
+        connect(ECO_gasout_flow.port_b, gasSink.ports[1]) annotation(
+          Line(points = {{-72, 12}, {-74, 12}, {-74, -6}, {-80, -6}, {-80, -6}}, color = {0, 127, 255}));
+        connect(ECO.gasOut, ECO_gasout_flow.port_a) annotation(
+          Line(points = {{-58, 12}, {-62, 12}, {-62, 12}, {-62, 12}}, color = {0, 127, 255}));
+        connect(ECO_in_ent.port, ECO.flowIn) annotation(
+          Line(points = {{-6, 32}, {-22, 32}, {-22, 44}, {-52, 44}, {-52, 24}, {-56, 24}, {-56, 24}}, color = {0, 127, 255}));
+        connect(ECO.gasIn, ECO_gasin_ent.port) annotation(
+          Line(points = {{-46, 12}, {-46, 12}, {-46, -2}, {-54, -2}, {-54, -14}, {-46, -14}, {-46, -14}}, color = {0, 127, 255}));
+        connect(OTE1.gasOut, ECO_gasin_flow.port_a) annotation(
+          Line(points = {{-28, 12}, {-34, 12}, {-34, 14}, {-34, 14}}, color = {0, 127, 255}));
+        connect(OTE1.flowIn, ECO_out_press.port) annotation(
+          Line(points = {{-26, 24}, {-38, 24}, {-38, 32}, {-36, 32}}, color = {0, 127, 255}));
+        connect(ECO_in_ent.h_out, fWControl.flowEnt_in) annotation(
+          Line(points = {{-1.5, 37}, {2, 37}, {2, -48}, {-12, -48}}, color = {0, 0, 127}));
+        connect(OTE2.flowOut, separator.fedWater) annotation(
+          Line(points = {{6, 24}, {6, 24}, {6, 48}, {8, 48}, {8, 48}}, color = {0, 127, 255}));
+        connect(OTE1.flowOut, OTE2.flowIn) annotation(
+          Line(points = {{-18, 24}, {-2, 24}, {-2, 24}, {-2, 24}}, color = {0, 127, 255}));
+        connect(ECO.flowOut, OTE1.flowIn) annotation(
+          Line(points = {{-48, 24}, {-26, 24}, {-26, 24}, {-26, 24}}, color = {0, 127, 255}));
+        connect(flowSource.m_flow_in, fWControl.FWflow) annotation(
+          Line(points = {{-94, 58}, {-100, 58}, {-100, -38}, {-36, -38}, {-36, -38}}, color = {0, 0, 127}));
+        connect(ECO_out_press.p, fWControl.flowPress_out) annotation(
+          Line(points = {{-32, 38}, {-32, 38}, {-32, -22}, {0, -22}, {0, -44}, {-12, -44}, {-12, -44}}, color = {0, 0, 127}));
+        connect(ECO.gasIn, ECO_gasin_flow.port_b) annotation(
+          Line(points = {{-46, 12}, {-44, 12}, {-44, 13}}, color = {0, 127, 255}));
+        connect(flowSource.ports[1], ECO.flowIn) annotation(
+          Line(points = {{-74, 50}, {-56, 50}, {-56, 23}}, color = {0, 127, 255}));
+        connect(gasSource.ports[1], SH.gasIn) annotation(
+          Line(points = {{60, -6}, {48, -6}, {48, 12}, {44, 12}}, color = {0, 127, 255}));
+        connect(CV1.port_a, SH.flowOut) annotation(
+          Line(points = {{42, 56}, {42, 23}}, color = {0, 127, 255}));
+        connect(separator.steam, SH.flowIn) annotation(
+          Line(points = {{14, 52}, {34, 52}, {34, 23}}, color = {0, 127, 255}));
+        connect(OTE1.gasIn, OTE2.gasOut) annotation(
+          Line(points = {{-16, 12}, {-3.8, 12}}, color = {0, 127, 255}));
+        connect(CV1.port_b, flowSink.ports[1]) annotation(
+          Line(points = {{50, 56}, {60, 56}, {60, 56}, {60, 56}}, color = {0, 127, 255}));
+        connect(constCV1.y, CV1.opening) annotation(
+          Line(points = {{40, 70}, {46, 70}, {46, 60}, {46, 60}}, color = {0, 0, 127}));
+        annotation(
+          uses(Modelica(version = "3.2.1")),
+          Documentation(info = "<html>
       <p>
       Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
       Первая попытка реалиизовать регулирование расхода при пуске прямоточного КУ.
       </p>
-      </html>", revisions = "Модель со сложным разбиением и упрощенным сепаратором"), experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
+      </html>", revisions = "Модель со сложным разбиением и упрощенным сепаратором"),
+          experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
       end startUpControlTest_1;
+
+      model setParam
+        parameter Real temperature_exh[:, 2] = {{0.0, 2.57}, {11.94, 3.46}, {17.9104, 4.23}, {17.9105, 7.32}, {20.8955, 15.79}, {20.8956, 40.82}, {23.8806, 45.44}, {23.8807, 52.75}, {26.8657, 52.75}, {26.8658, 57.89}, {29.8507, 60.97}, {32.84, 62.25}, {35.82, 64.3}, {38.81, 66.2}, {44.78, 67.51}, {50.75, 68.79}, {53.73, 70.08}, {59.7, 71.23}, {68.66, 72.39}, {74.63, 73.16}, {80.6, 73.67}, {92.54, 74.57}, {107.46, 75.47}, {122.39, 76.23}, {143.28, 76.88}, {155.22, 77.0}, {170.15, 76.87}, {191.05, 76.36}, {205.97, 75.46}, {217.91, 74.69}, {229.85, 73.66}, {238.81, 72.76}, {244.78, 71.86}, {253.73, 70.71}, {259.7, 69.42}, {265.67, 68.65}, {274.63, 67.75}, {280.6, 66.6}, {286.57, 65.19}, {295.52, 63.77}, {301.49, 62.49}, {310.45, 60.56}, {316.42, 59.41}, {334.33, 57.74}, {382.09, 57.74}, {382.0901, 60.3}, {841.79, 100.58}, {1671.64, 100.58}, {2361.19, 100.74}, {2492.54, 100.74}, {2782.09, 100.0}, {2933.39, 100.0}};
+        parameter Real flow_exh[:, 2] = {{0.0, 0.0}, {11.94, 2.31}, {32.84, 7.83}, {50.75, 10.27}, {74.63, 13.09}, {107.46, 16.29}, {140.3, 18.99}, {176.12, 22.58}, {197.02, 25.53}, {217.91, 29.12}, {235.82, 31.82}, {244.78, 34.51}, {256.72, 38.1}, {274.63, 42.21}, {292.54, 46.19}, {307.46, 51.06}, {319.4, 55.69}, {328.36, 60.18}, {334.33, 58.38}, {382.09, 58.38}, {385.08, 58.51}, {838.81, 58.73}, {1677.61, 99.88}, {2922.39, 100.0}};
+        parameter Real Tnom = 517.2 + 273.15;
+        parameter Real Gnom = 1292.6 / 3.6;
+        Modelica.Blocks.Sources.TimeTable tempTable(offset = 0, table = temperature_exh) annotation(
+          Placement(visible = true, transformation(origin = {-40, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Sources.TimeTable flowTable(offset = 0, table = flow_exh) annotation(
+          Placement(visible = true, transformation(origin = {-40, -56}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain temp_gain(k = Tnom / 100) annotation(
+          Placement(visible = true, transformation(origin = {-14, -26}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Math.Gain flow_gain(k = Gnom / 100) annotation(
+          Placement(visible = true, transformation(origin = {-14, -56}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+        Modelica.Blocks.Math.Max max annotation(
+          Placement(visible = true, transformation(origin = {9, -23}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant const(k = 60 + 273.15) annotation(
+          Placement(visible = true, transformation(origin = {-13, -5}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Sources.Constant const1(k = 10) annotation(
+          Placement(visible = true, transformation(origin = {-18, -86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Math.Max max1 annotation(
+          Placement(visible = true, transformation(origin = {9, -61}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+        Modelica.Blocks.Continuous.Filter filter1(f_cut = 1) annotation(
+          Placement(visible = true, transformation(origin = {36, -22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Blocks.Continuous.Filter filter2(f_cut = 1) annotation(
+          Placement(visible = true, transformation(origin = {38, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      equation
+        connect(max1.y, filter2.u) annotation(
+          Line(points = {{16, -60}, {26, -60}}, color = {0, 0, 127}));
+        connect(max.y, filter1.u) annotation(
+          Line(points = {{16, -22}, {22, -22}, {22, -22}, {24, -22}}, color = {0, 0, 127}));
+        connect(const1.y, max1.u2) annotation(
+          Line(points = {{-6, -86}, {0, -86}, {0, -66}, {0, -66}}, color = {0, 0, 127}));
+        connect(flow_gain.y, max1.u1) annotation(
+          Line(points = {{-8, -56}, {0, -56}, {0, -56}, {0, -56}}, color = {0, 0, 127}));
+        connect(const.y, max.u1) annotation(
+          Line(points = {{-5.3, -5}, {-3.3, -5}, {-3.3, -5}, {-1.3, -5}, {-1.3, -19}, {-0.3, -19}, {-0.3, -19}, {0.7, -19}}, color = {0, 0, 127}));
+        connect(temp_gain.y, max.u2) annotation(
+          Line(points = {{-7.4, -26}, {-3.4, -26}, {-3.4, -26}, {0.6, -26}, {0.6, -28}, {0.6, -28}}, color = {0, 0, 127}));
+        connect(flowTable.y, flow_gain.u) annotation(
+          Line(points = {{-29, -56}, {-27, -56}, {-27, -56}, {-23, -56}, {-23, -56}, {-23, -56}, {-23, -56}, {-23, -56}}, color = {0, 0, 127}));
+        connect(tempTable.y, temp_gain.u) annotation(
+          Line(points = {{-29, -26}, {-21, -26}, {-21, -26}, {-22, -26}, {-22, -26}, {-23, -26}}, color = {0, 0, 127}));
+      end setParam;
     end Tests;
 
     package functions
@@ -8553,23 +9929,23 @@ end if;*/
       end heatTransfer;
 
       /* 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                replaceable model HeatTransfer = MyHRSG_lite.cleanCopy.thermal.heatTransfer;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                HeatTransfer heatTransfer(
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  redeclare package Medium = Medium_F,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final h_n = h_n,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final D_flow_v = D_flow_v,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final rho_n = rho_n,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final rho_v = rho_v,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final rhov = rhov,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final rhol = rhol,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final hl = hl,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final hv = hv,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final p_v = p_v,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final h_v = h_v,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final Din = Din,
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  final f_flow = f_flow);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              */
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    replaceable model HeatTransfer = MyHRSG_lite.cleanCopy.thermal.heatTransfer;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    HeatTransfer heatTransfer(
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      redeclare package Medium = Medium_F,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final h_n = h_n,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final D_flow_v = D_flow_v,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final rho_n = rho_n,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final rho_v = rho_v,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final rhov = rhov,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final rhol = rhol,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final hl = hl,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final hv = hv,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final p_v = p_v,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final h_v = h_v,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final Din = Din,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      final f_flow = f_flow);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  */
 
       function alpha
         input Medium.SpecificEnthalpy h_n[2];
@@ -8740,9 +10116,12 @@ end if;*/
       Real C1 "Показатель в числителе уравнения сплошности";
       Real C2 "Показатель в знаменателе уравнения сплошности";
       //Интерфейс
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+        Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       0.5 * deltaVFlow * rho_v * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_n[1] * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
       0.5 * deltaVFlow * rho_v * der_h_n[2] = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
@@ -8791,7 +10170,11 @@ end if;*/
       der(p_v) = 0;
       der(h_n[1]) = 0;
       der(h_n[2]) = 0;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end flowSide_SH;
 
     package BaseClases
@@ -8801,20 +10184,29 @@ end if;*/
         constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
         constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
         constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
-        parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
         parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
         parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
         parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
         //Характеристики металла
-        parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
-        parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
+        parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+          Dialog(group = "Металл"));
+        parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
+          Dialog(group = "Металл"));
         //Конструктивные характеристики
-        parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Modelica.SIunits.Length deltaLpipe = 18.4 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Modelica.SIunits.Length deltaLpipe = 18.4 "Длина теплообменной трубки" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
         //Поток вода/пар
         parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
@@ -8822,14 +10214,21 @@ end if;*/
         parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
         parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
         //Начальные значения
-        parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+        parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+          Dialog(tab = "Инициализация"));
         //Металл
-        parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+        parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(
+          Dialog(tab = "Инициализация"));
         parameter Boolean DynamicMomentum = false "Использовать или нет уравнение сохранения момента";
         //Переменные
         Medium_F.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
@@ -8849,9 +10248,12 @@ end if;*/
         Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";
         Real lambda_tr "Коэффициент трения";
         //Интерфейс
-        Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+          Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       equation
 //Граничные условия
         D_flow_n[1] = max(waterIn.m_flow, m_flow_small);
@@ -8861,28 +10263,42 @@ end if;*/
         h_n[1] = inStream(waterIn.h_outflow);
         waterOut.h_outflow = h_n[2];
         waterIn.h_outflow = h_n[1];
-        annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+        annotation(
+          Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+          Diagram(graphics),
+          experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+          Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
       end flowSideHE;
 
       partial model flowPipe_base
         parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
         replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
-        parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
-        parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Pressure setp_flow_in = 10e5 "Начальное давление потока вода/пар на входе в поверхности теплообмена" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Pressure setp_flow_out = 10e5 "Начальное давление потока вода/пар на выходе поверхности теплообмена" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Temperature setT_inFlow = 60 + 273.15 "Начальная входная температура потока воды/пар" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
+        parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
+          Dialog(group = "Параметры стороны вода/пар"));
         parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
         parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
         parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
         //Характеристики металла
-        parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-        parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
+        parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+          Dialog(group = "Металл"));
+        parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+          Dialog(group = "Металл"));
         //parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(Dialog(group = "Металл"));
         //Конструктивные характеристики
-        parameter Modelica.SIunits.Diameter Din = 0.3 "Внутренний диаметр трубопровода" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Modelica.SIunits.Length delta = 0.01 "Толщина стенки трубопровода" annotation(Dialog(group = "Конструктивные характеристики"));
-        parameter Modelica.SIunits.Length Lpipe = 25 "Длина теплообменной трубки" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Modelica.SIunits.Diameter Din = 0.3 "Внутренний диаметр трубопровода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Modelica.SIunits.Length delta = 0.01 "Толщина стенки трубопровода" annotation(
+          Dialog(group = "Конструктивные характеристики"));
+        parameter Modelica.SIunits.Length Lpipe = 25 "Длина теплообменной трубки" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
         //Поток вода/пар
         parameter Modelica.SIunits.Area deltaSFlow = Lpipe * Modelica.Constants.pi * Din "Внутренняя площадь одного участка ряда труб";
@@ -8890,14 +10306,21 @@ end if;*/
         parameter Modelica.SIunits.Mass deltaMMetal = rho_m * Lpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 "Масса металла участка ряда труб";
         parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 / 4 "Площадь для прохода теплоносителя";
         //Начальные значения
-        parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(Dialog(tab = "Инициализация"));
-        parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(Dialog(tab = "Инициализация"));
+        parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+          Dialog(tab = "Инициализация"));
+        parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+          Dialog(tab = "Инициализация"));
         //Металл
-        parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(Dialog(tab = "Инициализация"));
+        parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(
+          Dialog(tab = "Инициализация"));
         parameter Boolean DynamicMomentum = false "Использовать или нет уравнение сохранения момента";
         //Переменные
         Medium_F.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
@@ -8916,8 +10339,10 @@ end if;*/
         Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";
         Real lambda_tr "Коэффициент трения";
         //Интерфейс
-        Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, 0}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, 0}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       equation
 //Граничные условия
         waterIn.m_flow = D_flow_n[1];
@@ -8927,7 +10352,11 @@ end if;*/
         h_n[1] = inStream(waterIn.h_outflow);
         waterOut.h_outflow = h_n[2];
         waterIn.h_outflow = h_n[1];
-        annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {0, 186}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name", fontName = "MS Shell Dlg 2"), Rectangle(origin = {0, -4}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 44}, {100, -36}})}));
+        annotation(
+          Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+          Diagram(graphics),
+          experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+          Icon(coordinateSystem(initialScale = 0.1), graphics = {Text(origin = {0, 186}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name", fontName = "MS Shell Dlg 2"), Rectangle(origin = {0, -4}, lineColor = {162, 162, 162}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 44}, {100, -36}})}));
       end flowPipe_base;
 
       partial model GFHE_base
@@ -8961,14 +10390,16 @@ end if;*/
         parameter Integer z2 = 4 "Число труб по ходу газов в теплообменнике";
         parameter Modelica.SIunits.Length Lpipe = 20.85 "Длина теплообменной трубки";
         //Характеристики металла
-        parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
+        parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+          Dialog(group = "Металл"));
         parameter Boolean DynamicMomentum = false "Использовать или нет уравнение сохранения момента";
         ///Оребрение
         parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
         parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
       protected
-        parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(Dialog(group = "Конструктивные характеристики"));
+        parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(
+          Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * Dout "Наружный периметр трубы";
         //Характеристики оребрения
         parameter Modelica.SIunits.Length Dfin = Dout + 2 * hfin "Диаметр ребер, м";
@@ -8983,20 +10414,30 @@ end if;*/
         parameter Real Cs = (1.36 - phi_fin) * (11 / (psi_fin + 8) - 0.14) "Коэффициент, определяемый в зависимости от от относительного поперечного и продольного шага труб в пучке, типа пучка и коэффициента оребрения";
         parameter Real Cz = if z2 < 8 and sigma1 / sigma2 < 2 then 3.15 * z2 ^ 0.05 - 2.5 elseif z2 < 8 and sigma1 / sigma2 >= 2 then 3.5 * z2 ^ 0.03 - 2.72 else 1 "Поправка на число рядов труб по ходу газов";
         parameter Real Kaer = Dout ^ 0.611 * z2 / s1 ^ 0.412 / s2 ^ 0.515 "Коэффициент для расчета аэродинамического сопротивления";
-        Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+        Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+          Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+          Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
+          Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+        annotation(
+          Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+          experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+          version = "",
+          uses);
       end GFHE_base;
     end BaseClases;
 
     model GFHE_new
       extends BaseClases.GFHE_base;
       //Исходные данные по разбиению
-      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+        Dialog(group = "Конструктивные характеристики"));
     protected
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(Dialog(group = "Конструктивные характеристики"));
+      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+        Dialog(group = "Конструктивные характеристики"));
       parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
       parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfTubeSections "Длина теплообменной трубки для элемента разбиения";
       parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * Modelica.Constants.pi * Din * z1 "Внутренняя площадь одного участка ряда труб";
@@ -9009,12 +10450,18 @@ end if;*/
       //Переменные
       Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)";
       Modelica.SIunits.Length deltaHpipe[numberOfFlueSections, numberOfTubeSections] "Разность высот на участке ряда труб";
-      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      gasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfVolumes = numberOfFlueSections, Dout = Dout, deltaVGas = deltaVGas, f_gas = f_gas, n_fin = n_fin, Cs = Cs, Cz = Cz, H_fin = H_fin, Kaer = Kaer) annotation(Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable flowSide_OTE flowHE[numberOfFlueSections, numberOfTubeSections](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = DynamicMomentum) annotation(Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
+      Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
+        Placement(visible = true, transformation(origin = {-90, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {62, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      gasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium_G = Medium_G, setD_gas = wgas, setp_gas = pgas, setT_inGas = Tingas, setT_outGas = Toutflow, k_alfaGas = k_gamma_gas, numberOfVolumes = numberOfFlueSections, Dout = Dout, deltaVGas = deltaVGas, f_gas = f_gas, n_fin = n_fin, Cs = Cs, Cz = Cz, H_fin = H_fin, Kaer = Kaer) annotation(
+        Placement(visible = true, transformation(origin = {0, 50}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
+      replaceable flowSide_OTE flowHE[numberOfFlueSections, numberOfTubeSections](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = DynamicMomentum) annotation(
+        Placement(visible = true, transformation(origin = {0, -50}, extent = {{-30, -30}, {30, 30}}, rotation = 90)));
       MyHRSG_lite.cleanCopy.collector collFlow(redeclare package Medium = Medium_F, zahod = zahod);
       MyHRSG_lite.cleanCopy.collector collGas(redeclare package Medium = Medium_G, zahod = numberOfTubeSections);
       MyHRSG_lite.cleanCopy.collectorMix_2 collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, Din = Din, L = Lpipe, delta = delta);
@@ -9072,14 +10519,21 @@ end if;*/
       end for;
       connect(flowIn, collFlow.flowIn);
       connect(flowOut, collFlowOut.flowOut);
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), version = "", uses);
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        version = "",
+        uses);
     end GFHE_new;
 
     model collector
-      replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching);
+      replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
+        choicesAllMatching);
       parameter Integer zahod = 2;
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut[zahod](redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut[zahod](redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       for i in 1:zahod loop
         flowOut[i].m_flow + flowIn.m_flow / zahod = 0;
@@ -9094,10 +10548,13 @@ end if;*/
     end collector;
 
     model collectorMix
-      replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(choicesAllMatching);
+      replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
+        choicesAllMatching);
       parameter Integer zahod = 2;
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn[zahod](redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn[zahod](redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       flowOut.h_outflow = sum(inStream(flowIn[i].h_outflow) * flowIn[i].m_flow for i in 1:zahod) / sum(flowIn[i].m_flow for i in 1:zahod);
       flowIn.p = fill(flowOut.p, zahod);
@@ -9118,9 +10575,12 @@ end if;*/
       Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
       Modelica.SIunits.Temperature t_m(start = t_startM) "Температура металла на участках трубопровода";
       //Интерфейс
-      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+        Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       0.5 * deltaVFlow * rho_v * der(h_v) = 0.5 * alfa_flow * deltaSFlow * max(t_m - t_flow, 0) - D_flow_v * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
       0.5 * deltaVFlow * rho_v * der(h_n[2]) = 0.5 * alfa_flow * deltaSFlow * max(t_m - t_flow, 0) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
@@ -9159,7 +10619,11 @@ end if;*/
       if DynamicMomentum then
         der(D_flow_n[2]) = 0;
       end if;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end flowSide_SH2;
 
     model flowPipe
@@ -9214,7 +10678,10 @@ end if;*/
       if DynamicMomentum then
         der(D_flow_n[2]) = 0;
       end if;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
     end flowPipe;
 
     model flowSide_OTE2
@@ -9278,7 +10745,11 @@ end if;*/
       der(p_v) = 0;
       der(h_n[2]) = 0;
       der(D_flow_n[2]) = 0;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end flowSide_OTE2;
 
     model flowSide_OTE3
@@ -9342,7 +10813,11 @@ end if;*/
       if DynamicMomentum then
         der(D_flow_n[2]) = 0;
       end if;
-      annotation(Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end flowSide_OTE3;
 
     model collectorMix_2
@@ -9350,11 +10825,16 @@ end if;*/
       import MyHRSG_lite.cleanCopy.functions.drdh_drdp;
       replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
       parameter Integer zahod = 2;
-      parameter Modelica.SIunits.Diameter Din = 0.1 "Внутренний диаметр коллектора" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length delta = 0.01 "Толщина стенки коллектора" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Length L = 5 "Длина коллектора" annotation(Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.Diameter Din = 0.1 "Внутренний диаметр коллектора" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length delta = 0.01 "Толщина стенки коллектора" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Length L = 5 "Длина коллектора" annotation(
+        Dialog(group = "Конструктивные характеристики"));
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+        Dialog(group = "Металл"));
       Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
     protected
       parameter Modelica.SIunits.Area SFlow = L * Modelica.Constants.pi * Din "Внутренняя площадь коллектора";
@@ -9369,8 +10849,10 @@ end if;*/
       Modelica.SIunits.DerDensityByEnthalpy drdh;
       Modelica.SIunits.DerDensityByPressure drdp;
       Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
-      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a flowIn[zahod](redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a flowIn[zahod](redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       flowIn.p = fill(p_v, zahod);
       stateFlow = Medium.setState_ph(p_v, flowOut.h_outflow);
@@ -9394,7 +10876,8 @@ end if;*/
       der(t_m) = 0;
       der(p_v) = 0;
       der(h_v) = 0;
-      annotation(Documentation(info = "<HTML>Аналогично collectorMix с добавлением производных по энтальпии и давлению.</html>"));
+      annotation(
+        Documentation(info = "<HTML>Аналогично collectorMix с добавлением производных по энтальпии и давлению.</html>"));
     end collectorMix_2;
 
     model flowSide_ECO
@@ -9449,12 +10932,17 @@ end if;*/
       if DynamicMomentum then
         der(D_flow_n[2]) = 0;
       end if;
-      annotation(Documentation(info = "Модель экономайзер. Жидкость несжимаема. Коэффициент теплоотдачи к воде не учитывает ее кипение."), Diagram(graphics), experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02), Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+      annotation(
+        Documentation(info = "Модель экономайзер. Жидкость несжимаема. Коэффициент теплоотдачи к воде не учитывает ее кипение."),
+        Diagram(graphics),
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
+        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end flowSide_ECO;
 
     package Icons
       model Separator_Icon
-        annotation(Icon(graphics = {Ellipse(origin = {0, 95}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, 31}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 63}, {40, -61}}), Ellipse(origin = {0, -29}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, -64}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-10, 34}, {10, -34}}), Ellipse(origin = {1, -99}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-11, -1}, {9, 3}}, endAngle = 360), Ellipse(origin = {-3, 91}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-35, 7}, {41, -5}}, endAngle = 360), Ellipse(origin = {0, -28}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 4}, {38, -4}}, endAngle = 360), Rectangle(origin = {0, 32}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 60}, {38, -60}}), Rectangle(origin = {0, -64}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 34}, {8, -32}}), Ellipse(origin = {0, -97}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 3}, {8, -1}}, endAngle = 360), Ellipse(origin = {-60, 70}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-1, 6}, {1, -4}}, endAngle = 360), Rectangle(extent = {{-68, 74}, {-68, 74}}), Polygon(origin = {-49, 68}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{11, 2}, {-11, 8}, {-11, -2}, {11, -8}, {11, 2}}), Ellipse(extent = {{-60, 76}, {-60, 76}}, endAngle = 360), Ellipse(origin = {-59.2, 70.8}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-1, 4.2}, {1, -4.2}}, endAngle = 360), Polygon(origin = {-48.2, 68}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-11, 7}, {-11, 7}, {11, 1}, {11, -7.4}, {-11, -1.4}, {-11, 7}}), Polygon(origin = {0, 57}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-38, -35}, {-38, 35}, {-36, 37}, {-28, 39}, {-10, 41}, {10, 41}, {28, 39}, {36, 37}, {38, 35}, {38, -37}, {34, -35}, {26, -33}, {18, -33}, {12, -35}, {6, -39}, {-2, -41}, {-10, -41}, {-18, -39}, {-24, -37}, {-34, -35}, {-38, -35}, {-38, -35}}), Polygon(origin = {-11.28, 51.17}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-26.7236, 18}, {11.2764, 6.83018}, {27.2764, -1.16982}, {9.27639, 4.83018}, {23.2764, -7.16982}, {5.27639, 2.83018}, {19.2764, -9.16982}, {-0.723607, 2.83018}, {13.2764, -11.1698}, {-4.72361, 0.830179}, {5.27639, -13.1698}, {-2.72361, -5.16982}, {3.27639, -19.1698}, {-10.7236, -1.16982}, {-0.723607, -19.1698}, {-14.7236, -1.16982}, {-4.72361, -19.1698}, {-16.7236, -3.16982}, {-12.7236, -19.1698}, {-18.7236, -3.16982}, {-18.7236, -19.1698}, {-22.7236, -1.16982}, {-26.7236, 9.5}, {-26.7236, 18}}), Ellipse(origin = {-28, 8}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {24, 6}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {-25, -15}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {1, 5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {10, -14}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-2, 2}, {2, -2}}, endAngle = 360), Ellipse(origin = {30, -24}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
+        annotation(
+          Icon(graphics = {Ellipse(origin = {0, 95}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, 31}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 63}, {40, -61}}), Ellipse(origin = {0, -29}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-40, 5}, {40, -7}}, endAngle = 360), Rectangle(origin = {0, -64}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-10, 34}, {10, -34}}), Ellipse(origin = {1, -99}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-11, -1}, {9, 3}}, endAngle = 360), Ellipse(origin = {-3, 91}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-35, 7}, {41, -5}}, endAngle = 360), Ellipse(origin = {0, -28}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 4}, {38, -4}}, endAngle = 360), Rectangle(origin = {0, 32}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-38, 60}, {38, -60}}), Rectangle(origin = {0, -64}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 34}, {8, -32}}), Ellipse(origin = {0, -97}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-8, 3}, {8, -1}}, endAngle = 360), Ellipse(origin = {-60, 70}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-1, 6}, {1, -4}}, endAngle = 360), Rectangle(extent = {{-68, 74}, {-68, 74}}), Polygon(origin = {-49, 68}, fillColor = {162, 162, 162}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{11, 2}, {-11, 8}, {-11, -2}, {11, -8}, {11, 2}}), Ellipse(extent = {{-60, 76}, {-60, 76}}, endAngle = 360), Ellipse(origin = {-59.2, 70.8}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, extent = {{-1, 4.2}, {1, -4.2}}, endAngle = 360), Polygon(origin = {-48.2, 68}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-11, 7}, {-11, 7}, {11, 1}, {11, -7.4}, {-11, -1.4}, {-11, 7}}), Polygon(origin = {0, 57}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-38, -35}, {-38, 35}, {-36, 37}, {-28, 39}, {-10, 41}, {10, 41}, {28, 39}, {36, 37}, {38, 35}, {38, -37}, {34, -35}, {26, -33}, {18, -33}, {12, -35}, {6, -39}, {-2, -41}, {-10, -41}, {-18, -39}, {-24, -37}, {-34, -35}, {-38, -35}, {-38, -35}}), Polygon(origin = {-11.28, 51.17}, lineColor = {255, 255, 255}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.CrossDiag, points = {{-26.7236, 18}, {11.2764, 6.83018}, {27.2764, -1.16982}, {9.27639, 4.83018}, {23.2764, -7.16982}, {5.27639, 2.83018}, {19.2764, -9.16982}, {-0.723607, 2.83018}, {13.2764, -11.1698}, {-4.72361, 0.830179}, {5.27639, -13.1698}, {-2.72361, -5.16982}, {3.27639, -19.1698}, {-10.7236, -1.16982}, {-0.723607, -19.1698}, {-14.7236, -1.16982}, {-4.72361, -19.1698}, {-16.7236, -3.16982}, {-12.7236, -19.1698}, {-18.7236, -3.16982}, {-18.7236, -19.1698}, {-22.7236, -1.16982}, {-26.7236, 9.5}, {-26.7236, 18}}), Ellipse(origin = {-28, 8}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {24, 6}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360), Ellipse(origin = {-25, -15}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {1, 5}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-3, 3}, {3, -3}}, endAngle = 360), Ellipse(origin = {10, -14}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-2, 2}, {2, -2}}, endAngle = 360), Ellipse(origin = {30, -24}, lineColor = {0, 170, 255}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Sphere, extent = {{-4, 4}, {4, -4}}, endAngle = 360)}, coordinateSystem(initialScale = 0.1)));
       end Separator_Icon;
     end Icons;
 
@@ -9502,8 +10990,10 @@ end if;*/
       parameter Modelica.SIunits.Length delta "Толщина стенки сепаратора";
       //**
       //***Характеристики металла
-      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(Dialog(group = "Металл"));
-      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(Dialog(group = "Металл"));
+      parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
+        Dialog(group = "Металл"));
+      parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+        Dialog(group = "Металл"));
       //**
       //Начальные значения
       //**
@@ -9549,12 +11039,18 @@ end if;*/
       Medium.Density rhow_bubble "Плотность пара на линии насыщения в водяном объеме сепаратора";
       Real alpha_cond;
       //***Интерфейс
-      Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b downStr(redeclare package Medium = Medium) annotation(Placement(visible = true, transformation(origin = {-62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput steamFeedback annotation(Placement(visible = true, transformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput drainFeedback annotation(Placement(visible = true, transformation(origin = {110, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {-104, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b steam(redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Fluid.Interfaces.FluidPort_b downStr(redeclare package Medium = Medium) annotation(
+        Placement(visible = true, transformation(origin = {-62, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
+        Placement(visible = true, transformation(origin = {110, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput steamFeedback annotation(
+        Placement(visible = true, transformation(origin = {110, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput drainFeedback annotation(
+        Placement(visible = true, transformation(origin = {110, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
 //Временные ур-я
       fedWater.m_flow = D_fw;
@@ -9610,17 +11106,25 @@ end if;*/
       der(ps) = 0;
 //der(Gw) = 0;
       der(hw) = 0;
-      annotation(uses(Modelica(version = "3.2.1")));
+      annotation(
+        uses(Modelica(version = "3.2.1")));
     end Separator;
 
     block FWControl
-      Modelica.Blocks.Interfaces.RealInput gasFlow_in annotation(Placement(visible = true, transformation(origin = {-122, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput gasFlow_out annotation(Placement(visible = true, transformation(origin = {-122, 58}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 62}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput gasEnt_in annotation(Placement(visible = true, transformation(origin = {-122, 18}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput gasEnt_out annotation(Placement(visible = true, transformation(origin = {-122, -26}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput flowPress_out annotation(Placement(visible = true, transformation(origin = {-122, -64}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealInput flowEnt_in annotation(Placement(visible = true, transformation(origin = {-122, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Blocks.Interfaces.RealOutput FWflow annotation(Placement(visible = true, transformation(origin = {112, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {114, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput gasFlow_in annotation(
+        Placement(visible = true, transformation(origin = {-122, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput gasFlow_out annotation(
+        Placement(visible = true, transformation(origin = {-122, 58}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 62}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput gasEnt_in annotation(
+        Placement(visible = true, transformation(origin = {-122, 18}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput gasEnt_out annotation(
+        Placement(visible = true, transformation(origin = {-122, -26}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput flowPress_out annotation(
+        Placement(visible = true, transformation(origin = {-122, -64}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealInput flowEnt_in annotation(
+        Placement(visible = true, transformation(origin = {-122, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+      Modelica.Blocks.Interfaces.RealOutput FWflow annotation(
+        Placement(visible = true, transformation(origin = {112, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {114, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     protected
       package Medium = Modelica.Media.Water.StandardWater;
       Medium.Temperature ts;
@@ -9633,5 +11137,8 @@ end if;*/
       FWflow = if FWflow_temp < 58 / 3.6 then 58 / 3.6 else FWflow_temp;
     end FWControl;
   end cleanCopy;
-  annotation(Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})), uses(Modelica(version = "3.2.2"), ThermoPower(version = "3.1")));
+  annotation(
+    Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+    Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
+    uses(Modelica(version = "3.2.2"), ThermoPower(version = "3.1")));
 end MyHRSG_lite;
