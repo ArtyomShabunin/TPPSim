@@ -9085,7 +9085,7 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_eco = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_eco = 2.215e-3 "Шаг ребер, м";
         //Исходные данные по разбиению экономайзера
-        parameter Integer numberOfTubeSections_eco = 1 "Число участков разбиения трубы" annotation(
+        parameter Integer numberOfVolumes_eco = 1 "Число участков разбиения пароперегревателя" annotation(
           Dialog(group = "Конструктивные характеристики"));
         parameter Modelica.SIunits.Pressure pflow_eco = 1.013e5 "Начальное давление потока вода/пар перед ECO";
         parameter Modelica.SIunits.Temperature Tinflow_eco = 60 + 273.15 "Начальная входная температура потока воды/пар";
@@ -9110,7 +9110,7 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote1 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote1 = 2.002e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №1 (OTE1)
-        parameter Integer numberOfTubeSections_ote1 = 2 "Число участков разбиения трубы" annotation(
+        parameter Integer numberOfTubeSections_ote1 = 1 "Число участков разбиения трубы" annotation(
           Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для экономайзера
         parameter Modelica.SIunits.Pressure pflow_ote1 = 1.013e5 "Начальное давление потока вода/пар перед ECO";
@@ -9136,7 +9136,7 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_ote2 = 0.015 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_ote2 = 2.735e-3 "Шаг ребер, м";
         //Исходные данные по разбиению испарителя №2 (OTE2)
-        parameter Integer numberOfTubeSections_ote2 = 4 "Число участков разбиения трубы" annotation(
+        parameter Integer numberOfTubeSections_ote2 = 1 "Число участков разбиения трубы" annotation(
           Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для испарителя №2
         parameter Modelica.SIunits.Pressure pflow_ote2 = 1.013e5 "Начальное давление потока вода/пар перед OTE2";
@@ -9162,7 +9162,7 @@ end if;*/
         parameter Modelica.SIunits.Length hfin_sh = 0.012 "Высота ребра, м";
         parameter Modelica.SIunits.Length sfin_sh = 5.102e-3 "Шаг ребер, м";
         //Исходные данные по разбиению пароперегревателя (SH)
-        parameter Integer numberOfVolumes_sh = 10 "Число участков разбиения пароперегревателя" annotation(
+        parameter Integer numberOfVolumes_sh = 1 "Число участков разбиения пароперегревателя" annotation(
           Dialog(group = "Конструктивные характеристики"));
         //Исходные данные вода/пар для пароперегревателя
         parameter Modelica.SIunits.Pressure pflow_sh = 1.013e5 "Начальное давление потока вода/пар перед SH";
@@ -9179,7 +9179,7 @@ end if;*/
           Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, m_flow = wflow, nPorts = 1, use_T_in = false, use_m_flow_in = true) annotation(
           Placement(visible = true, transformation(origin = {-84, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = 4, flow_DynamicMomentum = false, flow_DynamicMassBalance = false, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
+        MyHRSG_lite.cleanCopy.GFHE ECO(redeclare MyHRSG_lite.cleanCopy.flowSide_ECO flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = MyHRSG_lite.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = numberOfVolumes_eco, flow_DynamicMomentum = false, flow_DynamicMassBalance = false, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
           Placement(visible = true, transformation(origin = {-52, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
         Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium_G, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
           Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -9324,6 +9324,7 @@ end if;*/
       </html>", revisions = "Модель со сложным разбиением и упрощенным сепаратором"),
           experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
       end startUpControlTest_1;
+
 
       model setParam
         parameter Real temperature_exh[:, 2] = {{0.0, 2.57}, {11.94, 3.46}, {17.9104, 4.23}, {17.9105, 7.32}, {20.8955, 15.79}, {20.8956, 40.82}, {23.8806, 45.44}, {23.8807, 52.75}, {26.8657, 52.75}, {26.8658, 57.89}, {29.8507, 60.97}, {32.84, 62.25}, {35.82, 64.3}, {38.81, 66.2}, {44.78, 67.51}, {50.75, 68.79}, {53.73, 70.08}, {59.7, 71.23}, {68.66, 72.39}, {74.63, 73.16}, {80.6, 73.67}, {92.54, 74.57}, {107.46, 75.47}, {122.39, 76.23}, {143.28, 76.88}, {155.22, 77.0}, {170.15, 76.87}, {191.05, 76.36}, {205.97, 75.46}, {217.91, 74.69}, {229.85, 73.66}, {238.81, 72.76}, {244.78, 71.86}, {253.73, 70.71}, {259.7, 69.42}, {265.67, 68.65}, {274.63, 67.75}, {280.6, 66.6}, {286.57, 65.19}, {295.52, 63.77}, {301.49, 62.49}, {310.45, 60.56}, {316.42, 59.41}, {334.33, 57.74}, {382.09, 57.74}, {382.0901, 60.3}, {841.79, 100.58}, {1671.64, 100.58}, {2361.19, 100.74}, {2492.54, 100.74}, {2782.09, 100.0}, {2933.39, 100.0}};
