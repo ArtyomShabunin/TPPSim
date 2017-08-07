@@ -3641,8 +3641,8 @@ package TPPSim
         parameter Boolean flow_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
         parameter Boolean flow_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
         parameter Boolean flow_DynamicTm = true "Использовать или нет производную по температуре металла";
-        parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
-        parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
+        inner parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
+        inner parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
         ///Оребрение
         parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
         parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
@@ -3681,6 +3681,7 @@ package TPPSim
           Diagram(coordinateSystem(extent = {{-50, -100}, {50, 100}})),
           __OpenModelica_commandLineOptions = "");
       end BaseGFHE;
+
     end BaseClases;
 
     model FlowSideOTE
@@ -3750,30 +3751,30 @@ package TPPSim
         experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
     end FlowSideOTE;
 
-    model GasSideHE "Модель газовой стороны газо-водяного/парового теплообменника котла-утилизатора"
+    model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой стороны газо-водяного/парового теплообменника котла-утилизатора"
       extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconGasSideHE;
       import TPPSim.functions.deltaPg_lite;
       replaceable package Medium = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
       final outer parameter Real k_gamma_gas "Поправка к коэффициенту теплоотдачи со стороны газов";
       //Конструктивные характеристики
-      parameter Integer numberOfVolumes = 10 "Число участков разбиения" annotation(
-        Dialog(group = "Конструктивные характеристики"));
+      final outer parameter Integer numberOfFlueSections "Число участков разбиения вдоль газохода";
       final outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубок теплообменника";
       final outer parameter Modelica.SIunits.Length delta "Толщина стенки трубки теплообменника";
       //Поток газов
       final outer parameter Modelica.SIunits.Volume deltaVGas "Объем одного участка газового тракта";
       final outer parameter Modelica.SIunits.Area f_gas "Площадь для прохода газов на одном участке разбиения";
       //Характеристики оребрения
-      final outer parameter Real n_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи" annotation(
-        Dialog(group = "Характеристики оребрения"));
+      final outer parameter Real n_fin "Показатель степени 'n' в формуле коэффициента теплоотдачи";
       final outer parameter Real Cs "Коэффициент, определяемый в зависимости от от относительного поперечного и продольного шага труб в пучке, типа пучка и коэффициента оребрения";
       final outer parameter Real Cz "Поправка на число рядов труб по ходу газов";
       final outer parameter Real H_fin "Площадь оребренной поверхности";
       final outer parameter Real Kaer "Коэффициент для расчета аэродинамического сопротивления";
-      parameter Boolean DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
-      parameter Boolean DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
+      //Настройки уравнений динамики
+      final outer parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
+      final outer parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
       //Переменные
-      Medium.Temperature T_gas;
+      Medium.Temperature T_out "Температура газов за участком поверхностей нагрева";
+      Medium.Temperature T_in "Температура газов перед участком поверхностей нагрева";
       Medium.ThermodynamicState state;
       Medium.DynamicViscosity mu "Динамическая вязкость газов";
       Medium.ThermalConductivity k "Коэффициент теплопроводности газов";
@@ -3791,47 +3792,71 @@ package TPPSim
       Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium) annotation(
         Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{80, -68}, {120, -28}}, rotation = 0)));
     equation
-//Уравнения для потока газов
-      if DynamicEnergyBalance then
-        deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(T_gas) = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
+  //Уравнения для потока газов
+      if gas_DynamicEnergyBalance then
+        deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(T_out) = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
       else
         0 = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
       end if;
-      heat.Q_flow = -alfa_gas * H_fin * (T_gas - heat.T);
-//Уравнения состояния
-      state = Medium.setState_pTX(gasOut.p, T_gas, gasIn.Xi_outflow);
+      heat.Q_flow = -alfa_gas * H_fin * (0.5 * (T_out + T_in) - heat.T);
+  //Уравнения состояния
+      state = Medium.setState_pTX(gasOut.p, T_out, gasIn.Xi_outflow);
       gasOut.h_outflow = Medium.specificEnthalpy(state);
       drdp = Medium.density_derp_T(state);
       drdT = Medium.density_derT_p(state);
-      if DynamicMassBalance then
-        gasOut.m_flow + gasIn.m_flow - deltaVGas * (drdT * der(T_gas) + drdp * der(gasIn.p)) = 0 "Уравнение сплошности";
+      T_in = Medium.T_hX(inStream(gasIn.h_outflow), inStream(gasIn.Xi_outflow));
+      if gas_DynamicMassBalance then
+        gasOut.m_flow + gasIn.m_flow - deltaVGas * (drdT * der(T_out) + drdp * der(gasIn.p)) = 0 "Уравнение сплошности";
       else
         gasOut.m_flow + gasIn.m_flow = 0;
       end if;
-//Коэффициент теплоотдачи
+    //Коэффициент теплоотдачи
       mu = Medium.dynamicViscosity(state);
       k = Medium.thermalConductivity(state);
-      //cp = Medium.heatCapacity_cp(state);
       Pr = Medium.prandtlNumber(state);  
       Re = abs(gasIn.m_flow * (Din + 2 * delta) / (f_gas * mu));
       alfa_gas = k_gamma_gas * 0.113 * Cs * Cz * k / (Din + 2 * delta) * Re ^ n_fin * Pr ^ 0.33;
-      deltaP = deltaPg_lite(deltaDGas = -gasOut.m_flow, Kaer = Kaer, f_gas = f_gas, state = state) / numberOfVolumes;
-//Граничные условия
+      deltaP = deltaPg_lite(deltaDGas = -gasOut.m_flow, Kaer = Kaer, f_gas = f_gas, state = state) / numberOfFlueSections;
+  //Граничные условия
       gasIn.h_outflow = inStream(gasOut.h_outflow);
       gasIn.Xi_outflow = inStream(gasOut.Xi_outflow);
       inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
       gasOut.p = gasIn.p - deltaP;
     initial equation
-      if DynamicMassBalance then
-        der(T_gas) = 0;
+      if gas_DynamicMassBalance then
+        der(T_out) = 0;
         der(gasIn.p) = 0;
       end if;
-      if DynamicEnergyBalance == true and DynamicMassBalance == false then
-        der(T_gas) = 0;
+      if gas_DynamicEnergyBalance == true and gas_DynamicMassBalance == false then
+        der(T_out) = 0;
       end if;
-      annotation(
-        Diagram(graphics));
+      annotation(Documentation(info = "<html>
+        <p>Моделирует газовую сторону элементарного элемента поверхности нагрева котла-утилизатора. Предназначена для использования в модели поверхности нагрева котла-утилизатора (GFHE). Все параметры для GasSideHE - глобальные параметры GFHE.</p>
+        <p>Модель включает уравнения сохранения энергии и сплошности для газох. Уравнение теплообмена между газами и оребренной поверхностью нагрева. Упрощенное уравнение для расчета аэродинамического сопротивления поверхности нагрева.</p>
+      </html>", revisions = "<html><head></head><body>
+        <ul>
+          <li><i>August 07, 2017</i>
+       by Artyom Shabunin:<br></li>
+    </ul></body></html>"), Diagram(graphics));
     end GasSideHE;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3881,7 +3906,8 @@ package TPPSim
     model GFHE
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
       //Исходные данные по разбиению
-      parameter Integer numberOfVolumes = 2 "Число участков разбиения";
+      parameter Integer numberOfVolumes "Число участков разбиения";
+      final inner parameter Integer numberOfFlueSections = numberOfVolumes "Число участков разбиения газохода";
       //Конструктивные характеристики
     protected
       parameter Modelica.SIunits.Area f_flow = zahod * Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
@@ -3893,7 +3919,7 @@ package TPPSim
       inner parameter Modelica.SIunits.Area f_gas = (1 - (Din + 2 * delta) / s1 * (1 + 2 * hfin * delta_fin / sfin / (Din + 2 * delta))) * Lpipe * s2 * z1 "Площадь для прохода газов";
       //Характеристики оребрения
       inner parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + (2 * Modelica.Constants.pi * (Dfin ^ 2 - (Din + 2 * delta) ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin) * (Lpipe / sfin)) * z1 * z2 / numberOfVolumes "Площадь оребренной поверхности";
-      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes](redeclare package Medium = Medium_G, numberOfVolumes = numberOfVolumes, DynamicMassBalance = gas_DynamicMassBalance, DynamicEnergyBalance = gas_DynamicEnergyBalance) annotation(
+      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes](redeclare package Medium = Medium_G) annotation(
         Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       replaceable TPPSim.HRSG_HeatExch.FlowSideOTE flowHE[numberOfVolumes](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm) annotation(
         Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
@@ -3919,6 +3945,10 @@ package TPPSim
         version = "",
         uses);
     end GFHE;
+
+
+
+
 
     model FlowSideSH
       import TPPSim.functions.alfaForSH;
@@ -4008,7 +4038,7 @@ package TPPSim
       parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
         Dialog(group = "Конструктивные характеристики"));
     protected
-      parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
+      inner parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
         Dialog(group = "Конструктивные характеристики"));
       parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
       parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfTubeSections "Длина теплообменной трубки для элемента разбиения";
@@ -4022,7 +4052,7 @@ package TPPSim
       //Переменные
       Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)";
       Modelica.SIunits.Length deltaHpipe[numberOfFlueSections, numberOfTubeSections] "Разность высот на участке ряда труб";
-      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G, numberOfVolumes = numberOfFlueSections, DynamicMassBalance = gas_DynamicMassBalance, DynamicEnergyBalance = gas_DynamicEnergyBalance) annotation(
+      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G) annotation(
         Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       replaceable TPPSim.HRSG_HeatExch.FlowSideOTE flowHE[numberOfFlueSections, numberOfTubeSections](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm) annotation(
         Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
@@ -4089,6 +4119,8 @@ package TPPSim
         version = "",
         uses);
     end GFHE_new;
+
+
 
     model FlowSideSH2
       import TPPSim.functions.alfaForSH;
