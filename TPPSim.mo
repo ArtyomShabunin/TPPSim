@@ -1519,7 +1519,7 @@ package TPPSim
         Placement(visible = true, transformation(origin = {-17, -5}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
       TPPSim.Pumps.simplePump FWPump(redeclare package Medium = Medium_F, setD_flow = 5, use_D_flow_in = true) annotation(
         Placement(visible = true, transformation(origin = {-1, -17}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
-      TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Tnom = Tnom, Tstart = Tinflow_sh) annotation(
+      TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Tnom = Tnom, Tstart = Tinflow_sh, gasSource.X = set_X) annotation(
         Placement(visible = true, transformation(origin = {186, 8}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       TPPSim.Controls.LC lc1(DFmax = 50, DFmin = 0, levelSP = 0.5) annotation(
         Placement(visible = true, transformation(origin = {-30, 80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -1619,6 +1619,7 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {200, 100}})),
         __OpenModelica_commandLineOptions = "");
     end twoPDrumStartUp;
+
 
     model threePDrumStartUp "Пуск трехконтурного барабанного КУ"
       package Medium_F = Modelica.Media.Water.WaterIF97_ph;
@@ -3512,10 +3513,10 @@ package TPPSim
 
       partial model BaseFlowSideHE
         extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconFlowSideHE;
-        parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
-        replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
+        final outer parameter Medium.MassFlowRate m_flow_small "Минимальный расход";
+        replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
         constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
-        constant Medium_F.AbsolutePressure pc = Medium_F.fluidConstants[1].criticalPressure;
+        constant Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
         constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";
         parameter Modelica.SIunits.MassFlowRate setD_flow = 78 "Номинальный массовый расход воды/пар" annotation(
           Dialog(group = "Параметры стороны вода/пар"));
@@ -3528,54 +3529,52 @@ package TPPSim
         parameter Modelica.SIunits.Temperature setT_outFlow = 80 + 273.15 "Начальная выходная температура потока воды/пар" annotation(
           Dialog(group = "Параметры стороны вода/пар"));
         parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
-        parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
-        parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
+        parameter Medium.SpecificEnthalpy seth_in "Начальная входная энтальпия";
+        parameter Medium.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
         //Характеристики металла
         parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
           Dialog(group = "Металл"));
         parameter Modelica.SIunits.ThermalConductivity lambda_m = 20 "Теплопроводность метала" annotation(
           Dialog(group = "Металл"));
         //Конструктивные характеристики
-        parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника" annotation(
-          Dialog(group = "Конструктивные характеристики"));
-        parameter Modelica.SIunits.Length deltaLpipe = 18.4 "Длина теплообменной трубки" annotation(
-          Dialog(group = "Конструктивные характеристики"));
+        final outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубок теплообменника";
+        final outer parameter Modelica.SIunits.Length deltaLpipe "Длина теплообменной трубки";
         parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость";
         //Поток вода/пар
-        parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
-        parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
-        parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
-        parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
+        final outer parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
+        final outer parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
+        final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
+        final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
         //Начальные значения
-        parameter Medium_F.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
+        parameter Medium.SpecificEnthalpy h_startFlow_n[2] = fill(seth_in, 2) "Начальный вектор энальпии потока газов" annotation(
           Dialog(tab = "Инициализация"));
-        parameter Medium_F.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
+        parameter Medium.SpecificEnthalpy h_startFlow_v = seth_in "Начальный вектор энальпии потока газов" annotation(
           Dialog(tab = "Инициализация"));
-        parameter Medium_F.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
+        parameter Medium.AbsolutePressure p_startFlow_v = setp_flow_in "Начальный вектор давлений потока вода/пар" annotation(
           Dialog(tab = "Инициализация"));
-        parameter Medium_F.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
+        parameter Medium.AbsolutePressure p_startFlow_n[2] = fill(setp_flow_in, 2) "Начальный вектор давлений потока вода/пар" annotation(
           Dialog(tab = "Инициализация"));
-        parameter Medium_F.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
+        parameter Medium.MassFlowRate D_startFlow_v = setD_flow "Начальный вектор массового расхода потока вода/пар по конечным объемам" annotation(
           Dialog(tab = "Инициализация"));
-        parameter Medium_F.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
+        parameter Medium.MassFlowRate D_startFlow_n[2] = fill(setD_flow, 2) "Начальный вектор массового расхода потока вода/пар по узловым точкам" annotation(
           Dialog(tab = "Инициализация"));
         //Металл
         parameter Modelica.SIunits.Temperature t_startM = setTm "Начальный вектор энальпии потока газов" annotation(
           Dialog(tab = "Инициализация"));
-        parameter Boolean DynamicMomentum = false "Использовать или нет уравнение сохранения момента";
-        parameter Boolean DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
-        parameter Boolean DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
-        parameter Boolean DynamicTm = true "Использовать или нет производную по температуре металла";
+        parameter Boolean DynamicMomentum "Использовать или нет уравнение сохранения момента";
+        parameter Boolean DynamicMassBalance "Использовать или нет уравнение сохранение массы с производными";
+        parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";
+        parameter Boolean DynamicTm "Использовать или нет производную по температуре металла";
         //Переменные
-        Medium_F.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
-        Medium_F.Temperature t_flow "Температура потока вода/пар по участкам трубы";
-        Medium_F.AbsolutePressure p_v(start = p_startFlow_v) "Давление потока вода/пар по участкам трубы в конечных объемах";
-        Medium_F.AbsolutePressure p_n[2](start = p_startFlow_n) "Давление потока вода/пар по участкам трубы в узловых точках";
-        Medium_F.SpecificEnthalpy h_v(start = h_startFlow_v) "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
-        Medium_F.SpecificEnthalpy h_n[2](start = h_startFlow_n) "Энтальпия потока вода/пар по участкам трубы в узловых точках";
-        Medium_F.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
-        Medium_F.MassFlowRate D_flow_v(start = D_startFlow_v) "Массовый расход потока вода/пар по участкам ряда труб";
-        Medium_F.MassFlowRate D_flow_n[2](start = D_startFlow_n) "Массовый расход потока вода/пар по участкам ряда труб";
+        Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
+        Medium.Temperature t_flow "Температура потока вода/пар по участкам трубы";
+        Medium.AbsolutePressure p_v(start = p_startFlow_v) "Давление потока вода/пар по участкам трубы в конечных объемах";
+        Medium.AbsolutePressure p_n[2](start = p_startFlow_n) "Давление потока вода/пар по участкам трубы в узловых точках";
+        Medium.SpecificEnthalpy h_v(start = h_startFlow_v) "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
+        Medium.SpecificEnthalpy h_n[2](start = h_startFlow_n) "Энтальпия потока вода/пар по участкам трубы в узловых точках";
+        Medium.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
+        Medium.MassFlowRate D_flow_v(start = D_startFlow_v) "Массовый расход потока вода/пар по участкам ряда труб";
+        Medium.MassFlowRate D_flow_n[2](start = D_startFlow_n) "Массовый расход потока вода/пар по участкам ряда труб";
         Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
         Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
         Modelica.SIunits.Temperature t_m(start = t_startM) "Температура металла на участках трубопровода";
@@ -3586,9 +3585,9 @@ package TPPSim
         //Интерфейс
         Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
           Placement(visible = true, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+        Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium) annotation(
           Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {99, 60}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-        Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+        Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
           Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       equation
 //Граничные условия
@@ -3605,9 +3604,29 @@ package TPPSim
           experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
       end BaseFlowSideHE;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       partial model BaseGFHE
         extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconHE;
-        parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
+        inner parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
         //Исходные данные для газовой стороны
         replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
         parameter Modelica.SIunits.MassFlowRate wgas "Номинальный (и начальный) массовый расход газов";
@@ -3641,8 +3660,8 @@ package TPPSim
         parameter Boolean flow_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
         parameter Boolean flow_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
         parameter Boolean flow_DynamicTm = true "Использовать или нет производную по температуре металла";
-        inner parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
-        inner parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
+        parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
+        parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
         ///Оребрение
         parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
         parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
@@ -3682,19 +3701,27 @@ package TPPSim
           __OpenModelica_commandLineOptions = "");
       end BaseGFHE;
 
+
+
+
+
+
+
+
+
     end BaseClases;
 
     model FlowSideOTE
-      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
+      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       import TPPSim.functions.alfaFor2ph;
       import TPPSim.functions.calc_rho_v;
       //Переменные
       Modelica.SIunits.DerDensityByEnthalpy drdh_new;
       Modelica.SIunits.DerDensityByPressure drdp_new;
-      Medium_F.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
+      Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
       Real x_v "Степень сухости";
-      Medium_F.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
-      Medium_F.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+      Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
+      Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
       Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
       Real C1 "Показатель в числителе уравнения сплошности";
       Real C2 "Показатель в знаменателе уравнения сплошности";
@@ -3707,25 +3734,25 @@ package TPPSim
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
-      stateFlow = Medium_F.setState_ph(p_v, h_v);
-      t_flow = Medium_F.temperature(stateFlow);
+      stateFlow = Medium.setState_ph(p_v, h_v);
+      t_flow = Medium.temperature(stateFlow);
       rho_v = calc_rho_v(h_n, p_v);
 //Уравнения для расчета процессов теплообмена
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaFor2ph(h_n = h_n, D_flow_v = D_flow_v, p_v = p_v, Din = Din, f_flow = f_flow);
 //Про две фазы
-//stateFlowTwoPhase[i, j] = Medium_F.setState_ph(p_v, h_v[i, j]);
+//stateFlowTwoPhase[i, j] = Medium.setState_ph(p_v, h_v[i, j]);
       x_v = if h_v < hl then 0 elseif h_v > hv then 1 else (h_v - hl) / (hv - hl);
       D_flow_v = (D_flow_n[2] + D_flow_n[1]) / 2;
 //Уравнения из ThermoPower.Water.Flow1DFEM2ph
       D_flow_n[2] = D_flow_n[1] - C1 - C2 "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
       C1 = deltaVFlow * drdh_new * der(h_v);
       C2 = deltaVFlow * drdp_new * der(p_v);
-      drdh_new = if abs(h_n[2] - h_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[1]))) / (h_n[2] - h_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[2] - 0.01))) / 0.01;
-      drdp_new = if abs(p_n[2] - p_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[1], h_v))) / (p_n[2] - p_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[2] - 0.01, h_v))) / 0.01;
-      sat_v = Medium_F.setSat_p(p_v);
-      hl = Medium_F.bubbleEnthalpy(sat_v);
-      hv = Medium_F.dewEnthalpy(sat_v);
+      drdh_new = if abs(h_n[2] - h_n[1]) > 0.01 then (Medium.density(Medium.setState_ph(p_v, h_n[2])) - Medium.density(Medium.setState_ph(p_v, h_n[1]))) / (h_n[2] - h_n[1]) else (Medium.density(Medium.setState_ph(p_v, h_n[2])) - Medium.density(Medium.setState_ph(p_v, h_n[2] - 0.01))) / 0.01;
+      drdp_new = if abs(p_n[2] - p_n[1]) > 0.01 then (Medium.density(Medium.setState_ph(p_n[2], h_v)) - Medium.density(Medium.setState_ph(p_n[1], h_v))) / (p_n[2] - p_n[1]) else (Medium.density(Medium.setState_ph(p_n[2], h_v)) - Medium.density(Medium.setState_ph(p_n[2] - 0.01, h_v))) / 0.01;
+      sat_v = Medium.setSat_p(p_v);
+      hl = Medium.bubbleEnthalpy(sat_v);
+      hv = Medium.dewEnthalpy(sat_v);
 //Уравнения для расчета процессов массообмена
       p_v = p_n[1];
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
@@ -3751,6 +3778,11 @@ package TPPSim
         experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
     end FlowSideOTE;
 
+
+
+
+
+
     model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой стороны газо-водяного/парового теплообменника котла-утилизатора"
       extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconGasSideHE;
       import TPPSim.functions.deltaPg_lite;
@@ -3770,8 +3802,9 @@ package TPPSim
       final outer parameter Real H_fin "Площадь оребренной поверхности";
       final outer parameter Real Kaer "Коэффициент для расчета аэродинамического сопротивления";
       //Настройки уравнений динамики
-      final outer parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными";
-      final outer parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными";
+      parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";
+      parameter Boolean DynamicMassBalance "Использовать или нет уравнение сохранение массы с производными";
+      Real[6] Test;
       //Переменные
       Medium.Temperature T_out "Температура газов за участком поверхностей нагрева";
       Medium.Temperature T_in "Температура газов перед участком поверхностей нагрева";
@@ -3793,19 +3826,20 @@ package TPPSim
         Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{80, -68}, {120, -28}}, rotation = 0)));
     equation
   //Уравнения для потока газов
-      if gas_DynamicEnergyBalance then
+      if DynamicEnergyBalance then
         deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(T_out) = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
       else
         0 = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
       end if;
       heat.Q_flow = -alfa_gas * H_fin * (0.5 * (T_out + T_in) - heat.T);
   //Уравнения состояния
-      state = Medium.setState_pTX(gasOut.p, T_out, gasIn.Xi_outflow);
+      state = Medium.setState_pTX(gasOut.p, T_out, actualStream(gasIn.Xi_outflow));
+      Test = actualStream(gasIn.Xi_outflow);
       gasOut.h_outflow = Medium.specificEnthalpy(state);
       drdp = Medium.density_derp_T(state);
       drdT = Medium.density_derT_p(state);
       T_in = Medium.T_hX(inStream(gasIn.h_outflow), inStream(gasIn.Xi_outflow));
-      if gas_DynamicMassBalance then
+      if DynamicMassBalance then
         gasOut.m_flow + gasIn.m_flow - deltaVGas * (drdT * der(T_out) + drdp * der(gasIn.p)) = 0 "Уравнение сплошности";
       else
         gasOut.m_flow + gasIn.m_flow = 0;
@@ -3823,11 +3857,11 @@ package TPPSim
       inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
       gasOut.p = gasIn.p - deltaP;
     initial equation
-      if gas_DynamicMassBalance then
+      if DynamicMassBalance then
         der(T_out) = 0;
         der(gasIn.p) = 0;
       end if;
-      if gas_DynamicEnergyBalance == true and gas_DynamicMassBalance == false then
+      if DynamicEnergyBalance == true and DynamicMassBalance == false then
         der(T_out) = 0;
       end if;
       annotation(Documentation(info = "<html>
@@ -3903,6 +3937,15 @@ package TPPSim
 
 
 
+
+
+
+
+
+
+
+
+
     model GFHE
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
       //Исходные данные по разбиению
@@ -3910,18 +3953,18 @@ package TPPSim
       final inner parameter Integer numberOfFlueSections = numberOfVolumes "Число участков разбиения газохода";
       //Конструктивные характеристики
     protected
-      parameter Modelica.SIunits.Area f_flow = zahod * Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
-      parameter Modelica.SIunits.Length deltaLpipe = Lpipe * z2 / zahod / numberOfVolumes "Длина теплообменной трубки для элемента разбиения";
-      parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * zahod * Modelica.Constants.pi * Din * z1 "Внутренняя площадь одного участка ряда труб";
-      parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * f_flow "Внутренний объем одного участка ряда труб";
-      parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * zahod * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) * z1 / 4 "Масса металла участка ряда труб";
+      inner parameter Modelica.SIunits.Area f_flow = zahod * Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
+      inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe * z2 / zahod / numberOfVolumes "Длина теплообменной трубки для элемента разбиения";
+      inner parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * zahod * Modelica.Constants.pi * Din * z1 "Внутренняя площадь одного участка ряда труб";
+      inner parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * f_flow "Внутренний объем одного участка ряда труб";
+      inner parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * zahod * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) * z1 / 4 "Масса металла участка ряда труб";
       inner parameter Modelica.SIunits.Volume deltaVGas = Lpipe * (s1 * s2 - Modelica.Constants.pi * (Din + 2 * delta) ^ 2 / 4) * z1 * z2 / numberOfVolumes "Объем одного участка газового тракта";
       inner parameter Modelica.SIunits.Area f_gas = (1 - (Din + 2 * delta) / s1 * (1 + 2 * hfin * delta_fin / sfin / (Din + 2 * delta))) * Lpipe * s2 * z1 "Площадь для прохода газов";
       //Характеристики оребрения
       inner parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + (2 * Modelica.Constants.pi * (Dfin ^ 2 - (Din + 2 * delta) ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin) * (Lpipe / sfin)) * z1 * z2 / numberOfVolumes "Площадь оребренной поверхности";
-      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes](redeclare package Medium = Medium_G) annotation(
+      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes](redeclare package Medium = Medium_G, DynamicEnergyBalance = gas_DynamicEnergyBalance, DynamicMassBalance = gas_DynamicMassBalance) annotation(
         Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable TPPSim.HRSG_HeatExch.FlowSideOTE flowHE[numberOfVolumes](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm) annotation(
+      replaceable TPPSim.HRSG_HeatExch.FlowSideOTE flowHE[numberOfVolumes](redeclare package Medium = Medium_F, setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, seth_in = seth_in, seth_out = seth_out, setTm = setTm, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm) annotation(
         Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
     equation
       connect(flowIn, flowHE[1].waterIn) annotation(
@@ -3950,32 +3993,47 @@ package TPPSim
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     model FlowSideSH
       import TPPSim.functions.alfaForSH;
-      extends BaseClases.flowSideHE(redeclare replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model");
-      Medium_F.ThermodynamicState stateFlow_n[2] "Термодинамическое состояние потока вода/пар на участках трубопровода";
+      extends BaseClases.flowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model");
+      Medium.ThermodynamicState stateFlow_n[2] "Термодинамическое состояние потока вода/пар на участках трубопровода";
       Real der_h_n[2] "Производняа энтальпии потока вода/пар";
-      Medium_F.Density rho_n[2] "Плотность потока по участкам трубы в конечных объемах";
+      Medium.Density rho_n[2] "Плотность потока по участкам трубы в конечных объемах";
       Modelica.SIunits.DerDensityByEnthalpy drdh_v1 "Производная плотности потока по энтальпии на участках ряда труб";
       Modelica.SIunits.DerDensityByEnthalpy drdh_v2 "Производная плотности потока по энтальпии на участках ряда труб";
       Modelica.SIunits.DerDensityByEnthalpy drdh_n[2] "Производная плотности потока по энтальпии на участках ряда труб";
       Modelica.SIunits.DerDensityByPressure drdp_v "Производная плотности потока по давлению на участках ряда труб";
       Modelica.SIunits.DerDensityByPressure drdp_n[2] "Производная плотности потока по давлению на участках ряда труб";
       Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
-      Medium_F.DynamicViscosity mu_flow "Динамическая вязкость для потока вода/пар";
+      Medium.DynamicViscosity mu_flow "Динамическая вязкость для потока вода/пар";
       Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
       Modelica.SIunits.Temperature t_m(start = t_startM) "Температура металла на участках трубопровода";
-      Medium_F.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
-      Medium_F.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
-      Medium_F.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+      Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
+      Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
+      Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
       Real C1 "Показатель в числителе уравнения сплошности";
       Real C2 "Показатель в знаменателе уравнения сплошности";
       //Интерфейс
       Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
         Placement(visible = false, transformation(origin = {16, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {120, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
+      Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium) annotation(
         Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-1, -120}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium_F) annotation(
+      Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
         Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2.66454e-15, 120}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
     equation
       0.5 * deltaVFlow * rho_v * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_n[1] * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
@@ -3986,9 +4044,9 @@ package TPPSim
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
-      stateFlow = Medium_F.setState_ph(p_v, h_v);
-      t_flow = Medium_F.temperature(stateFlow);
-      mu_flow = if Medium_F.dynamicViscosity(stateFlow) < 1.503e-004 then 1.503e-004 else Medium_F.dynamicViscosity(stateFlow);
+      stateFlow = Medium.setState_ph(p_v, h_v);
+      t_flow = Medium.temperature(stateFlow);
+      mu_flow = if Medium.dynamicViscosity(stateFlow) < 1.503e-004 then 1.503e-004 else Medium.dynamicViscosity(stateFlow);
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaForSH(h_v = h_v, D_flow_n1 = D_flow_n[1], p_v = p_v, Din = Din, f_flow = f_flow);
       D_flow_v = (D_flow_n[2] + D_flow_n[1]) / 2;
@@ -4001,16 +4059,16 @@ package TPPSim
       drdh_v1 = drdh_n[1] / 2;
       drdh_v2 = drdh_n[2] / 2;
       for i in 1:2 loop
-        stateFlow_n[i] = Medium_F.setState_ph(p_v, h_n[i]);
-        drdp_n[i] = Medium_F.density_derp_h(stateFlow_n[i]);
-        drdh_n[i] = Medium_F.density_derh_p(stateFlow_n[i]);
-        rho_n[i] = Medium_F.density(stateFlow_n[i]);
+        stateFlow_n[i] = Medium.setState_ph(p_v, h_n[i]);
+        drdp_n[i] = Medium.density_derp_h(stateFlow_n[i]);
+        drdh_n[i] = Medium.density_derh_p(stateFlow_n[i]);
+        rho_n[i] = Medium.density(stateFlow_n[i]);
       end for;
       der_h_n[1] = der(h_n[2]);
       der_h_n[2] = der(h_n[2]);
-      sat_v = Medium_F.setSat_p(p_v);
-      hl = Medium_F.bubbleEnthalpy(sat_v);
-      hv = Medium_F.dewEnthalpy(sat_v);
+      sat_v = Medium.setSat_p(p_v);
+      hl = Medium.bubbleEnthalpy(sat_v);
+      hv = Medium.dewEnthalpy(sat_v);
 //Уравнения для расчета процессов массообмена
 //Осреднение по конечному объему
       p_v = p_n[1];
@@ -4032,6 +4090,7 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end FlowSideSH;
 
+
     model GFHE_new
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
       //Исходные данные по разбиению
@@ -4040,11 +4099,11 @@ package TPPSim
     protected
       inner parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
         Dialog(group = "Конструктивные характеристики"));
-      parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
-      parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfTubeSections "Длина теплообменной трубки для элемента разбиения";
-      parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * Modelica.Constants.pi * Din * z1 "Внутренняя площадь одного участка ряда труб";
-      parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * f_flow "Внутренний объем одного участка ряда труб";
-      parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) * z1 / 4 "Масса металла участка ряда труб";
+      inner parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
+      inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfTubeSections "Длина теплообменной трубки для элемента разбиения";
+      inner parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * Modelica.Constants.pi * Din * z1 "Внутренняя площадь одного участка ряда труб";
+      inner parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * f_flow "Внутренний объем одного участка ряда труб";
+      inner parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) * z1 / 4 "Масса металла участка ряда труб";
       inner parameter Modelica.SIunits.Volume deltaVGas = deltaLpipe * (s1 * s2 - Modelica.Constants.pi * (Din + 2 * delta) ^ 2 / 4) * z1 "Объем одного участка газового тракта";
       inner parameter Modelica.SIunits.Area f_gas = (1 - (Din + 2 * delta) / s1 * (1 + 2 * hfin * delta_fin / sfin / (Din + 2 * delta))) * deltaLpipe * s2 * z1 "Площадь для прохода газов";
       //Характеристики оребрения
@@ -4052,9 +4111,9 @@ package TPPSim
       //Переменные
       Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)";
       Modelica.SIunits.Length deltaHpipe[numberOfFlueSections, numberOfTubeSections] "Разность высот на участке ряда труб";
-      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G) annotation(
+      TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G, DynamicEnergyBalance = gas_DynamicEnergyBalance, DynamicMassBalance = gas_DynamicMassBalance) annotation(
         Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      replaceable TPPSim.HRSG_HeatExch.FlowSideOTE flowHE[numberOfFlueSections, numberOfTubeSections](setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, Din = Din, deltaLpipe = deltaLpipe, seth_in = seth_in, seth_out = seth_out, setTm = setTm, m_flow_small = m_flow_small, deltaSFlow = deltaSFlow, deltaVFlow = deltaVFlow, deltaMMetal = deltaMMetal, f_flow = f_flow, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm) annotation(
+      replaceable TPPSim.HRSG_HeatExch.FlowSideOTE flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, setD_flow = wflow, setp_flow_in = pflow_in, setp_flow_out = pflow_out, setT_inFlow = Tinflow, setT_outFlow = Toutflow, seth_in = seth_in, seth_out = seth_out, setTm = setTm, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm) annotation(
         Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       TPPSim.HRSG_HeatExch.Collector collFlow(redeclare package Medium = Medium_F, zahod = zahod);
       TPPSim.HRSG_HeatExch.Collector collGas(redeclare package Medium = Medium_G, zahod = numberOfTubeSections);
@@ -4122,9 +4181,21 @@ package TPPSim
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     model FlowSideSH2
       import TPPSim.functions.alfaForSH;
-      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model");
+      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model");
       Boolean SH_cold(start = true, fixed = true);
       Modelica.SIunits.DerDensityByEnthalpy drdh_v "Производная плотности потока по энтальпии на участках ряда труб";
       Modelica.SIunits.DerDensityByPressure drdp_v "Производная плотности потока по давлению на участках ряда труб";
@@ -4165,11 +4236,11 @@ package TPPSim
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
-      stateFlow = Medium_F.setState_ph(p_v, h_v);
-      t_flow = Medium_F.temperature(stateFlow);
-      drdp_v = Medium_F.density_derp_h(stateFlow);
-      drdh_v = Medium_F.density_derh_p(stateFlow);
-      rho_v = Medium_F.density(stateFlow);
+      stateFlow = Medium.setState_ph(p_v, h_v);
+      t_flow = Medium.temperature(stateFlow);
+      drdp_v = Medium.density_derp_h(stateFlow);
+      drdh_v = Medium.density_derh_p(stateFlow);
+      rho_v = Medium.density(stateFlow);
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaForSH(h_v = h_v, D_flow_n1 = D_flow_n[1], p_v = p_v, Din = Din, f_flow = f_flow);
 //D_flow_v = (D_flow_n[1] + D_flow_n[2]) / 2;
@@ -4213,17 +4284,22 @@ package TPPSim
       end if;
       if DynamicMomentum then
         der(D_flow_v) = 0;
-//der(w_flow_v) = 0;
       end if;
       annotation(
         Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
         Diagram(graphics),
-        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
-        Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
+        experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
     end FlowSideSH2;
 
+
+
+
+
+
+
+
     model FlowSideOTE2
-      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
+      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       import TPPSim.functions.alfaFor2ph;
       import TPPSim.functions.calc_rho_v;
       import TPPSim.functions.calc_rho_drdh_drdp;
@@ -4232,11 +4308,11 @@ package TPPSim
       //Modelica.SIunits.DerDensityByPressure drdp_new;
       Modelica.SIunits.DerDensityByEnthalpy drdh_v1, drdh_v2;
       Modelica.SIunits.DerDensityByPressure drdp_v;
-      //Medium_F.Density rho_v_test;
-      Medium_F.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
+      //Medium.Density rho_v_test;
+      Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
       Real x_v "Степень сухости";
-      Medium_F.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
-      Medium_F.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+      Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
+      Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
       Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
       Real C1 "Показатель в числителе уравнения сплошности";
       Real C2 "Показатель в знаменателе уравнения сплошности";
@@ -4249,14 +4325,14 @@ package TPPSim
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
-      stateFlow = Medium_F.setState_ph(p_v, h_v);
-      t_flow = Medium_F.temperature(stateFlow);
+      stateFlow = Medium.setState_ph(p_v, h_v);
+      t_flow = Medium.temperature(stateFlow);
 //rho_v = calc_rho_v(h_n, p_v);
 //Уравнения для расчета процессов теплообмена
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaFor2ph(h_n = h_n, D_flow_v = D_flow_v, p_v = p_v, Din = Din, f_flow = f_flow);
 //Про две фазы
-//stateFlowTwoPhase[i, j] = Medium_F.setState_ph(p_v, h_v[i, j]);
+//stateFlowTwoPhase[i, j] = Medium.setState_ph(p_v, h_v[i, j]);
       x_v = if h_v < hl then 0 elseif h_v > hv then 1 else (h_v - hl) / (hv - hl);
       D_flow_v = (D_flow_n[2] + D_flow_n[1]) / 2;
 //Уравнения из ThermoPower.Water.Flow1DFEM2ph
@@ -4264,11 +4340,11 @@ package TPPSim
       C1 = deltaVFlow * (drdh_v1 * der(h_v) + drdh_v1 * der(h_n[2]));
       C2 = deltaVFlow * drdp_v * der(p_v);
       (rho_v, drdp_v, drdh_v1, drdh_v2) = calc_rho_drdh_drdp(h_n, p_v);
-//drdh_new = if abs(h_n[2] - h_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[1]))) / (h_n[2] - h_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_v, h_n[2])) - Medium_F.density(Medium_F.setState_ph(p_v, h_n[2] - 0.01))) / 0.01;
-//drdp_new = if abs(p_n[2] - p_n[1]) > 0.01 then (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[1], h_v))) / (p_n[2] - p_n[1]) else (Medium_F.density(Medium_F.setState_ph(p_n[2], h_v)) - Medium_F.density(Medium_F.setState_ph(p_n[2] - 0.01, h_v))) / 0.01;
-      sat_v = Medium_F.setSat_p(p_v);
-      hl = Medium_F.bubbleEnthalpy(sat_v);
-      hv = Medium_F.dewEnthalpy(sat_v);
+//drdh_new = if abs(h_n[2] - h_n[1]) > 0.01 then (Medium.density(Medium.setState_ph(p_v, h_n[2])) - Medium.density(Medium.setState_ph(p_v, h_n[1]))) / (h_n[2] - h_n[1]) else (Medium.density(Medium.setState_ph(p_v, h_n[2])) - Medium.density(Medium.setState_ph(p_v, h_n[2] - 0.01))) / 0.01;
+//drdp_new = if abs(p_n[2] - p_n[1]) > 0.01 then (Medium.density(Medium.setState_ph(p_n[2], h_v)) - Medium.density(Medium.setState_ph(p_n[1], h_v))) / (p_n[2] - p_n[1]) else (Medium.density(Medium.setState_ph(p_n[2], h_v)) - Medium.density(Medium.setState_ph(p_n[2] - 0.01, h_v))) / 0.01;
+      sat_v = Medium.setSat_p(p_v);
+      hl = Medium.bubbleEnthalpy(sat_v);
+      hv = Medium.dewEnthalpy(sat_v);
 //Уравнения для расчета процессов массообмена
       p_v = p_n[1];
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
@@ -4290,18 +4366,20 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end FlowSideOTE2;
 
+
+
     model FlowSideOTE3
-      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
+      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       //import TPPSim.functions.alfaFor2ph;
       import TPPSim.functions.calc_rho_v;
       import TPPSim.functions.drdh_drdp;
       //Переменные
       Modelica.SIunits.DerDensityByEnthalpy drdh;
       Modelica.SIunits.DerDensityByPressure drdp;
-      Medium_F.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
+      Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
       Real x_v "Степень сухости";
-      Medium_F.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
-      Medium_F.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+      Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
+      Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
       Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
       Real C1 "Показатель в числителе уравнения сплошности";
       Real C2 "Показатель в знаменателе уравнения сплошности";
@@ -4327,14 +4405,14 @@ package TPPSim
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
-      stateFlow = Medium_F.setState_ph(p_v, h_v);
-      t_flow = Medium_F.temperature(stateFlow);
+      stateFlow = Medium.setState_ph(p_v, h_v);
+      t_flow = Medium.temperature(stateFlow);
       rho_v = calc_rho_v(h_n, p_v);
 //Уравнения для расчета процессов теплообмена
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = 20000;
 //Про две фазы
-//stateFlowTwoPhase[i, j] = Medium_F.setState_ph(p_v, h_v[i, j]);
+//stateFlowTwoPhase[i, j] = Medium.setState_ph(p_v, h_v[i, j]);
       x_v = if noEvent(h_v < hl) then 0 elseif noEvent(h_v > hv) then 1 else (h_v - hl) / (hv - hl);
 //D_flow_v = (D_flow_n[2] + D_flow_n[1]) / 2;
       D_flow_v = D_flow_n[2];
@@ -4354,9 +4432,9 @@ package TPPSim
 //drdh := filter_drdh.y;
 //drdp := filter_drdp.y;
 //equation
-      sat_v = Medium_F.setSat_p(p_v);
-      hl = Medium_F.bubbleEnthalpy(sat_v);
-      hv = Medium_F.dewEnthalpy(sat_v);
+      sat_v = Medium.setSat_p(p_v);
+      hl = Medium.bubbleEnthalpy(sat_v);
+      hv = Medium.dewEnthalpy(sat_v);
 //Уравнения для расчета процессов массообмена
       p_v = p_n[1];
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
@@ -4399,15 +4477,20 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end FlowSideOTE3;
 
+
+
+
+
+
     model FlowSideECO
-      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium_F = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
+      extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       import TPPSim.functions.alfaForSH;
       import TPPSim.functions.calc_rho_v;
       //Переменные
-      Medium_F.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
+      Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
       Real x_v "Степень сухости";
-      Medium_F.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
-      Medium_F.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+      Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
+      Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
       Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
     equation
       if DynamicEnergyBalance == true then
@@ -4427,21 +4510,21 @@ package TPPSim
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
-      stateFlow = Medium_F.setState_ph(p_v, h_v);
-      t_flow = Medium_F.temperature(stateFlow);
+      stateFlow = Medium.setState_ph(p_v, h_v);
+      t_flow = Medium.temperature(stateFlow);
       rho_v = calc_rho_v(h_n, p_v);
 //Уравнения для расчета процессов теплообмена
       w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaForSH(h_v = h_v, D_flow_n1 = D_flow_n[1], p_v = p_v, Din = Din, f_flow = f_flow);
 //Про две фазы
-//stateFlowTwoPhase[i, j] = Medium_F.setState_ph(p_v, h_v[i, j]);
+//stateFlowTwoPhase[i, j] = Medium.setState_ph(p_v, h_v[i, j]);
       x_v = if h_v < hl then 0 elseif h_v > hv then 1 else (h_v - hl) / (hv - hl);
       D_flow_v = D_flow_n[2];
 //Уравнения из ThermoPower.Water.Flow1DFEM2ph
       D_flow_n[2] = D_flow_n[1] "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
-      sat_v = Medium_F.setSat_p(p_v);
-      hl = Medium_F.bubbleEnthalpy(sat_v);
-      hv = Medium_F.dewEnthalpy(sat_v);
+      sat_v = Medium.setSat_p(p_v);
+      hl = Medium.bubbleEnthalpy(sat_v);
+      hv = Medium.dewEnthalpy(sat_v);
 //Уравнения для расчета процессов массообмена
       p_v = p_n[1];
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
@@ -4470,6 +4553,11 @@ package TPPSim
         experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
         Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end FlowSideECO;
+
+
+
+
+
 
     model Collector
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
