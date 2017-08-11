@@ -3532,12 +3532,12 @@ package TPPSim
         parameter Boolean DynamicTm "Использовать или нет производную по температуре металла";
         //Переменные
         Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
-        Medium.Temperature t_flow "Температура потока вода/пар по участкам трубы";
+        //Medium.Temperature t_flow "Температура потока вода/пар по участкам трубы";
         Medium.AbsolutePressure p_v "Давление потока вода/пар по участкам трубы в конечных объемах";
         Medium.AbsolutePressure p_n[2] "Давление потока вода/пар по участкам трубы в узловых точках";
         Medium.SpecificEnthalpy h_v "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
         Medium.SpecificEnthalpy h_n[2] "Энтальпия потока вода/пар по участкам трубы в узловых точках";
-        Medium.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
+        //Medium.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
         Medium.MassFlowRate D_flow_v "Массовый расход потока вода/пар по участкам ряда труб";
         Medium.MassFlowRate D_flow_n[2] "Массовый расход потока вода/пар по участкам ряда труб";
         Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
@@ -3568,6 +3568,7 @@ package TPPSim
           Diagram(graphics),
           experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
       end BaseFlowSideHE;
+
 
 
 
@@ -4034,21 +4035,21 @@ package TPPSim
       Modelica.SIunits.DerDensityByEnthalpy drdh_v "Производная плотности потока по энтальпии на участках ряда труб";
       Modelica.SIunits.DerDensityByPressure drdp_v "Производная плотности потока по давлению на участках ряда труб";
     algorithm
-      when t_m >= t_flow and SH_cold then
+      when t_m >= stateFlow.T and SH_cold then
         SH_cold := false;
       end when;
     equation
       if DynamicEnergyBalance then
         if noEvent(SH_cold) then
-          deltaVFlow * rho_v * der(h_v) = -D_flow_n[1] * (h_n[2] - h_n[1]);
+          deltaVFlow * stateFlow.d * der(h_v) = -D_flow_n[1] * (h_n[2] - h_n[1]);
         else
-          deltaVFlow * rho_v * der(h_v) = alfa_flow * deltaSFlow * (t_m - t_flow) - (D_flow_n[2] * h_n[2] - D_flow_n[1] * h_n[1]);
+          deltaVFlow * stateFlow.d * der(h_v) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D_flow_n[2] * h_n[2] - D_flow_n[1] * h_n[1]);
         end if;
       else
         if noEvent(SH_cold) then
           h_n[1] = h_n[2];
         else
-          D_flow_n[1] * (h_n[2] - h_n[1]) = alfa_flow * deltaSFlow * (t_m - t_flow);
+          D_flow_n[1] * (h_n[2] - h_n[1]) = alfa_flow * deltaSFlow * (t_m - stateFlow.T);
         end if;
       end if;
       h_v = h_n[2];
@@ -4057,13 +4058,13 @@ package TPPSim
         if noEvent(SH_cold) then
           deltaMMetal * C_m * der(t_m) = Q_flow;
         else
-          deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - t_flow) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+          deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
         end if;
       else
         if noEvent(SH_cold) then
           Q_flow = 0;
         else
-          Q_flow = alfa_flow * deltaSFlow * (t_m - t_flow);
+          Q_flow = alfa_flow * deltaSFlow * (t_m - stateFlow.T);
         end if;
       end if;
 //Уравнения для heat
@@ -4071,13 +4072,10 @@ package TPPSim
       heat.T = t_m;
 //Уравнения состояния
       stateFlow = Medium.setState_ph(p_v, h_v);
-      t_flow = Medium.temperature(stateFlow);
       drdp_v = Medium.density_derp_h(stateFlow);
       drdh_v = Medium.density_derh_p(stateFlow);
-      rho_v = Medium.density(stateFlow);
-      w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+      w_flow_v = D_flow_v / stateFlow.d / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaForSH(h_v = h_v, D_flow_n1 = D_flow_n[1], p_v = p_v, Din = Din, f_flow = f_flow);
-//D_flow_v = (D_flow_n[1] + D_flow_n[2]) / 2;
       D_flow_v = D_flow_n[2];
       if DynamicMassBalance == true then
         if noEvent(SH_cold) then
@@ -4094,7 +4092,7 @@ package TPPSim
 //Основное уравнение гидравлики
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
       Xi_flow = lambda_tr * deltaLpipe / Din;
-      dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * rho_v / 2 / Modelica.Constants.g_n;
+      dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2 / Modelica.Constants.g_n;
       if DynamicMomentum then
         p_n[1] - p_n[2] = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
 //p_n[1] - p_n[2] = dp_fric + der(w_flow_v) * deltaLpipe * rho_v;
@@ -4124,6 +4122,10 @@ package TPPSim
         Diagram(graphics),
         experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
     end FlowSideSH2;
+
+
+
+
 
     model FlowSideOTE2
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
@@ -4195,8 +4197,6 @@ package TPPSim
 
     model FlowSideOTE3
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
-      import TPPSim.functions.calc_rho_v;
-      import TPPSim.functions.drdh_drdp;
       //Переменные
       Modelica.SIunits.DerDensityByEnthalpy drdh;
       Modelica.SIunits.DerDensityByPressure drdp;
@@ -4209,27 +4209,25 @@ package TPPSim
       Real C2 "Показатель в знаменателе уравнения сплошности";
     equation
       if DynamicEnergyBalance == true then
-        0.5 * deltaVFlow * rho_v * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-        0.5 * deltaVFlow * rho_v * der(h_n[2]) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
+        0.5 * deltaVFlow * stateFlow.d * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+        0.5 * deltaVFlow * stateFlow.d * der(h_n[2]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
       else
-        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_v - h_n[1]);
-        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_n[2] - h_v);
+        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_v - h_n[1]);
+        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_n[2] - h_v);
       end if;
 //Уравнение теплового баланса металла
       if DynamicTm == true then
-        deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - t_flow) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+        deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
       else
-        0 = Q_flow - alfa_flow * deltaSFlow * (t_m - t_flow);
+        0 = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T);
       end if;
 //Уравнения для heat
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
       stateFlow = Medium.setState_ph(p_v, h_v);
-      t_flow = Medium.temperature(stateFlow);
-      rho_v = calc_rho_v(h_n, p_v);
 //Уравнения для расчета процессов теплообмена
-      w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+      w_flow_v = D_flow_v / stateFlow.d / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = 20000;
 //Про две фазы
       x_v = if noEvent(h_v < hl) then 0 elseif noEvent(h_v > hv) then 1 else (h_v - hl) / (hv - hl);
@@ -4242,7 +4240,8 @@ package TPPSim
         C1 = 0;
         C2 = 0;
       end if;
-      (drdh, drdp) = drdh_drdp(h_v, h_n, p_v, p_n);
+      drdp = min(0.0005, Medium.density_derp_h(stateFlow));
+      drdh = max(-0.002, Medium.density_derh_p(stateFlow));
       sat_v = Medium.setSat_p(p_v);
       hl = Medium.bubbleEnthalpy(sat_v);
       hv = Medium.dewEnthalpy(sat_v);
@@ -4250,7 +4249,7 @@ package TPPSim
       p_v = p_n[1];
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
       Xi_flow = lambda_tr * deltaLpipe / Din;
-      dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * rho_v / 2 / Modelica.Constants.g_n;
+      dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2 / Modelica.Constants.g_n;
       if DynamicMomentum then
         p_n[1] - p_n[2] = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
       else
@@ -4284,10 +4283,25 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end FlowSideOTE3;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     model FlowSideECO
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       import TPPSim.functions.alfaForSH;
-      import TPPSim.functions.calc_rho_v;
       //Переменные
       Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
       Real x_v "Степень сухости";
@@ -4296,27 +4310,25 @@ package TPPSim
       Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
     equation
       if DynamicEnergyBalance == true then
-        0.5 * deltaVFlow * rho_v * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-        0.5 * deltaVFlow * rho_v * der(h_n[2]) = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
+        0.5 * deltaVFlow * stateFlow.d * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_v - h_n[1]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+        0.5 * deltaVFlow * stateFlow.d * der(h_n[2]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_n[2] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
       else
-        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_v - h_n[1]);
-        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - t_flow) - D_flow_v * (h_n[2] - h_v);
+        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_v - h_n[1]);
+        0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_n[2] - h_v);
       end if;
 //Уравнение теплового баланса металла
       if DynamicTm == true then
-        deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - t_flow) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+        deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
       else
-        0 = Q_flow - alfa_flow * deltaSFlow * (t_m - t_flow);
+        0 = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T);
       end if;
 //Уравнения для heat
       heat.Q_flow = Q_flow;
       heat.T = t_m;
 //Уравнения состояния
       stateFlow = Medium.setState_ph(p_v, h_v);
-      t_flow = Medium.temperature(stateFlow);
-      rho_v = calc_rho_v(h_n, p_v);
 //Уравнения для расчета процессов теплообмена
-      w_flow_v = D_flow_v / rho_v / f_flow "Расчет скорости потока вода/пар в конечных объемах";
+      w_flow_v = D_flow_v / stateFlow.d / f_flow "Расчет скорости потока вода/пар в конечных объемах";
       alfa_flow = alfaForSH(h_v = h_v, D_flow_n1 = D_flow_n[1], p_v = p_v, Din = Din, f_flow = f_flow);
 //Про две фазы
 //stateFlowTwoPhase[i, j] = Medium.setState_ph(p_v, h_v[i, j]);
@@ -4355,6 +4367,7 @@ package TPPSim
         experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
         Icon(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2}), graphics = {Rectangle(lineColor = {0, 0, 255}, fillColor = {230, 230, 230}, fillPattern = FillPattern.Solid, extent = {{-100, 100}, {100, -100}}), Line(points = {{0, -80}, {0, -40}, {40, -20}, {-40, 20}, {0, 40}, {0, 80}}, color = {0, 0, 255}, thickness = 0.5), Text(origin = {-2, 52}, lineColor = {85, 170, 255}, extent = {{-100, -115}, {100, -145}}, textString = "%name")}));
     end FlowSideECO;
+
 
     model Collector
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
