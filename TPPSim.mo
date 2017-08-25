@@ -1103,7 +1103,7 @@ package TPPSim
       parameter Real Gnom = 1292.6 / 3.6;
       parameter Modelica.SIunits.MassFlowRate wflow = 58 / 3.6 "Пусковой массовый расход воды на входе в сепаратор";
       parameter Modelica.SIunits.MassFlowRate wsteam = 0.01 "Расход пара на выходе из сепаратора";
-      replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
+      package Medium_G = TPPSim.Media.ExhaustGas;
       parameter Modelica.SIunits.MassFlowRate wgas = 100 / 3.6 "Номинальный (и начальный) массовый расход газов ";
       parameter Modelica.SIunits.Pressure pgas = 3e3 "Начальное давление газов";
       parameter Medium_F.SaturationProperties sat_start = Medium_F.setSat_p(pflow_ote2);
@@ -1229,7 +1229,7 @@ package TPPSim
         Placement(visible = true, transformation(origin = {70, -6}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = pgas, use_T = true, use_p = true) annotation(
         Placement(visible = true, transformation(origin = {-90, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      TPPSim.HRSG_HeatExch.GFHE_new OTE1(redeclare TPPSim.HRSG_HeatExch.FlowSideOTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
+      TPPSim.HRSG_HeatExch.GFHE_glob OTE1(redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote1, Toutgas = Tingas_ote1, k_gamma_gas = k_gamma_gas_ote1, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote1, pflow_out = pflow_ote1, Tinflow = Tinflow_ote1, Toutflow = Tinflow_ote1, Din = Din_ote1, delta = delta_ote1, s1 = s1_ote1, s2 = s2_ote1, zahod = zahod_ote1, z1 = z1_ote1, z2 = z2_ote1, Lpipe = Lpipe, delta_fin = delta_fin_ote1, hfin = hfin_ote1, sfin = sfin_ote1, seth_in = hflow_ote1_in, seth_out = hflow_ote1_out, setTm = setTm_ote1, numberOfTubeSections = numberOfTubeSections_ote1, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
         Placement(visible = true, transformation(origin = {-22, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       TPPSim.HRSG_HeatExch.GFHE_new OTE2(redeclare TPPSim.HRSG_HeatExch.FlowSideOTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, pgas = pgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
         Placement(visible = true, transformation(origin = {2, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -1363,6 +1363,9 @@ package TPPSim
   </html>", revisions = "Модель работает, но PI регулятор требует дополнительной настройки."),
         experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005));
     end startUpControlTest_2;
+
+
+
 
     model twoPDrumStartUp
       package Medium_F = Modelica.Media.Water.WaterIF97_ph;
@@ -3692,6 +3695,9 @@ package TPPSim
         parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";
         parameter Boolean DynamicTm "Использовать или нет производную по температуре металла";
         //Переменные
+        outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
+        outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
+        outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";  
         Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
         //Medium.Temperature t_flow "Температура потока вода/пар по участкам трубы";
         Medium.AbsolutePressure p_v "Давление потока вода/пар по участкам трубы в конечных объемах";
@@ -3718,8 +3724,8 @@ package TPPSim
       equation
       //Граничные условия
         D_flow_in = max(waterIn.m_flow, m_flow_small);
-      //waterOut.m_flow = -D_flow_n[2];
-      //waterOut.p = p_n[2];
+        waterOut.m_flow = -D_gl[section[1], section[2] + 1];
+        waterOut.p = p_gl[section[1], section[2] + 1];
       //waterIn.p = p_n[1];
         h_n[1] = inStream(waterIn.h_outflow);
         waterOut.h_outflow = h_gl[section[1], section[2] + 1];
@@ -3729,6 +3735,16 @@ package TPPSim
           Diagram(graphics),
           experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
       end BaseFlowSideHE_glob;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -4545,6 +4561,8 @@ package TPPSim
       inner parameter Real H_fin = (omega * deltaLpipe * (1 - delta_fin / sfin) + (2 * Modelica.Constants.pi * (Dfin ^ 2 - (Din + 2 * delta) ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin) * (deltaLpipe / sfin)) * z1 * zahod "Площадь оребренной поверхности";
       //Переменные
       inner Medium_F.SpecificEnthalpy h_gl[numberOfFlueSections, numberOfTubeSections + 1] "Энтальпия (глобальная переменная)";
+      inner Medium_F.MassFlowRate D_gl[numberOfFlueSections, numberOfTubeSections + 1] "Массовый расход (глобальная переменная)";
+      inner Medium_F.AbsolutePressure p_gl[numberOfFlueSections, numberOfTubeSections + 1] "Давление (глобальная переменная)";
       Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)";
       Modelica.SIunits.Length deltaHpipe[numberOfFlueSections, numberOfTubeSections] "Разность высот на участке ряда труб";
       TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G, DynamicEnergyBalance = gas_DynamicEnergyBalance, DynamicMassBalance = gas_DynamicMassBalance) annotation(
@@ -4585,6 +4603,8 @@ package TPPSim
       for i in 1:numberOfFlueSections - zahod loop
         connect(flowHE[i, numberOfTubeSections].waterOut, flowHE[i + zahod, 1].waterIn);
         h_gl[i, numberOfTubeSections + 1] = h_gl[i + zahod, 1];
+        D_gl[i, numberOfTubeSections + 1] = D_gl[i + zahod, 1];
+        p_gl[i, numberOfTubeSections + 1] = p_gl[i + zahod, 1];    
       end for;
 //Тепловые потоки
       for i in 1:numberOfFlueSections loop
@@ -4603,7 +4623,9 @@ package TPPSim
       for i in 1:zahod loop
         connect(collFlow.flowOut[i], flowHE[i, 1].waterIn);
         connect(collFlowOut.flowIn[i], flowHE[numberOfFlueSections - (i - 1), numberOfTubeSections].waterOut);
-        inStream(flowIn.h_outflow) = h_gl[i, 1];
+        inStream(collFlow.flowOut[i].h_outflow) = h_gl[i, 1];
+        max(-collFlow.flowOut[i].m_flow, m_flow_small) = D_gl[i, 1];
+        collFlow.flowOut[i].p = p_gl[i, 1];
       end for;
       connect(flowIn, collFlow.flowIn);
       connect(flowOut, collFlowOut.flowOut);
@@ -4615,6 +4637,21 @@ package TPPSim
     </ul></body></html>"));
     end GFHE_glob;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     model FlowSideOTE_glob
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE_glob(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       parameter Integer[2] section;
@@ -4622,7 +4659,6 @@ package TPPSim
     protected
       outer parameter Integer numberOfFlueSections "Число участков разбиения газохода";
       //Переменные
-      outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
       Modelica.SIunits.DerDensityByEnthalpy drdh;
       Modelica.SIunits.DerDensityByPressure drdp;
       Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
@@ -4634,6 +4670,7 @@ package TPPSim
       Real C2 "Показатель в знаменателе уравнения сплошности";
     equation
 //h_gl[section[1], section[2]] = h_gl[section[1], section[2] + 1];
+    //D_gl[section[1], section[2]] = D_gl[section[1], section[2] + 1];
       h_n[1] = h_n[2];
       if DynamicEnergyBalance == true then
         0.5 * deltaVFlow * stateFlow.d * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_v - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
@@ -4658,8 +4695,8 @@ package TPPSim
       alfa_flow = 20000;
 //Про две фазы
       x_v = if noEvent(h_v < hl) then 0 elseif noEvent(h_v > hv) then 1 else (h_v - hl) / (hv - hl);
-      D_flow_v = -waterOut.m_flow;
-      -waterOut.m_flow = D_flow_in - C1 - C2 "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
+      D_flow_v = D_gl[section[1], section[2] + 1];
+      D_gl[section[1], section[2] + 1] = D_gl[section[1], section[2]] - C1 - C2 "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
       if DynamicMassBalance == true then
         C1 = deltaVFlow * drdh * der(h_v);
         C2 = deltaVFlow * drdp * der(p_v);
@@ -4673,14 +4710,14 @@ package TPPSim
       hl = Medium.bubbleEnthalpy(sat_v);
       hv = Medium.dewEnthalpy(sat_v);
 //Уравнения для расчета процессов массообмена
-      p_v = waterIn.p;
+      p_v = p_gl[section[1], section[2]];
       lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
       Xi_flow = lambda_tr * deltaLpipe / Din;
       dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2 / Modelica.Constants.g_n;
       if DynamicMomentum then
-        waterIn.p - waterOut.p = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
+        p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
       else
-        waterIn.p - waterOut.p = dp_fric;
+        p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric;
       end if;
       dp_piez = 0 "Расчет перепада давления из-за изменения пьезометрической высоты";
     initial equation
@@ -4710,6 +4747,13 @@ package TPPSim
        by Artyom Shabunin:<br></li>
     </ul></body></html>"));
     end FlowSideOTE_glob;
+
+
+
+
+
+
+
 
   end HRSG_HeatExch;
 
