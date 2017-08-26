@@ -3703,10 +3703,10 @@ package TPPSim
         Medium.AbsolutePressure p_v "Давление потока вода/пар по участкам трубы в конечных объемах";
         //Medium.AbsolutePressure p_n[2] "Давление потока вода/пар по участкам трубы в узловых точках";
         Medium.SpecificEnthalpy h_v "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
-        Medium.SpecificEnthalpy h_n[2] "Энтальпия потока вода/пар по участкам трубы в узловых точках";
+        //Medium.SpecificEnthalpy h_n[2] "Энтальпия потока вода/пар по участкам трубы в узловых точках";
         //Medium.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
         Medium.MassFlowRate D_flow_v "Массовый расход потока вода/пар по участкам ряда труб";
-        Medium.MassFlowRate D_flow_in "Массовый расход потока вода/пар по участкам ряда труб";
+        //Medium.MassFlowRate D_flow_in "Массовый расход потока вода/пар по участкам ряда труб";
         Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
         Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
         Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
@@ -3723,11 +3723,11 @@ package TPPSim
           Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
       equation
       //Граничные условия
-        D_flow_in = max(waterIn.m_flow, m_flow_small);
+      //D_flow_in = max(waterIn.m_flow, m_flow_small);
         waterOut.m_flow = -D_gl[section[1], section[2] + 1];
         waterOut.p = p_gl[section[1], section[2] + 1];
       //waterIn.p = p_n[1];
-        h_n[1] = inStream(waterIn.h_outflow);
+      //h_n[1] = inStream(waterIn.h_outflow);
         waterOut.h_outflow = h_gl[section[1], section[2] + 1];
         waterIn.h_outflow = inStream(waterOut.h_outflow);
         annotation(
@@ -3735,6 +3735,7 @@ package TPPSim
           Diagram(graphics),
           experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
       end BaseFlowSideHE_glob;
+
 
 
 
@@ -4652,6 +4653,10 @@ package TPPSim
 
 
 
+
+
+
+
     model FlowSideOTE_glob
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE_glob(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       parameter Integer[2] section;
@@ -4671,7 +4676,7 @@ package TPPSim
     equation
 //h_gl[section[1], section[2]] = h_gl[section[1], section[2] + 1];
     //D_gl[section[1], section[2]] = D_gl[section[1], section[2] + 1];
-      h_n[1] = h_n[2];
+    //h_n[1] = h_n[2];
       if DynamicEnergyBalance == true then
         0.5 * deltaVFlow * stateFlow.d * der(h_v) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_v - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
         0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - h_v) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
@@ -4747,6 +4752,7 @@ package TPPSim
        by Artyom Shabunin:<br></li>
     </ul></body></html>"));
     end FlowSideOTE_glob;
+
 
 
 
