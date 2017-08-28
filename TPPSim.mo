@@ -3882,8 +3882,8 @@ package TPPSim
 //Граничные условия
 //D_flow_in = max(waterIn.m_flow, m_flow_small);
         waterOut.m_flow = -D_gl[section[1], section[2] + 1];
-        waterOut.p = p_gl[section[1], section[2] + 1];
-//waterIn.p = p_n[1];
+        //waterOut.p = p_gl[section[1], section[2] + 1];
+        waterIn.p = p_gl[section[1], section[2]];
 //h_n[1] = inStream(waterIn.h_outflow);
         waterOut.h_outflow = h_gl[section[1], section[2] + 1];
         waterIn.h_outflow = inStream(waterOut.h_outflow);
@@ -3892,6 +3892,11 @@ package TPPSim
           Diagram(graphics),
           experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
       end BaseFlowSideHE_glob;
+
+
+
+
+
     end BaseClases;
 
     model FlowSideOTE
@@ -4716,7 +4721,7 @@ package TPPSim
       TPPSim.HRSG_HeatExch.Collector_glob collFlow(redeclare package Medium = Medium_F, zahod = zahod);
       TPPSim.HRSG_HeatExch.Collector collGas(redeclare package Medium = Medium_G, zahod = numberOfTubeSections);
       //TPPSim.HRSG_HeatExch.CollectorMix2_glob collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, Din = Din, L = Lpipe, delta = delta);
-      TPPSim.HRSG_HeatExch.CollectorMix_glob collFlowOut(redeclare package Medium = Medium_F, zahod = zahod);
+      TPPSim.HRSG_HeatExch.CollectorMix_glob collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfFlueSections = numberOfFlueSections, numberOfTubeSections = numberOfTubeSections);
     
     equation
       for i in 1:numberOfFlueSections loop
@@ -4771,7 +4776,7 @@ package TPPSim
         connect(collFlowOut.flowIn[i], flowHE[numberOfFlueSections - (i - 1), numberOfTubeSections].waterOut);
         inStream(collFlow.flowOut[i].h_outflow) = h_gl[i, 1];
         max(-collFlow.flowOut[i].m_flow, m_flow_small) = D_gl[i, 1];
-        collFlow.flowOut[i].p = p_gl[i, 1];
+        //collFlow.flowOut[i].p = p_gl[i, 1];
       end for;
 //connect(flowIn, collFlow.flowIn);
 //connect(flowOut, collFlowOut.flowOut);
@@ -4782,6 +4787,10 @@ package TPPSim
        by Artyom Shabunin:<br></li>
     </ul></body></html>"));
     end GFHE_glob;
+
+
+
+
 
 
     model FlowSideOTE_glob
@@ -4963,19 +4972,42 @@ package TPPSim
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
         choicesAllMatching);
       parameter Integer zahod = 2;
+      parameter Integer numberOfTubeSections;
+      parameter Integer numberOfFlueSections;
+      parameter Integer number1 = numberOfFlueSections - (zahod - 1);
+      parameter Integer number2 = numberOfFlueSections;
+      outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";
+    
       outer Modelica.Fluid.Interfaces.FluidPort_b flowOut;
       Modelica.Fluid.Interfaces.FluidPort_a flowIn[zahod](redeclare package Medium = Medium) annotation(
         Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       flowOut.h_outflow = sum(inStream(flowIn[i].h_outflow) * flowIn[i].m_flow for i in 1:zahod) / sum(flowIn[i].m_flow for i in 1:zahod);
       flowIn.p = fill(flowOut.p, zahod);
+      for i in number1:number2 loop
+        p_gl[i, numberOfTubeSections + 1] = flowOut.p;
+      end for;
       sum(flowIn[i].m_flow for i in 1:zahod) + flowOut.m_flow = 0;
       for i in 1:zahod loop
         flowIn[i].h_outflow = inStream(flowOut.h_outflow);
         //flowIn[i].Xi_outflow = inStream(flowOut.Xi_outflow);
+        //p_gl[numberOfFlueSections - (i - 1), numberOfTubeSections + 1] = flowOut.p;
       end for;
       //flowOut.Xi_outflow = inStream(flowIn[1].Xi_outflow);
     end CollectorMix_glob;
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   end HRSG_HeatExch;
 
