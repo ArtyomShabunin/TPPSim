@@ -2055,7 +2055,7 @@ package TPPSim
         Placement(visible = true, transformation(origin = {170, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Tnom = Tnom, Tstart = Tinflow_sh, gasSource.X = set_X) annotation(
         Placement(visible = true, transformation(origin = {170, 10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-      TPPSim.HRSG_HeatExch.GFHE_glob HP_EVO annotation(
+      TPPSim.HRSG_HeatExch.GFHE_glob HP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSideOTE_glob flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
         Placement(visible = true, transformation(origin = {70, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
       connect(flowSink.ports[1], HP_EVO.flowOut) annotation(
@@ -2079,6 +2079,7 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {200, 100}})),
         __OpenModelica_commandLineOptions = "");
     end GFHE_Test;
+
   end Tests;
 
   package functions
