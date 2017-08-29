@@ -4777,6 +4777,8 @@ package TPPSim
 
 
 
+
+
     model FlowSideOTE_glob
       extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE_glob(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
       parameter Integer[2] section;
@@ -4984,12 +4986,16 @@ package TPPSim
       outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
       outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
       outer Modelica.Fluid.Interfaces.FluidPort_b flowOut;
+      Medium.MassFlowRate D_temp[zahod];
+      Medium.SpecificEnthalpy h_temp[zahod];
     equation
-      flowOut.h_outflow = h_gl[numberOfFlueSections, numberOfTubeSections + 1]; 
+      D_temp = D_gl[numberOfFlueSections - (zahod - 1):numberOfFlueSections, numberOfTubeSections + 1];
+      h_temp = h_gl[numberOfFlueSections - (zahod - 1):numberOfFlueSections, numberOfTubeSections + 1];
+      flowOut.h_outflow * flowOut.m_flow + sum(h_temp[i] * D_temp[i] for i in 1:zahod) = 0;
+      flowOut.m_flow + sum(D_temp) = 0;
       for i in numberOfFlueSections - (zahod - 1):numberOfFlueSections loop
         p_gl[i, numberOfTubeSections + 1] = flowOut.p;
       end for;
-      flowOut.m_flow = -D_gl[numberOfFlueSections, numberOfTubeSections + 1] * zahod;
     annotation(
         Documentation(info = "<html><head></head><body>Модель смесителя потоков. Работает с глобальными переменными, поэтому может использоваться только внутри модели 'GFHE'.</body></html>", revisions = "<html><head></head><body>
         <ul>
@@ -4997,6 +5003,32 @@ package TPPSim
        by Artyom Shabunin:<br></li>
     </ul></body></html>"));
     end Mixer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
