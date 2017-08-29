@@ -2067,18 +2067,17 @@ package TPPSim
       connect(GT.flowOut, HP_EVO.gasIn) annotation(
         Line(points = {{160, 10}, {74, 10}, {74, 10}, {76, 10}}, color = {0, 127, 255}));
       annotation(
-        uses(Modelica(version = "3.2.1")),
         Documentation(info = "<html>
       <p>
-      Модель пуска двухконтурного барабанного котла-утилизатора.
-      Параметры взяты из модели прямоточного котла для ГТЭ-110 в Thermoflex ''ВертрПрямКУсГТЭ110_OD''
+    Модель для тестирования 'GFHE'.
       </p>
-      </html>", revisions = ""),
-        experiment(StartTime = 0, StopTime = 1000, Tolerance = 1e-06, Interval = 0.005),
-        Diagram(coordinateSystem(extent = {{-100, -100}, {200, 100}})),
-        Icon(coordinateSystem(extent = {{-100, -100}, {200, 100}})),
-        __OpenModelica_commandLineOptions = "");
+      </html>", revisions = ""));
     end GFHE_Test;
+
+
+
+
+
 
   end Tests;
 
@@ -3874,24 +3873,12 @@ package TPPSim
         //Интерфейс
         Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
           Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-        //Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium) annotation(
-          //Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {99, 60}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
-        //Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
-          //Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-      //equation
-//Граничные условия
-//D_flow_in = max(waterIn.m_flow, m_flow_small);
-        //waterOut.m_flow = -D_gl[section[1], section[2] + 1];
-        //waterOut.p = p_gl[section[1], section[2] + 1];
-        //waterIn.p = p_gl[section[1], section[2]];
-//h_n[1] = inStream(waterIn.h_outflow);
-        //waterOut.h_outflow = h_gl[section[1], section[2] + 1];
-        //waterIn.h_outflow = inStream(waterOut.h_outflow);
         annotation(
           Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
           Diagram(graphics),
           experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
       end BaseFlowSideHE_glob;
+
 
 
 
@@ -4720,10 +4707,10 @@ package TPPSim
         Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       replaceable TPPSim.HRSG_HeatExch.FlowSideOTE_glob flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm, section = section_set) annotation(
         Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-      TPPSim.HRSG_HeatExch.Collector_glob collFlow(redeclare package Medium = Medium_F, zahod = zahod);
+      TPPSim.HRSG_HeatExch.Splitter collFlow(redeclare package Medium = Medium_F, zahod = zahod);
       TPPSim.HRSG_HeatExch.Collector collGas(redeclare package Medium = Medium_G, zahod = numberOfTubeSections);
       //TPPSim.HRSG_HeatExch.CollectorMix2_glob collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, Din = Din, L = Lpipe, delta = delta);
-      TPPSim.HRSG_HeatExch.CollectorMix_glob collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfFlueSections = numberOfFlueSections, numberOfTubeSections = numberOfTubeSections);
+      TPPSim.HRSG_HeatExch.Mixer collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections);
     
     equation
       for i in 1:numberOfFlueSections loop
@@ -4747,14 +4734,8 @@ package TPPSim
           connect(gasHE[i, j].gasOut, gasHE[i + 1, j].gasIn);
         end for;
       end for;
-      for i in 1:numberOfFlueSections loop
-        for j in 1:numberOfTubeSections - 1 loop
-          //connect(flowHE[i, j].waterOut, flowHE[i, j + 1].waterIn);
-        end for;
-      end for;
 //Гибы
       for i in 1:numberOfFlueSections - zahod loop
-        //connect(flowHE[i, numberOfTubeSections].waterOut, flowHE[i + zahod, 1].waterIn);
         h_gl[i, numberOfTubeSections + 1] = h_gl[i + zahod, 1];
         D_gl[i, numberOfTubeSections + 1] = D_gl[i + zahod, 1];
         p_gl[i, numberOfTubeSections + 1] = p_gl[i + zahod, 1];
@@ -4772,16 +4753,6 @@ package TPPSim
         connect(gasHE[numberOfFlueSections, j].gasOut, gasOut);
       end for;
       connect(gasIn, collGas.flowIn);
-//Воды/Пар
-      for i in 1:zahod loop
-        //connect(collFlow.flowOut[i], flowHE[i, 1].waterIn);
-        //connect(collFlowOut.flowIn[i], flowHE[numberOfFlueSections - (i - 1), numberOfTubeSections].waterOut);
-        //inStream(collFlow.flowOut[i].h_outflow) = h_gl[i, 1];
-        //max(-collFlow.flowOut[i].m_flow, m_flow_small) = D_gl[i, 1];
-        //collFlow.flowOut[i].p = p_gl[i, 1];
-      end for;
-//connect(flowIn, collFlow.flowIn);
-//connect(flowOut, collFlowOut.flowOut);
     flowIn.h_outflow = inStream(flowOut.h_outflow);
       annotation(
         Documentation(info = "<html><head></head><body>Аналог GFHE_new с глобальными переменными</body></html>", revisions = "<html><head></head><body>
@@ -4790,6 +4761,13 @@ package TPPSim
        by Artyom Shabunin:<br></li>
     </ul></body></html>"));
     end GFHE_glob;
+
+
+
+
+
+
+
 
 
 
@@ -4954,28 +4932,27 @@ package TPPSim
         Documentation(info = "<HTML>Аналогично collectorMix с добавлением производных по энтальпии и давлению.</html>"));
     end CollectorMix2_glob;
 
-    model Collector_glob
+    model Splitter "Разветвитель потоков"
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
         choicesAllMatching);
-      parameter Integer zahod = 2;
+      parameter Integer zahod;
       outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";
       outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
       outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";  
-      //Modelica.Fluid.Interfaces.FluidPort_b flowOut[zahod](redeclare package Medium = Medium) annotation(
-        //Placement(visible = true, transformation(origin = {90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       outer Modelica.Fluid.Interfaces.FluidPort_a flowIn;
     equation
       for i in 1:zahod loop
         D_gl[i, 1] = flowIn.m_flow / zahod;
         h_gl[i, 1] = inStream(flowIn.h_outflow);
       end for;
-        //flowOut[i].Xi_outflow = inStream(flowIn.Xi_outflow);
       flowIn.p = p_gl[1, 1];
-//flowOut.p = fill(flowIn.p, zahod);
-//sum(flowOut[i].m_flow for i in 1:zahod) + flowIn.m_flow = 0;
-      //flowIn.h_outflow = sum(inStream(flowOut[i].h_outflow) * flowOut[i].m_flow for i in 1:zahod) / sum(flowOut[i].m_flow for i in 1:zahod);
-      //flowIn.Xi_outflow = inStream(flowOut[1].Xi_outflow);
-    end Collector_glob;
+    annotation(
+        Documentation(info = "<html><head></head><body>Модель разветвителя потоков. Работает с глобальными переменными, поэтому может использоваться только внутри модели 'GFHE'.</body></html>", revisions = "<html><head></head><body>
+        <ul>
+          <li><i>August 29, 2017</i>
+       by Artyom Shabunin:<br></li>
+    </ul></body></html>"));
+    end Splitter;
 
 
 
@@ -4984,34 +4961,57 @@ package TPPSim
 
 
 
-    model CollectorMix_glob
+
+
+
+
+
+
+
+
+
+
+
+
+
+    model Mixer "Смеситель потоков"
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium annotation(
         choicesAllMatching);
-      parameter Integer zahod = 2;
-      parameter Integer numberOfTubeSections;
-      parameter Integer numberOfFlueSections;
-      parameter Integer number1 = numberOfFlueSections - (zahod - 1);
-      parameter Integer number2 = numberOfFlueSections;
+      final parameter Integer zahod;
+      final parameter Integer numberOfTubeSections;
+      final parameter Integer numberOfFlueSections;
       outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";
       outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
       outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
       outer Modelica.Fluid.Interfaces.FluidPort_b flowOut;
-      //Modelica.Fluid.Interfaces.FluidPort_a flowIn[zahod](redeclare package Medium = Medium) annotation(
-        //Placement(visible = true, transformation(origin = {-90, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-42, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     equation
-      flowOut.h_outflow = h_gl[numberOfFlueSections, numberOfTubeSections + 1];
-      //flowIn.p = fill(flowOut.p, zahod);
-      for i in number1:number2 loop
+      flowOut.h_outflow = h_gl[numberOfFlueSections, numberOfTubeSections + 1]; 
+      for i in numberOfFlueSections - (zahod - 1):numberOfFlueSections loop
         p_gl[i, numberOfTubeSections + 1] = flowOut.p;
       end for;
-      D_gl[numberOfFlueSections, numberOfTubeSections + 1] * zahod + flowOut.m_flow = 0;
-      //for i in 1:zahod loop
-        //flowIn[i].h_outflow = inStream(flowOut.h_outflow);
-        //flowIn[i].Xi_outflow = inStream(flowOut.Xi_outflow);
-        //p_gl[numberOfFlueSections - (i - 1), numberOfTubeSections + 1] = flowOut.p;
-      //end for;
-      //flowOut.Xi_outflow = inStream(flowIn[1].Xi_outflow);
-    end CollectorMix_glob;
+      flowOut.m_flow = -D_gl[numberOfFlueSections, numberOfTubeSections + 1] * zahod;
+    annotation(
+        Documentation(info = "<html><head></head><body>Модель смесителя потоков. Работает с глобальными переменными, поэтому может использоваться только внутри модели 'GFHE'.</body></html>", revisions = "<html><head></head><body>
+        <ul>
+          <li><i>August 29, 2017</i>
+       by Artyom Shabunin:<br></li>
+    </ul></body></html>"));
+    end Mixer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
