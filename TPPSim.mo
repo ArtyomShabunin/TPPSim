@@ -4899,10 +4899,10 @@ package TPPSim
         Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
       TPPSim.HRSG_HeatExch.Splitter collFlow(redeclare package Medium = Medium_F, zahod = zahod) annotation(
         Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      TPPSim.HRSG_HeatExch.MixCollector collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections, Din = Din, L = Lpipe, delta = delta) annotation(
-        Placement(visible = true, transformation(origin = {30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      /*TPPSim.HRSG_HeatExch.Mixer collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections) annotation(
+      /*TPPSim.HRSG_HeatExch.MixCollector collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections, Din = Din, L = Lpipe, delta = delta) annotation(
         Placement(visible = true, transformation(origin = {30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));*/
+      TPPSim.HRSG_HeatExch.Mixer collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections) annotation(
+        Placement(visible = true, transformation(origin = {30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       TPPSim.HRSG_HeatExch.GasSplitter collGas(redeclare package Medium = Medium_G, numberOfTubeSections = numberOfTubeSections) annotation(
         Placement(visible = true, transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       TPPSim.HRSG_HeatExch.GasMixer collGasOut(redeclare package Medium = Medium_G, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections) annotation(
@@ -4948,6 +4948,7 @@ package TPPSim
    by Artyom Shabunin:<br></li>
 </ul></body></html>"));
     end GFHE_glob;
+
 
 
     model FlowSideOTE_glob
