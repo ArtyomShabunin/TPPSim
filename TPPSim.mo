@@ -1496,7 +1496,7 @@ package TPPSim
         Placement(visible = true, transformation(origin = {-52, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = Toutgas_eco, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
         Placement(visible = true, transformation(origin = {-90, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      TPPSim.HRSG_HeatExch.GFHE_new OTE2(redeclare TPPSim.HRSG_HeatExch.FlowSideOTE3 flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
+      TPPSim.HRSG_HeatExch.GFHE_glob OTE2(redeclare TPPSim.HRSG_HeatExch.FlowSideOTE_glob flowHE, redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, Tingas = Tingas_ote2, Toutgas = Tingas_ote2, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_ote2, pflow_out = pflow_ote2, Tinflow = Tinflow_ote2, Toutflow = Tinflow_ote2, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, seth_in = hflow_ote2_in, seth_out = hflow_ote2_out, setTm = setTm_ote2, numberOfTubeSections = numberOfTubeSections_ote2, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
         Placement(visible = true, transformation(origin = {0, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       TPPSim.HRSG_HeatExch.GFHE SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH2 flowHE, redeclare package Medium_G = Medium_G, wgas = wgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Din_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, flow_DynamicMomentum = true, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true, m_flow_small = 0.01) annotation(
         Placement(visible = true, transformation(origin = {38, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -1613,6 +1613,7 @@ package TPPSim
         Icon(coordinateSystem(extent = {{-100, -100}, {200, 100}})),
         __OpenModelica_commandLineOptions = "");
     end twoPDrumStartUp;
+
 
 
 
@@ -5323,21 +5324,18 @@ package TPPSim
       drdp = min(0.0005, Medium.density_derp_h(stateFlow));
       drdh = max(-0.002, Medium.density_derh_p(stateFlow));
       alfa_flow = 20000;
-//VFlow * rho * der(h_v) = flowOut.h_outflow * flowOut.m_flow + sum(h_temp[i] * D_temp[i] for i in 1:zahod) "Уравнение баланса тепла";
-      flowOut.h_outflow * flowOut.m_flow + sum(h_temp[i] * D_temp[i] for i in 1:zahod) = 0 "Уравнение баланса тепла";
-//flowOut.m_flow + sum(D_temp) = VFlow * (drdh * der(h_v) + drdp * der(p_v));
-      flowOut.m_flow + sum(D_temp) = 0;
-//MMetal * C_m * der(t_m) = -alfa_flow * SFlow * (t_m - t_flow) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
-      t_m = t_flow;
+  VFlow * rho * der(h_v) = flowOut.h_outflow * flowOut.m_flow + sum(h_temp[i] * D_temp[i] for i in 1:zahod) "Уравнение баланса тепла";
+  flowOut.m_flow + sum(D_temp) = VFlow * (drdh * der(h_v) + drdp * der(p_v));
+  MMetal * C_m * der(t_m) = -alfa_flow * SFlow * (t_m - t_flow) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
       for i in numberOfFlueSections - (zahod - 1):numberOfFlueSections loop
         p_gl[i, numberOfTubeSections + 1] = p_v;
       end for;
       flowOut.p = p_v;
       h_v = flowOut.h_outflow;
     initial equation
-//der(t_m) = 0;
-//der(p_v) = 0;
-//der(h_v) = 0;
+  der(t_m) = 0;
+  der(p_v) = 0;
+  der(h_v) = 0;
       annotation(
         Documentation(info = "<html><head></head><body>Модель смешивающего коллектора. Отличается от модели смесителя наличием в системе дифференциальных уравнений. Работает с глобальными переменными, поэтому может использоваться только внутри модели 'GFHE'.</body></html>", revisions = "<html><head></head><body>
         <ul>
@@ -5345,6 +5343,7 @@ package TPPSim
        by Artyom Shabunin:<br></li>
     </ul></body></html>"));
     end MixCollector;
+
   end HRSG_HeatExch;
 
   package Media
