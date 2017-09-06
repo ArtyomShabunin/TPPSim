@@ -1,9 +1,6 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model FlowSideOTE_glob
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE_glob(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
-  parameter Integer[2] section;
-  //outer parameter Integer numberOfTubeSections "Число участков разбиения трубы";
-  //outer parameter Integer numberOfFlueSections "Число участков разбиения газохода";
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;

@@ -18,6 +18,7 @@ partial model BaseFlowSideHE_glob
   final outer parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
   final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
   final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
+  parameter Integer[2] section "Координаты участка";
   parameter Boolean DynamicMomentum "Использовать или нет уравнение сохранения момента";
   parameter Boolean DynamicMassBalance "Использовать или нет уравнение сохранение массы с производными";
   parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";

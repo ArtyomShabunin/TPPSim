@@ -1,9 +1,5 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model GFHE_glob_simple
-
-  outer parameter Modelica.SIunits.SpecificEnthalpy hflow_eco_in;
-
-
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
   import TPPSim.functions.coorSecGen;
   //Исходные данные по разбиению
@@ -21,7 +17,7 @@ model GFHE_glob_simple
   //Характеристики оребрения
   inner parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + (2 * Modelica.Constants.pi * (Dfin ^ 2 - (Din + 2 * delta) ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin) * (Lpipe / sfin)) * z1 * z2 / numberOfVolumes "Площадь оребренной поверхности";
   //Переменные
-  inner Medium_F.SpecificEnthalpy h_gl[1, numberOfVolumes + 1](start = fill(hflow_eco_in, 1, numberOfVolumes + 1)) "Энтальпия вода/пар (глобальная переменная)";
+  inner Medium_F.SpecificEnthalpy h_gl[1, numberOfVolumes + 1] "Энтальпия вода/пар (глобальная переменная)";
   inner Medium_F.MassFlowRate D_gl[1, numberOfVolumes + 1] "Массовый расход вода/пар (глобальная переменная)";
   inner Medium_F.AbsolutePressure p_gl[1, numberOfVolumes + 1] "Давление вода/пар (глобальная переменная)";
   inner Medium_G.SpecificEnthalpy hgas_gl[numberOfVolumes + 1, 1] "Энтальпия газов (глобальная переменная)";
