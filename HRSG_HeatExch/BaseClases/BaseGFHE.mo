@@ -1,24 +1,11 @@
 ﻿within TPPSim.HRSG_HeatExch.BaseClases;
 partial model BaseGFHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconHE;
-  inner parameter Medium_F.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
   //Исходные данные для газовой стороны
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-  parameter Modelica.SIunits.MassFlowRate wgas "Номинальный (и начальный) массовый расход газов";
-  parameter Modelica.SIunits.Temperature Tingas "Начальная входная температура газов";
-  parameter Modelica.SIunits.Temperature Toutgas "Начальная выходная температура газов";
   inner parameter Real k_gamma_gas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов";
   //Исходные данные для водяной стороны
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
-  parameter Modelica.SIunits.MassFlowRate wflow "Номинальный массовый расход воды/пар";
-  parameter Modelica.SIunits.Pressure pflow_in "Начальное давление потока вода/пар на входе";
-  parameter Modelica.SIunits.Pressure pflow_out "Начальное давление потока вода/пар на выходе";
-  parameter Modelica.SIunits.Temperature Tinflow "Начальная входная температура потока воды/пар";
-  parameter Modelica.SIunits.Temperature Toutflow "Начальная выходная температура потока воды/пар";
-  parameter Modelica.SIunits.Temperature setTm "Начальная температура металла поверхностей нагрева";
-  parameter Medium_F.SpecificEnthalpy seth_in "Начальная входная энтальпия";
-  parameter Medium_F.SpecificEnthalpy seth_out "Начальная выходная энтальпия";
-  //Конструктивные характеристики
   parameter TPPSim.Choices.HRSG_type HRSG_type_set = Choices.HRSG_type.horizontalBottom "Выбор типа КУ (горизонтальный/вертикальный)";
   inner parameter Modelica.SIunits.Diameter Din = 0.038 "Внутренний диаметр трубок теплообменника";
   inner parameter Modelica.SIunits.Length delta = 0.003 "Толщина стенки трубки теплообменника";
@@ -46,6 +33,7 @@ partial model BaseGFHE
   parameter Modelica.SIunits.Length delta_fin = 0.0008 "Средняя толщина ребра, м";
   parameter Modelica.SIunits.Length hfin = 0.017 "Высота ребра, м";
   parameter Modelica.SIunits.Length sfin = 0.00404 "Шаг ребер, м";
+  outer Modelica.Fluid.System system;
   inner Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {50, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-50, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   inner Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
@@ -55,8 +43,6 @@ partial model BaseGFHE
   inner Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-50, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-40, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 protected
-  //parameter Modelica.SIunits.Diameter Dout = Din + 2 * delta "Наружный диаметр трубок теплообменника" annotation(
-  //Dialog(group = "Конструктивные характеристики"));
   parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * (Din + 2 * delta) "Наружный периметр трубы";
   //Характеристики оребрения
   parameter Modelica.SIunits.Length Dfin = Din + 2 * delta + 2 * hfin "Диаметр ребер, м";

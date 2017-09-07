@@ -139,7 +139,7 @@ model onePDrumStartUp
     Placement(visible = true, transformation(origin = {144, 36}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   Modelica.Fluid.Valves.ValveCompressible CV2(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
     Placement(visible = true, transformation(origin = {156, 56}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.HRSG_HeatExch.GFHE_glob_simple HP_SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH_glob flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, wgas = wgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Din_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, flow_DynamicMomentum = true, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true, m_flow_small = 0.01) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_glob_simple HP_SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH_glob flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, wgas = wgas, Tingas = Tingas_sh, Toutgas = Tingas_sh, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, wflow = wsteam, pflow_in = pflow_sh, pflow_out = pflow_sh, Tinflow = Tinflow_sh, Toutflow = Tinflow_sh, Din = Din_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, seth_in = hflow_sh_in, seth_out = hflow_sh_out, setTm = setTm_ote2, numberOfVolumes = numberOfVolumes_sh, flow_DynamicMomentum = true, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
     Placement(visible = true, transformation(origin = {148, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.LC lc2(DFmax = 50, DFmin = 0, levelSP = 0.5) annotation(
     Placement(visible = true, transformation(origin = {90, 80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -152,6 +152,12 @@ model onePDrumStartUp
   TPPSim.HRSG_HeatExch.GFHE_glob_simple HP_ECO(redeclare TPPSim.HRSG_HeatExch.FlowSideOTE_glob flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, wgas = wgas, Tingas = Tingas_eco, Toutgas = Tingas_eco, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, wflow = wflow, pflow_in = pflow_eco, pflow_out = pflow_eco, Tinflow = Tinflow_eco, Toutflow = Tinflow_eco, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, seth_in = hflow_eco_in, seth_out = hflow_eco_out, setTm = setTm_eco, numberOfVolumes = numberOfVolumes_eco, flow_DynamicMomentum = false, flow_DynamicMassBalance = false, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
     Placement(visible = true, transformation(origin = {76, 12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(CV2.port_b, flowSink.ports[1]) annotation(
+    Line(points = {{160, 56}, {164, 56}, {164, -24}, {56, -24}, {56, -34}, {54, -34}}, color = {0, 127, 255}));
+  connect(CV2.port_a, HP_SH.flowOut) annotation(
+    Line(points = {{152, 56}, {150, 56}, {150, 34}, {152, 34}, {152, 22}, {152, 22}}, color = {0, 127, 255}));
+  connect(constCV2.y, CV2.opening) annotation(
+    Line(points = {{150, 70}, {156, 70}, {156, 59}, {156, 59}}, color = {0, 0, 127}));
   connect(HP_ECO.flowOut, HP_drum.fedWater) annotation(
     Line(points = {{80, 22}, {82, 22}, {82, 56}, {114, 56}, {114, 56}}, color = {0, 127, 255}));
   connect(flowSource.ports[1], HP_ECO.flowIn) annotation(
@@ -164,10 +170,6 @@ equation
     Line(points = {{80, 80}, {-94, 80}, {-94, 58}, {-94, 58}}, color = {0, 0, 127}));
   connect(HP_SH.gasIn, GT.flowOut) annotation(
     Line(points = {{154, 12}, {166, 12}, {166, 10}, {176, 10}}, color = {0, 127, 255}));
-  connect(CV2.port_a, HP_SH.flowOut) annotation(
-    Line(points = {{152, 56}, {150, 56}, {150, 40}, {152, 40}, {152, 24}, {152, 24}}, color = {0, 127, 255}));
-  connect(CV2.port_b, flowSink.ports[1]) annotation(
-    Line(points = {{160, 56}, {164, 56}, {164, -26}, {56, -26}, {56, -34}, {54, -34}}, color = {0, 127, 255}));
   connect(HP_circPump.port_b, HP_EVO.flowIn) annotation(
     Line(points = {{108, -4}, {110, -4}, {110, 22}, {116, 22}, {116, 24}}, color = {0, 127, 255}));
   connect(HP_drum.downStr, HP_circPump.port_a) annotation(
@@ -182,8 +184,6 @@ equation
     Line(points = {{144, 32}, {144, 32}, {144, 24}, {144, 24}}, color = {0, 127, 255}));
   connect(HP_drum.steam, HP_pipe.waterIn) annotation(
     Line(points = {{128, 56}, {144, 56}, {144, 40}, {144, 40}}, color = {0, 127, 255}));
-  connect(constCV2.y, CV2.opening) annotation(
-    Line(points = {{150, 70}, {156, 70}, {156, 60}, {156, 60}}, color = {0, 0, 127}));
   annotation(
     uses(Modelica(version = "3.2.1")),
     Documentation(info = "<html>

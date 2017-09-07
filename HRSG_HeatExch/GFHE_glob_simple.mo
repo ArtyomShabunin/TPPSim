@@ -33,7 +33,7 @@ equation
   end for;
   h_gl[1, 1] = inStream(flowIn.h_outflow);
   flowIn.h_outflow = inStream(flowOut.h_outflow);
-  D_gl[1, 1] = max(flowIn.m_flow, m_flow_small);
+  D_gl[1, 1] = max(flowIn.m_flow, system.m_flow_small);
   p_gl[1, 1] = flowIn.p;
   h_gl[1, numberOfVolumes + 1] = flowOut.h_outflow;
   D_gl[1, numberOfVolumes + 1] = -flowOut.m_flow;

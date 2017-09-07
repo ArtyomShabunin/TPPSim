@@ -27,8 +27,8 @@ partial model BaseFlowSideHE_glob
   outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
   outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
   outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";
-  inner Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
-  inner Medium.MassFlowRate D_flow_v "Массовый расход потока вода/пар по участкам ряда труб";
+  inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока вода/пар на участках трубопровода";
+  inner Medium.MassFlowRate D_flow_v(min = m_flow_small) "Массовый расход потока вода/пар по участкам ряда труб";
   inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
   Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
   Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
@@ -37,6 +37,7 @@ partial model BaseFlowSideHE_glob
   Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";
   Real lambda_tr "Коэффициент трения";
   //Интерфейс
+  outer Modelica.Fluid.System system;
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
     Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   replaceable TPPSim.thermal.alfa20000 alpha;
