@@ -1,7 +1,6 @@
 ﻿within TPPSim.HRSG_HeatExch.BaseClases;
 partial model BaseFlowSideHE_glob
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconFlowSideHE;
-  final outer parameter Medium.MassFlowRate m_flow_small "Минимальный расход";
   replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
   constant Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
@@ -28,7 +27,7 @@ partial model BaseFlowSideHE_glob
   outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
   outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";
   inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока вода/пар на участках трубопровода";
-  inner Medium.MassFlowRate D_flow_v(min = m_flow_small) "Массовый расход потока вода/пар по участкам ряда труб";
+  inner Medium.MassFlowRate D_flow_v(min = system.m_flow_small) "Массовый расход потока вода/пар по участкам ряда труб";
   inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
   Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
   Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
