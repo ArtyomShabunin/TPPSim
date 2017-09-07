@@ -1,8 +1,9 @@
 ﻿within TPPSim.HRSG_HeatExch;
-model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой стороны газо-водяного/парового теплообменника котла-утилизатора"
+model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой стороны газо-водяного/парового теплообменника котла-утилизатора с глобальными переменными."
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconGasSideHE;
   import TPPSim.functions.deltaPg_lite;
   replaceable package Medium = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
+  parameter Integer[2] section;
   final outer parameter Real k_gamma_gas "Поправка к коэффициенту теплоотдачи со стороны газов";
   //Конструктивные характеристики
   final outer parameter Integer numberOfFlueSections "Число участков разбиения вдоль газохода";
@@ -21,8 +22,10 @@ model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой ст�
   parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";
   parameter Boolean DynamicMassBalance "Использовать или нет уравнение сохранение массы с производными";
   //Переменные
-  Medium.Temperature T_out "Температура газов за участком поверхностей нагрева";
-  Medium.Temperature T_in "Температура газов перед участком поверхностей нагрева";
+  outer Medium.SpecificEnthalpy hgas_gl "Энтальпия газов (глобальная переменная)";
+  outer Medium.MassFlowRate Dgas_gl "Массовый расход газов (глобальная переменная)";
+  outer Medium.AbsolutePressure pgas_gl "Давление газов (глобальная переменная)";
+  //Medium.Temperature T_out "Температура газов за участком поверхностей нагрева";
   Medium.ThermodynamicState state;
   Medium.DynamicViscosity mu "Динамическая вязкость газов";
   Medium.ThermalConductivity k "Коэффициент теплопроводности газов";
@@ -35,48 +38,40 @@ model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой ст�
   //Интерфейс
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(extent = {{-120, -20}, {-80, 20}}, rotation = 0), iconTransformation(extent = {{-120, -70}, {-80, -30}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium) annotation(
-    Placement(visible = true, transformation(extent = {{80, -20}, {120, 20}}, rotation = 0), iconTransformation(extent = {{80, -68}, {120, -28}}, rotation = 0)));
+  outer Modelica.Fluid.Interfaces.FluidPort_a gasIn;
 equation
-//Уравнения для потока газов
   if DynamicEnergyBalance then
-    deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(T_out) = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
+    deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(state.T) = Dgas_gl[section[1], section[2]] * (hgas_gl[section[1], section[2]] - hgas_gl[section[1] + 1, section[2]]) + heat.Q_flow;
   else
-    0 = gasIn.m_flow * (inStream(gasIn.h_outflow) - gasOut.h_outflow) + heat.Q_flow;
+    0 = Dgas_gl[section[1], section[2]] * (hgas_gl[section[1], section[2]] - hgas_gl[section[1] + 1, section[2]]) + heat.Q_flow;
   end if;
-  heat.Q_flow = -alfa_gas * H_fin * (0.5 * (T_out + T_in) - heat.T);
+  heat.Q_flow = -alfa_gas * H_fin * (state.T - heat.T);
 //Уравнения состояния
-  state = Medium.setState_pTX(gasOut.p, T_out, actualStream(gasIn.Xi_outflow));
-  gasOut.h_outflow = Medium.specificEnthalpy(state);
+  state.p = pgas_gl[section[1] + 1, section[2]];
+  state.X = actualStream(gasIn.Xi_outflow);
+  hgas_gl[section[1] + 1, section[2]] = Medium.specificEnthalpy(state);
   drdp = Medium.density_derp_T(state);
   drdT = Medium.density_derT_p(state);
-  T_in = Medium.T_hX(inStream(gasIn.h_outflow), inStream(gasIn.Xi_outflow));
   if DynamicMassBalance then
-    gasOut.m_flow + gasIn.m_flow - deltaVGas * (drdT * der(T_out) + drdp * der(gasIn.p)) = 0 "Уравнение сплошности";
+    (-Dgas_gl[section[1] + 1, section[2]]) + Dgas_gl[section[1], section[2]] - deltaVGas * (drdT * der(state.T) + drdp * der(pgas_gl[section[1], section[2]])) = 0 "Уравнение сплошности";
   else
-    gasOut.m_flow + gasIn.m_flow = 0;
+    (-Dgas_gl[section[1] + 1, section[2]]) + Dgas_gl[section[1], section[2]] = 0;
   end if;
 //Коэффициент теплоотдачи
   mu = Medium.dynamicViscosity(state);
   k = Medium.thermalConductivity(state);
   Pr = Medium.prandtlNumber(state);
-  Re = abs(gasIn.m_flow * (Din + 2 * delta) / (f_gas * mu));
+  Re = abs(Dgas_gl[section[1], section[2]] * (Din + 2 * delta) / (f_gas * mu));
   alfa_gas = k_gamma_gas * 0.113 * Cs * Cz * k / (Din + 2 * delta) * Re ^ n_fin * Pr ^ 0.33;
-  deltaP = deltaPg_lite(deltaDGas = -gasOut.m_flow, Kaer = Kaer, f_gas = f_gas, state = state) / numberOfFlueSections;
-//Граничные условия
-  gasIn.h_outflow = inStream(gasOut.h_outflow);
-  gasIn.Xi_outflow = inStream(gasOut.Xi_outflow);
-  inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
-  gasOut.p = gasIn.p - deltaP;
+  deltaP = deltaPg_lite(deltaDGas = Dgas_gl[section[1] + 1, section[2]], Kaer = Kaer, f_gas = f_gas, state = state) / numberOfFlueSections;
+  pgas_gl[section[1] + 1, section[2]] = pgas_gl[section[1], section[2]] - deltaP;
 initial equation
   if DynamicMassBalance then
-    der(T_out) = 0;
-    der(gasIn.p) = 0;
+    der(state.T) = 0;
+    der(pgas_gl[section[1], section[2]]) = 0;
   end if;
   if DynamicEnergyBalance == true and DynamicMassBalance == false then
-    der(T_out) = 0;
+    der(state.T) = 0;
   end if;
   annotation(
     Documentation(info = "<html>

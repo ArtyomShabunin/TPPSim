@@ -1,4 +1,4 @@
-﻿within TPPSim;
+﻿within TPPSim.Controls;
 block FWControl
   Modelica.Blocks.Interfaces.RealInput gasFlow_in annotation(
     Placement(visible = true, transformation(origin = {-122, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-122, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));

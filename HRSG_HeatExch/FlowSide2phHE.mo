@@ -1,5 +1,5 @@
 ﻿within TPPSim.HRSG_HeatExch;
-model FlowSideOTE_glob
+model FlowSide2phHE
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE_glob(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
@@ -87,4 +87,4 @@ initial equation
       <li><i>August 15, 2017</i>
    by Artyom Shabunin:<br></li>
 </ul></body></html>"));
-end FlowSideOTE_glob;
+end FlowSide2phHE;

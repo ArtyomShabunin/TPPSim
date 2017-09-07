@@ -1,5 +1,5 @@
 ﻿within TPPSim.HRSG_HeatExch;
-model GFHE_glob_simple
+model GFHE_simple
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
   import TPPSim.functions.coorSecGen;
   //Исходные данные по разбиению
@@ -52,4 +52,4 @@ equation
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
     version = "",
     uses);
-end GFHE_glob_simple;
+end GFHE_simple;
