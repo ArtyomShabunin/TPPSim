@@ -1,5 +1,5 @@
 ﻿within TPPSim.HRSG_HeatExch.BaseClases;
-partial model BaseFlowSideHE_glob
+partial model BaseFlowSideHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconFlowSideHE;
   replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
@@ -44,4 +44,4 @@ partial model BaseFlowSideHE_glob
     Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
     Diagram(graphics),
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
-end BaseFlowSideHE_glob;
+end BaseFlowSideHE;

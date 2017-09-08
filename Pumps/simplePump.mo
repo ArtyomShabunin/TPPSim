@@ -20,9 +20,9 @@ equation
   end if;
   connect(D_flow_in, D_flow_in_internal);
   port_b.m_flow = -D_flow_in_internal;
-  port_a.m_flow = -port_b.m_flow;
+  port_a.m_flow = setD_flow;
   port_b.h_outflow = inStream(port_a.h_outflow);
-  port_a.h_outflow = port_b.h_outflow;
+  port_a.h_outflow = inStream(port_b.h_outflow);
   annotation(
     Documentation(info = "<html><head></head><body>Модель насоса которая, по сути, является точкой с фиксирванным расходом среды.</body></html>", revisions = "<html><head></head><body>
     <ul>

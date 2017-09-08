@@ -1,6 +1,6 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model FlowSide2phHE
-  extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE_glob(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
+  extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
