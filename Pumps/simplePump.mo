@@ -6,6 +6,7 @@ model simplePump "Сильно упрощеная модель насоса"
   parameter Modelica.SIunits.MassFlowRate setD_flow = 1 "Производительность насоса" annotation(
     Evaluate = true,
     Dialog(enable = not use_D_flow_in));
+  outer Modelica.Fluid.System system;
   Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium = Medium) annotation(
@@ -19,8 +20,8 @@ equation
     D_flow_in_internal = setD_flow;
   end if;
   connect(D_flow_in, D_flow_in_internal);
-  port_b.m_flow = -D_flow_in_internal;
-  port_a.m_flow = setD_flow;
+  port_b.m_flow = -max(D_flow_in_internal, system.m_flow_small);
+  port_a.m_flow = D_flow_in_internal;
   port_b.h_outflow = inStream(port_a.h_outflow);
   port_a.h_outflow = inStream(port_b.h_outflow);
   annotation(

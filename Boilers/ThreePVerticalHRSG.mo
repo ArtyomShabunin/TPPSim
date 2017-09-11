@@ -61,19 +61,37 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {100, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b HP_steamOut(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {100, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput LP_FW_signal annotation(
-    Placement(visible = true, transformation(origin = {100, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-150, 190}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Interfaces.RealOutput IP_FW_signal annotation(
-    Placement(visible = true, transformation(origin = {100, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {62, 190}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Interfaces.RealOutput HP_FW_signal annotation(
-    Placement(visible = true, transformation(origin = {100, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {130, 190}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Fluid.Interfaces.FluidPort_a IP_FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a HP_FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b FW_out(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-154, -180}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true)  annotation(
+    Placement(visible = true, transformation(origin = {1, -43}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.Valves.simpleValve IP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true)  annotation(
+    Placement(visible = true, transformation(origin = {3, 19}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.Valves.simpleValve LP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
+    Placement(visible = true, transformation(origin = {5, 81}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(LP_LC.y, LP_FWCV.D_flow_in) annotation(
+    Line(points = {{82, 70}, {86, 70}, {86, 88}, {4, 88}, {4, 82}, {6, 82}}, color = {0, 0, 127}));
+  connect(LP_FWCV.flowOut, LP_drum.fedWater) annotation(
+    Line(points = {{10, 82}, {16, 82}, {16, 80}, {16, 80}}, color = {0, 127, 255}));
+  connect(condHE.flowOut, LP_FWCV.flowIn) annotation(
+    Line(points = {{-8, 66}, {-4, 66}, {-4, 80}, {0, 80}, {0, 82}}, color = {0, 127, 255}));
+  connect(IP_LC.y, IP_FWCV.D_flow_in) annotation(
+    Line(points = {{82, 10}, {88, 10}, {88, 24}, {2, 24}, {2, 20}, {4, 20}}, color = {0, 0, 127}));
+  connect(IP_FWCV.flowOut, IP_drum.fedWater) annotation(
+    Line(points = {{8, 20}, {16, 20}, {16, 20}, {16, 20}}, color = {0, 127, 255}));
+  connect(IP_ECO.flowOut, IP_FWCV.flowIn) annotation(
+    Line(points = {{-8, 6}, {-6, 6}, {-6, 18}, {-2, 18}, {-2, 20}}, color = {0, 127, 255}));
+  connect(HP_FWCV.flowIn, HP_ECO.flowOut) annotation(
+    Line(points = {{-4, -43}, {-4, -54}, {-8, -54}}, color = {0, 127, 255}));
+  connect(HP_FWCV.flowOut, HP_drum.fedWater) annotation(
+    Line(points = {{6, -43}, {10, -43}, {10, -38}, {14, -38}, {14, -40}, {16, -40}}, color = {0, 127, 255}));
+  connect(HP_LC.y, HP_FWCV.D_flow_in) annotation(
+    Line(points = {{82, -50}, {88, -50}, {88, -36}, {2, -36}, {2, -42}, {1, -42}}, color = {0, 0, 127}));
   connect(LP_drum.HPFW, FW_out) annotation(
     Line(points = {{12, 66}, {2, 66}, {2, 60}, {-100, 60}, {-100, 60}}, color = {0, 127, 255}));
   connect(HP_ECO.flowIn, HP_FW_In) annotation(
@@ -82,12 +100,6 @@ equation
     Line(points = {{-8, 14}, {-8, 14}, {-8, 20}, {-100, 20}, {-100, 20}}, color = {0, 127, 255}));
   connect(condHE.flowIn, condIn) annotation(
     Line(points = {{-8, 74}, {-8, 74}, {-8, 78}, {-100, 78}, {-100, 78}}, color = {0, 127, 255}));
-  connect(HP_LC.y, HP_FW_signal) annotation(
-    Line(points = {{82, -50}, {92, -50}, {92, -50}, {100, -50}}, color = {0, 0, 127}));
-  connect(IP_LC.y, IP_FW_signal) annotation(
-    Line(points = {{82, 10}, {90, 10}, {90, 10}, {100, 10}}, color = {0, 0, 127}));
-  connect(LP_FW_signal, LP_LC.y) annotation(
-    Line(points = {{100, 70}, {80, 70}, {80, 70}, {82, 70}}, color = {0, 0, 127}));
   connect(HP_drum.waterLevel, HP_LC.u) annotation(
     Line(points = {{34, -42}, {50, -42}, {50, -50}, {58, -50}, {58, -50}}, color = {0, 0, 127}));
   connect(IP_drum.waterLevel, IP_LC.u) annotation(
@@ -128,16 +140,10 @@ equation
     Line(points = {{29, -41}, {40, -41}, {40, -66}}, color = {0, 127, 255}));
   connect(HP_EVO.flowOut, HP_drum.upStr) annotation(
     Line(points = {{-8, -74}, {-4, -74}, {-4, -82}, {28, -82}, {28, -59}, {29, -59}}, color = {0, 127, 255}));
-  connect(HP_ECO.flowOut, HP_drum.fedWater) annotation(
-    Line(points = {{-8, -54}, {4, -54}, {4, -41}, {15, -41}}, color = {0, 127, 255}));
-  connect(condHE.flowOut, LP_drum.fedWater) annotation(
-    Line(points = {{-8, 66}, {0, 66}, {0, 80}, {15, 80}, {15, 79}}, color = {0, 127, 255}));
   connect(LP_drum.upStr, LP_EVO.flowOut) annotation(
     Line(points = {{29, 61}, {28, 61}, {28, 46}, {-8, 46}}, color = {0, 127, 255}));
   connect(LP_drum.steam, LP_pipe.waterIn) annotation(
     Line(points = {{29, 79}, {40, 79}, {40, 63}}, color = {0, 127, 255}));
-  connect(IP_ECO.flowOut, IP_drum.fedWater) annotation(
-    Line(points = {{-8, 6}, {4, 6}, {4, 20}, {16, 20}, {16, 20}}, color = {0, 127, 255}));
   connect(LP_pipe.waterOut, LP_SH.flowIn) annotation(
     Line(points = {{40, 53}, {40, 34}, {-8, 34}}, color = {0, 127, 255}));
   connect(IP_SH.gasOut, IP_EVO.gasIn) annotation(
