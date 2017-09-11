@@ -1,0 +1,5 @@
+﻿within TPPSim.Valves.BaseClases.Icons;
+partial model IconReducingStation
+  annotation(
+    Icon(graphics = {Polygon(origin = {-80, 0}, lineColor = {158, 158, 158}, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-20, 60}, {20, 20}, {20, -20}, {-20, -60}, {-20, 60}}), Rectangle(origin = {-30, 0}, lineColor = {158, 158, 158}, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-30, 40}, {30, -40}}), Polygon(origin = {50, 0}, lineColor = {158, 158, 158}, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-50, 20}, {50, 80}, {50, -80}, {-50, -20}, {-50, 20}}), Line(origin = {40, -50}, points = {{0, 50}, {0, -50}}, color = {0, 170, 255}, thickness = 0.5), Line(origin = {60, 20}, points = {{20, 20}, {-20, -20}}, color = {0, 170, 255}, pattern = LinePattern.Dash, thickness = 0.5), Line(origin = {60, -20}, points = {{20, -20}, {-20, 20}}, color = {0, 170, 255}, pattern = LinePattern.Dash, thickness = 0.5), Line(origin = {60, 0}, points = {{20, 0}, {-20, 0}}, color = {0, 170, 255}, pattern = LinePattern.Dash, thickness = 0.5)}));
+end IconReducingStation;
