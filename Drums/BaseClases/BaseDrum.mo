@@ -104,7 +104,7 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";
   Medium.MassFlowRate D_st_cond_fw "Расход пара конденсирующегося при нагреве питательной воды до энтальпии насыщения";
   Medium.MassFlowRate D_st_cond_fw_test;
-  Medium.MassFlowRate Dsteam "Расход пара из барабана";
+  Medium.MassFlowRate Dsteam(start = -system.m_flow_small) "Расход пара из барабана";
   Medium.MassFlowRate D_cond_dr "Пар конденсирующийся на стенках барабана";
   Modelica.SIunits.Mass G_m_steam(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "top")) "Масса металла паровой части барабана";
   Modelica.SIunits.Mass G_m_water(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "bottom")) "Масса металла водяной части барабана";

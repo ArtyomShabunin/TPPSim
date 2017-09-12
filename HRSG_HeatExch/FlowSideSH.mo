@@ -5,7 +5,7 @@ model FlowSideSH
   Modelica.SIunits.DerDensityByEnthalpy drdh "Производная плотности потока по энтальпии на участках ряда труб";
   Modelica.SIunits.DerDensityByPressure drdp "Производная плотности потока по давлению на участках ряда труб";
 algorithm
-  when t_m >= stateFlow.T and SH_cold then
+  when t_m >= stateFlow.T and SH_cold and D_gl[section[1], section[2]] > 0.001 * system.m_flow_small then
     SH_cold := false;
   end when;
 equation
