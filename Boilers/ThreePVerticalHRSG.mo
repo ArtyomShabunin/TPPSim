@@ -29,8 +29,8 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {7, -65}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GFHE_simple IP_SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, Lpipe = 18.492, delta = 0.002, delta_fin = 0.001, flow_DynamicEnergyBalance = true, flow_DynamicMassBalance = true, flow_DynamicMomentum = true, flow_DynamicTm = true, gas_DynamicEnergyBalance = true, gas_DynamicMassBalance = true, hfin = 0.012, k_gamma_gas = 1, numberOfVolumes = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 5.102e-3, z1 = 58, z2 = 8, zahod = 2) annotation(
     Placement(visible = true, transformation(origin = {-18, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  TPPSim.Pipes.SteamPipe IP_pipe(Din = 0.3, delta = 0.01, Lpipe = 10, DynamicMomentum = true) annotation(
-    Placement(visible = true, transformation(origin = {40, 0}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
+//  TPPSim.Pipes.SteamPipe IP_pipe(Din = 0.3, delta = 0.01, Lpipe = 10, DynamicMomentum = true) annotation(
+//    Placement(visible = true, transformation(origin = {40, 0}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   TPPSim.Drums.Drum IP_drum(Din = 1.718, Hw_start = 0.5, L = 9, delta = 0.02) annotation(
     Placement(visible = true, transformation(origin = {22, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GFHE IP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfa20000 alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, Lpipe = 18.492, delta = 0.002, delta_fin = 0.0008, flow_DynamicEnergyBalance = true, flow_DynamicMassBalance = true, flow_DynamicMomentum = false, flow_DynamicTm = true, gas_DynamicEnergyBalance = true, gas_DynamicMassBalance = true, hfin = 0.015, k_gamma_gas = 1, numberOfTubeSections = 1, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, z1 = 58, z2 = 6, zahod = 2) annotation(
@@ -43,6 +43,11 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {-18, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-18, 92}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  //Обратный клапан
+  Modelica.Blocks.Sources.Constant checkValve_const(k = 1) annotation(
+    Placement(visible = true, transformation(origin = {-53, -61}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, checkValve = true, dp_nominal = 100000, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+    Placement(visible = true, transformation(origin = {-40, -62}, extent = {{4, -4}, {-4, 4}}, rotation = 90)));
   //Регуляторы
   TPPSim.Controls.LC LP_LC(DFmax = 57, DFmin = 0, levelSP = 0.5) annotation(
     Placement(visible = true, transformation(origin = {70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -52,15 +57,13 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {70, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
 //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
-    Placement(visible = true, transformation(origin = {-18, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -224}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -224}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a condIn(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 78}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-202, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b LP_steamOut(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {100, 26}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_b IP_steamOut(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {100, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {100, 26}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b HP_steamOut(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {100, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {100, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a IP_FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a HP_FW_In(redeclare package Medium = Medium_F) annotation(
@@ -73,7 +76,29 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {3, 19}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Valves.simpleValve LP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {5, 81}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.HRSG_HeatExch.GFHE_simple RH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, Lpipe = 18.492, delta = 0.002, delta_fin = 0.001, flow_DynamicEnergyBalance = true, flow_DynamicMassBalance = true, flow_DynamicMomentum = true, flow_DynamicTm = true, gas_DynamicEnergyBalance = true, gas_DynamicMassBalance = true, hfin = 0.012, k_gamma_gas = 1, numberOfVolumes = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 5.102e-3, z1 = 58, z2 = 8, zahod = 2) annotation(
+    Placement(visible = true, transformation(origin = {-70, -90}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
+  Modelica.Fluid.Interfaces.FluidPort_b RH_Out(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {100, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Interfaces.FluidPort_a RH_In(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-100, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(IP_drum.steam, IP_SH.flowIn) annotation(
+    Line(points = {{30, 20}, {38, 20}, {38, -26}, {-8, -26}, {-8, -26}}, color = {0, 127, 255}));
+  connect(checkValve_const.y, checkValve.opening) annotation(
+    Line(points = {{-48, -60}, {-44, -60}, {-44, -62}, {-44, -62}}, color = {0, 0, 127}));
+  connect(checkValve.port_b, RH.flowIn) annotation(
+    Line(points = {{-40, -66}, {-40, -66}, {-40, -94}, {-60, -94}, {-60, -94}}, color = {0, 127, 255}));
+  connect(IP_SH.flowOut, checkValve.port_a) annotation(
+    Line(points = {{-8, -34}, {-8, -34}, {-8, -38}, {-40, -38}, {-40, -58}, {-40, -58}}, color = {0, 127, 255}));
+  connect(RH.flowOut, RH_Out) annotation(
+    Line(points = {{-60, -86}, {-60, -86}, {-60, -20}, {100, -20}, {100, -20}}, color = {0, 127, 255}));
+  connect(RH.flowIn, RH_In) annotation(
+    Line(points = {{-60, -94}, {-60, -94}, {-60, -98}, {-86, -98}, {-86, -80}, {-100, -80}, {-100, -80}}, color = {0, 127, 255}));
+  connect(RH.gasIn, gasIn) annotation(
+    Line(points = {{-70, -84}, {-70, -84}, {-70, -70}, {-70, -70}}, color = {0, 127, 255}));
+  connect(RH.gasOut, HP_SH.gasIn) annotation(
+    Line(points = {{-70, -94}, {-70, -94}, {-70, -100}, {-18, -100}, {-18, -94}, {-18, -94}}, color = {0, 127, 255}));
   connect(LP_LC.y, LP_FWCV.D_flow_in) annotation(
     Line(points = {{82, 70}, {86, 70}, {86, 88}, {4, 88}, {4, 82}, {6, 82}}, color = {0, 0, 127}));
   connect(LP_FWCV.flowOut, LP_drum.fedWater) annotation(
@@ -106,14 +131,10 @@ equation
     Line(points = {{34, 18}, {50, 18}, {50, 10}, {58, 10}, {58, 10}}, color = {0, 0, 127}));
   connect(LP_drum.waterLevel, LP_LC.u) annotation(
     Line(points = {{34, 78}, {50, 78}, {50, 70}, {58, 70}}, color = {0, 0, 127}));
-  connect(gasIn, HP_SH.gasIn) annotation(
-    Line(points = {{-18, -100}, {-18, -94}}));
   connect(HP_SH.flowOut, HP_steamOut) annotation(
     Line(points = {{-8, -94}, {100, -94}}, color = {0, 127, 255}));
   connect(LP_SH.flowOut, LP_steamOut) annotation(
     Line(points = {{-8, 26}, {100, 26}}, color = {0, 127, 255}));
-  connect(IP_SH.flowOut, IP_steamOut) annotation(
-    Line(points = {{-8, -34}, {100, -34}}, color = {0, 127, 255}));
   connect(condHE.gasOut, gasSink.ports[1]) annotation(
     Line(points = {{-18, 76}, {-18, 76}, {-18, 82}, {-18, 82}}, color = {0, 127, 255}));
   connect(LP_EVO.gasOut, condHE.gasIn) annotation(
@@ -150,8 +171,6 @@ equation
     Line(points = {{-18, -25}, {-18, -15}}, color = {0, 127, 255}));
   connect(IP_EVO.flowOut, IP_drum.upStr) annotation(
     Line(points = {{-8, -14}, {-4, -14}, {-4, -16}, {28, -16}, {28, -1}, {28.5, -1}, {28.5, 1}, {29, 1}}, color = {0, 127, 255}));
-  connect(IP_pipe.waterOut, IP_SH.flowIn) annotation(
-    Line(points = {{40, -4.84}, {40, -21.84}, {16, -21.84}, {16, -26}, {-8, -26}}, color = {0, 127, 255}));
   connect(HP_ECO.gasOut, IP_SH.gasIn) annotation(
     Line(points = {{-18, -45}, {-18, -35}}, color = {0, 127, 255}));
   connect(HP_EVO.gasOut, HP_ECO.gasIn) annotation(
@@ -160,8 +179,6 @@ equation
     Line(points = {{-18, -85}, {-18, -67}, {-19, -67}, {-19, -75}, {-18, -75}}, color = {0, 127, 255}));
   connect(HP_pipe.waterOut, HP_SH.flowIn) annotation(
     Line(points = {{40, -74.84}, {40, -82.84}, {-8, -82.84}, {-8, -86}}, color = {0, 127, 255}));
-  connect(IP_drum.steam, IP_pipe.waterIn) annotation(
-    Line(points = {{29, 19}, {34, 19}, {34, 19}, {39, 19}, {39, 4}}, color = {0, 127, 255}));
 protected
   annotation(
     Documentation(info = "<html>

@@ -38,10 +38,4 @@ equation
     Line(points = {{-30, 100}, {-30, 100}, {-30, 8}, {-30, 8}}, color = {0, 0, 127}));
   connect(flowIn, valve.port_a) annotation(
     Line(points = {{-100, 0}, {-40, 0}, {-40, 0}, {-40, 0}}));
-  /*flowOut.h_outflow = Medium.specificEnthalpy_pT(flowOut.p, down_T);
-  waterIn.m_flow = -(valve.port_b.m_flow * inStream(valve.port_b.h_outflow) + flowOut.m_flow * flowOut.h_outflow)/inStream(waterIn.h_outflow);
-  valve.port_b.h_outflow = inStream(flowOut.h_outflow);
-  waterIn.h_outflow = inStream(flowOut.h_outflow);
-  flowOut.m_flow = -(valve.port_b.m_flow + waterIn.m_flow);
-  flowOut.p = valve.port_b.p;*/
 end ReducingStation;

@@ -147,7 +147,7 @@ equation
   steam.p = ps;
 //Выход насыщенного пара
   steam.h_outflow = h_dew;
-  steam.m_flow = min(Dsteam, -system.m_flow_small);
+  steam.m_flow = Dsteam;
 //Опускной стояк и подача питательной воды на ПЭН
   downStr.h_outflow = hw;
   HPFW.h_outflow = hw;
