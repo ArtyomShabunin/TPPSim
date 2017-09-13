@@ -10,7 +10,7 @@ model Drum "Модель барабана энергетического кот�
     Placement(visible = true, transformation(origin = {-104, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-104, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   fedWater.m_flow = D_fw;
-  FW_feedback = (-Dsteam) + system.m_flow_small;
+  FW_feedback = (-Dsteam) + m_flow_small;
   waterLevel = Hw;
 //Паровое пространство барабана
   state_eco = Medium.setState_ph(ps, inStream(fedWater.h_outflow));
@@ -36,7 +36,7 @@ equation
   G_m_steam = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "top");
   D_cond_dr * (h_dew - h_bubble) = G_m_steam * C_m * der(t_m_steam) "Для моделирования снижения температуры стенки паровой части барабана в левую часть уравнения должно быть добавлено слагаемое равное произведению паропроизводительности на прирост энтальпии пара за счет охлаждения стенки!!! ВАЖНО!!!";
 //Временная замена ур-я выше
-  der(ps) = (D_st_circ + D_st_eco + Dvipar + (Dsteam + 0 * system.m_flow_small) - D_cond_dr) / Vs / d_rhoDew_by_press "Уравнение определения давления в паровом пространстве";
+  der(ps) = (D_st_circ + D_st_eco + Dvipar + Dsteam - D_cond_dr) / Vs / d_rhoDew_by_press "Уравнение определения давления в паровом пространстве";
   d_rhoDew_by_press = Medium.dDewDensity_dPressure(sat);
   Vs = 0.25 * Modelica.Constants.pi * Din ^ 2 * L - Vw;
 //Водяное пространство барабана
@@ -51,8 +51,8 @@ equation
 //t_m_water = Medium.saturationTemperature(pw) "Принимаем, что нижняя стенка барабанна в каждый момент времени равна температуре насыщения в водяном пространстве барабана";
   20000 * (Medium.saturationTemperature(pw) - t_m_water) = G_m_water * C_m * der(t_m_water) "ВОЗМОЖНО имеет смысл добавить площадь теплообмена";
   G_m_water = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "bottom");
-  D_w_circ + D_w_eco + D_cond_dr + D_st_cond_fw + D_downStr - Dvipar - system.m_flow_small = der(Gw);
-  D_w_circ * min(h_bubble, inStream(upStr.h_outflow)) + D_w_eco * min(h_bubble, inStream(fedWater.h_outflow)) + D_cond_dr * h_bubble + D_st_cond_fw * h_dew + D_downStr * hw - Dvipar * h_dew - system.m_flow_small * inStream(fedWater.h_outflow) = der(Gw) * hw + Gw * der(hw) + G_m_water * C_m * der(t_m_water);
+  D_w_circ + D_w_eco + D_cond_dr + D_st_cond_fw + D_downStr - Dvipar = der(Gw);
+  D_w_circ * min(h_bubble, inStream(upStr.h_outflow)) + D_w_eco * min(h_bubble, inStream(fedWater.h_outflow)) + D_cond_dr * h_bubble + D_st_cond_fw * h_dew + D_downStr * hw - Dvipar * h_dew = der(Gw) * hw + Gw * der(hw) + G_m_water * C_m * der(t_m_water);
 //Упрощенная формула, не учитывается масса металла
   rhow_dew = Medium.dewDensity(sat_w);
   rhow_bubble = Medium.bubbleDensity(sat_w);

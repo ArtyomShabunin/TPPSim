@@ -56,12 +56,12 @@ partial model BasePipe
   Medium_F.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
   Medium_F.Temperature t_flow "Температура потока вода/пар по участкам трубы";
   Medium_F.AbsolutePressure p_v(start = system.p_start) "Давление потока вода/пар по участкам трубы в конечных объемах";
-  Medium_F.AbsolutePressure p_n[2](start = system.p_start) "Давление потока вода/пар по участкам трубы в узловых точках";
-  Medium_F.SpecificEnthalpy h_v(start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(system.p_start)) "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
+  Medium_F.AbsolutePressure p_n[2] "Давление потока вода/пар по участкам трубы в узловых точках";
+  Medium_F.SpecificEnthalpy h_v "Энтальпия потока вода/пар по участкам трубы в конечных объемах";
   Medium_F.SpecificEnthalpy h_n[2] "Энтальпия потока вода/пар по участкам трубы в узловых точках";
   Medium_F.Density rho_v "Плотность потока по участкам трубы в конечных объемах";
-  Medium_F.MassFlowRate D_flow_v(start = system.m_flow_small) "Массовый расход потока вода/пар по участкам ряда труб";
-  Medium_F.MassFlowRate D_flow_n[2](start = fill(system.m_flow_small, 2)) "Массовый расход потока вода/пар по участкам ряда труб";
+  Medium_F.MassFlowRate D_flow_v(start = 0) "Массовый расход потока вода/пар по участкам ряда труб";
+  Medium_F.MassFlowRate D_flow_n[2] "Массовый расход потока вода/пар по участкам ряда труб";
   Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
   Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
   Modelica.SIunits.Velocity w_flow_v "Скорость потока вода/пар в конечных объемах";
@@ -77,7 +77,7 @@ partial model BasePipe
 equation
 //Граничные условия
   //D_flow_n[1] = max(waterIn.m_flow, system.m_flow_small);
-  D_flow_n[1] = waterIn.m_flow;
+  D_flow_n[1] = waterIn.m_flow;  
   waterOut.m_flow = -D_flow_n[2];
   waterOut.p = p_n[2];
   waterIn.p = p_n[1];

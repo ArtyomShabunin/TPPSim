@@ -26,8 +26,8 @@ partial model BaseFlowSideHE
   outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
   outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
   outer Medium.AbsolutePressure p_gl "Давление (глобальная переменная)";
-  inner Medium.ThermodynamicState stateFlow(p(start = system.p_start), h(start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(system.p_start))) "Термодинамическое состояние потока вода/пар на участках трубопровода";
-  inner Medium.MassFlowRate D_flow_v(min = system.m_flow_small, start = system.m_flow_small) "Массовый расход потока вода/пар по участкам ряда труб";
+  inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока вода/пар на участках трубопровода";
+  inner Medium.MassFlowRate D_flow_v(start = 0) "Массовый расход потока вода/пар по участкам ряда труб";
   inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
   Modelica.SIunits.HeatFlowRate Q_flow "тепло переданное стенке трубы";
   Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";

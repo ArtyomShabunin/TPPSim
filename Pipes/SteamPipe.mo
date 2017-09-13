@@ -49,7 +49,8 @@ equation
   end if;
   dp_piez = 0 "Расчет перепада давления из-за изменения пьезометрической высоты";
 initial equation
-  der(h_v) = 0;
+  //der(h_v) = 0;
+  h_v = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start); 
   der(t_m) = 0;
   der(p_v) = 0;
   if DynamicMomentum then

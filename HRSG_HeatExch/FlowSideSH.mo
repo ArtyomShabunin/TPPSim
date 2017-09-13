@@ -5,7 +5,7 @@ model FlowSideSH
   Modelica.SIunits.DerDensityByEnthalpy drdh "Производная плотности потока по энтальпии на участках ряда труб";
   Modelica.SIunits.DerDensityByPressure drdp "Производная плотности потока по давлению на участках ряда труб";
 algorithm
-  when t_m >= stateFlow.T and SH_cold and D_gl[section[1], section[2]] > 0.001 * system.m_flow_small then
+  when t_m >= stateFlow.T and SH_cold and D_gl[section[1], section[2]] > 1e-4 then
     SH_cold := false;
   end when;
 equation
@@ -74,17 +74,23 @@ equation
   end if;
 initial equation
   if DynamicEnergyBalance and DynamicMassBalance then
-    der(stateFlow.h) = 0;
-    der(h_gl[section[1], section[2] + 1]) = 0;
+//    der(stateFlow.h) = 0;
+//    der(h_gl[section[1], section[2] + 1]) = 0;
+    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
     der(stateFlow.p) = 0;
   end if;
   if DynamicEnergyBalance == true and DynamicMassBalance == false then
-    der(stateFlow.h) = 0;
-    der(h_gl[section[1], section[2] + 1]) = 0;
+//    der(stateFlow.h) = 0;
+//    der(h_gl[section[1], section[2] + 1]) = 0;
+    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
   end if;
   if DynamicEnergyBalance == false and DynamicMassBalance == true then
-    der(stateFlow.h) = 0;
-    der(h_gl[section[1], section[2] + 1]) = 0;
+//    der(stateFlow.h) = 0;
+//    der(h_gl[section[1], section[2] + 1]) = 0;
+    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
     der(stateFlow.p) = 0;
   end if;
   if DynamicTm then

@@ -84,7 +84,7 @@ model BaseDrum "Базовый класс 'барабан котла'"
     Dialog(group = "Металл"));
   //Начальные значения
   parameter Modelica.SIunits.Length Hw_start = 0.5 "Начальное значение уровня воды в барабане";
-  parameter Medium.AbsolutePressure ps_start = Medium.p_default "Начальное значение давления пара в барабане";
+  parameter Medium.AbsolutePressure ps_start = system.p_ambient "Начальное значение давления пара в барабане";
   parameter Medium.AbsolutePressure pw_start = ps_start + 0.5 * Hw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start)) * Modelica.Constants.g_n "Начальное значение давления пара в барабане";
   parameter Medium.Temperature t_start = 100 + 273.15 "Стартовая температура";
   parameter Modelica.SIunits.Volume Vw_start = drumWaterVolume(Din / 2, L, Hw_start);
@@ -104,7 +104,7 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";
   Medium.MassFlowRate D_st_cond_fw "Расход пара конденсирующегося при нагреве питательной воды до энтальпии насыщения";
   Medium.MassFlowRate D_st_cond_fw_test;
-  Medium.MassFlowRate Dsteam(start = -system.m_flow_small) "Расход пара из барабана";
+  Medium.MassFlowRate Dsteam(start = 0, max = 0) "Расход пара из барабана";
   Medium.MassFlowRate D_cond_dr "Пар конденсирующийся на стенках барабана";
   Modelica.SIunits.Mass G_m_steam(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "top")) "Масса металла паровой части барабана";
   Modelica.SIunits.Mass G_m_water(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "bottom")) "Масса металла водяной части барабана";
