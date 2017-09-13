@@ -1,4 +1,5 @@
 ﻿within TPPSim.Tests;
+
 model onePDrumStartUp
   package Medium_F = Modelica.Media.Water.WaterIF97_ph;
   parameter Real Tnom = 517.2 + 273.15;
@@ -131,51 +132,59 @@ model onePDrumStartUp
     Placement(visible = true, transformation(origin = {54, -44}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Tnom = Tnom, Tstart = Tinflow_sh, gasSource.X = set_X) annotation(
     Placement(visible = true, transformation(origin = {186, 8}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant constCV2(k = 1) annotation(
+  Modelica.Blocks.Sources.Constant constCV2(k = 0) annotation(
     Placement(visible = true, transformation(origin = {143, 65}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible CV2(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, checkValve = true, dp_nominal = 7.1e+06, dp_start = 0, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+  Modelica.Fluid.Valves.ValveCompressible CV2(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, allowFlowReversal = false, checkValve = false, dp(fixed = false), dp_nominal = 7.1e+06, dp_start = 0, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
     Placement(visible = true, transformation(origin = {154, 52}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.HRSG_HeatExch.GFHE_simple HP_SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, k_gamma_gas = k_gamma_gas_sh, redeclare package Medium_F = Medium_F, Din = Din_sh, delta = delta_sh, s1 = s1_sh, s2 = s2_sh, zahod = zahod_sh, z1 = z1_sh, z2 = z2_sh, Lpipe = Lpipe, delta_fin = delta_fin_sh, hfin = hfin_sh, sfin = sfin_sh, numberOfVolumes = numberOfVolumes_sh, flow_DynamicMomentum = true, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_simple HP_SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = Din_sh, Lpipe = Lpipe, delta = delta_sh, delta_fin = delta_fin_sh, flow_DynamicEnergyBalance = true, flow_DynamicMassBalance = true, flow_DynamicMomentum = true, flow_DynamicTm = true, gas_DynamicEnergyBalance = true, gas_DynamicMassBalance = true, hfin = hfin_sh, k_gamma_gas = k_gamma_gas_sh, numberOfVolumes = 5, s1 = s1_sh, s2 = s2_sh, sfin = sfin_sh, z1 = z1_sh, z2 = z2_sh, zahod = zahod_sh) annotation(
     Placement(visible = true, transformation(origin = {138, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.LC lc2(DFmax = 50, DFmin = 0, levelSP = 0.5) annotation(
     Placement(visible = true, transformation(origin = {62, 82}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Drums.Drum HP_drum(Din = Din_drum, L = L_drum, delta = 0.02, Hw_start = Hw_start_set) annotation(
-    Placement(visible = true, transformation(origin = {70, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {68, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GFHE HP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfa20000 alpha), redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, k_gamma_gas = k_gamma_gas_ote2, redeclare package Medium_F = Medium_F, Din = Din_ote2, delta = delta_ote2, s1 = s1_ote2, s2 = s2_ote2, zahod = zahod_ote2, z1 = z1_ote2, z2 = z2_ote2, Lpipe = Lpipe, delta_fin = delta_fin_ote2, hfin = hfin_ote2, sfin = sfin_ote2, numberOfTubeSections = numberOfTubeSections_ote2, flow_DynamicMomentum = false, flow_DynamicMassBalance = true, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
     Placement(visible = true, transformation(origin = {70, 8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePump HP_circPump(redeclare package Medium = Medium_F, setD_flow = 50) annotation(
     Placement(visible = true, transformation(origin = {53, -7}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GFHE_simple HP_ECO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, k_gamma_gas = k_gamma_gas_eco, redeclare package Medium_F = Medium_F, Din = Din_eco, delta = delta_eco, s1 = s1_eco, s2 = s2_eco, zahod = zahod_eco, z1 = z1_eco, z2 = z2_eco, Lpipe = Lpipe, delta_fin = delta_fin_eco, hfin = hfin_eco, sfin = sfin_eco, numberOfVolumes = numberOfVolumes_eco, flow_DynamicMomentum = false, flow_DynamicMassBalance = false, flow_DynamicEnergyBalance = true, flow_DynamicTm = true, gas_DynamicMassBalance = true, gas_DynamicEnergyBalance = true) annotation(
     Placement(visible = true, transformation(origin = {26, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Pipes.SteamPipe pipe(h_v(start = 2.676e+006), Din = 0.3, delta = 0.01, Lpipe = 10, DynamicMomentum = true) annotation(
+  TPPSim.Pipes.SteamPipe pipe(Din = 0.3, DynamicMomentum = true, Lpipe = 20, delta = 0.01) annotation(
     Placement(visible = true, transformation(origin = {134, 32}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
-  TPPSim.Valves.simpleValve FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true)  annotation(
+  TPPSim.Valves.simpleValve FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {42, 56}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = Tinflow_eco, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-72, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible FWPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-10, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  TPPSim.Pipes.SteamPipe pipe2(Din = 0.3, DynamicMomentum = false, Lpipe = 20, delta = 0.01) annotation(
+    Placement(visible = true, transformation(origin = {142, 32}, extent = {{-4, 4}, {4, -4}}, rotation = -90)));
 equation
+  connect(pipe2.waterIn, CV2.port_a) annotation(
+    Line(points = {{142, 36}, {142, 36}, {142, 52}, {150, 52}, {150, 52}}, color = {0, 127, 255}));
+  connect(HP_SH.flowOut, pipe2.waterOut) annotation(
+    Line(points = {{142, 18}, {142, 18}, {142, 28}, {142, 28}}, color = {0, 127, 255}));
+  connect(HP_drum.waterLevel, lc2.u) annotation(
+    Line(points = {{79, 53}, {79, 66}, {83, 66}, {83, 81}, {73, 81}}, color = {0, 0, 127}));
+  connect(HP_drum.downStr, HP_circPump.port_a) annotation(
+    Line(points = {{61, 37}, {49, 37}, {49, -7}, {47, -7}}, color = {0, 127, 255}));
+  connect(HP_EVO.flowOut, HP_drum.upStr) annotation(
+    Line(points = {{74, 18}, {74, 22}, {76, 22}, {76, 37}, {75, 37}}, color = {0, 127, 255}));
+  connect(pipe.waterIn, HP_drum.steam) annotation(
+    Line(points = {{134, 36}, {134, 60}, {75, 60}, {75, 55}}, color = {0, 127, 255}));
+  connect(FWCV.flowOut, HP_drum.fedWater) annotation(
+    Line(points = {{52, 56}, {58, 56}, {58, 55}, {61, 55}}, color = {0, 127, 255}));
   connect(FWCV.D_flow_in, lc2.y) annotation(
     Line(points = {{42, 58}, {41, 58}, {41, 54}, {40, 54}, {40, 80}, {50, 80}, {50, 82}, {52, 82}}, color = {0, 0, 127}));
-  connect(FWCV.flowOut, HP_drum.fedWater) annotation(
-    Line(points = {{52, 56}, {58, 56}, {58, 54}, {64, 54}}, color = {0, 127, 255}));
   connect(HP_ECO.flowOut, FWCV.flowIn) annotation(
     Line(points = {{30, 20}, {30, 37}, {28, 37}, {28, 52}, {30, 52}, {30, 56}, {32, 56}}, color = {0, 127, 255}));
   connect(constCV2.y, CV2.opening) annotation(
     Line(points = {{148, 66}, {154, 66}, {154, 56}, {154, 56}}, color = {0, 0, 127}));
-  connect(pipe.waterIn, HP_drum.steam) annotation(
-    Line(points = {{134, 36}, {134, 36}, {134, 60}, {78, 60}, {78, 54}, {78, 54}}, color = {0, 127, 255}));
   connect(pipe.waterOut, HP_SH.flowIn) annotation(
     Line(points = {{134, 28}, {134, 28}, {134, 18}, {134, 18}}, color = {0, 127, 255}));
   connect(CV2.port_b, flowSink.ports[1]) annotation(
     Line(points = {{158, 52}, {162, 52}, {162, -24}, {54, -24}, {54, -34}, {54, -34}}, color = {0, 127, 255}));
-  connect(HP_SH.flowOut, CV2.port_a) annotation(
-    Line(points = {{142, 18}, {142, 18}, {142, 52}, {150, 52}, {150, 52}}, color = {0, 127, 255}));
   connect(HP_EVO.gasIn, HP_SH.gasOut) annotation(
     Line(points = {{75, 8}, {133, 8}}, color = {0, 127, 255}));
-  connect(HP_EVO.flowOut, HP_drum.upStr) annotation(
-    Line(points = {{74, 18}, {74, 22}, {76, 22}, {76, 34}, {78, 34}}, color = {0, 127, 255}));
   connect(HP_circPump.port_b, HP_EVO.flowIn) annotation(
     Line(points = {{58, -7}, {60, -7}, {60, 19}, {66, 19}, {66, 18}}, color = {0, 127, 255}));
   connect(HP_EVO.gasOut, HP_ECO.gasIn) annotation(
@@ -186,10 +195,6 @@ equation
     Line(points = {{21, 10}, {-80, 10}}, color = {0, 127, 255}));
   connect(FWPump.port_b, HP_ECO.flowIn) annotation(
     Line(points = {{0, 50}, {12, 50}, {12, 48}, {22, 48}, {22, 20}}, color = {0, 127, 255}));
-  connect(HP_drum.downStr, HP_circPump.port_a) annotation(
-    Line(points = {{63, 35}, {55, 35}, {55, 35}, {49, 35}, {49, -7}, {48, -7}, {48, -7}, {47, -7}}, color = {0, 127, 255}));
-  connect(HP_drum.waterLevel, lc2.u) annotation(
-    Line(points = {{81, 51}, {81, 66}, {83, 66}, {83, 81}, {77, 81}, {77, 81}, {73, 81}}, color = {0, 0, 127}));
   connect(flowSource.ports[1], FWPump.port_a) annotation(
     Line(points = {{-62, 50}, {-20, 50}, {-20, 50}, {-20, 50}}, color = {0, 127, 255}, thickness = 0.5));
   annotation(

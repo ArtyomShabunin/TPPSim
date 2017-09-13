@@ -43,7 +43,7 @@ equation
   Xi_flow = lambda_tr * Lpipe / Din;
   dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * rho_v / 2 / Modelica.Constants.g_n;
   if DynamicMomentum then
-    p_n[1] - p_n[2] = dp_fric + der(D_flow_n[2]) * Lpipe / f_flow;
+    p_n[1] - p_n[2] = dp_fric + der(D_flow_v) * Lpipe / f_flow;
   else
     p_n[1] - p_n[2] = dp_fric;
   end if;
@@ -52,9 +52,10 @@ initial equation
   //der(h_v) = 0;
   h_v = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start); 
   der(t_m) = 0;
-  der(p_v) = 0;
+  //der(p_v) = 0;
+  p_v = system.p_start;
   if DynamicMomentum then
-    der(D_flow_n[2]) = 0;
+    der(D_flow_v) = 0;
   end if;
   annotation(
     Documentation(info = "<html>
