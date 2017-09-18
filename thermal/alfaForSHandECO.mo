@@ -17,5 +17,5 @@ algorithm
   Pr_flow := Medium.prandtlNumber(stateFlow);
   w_flow := max(D_flow_v - 0.1, 0) / stateFlow.d / f_flow;
   Re_flow := w_flow * Din * stateFlow.d / mu_flow;
-  alfa_flow := 0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4;
+  alfa_flow := max(0.023 * k_flow / Din * Re_flow ^ 0.8 * Pr_flow ^ 0.4, 0.1);
 end alfaForSHandECO;
