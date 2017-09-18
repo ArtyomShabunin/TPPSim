@@ -89,12 +89,12 @@ model ThreePVerticalHRSG
   Modelica.Blocks.Sources.Constant const_vent(k = 0.5) annotation(
     Placement(visible = true, transformation(origin = {-65, -1}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary vent(redeclare package Medium = Medium_F, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
-    Placement(visible = true, transformation(origin = {-46, 90}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {-48, 92}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
+  connect(valve_vent.port_b, vent.ports[1]) annotation(
+    Line(points = {{-48, 4}, {-48, 82}}, color = {0, 127, 255}));
   connect(const_vent.y, valve_vent.opening) annotation(
     Line(points = {{-60, 0}, {-52, 0}, {-52, 0}, {-52, 0}}, color = {0, 0, 127}));
-  connect(valve_vent.port_b, vent.ports[1]) annotation(
-    Line(points = {{-48, 4}, {-48, 42}, {-46, 42}, {-46, 80}}, color = {0, 127, 255}));
   connect(IP_pipe2.waterOut, valve_vent.port_a) annotation(
     Line(points = {{-40, -52}, {-48, -52}, {-48, -4}, {-48, -4}}, color = {0, 127, 255}));
   connect(IP_pipe2.waterOut, checkValve.port_a) annotation(

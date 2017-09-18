@@ -132,7 +132,7 @@ model onePDrumStartUp
     Placement(visible = true, transformation(origin = {54, -44}, extent = {{10, -10}, {-10, 10}}, rotation = -90)));
   TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Tnom = Tnom, Tstart = Tinflow_sh, gasSource.X = set_X) annotation(
     Placement(visible = true, transformation(origin = {186, 8}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant constCV2(k = 0) annotation(
+  Modelica.Blocks.Sources.Constant constCV2(k = 1) annotation(
     Placement(visible = true, transformation(origin = {143, 65}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible CV2(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, allowFlowReversal = false, checkValve = false, dp(fixed = false), dp_nominal = 7.1e+06, dp_start = 0, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
     Placement(visible = true, transformation(origin = {154, 52}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
@@ -157,11 +157,11 @@ model onePDrumStartUp
   TPPSim.Pumps.simplePumpFlexible FWPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-10, 50}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pipes.SteamPipe pipe2(Din = 0.3, DynamicMomentum = false, Lpipe = 20, delta = 0.01) annotation(
-    Placement(visible = true, transformation(origin = {142, 32}, extent = {{-4, 4}, {4, -4}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {142, 32}, extent = {{-4, 4}, {4, -4}}, rotation = 90)));
 equation
-  connect(pipe2.waterIn, CV2.port_a) annotation(
+  connect(pipe2.waterOut, CV2.port_a) annotation(
     Line(points = {{142, 36}, {142, 36}, {142, 52}, {150, 52}, {150, 52}}, color = {0, 127, 255}));
-  connect(HP_SH.flowOut, pipe2.waterOut) annotation(
+  connect(HP_SH.flowOut, pipe2.waterIn) annotation(
     Line(points = {{142, 18}, {142, 18}, {142, 28}, {142, 28}}, color = {0, 127, 255}));
   connect(HP_drum.waterLevel, lc2.u) annotation(
     Line(points = {{79, 53}, {79, 66}, {83, 66}, {83, 81}, {73, 81}}, color = {0, 0, 127}));
