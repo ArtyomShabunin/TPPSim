@@ -1,7 +1,6 @@
 ﻿within TPPSim.HRSG_HeatExch.BaseClases;
 partial model BaseGFHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconHE;
-  //Исходные данные для газовой стороны
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Геометрия пучка

@@ -15,7 +15,7 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {40, 58}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   TPPSim.Pumps.simplePump LP_circPump(redeclare package Medium = Medium_F, setD_flow = 50) annotation(
     Placement(visible = true, transformation(origin = {5, 55}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Pipes.SteamPipe HP_pipe(Din = 0.3, delta = 0.01, Lpipe = 10, DynamicMomentum = true) annotation(
+  TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.3, DynamicMomentum = true, Lpipe = 10, delta = 0.01, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {40, -70}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   TPPSim.HRSG_HeatExch.GFHE_simple HP_SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, Lpipe = 18.492, delta = 0.002, delta_fin = 0.001, flow_DynamicEnergyBalance = true, flow_DynamicMassBalance = true, flow_DynamicMomentum = true, flow_DynamicTm = true, gas_DynamicEnergyBalance = true, gas_DynamicMassBalance = true, hfin = 0.012, k_gamma_gas = 1, numberOfVolumes = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 5.102e-3, z1 = 58, z2 = 8, zahod = 2) annotation(
     Placement(visible = true, transformation(origin = {-18, -90}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -52,8 +52,8 @@ model ThreePVerticalHRSG
   TPPSim.Controls.LC HP_LC(DFmax = 46, DFmin = 0, levelSP = 0.5) annotation(
     Placement(visible = true, transformation(origin = {70, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.LC IP_LC(DFmax = 11, DFmin = 0, levelSP = 0.5) annotation(
-    Placement(visible = true, transformation(origin = {70, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
-//Интерфейс
+    Placement(visible = true, transformation(origin = {70, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -224}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a condIn(redeclare package Medium = Medium_F) annotation(
@@ -68,9 +68,9 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {-100, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b FW_out(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-154, -180}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true)  annotation(
+  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {1, -43}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Valves.simpleValve IP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true)  annotation(
+  TPPSim.Valves.simpleValve IP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {3, 19}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Valves.simpleValve LP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {5, 81}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));

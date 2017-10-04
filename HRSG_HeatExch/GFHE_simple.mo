@@ -6,7 +6,7 @@ model GFHE_simple
   parameter Integer numberOfVolumes "Число участков разбиения" annotation(
     Dialog(group = "Параметры разбиения"));
   final inner parameter Integer numberOfFlueSections = numberOfVolumes "Число участков разбиения газохода";
-  final parameter Integer[numberOfVolumes, 1, 2] section_set = coorSecGen(numberOfVolumes, 1);  
+  //final parameter Integer[numberOfVolumes, 1, 2] section_set = coorSecGen(numberOfVolumes, 1);  
   //Расчетные параметры
   final inner parameter Modelica.SIunits.Area f_flow = zahod * Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
   final inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe * z2 / zahod / numberOfVolumes "Длина теплообменной трубки для элемента разбиения";
