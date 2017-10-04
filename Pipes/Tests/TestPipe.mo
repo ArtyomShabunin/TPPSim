@@ -7,7 +7,7 @@ model TestPipe
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe Pipe(DynamicMomentum = false, numberOfVolumes = 2)  annotation(
+  TPPSim.Pipes.ComplexPipe Pipe(energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial,momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, numberOfVolumes = 2)  annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(Pipe.waterOut, Sink.ports[1]) annotation(

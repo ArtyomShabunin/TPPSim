@@ -17,7 +17,7 @@ model ComplexPipe
   inner Medium.SpecificEnthalpy h[1, numberOfVolumes + 1] "Энтальпия вода/пар (глобальная переменная)";
   inner Medium.MassFlowRate D[1, numberOfVolumes + 1] "Массовый расход вода/пар (глобальная переменная)";
   inner Medium.AbsolutePressure p[1, numberOfVolumes + 1] "Давление вода/пар (глобальная переменная)";
-  TPPSim.Pipes.ElementarySteamPipe Pipe[1, numberOfVolumes](redeclare package Medium = Medium, DynamicMomentum = DynamicMomentum, section = coorSecGen(1, numberOfVolumes)) annotation(
+  TPPSim.Pipes.ElementarySteamPipe Pipe[1, numberOfVolumes](redeclare package Medium = Medium, section = coorSecGen(1, numberOfVolumes)) annotation(
     Placement(visible = true, transformation(origin = {-5.32907e-15, 5.32907e-15}, extent = {{-40, -40}, {40, 40}}, rotation = 0)));
 equation
   h[1, 1] = inStream(waterIn.h_outflow);

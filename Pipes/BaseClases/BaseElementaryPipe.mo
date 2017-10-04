@@ -9,8 +9,6 @@ partial model BaseElementaryPipe
   //Конструктивные характеристики
   outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубопровода";
   outer parameter Modelica.SIunits.Length ke "Абсолютная эквивалентная шероховатость";
-  //Используемые уравнения динамики
-  parameter Boolean DynamicMomentum = false "Использовать или нет уравнение сохранения момента";  
   //Расчетные конструктивные параметры
   final outer parameter Modelica.SIunits.Length deltaLpipe;
   final outer parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";

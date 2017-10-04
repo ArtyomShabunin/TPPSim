@@ -1,6 +1,7 @@
 ﻿within TPPSim.Pipes.BaseClases;
 partial model BaseComplexPipe "Базовая модель сложной трубы"
   extends TPPSim.Pipes.BaseClases.Icons.IconComplexPipe;
+  import Modelica.Fluid.Types;
   replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Характеристики металла
   parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
@@ -16,9 +17,10 @@ partial model BaseComplexPipe "Базовая модель сложной тру
     Dialog(group = "Конструктивные характеристики"));
   inner parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость"  annotation(
     Dialog(group = "Конструктивные характеристики"));
-  //Используемые уравнения динамики
-  parameter Boolean DynamicMomentum = false "Использовать или нет уравнение сохранения момента" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
+  //Параметры уравнений динамики
+  inner parameter Types.Dynamics energyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  inner parameter Types.Dynamics massDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  inner parameter Modelica.Fluid.Types.Dynamics momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState "Параметры уравнения сохранения момента" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   //Интерфейс
   outer Modelica.Fluid.System system;
   Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium) annotation(
