@@ -36,6 +36,9 @@ model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой ст�
   Medium.AbsolutePressure deltaP "Аэродинамическое сопротивление";
   Medium.DerDensityByPressure drdp;
   Medium.DerDensityByTemperature drdT;
+  //Начальные значения
+  outer parameter Modelica.SIunits.Temperature T_gas_start = system.T_start "Начальная температура газов" annotation(Dialog(tab = "Initialization"));  
+  outer parameter Modelica.SIunits.AbsolutePressure p_gas_start = system.p_start "Начальное давление газов" annotation(Dialog(tab = "Initialization"));   
   //Интерфейс
   outer Modelica.Fluid.System system;
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(
@@ -72,12 +75,12 @@ initial equation
     der(state.T) = 0;
     der(pgas_gl[section[1], section[2]]) = 0;
   elseif gasMassDynamics  == Types.Dynamics.FixedInitial then
-    state.T = system.T_start;
-    pgas_gl[section[1], section[2]] = system.p_start;
+    state.T = T_gas_start;
+    pgas_gl[section[1], section[2]] = p_gas_start;
   elseif gasEnergyDynamics == Types.Dynamics.SteadyStateInitial and gasMassDynamics == Types.Dynamics.SteadyState then
     der(state.T) = 0;
   elseif gasEnergyDynamics == Types.Dynamics.SteadyStateInitial and gasMassDynamics == Types.Dynamics.SteadyState then
-    state.T = system.T_start;
+    state.T = T_gas_start;
   end if;
   annotation(
     Documentation(info = "<html>

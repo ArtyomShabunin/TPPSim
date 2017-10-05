@@ -23,7 +23,12 @@ partial model BaseFlowSideHE
   outer parameter Types.Dynamics flowEnergyDynamics "Параметры уравнения сохранения энергии вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   outer parameter Types.Dynamics flowMassDynamics "Параметры уравнения сохранения массы вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   outer parameter Modelica.Fluid.Types.Dynamics flowMomentumDynamics "Параметры уравнения сохранения момента вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
-  outer parameter Types.Dynamics metalDynamics "Параметры уравнения динамики прогрева металла" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics")); 
+  outer parameter Types.Dynamics metalDynamics "Параметры уравнения динамики прогрева металла" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  //Начальные значения
+  outer parameter Modelica.SIunits.SpecificEnthalpy h_flow_start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start) "Начальная энтальпия вода/пар" annotation(Dialog(tab = "Initialization"));    
+  outer parameter Modelica.SIunits.AbsolutePressure p_flow_start = system.p_start "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
+  outer parameter Modelica.SIunits.MassFlowRate m_flow_start = system.m_flow_start "Начальный массовый расход вода/пар" annotation(Dialog(tab = "Initialization"));
+  outer parameter Modelica.SIunits.Temperature T_m_start = system.T_start "Начальная температура металла вода/пар" annotation(Dialog(tab = "Initialization"));   
   //Переменные
   outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
   outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";

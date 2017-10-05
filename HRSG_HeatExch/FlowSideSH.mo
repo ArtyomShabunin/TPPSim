@@ -76,30 +76,30 @@ equation
 initial equation
 
   if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then
-    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
-    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
-    stateFlow.p = system.p_start;
+    h_gl[section[1], section[2] + 1] = h_flow_start;
+    stateFlow.h = h_flow_start;
+    stateFlow.p = p_flow_start;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;
     der(h_gl[section[1], section[2] + 1]) = 0;
     der(stateFlow.p) = 0;
   elseif flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
-    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
-    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    h_gl[section[1], section[2] + 1] = h_flow_start;
+    stateFlow.h = h_flow_start;
     der(stateFlow.p) = 0;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.FixedInitial then
     der(stateFlow.h) = 0;
     der(h_gl[section[1], section[2] + 1]) = 0;
-    stateFlow.p = system.p_start;              
+    stateFlow.p = p_flow_start;              
   elseif flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.SteadyState then
-    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
-    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    h_gl[section[1], section[2] + 1] = h_flow_start;
+    stateFlow.h = h_flow_start;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.SteadyState then
     der(stateFlow.h) = 0;
     der(h_gl[section[1], section[2] + 1]) = 0;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyState and flowMassDynamics == Types.Dynamics.FixedInitial then
-    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
-    stateFlow.p = system.p_start;
+    stateFlow.h = h_flow_start;
+    stateFlow.p = p_flow_start;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyState and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;
     der(stateFlow.p) = 0; 
@@ -108,13 +108,13 @@ initial equation
   if metalDynamics == Types.Dynamics.SteadyStateInitial then
     der(t_m) = 0;
   elseif metalDynamics == Types.Dynamics.FixedInitial then
-    t_m = system.T_start;
+    t_m = T_m_start;
   end if;
 
   if flowMomentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
   elseif flowMomentumDynamics == Types.Dynamics.FixedInitial then
-    D_flow_v = system.m_flow_start;
+    D_flow_v = m_flow_start;
   end if;
 
   annotation(
