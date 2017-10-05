@@ -1,6 +1,7 @@
 ﻿within TPPSim.HRSG_HeatExch.BaseClases;
 partial model BaseGFHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconHE;
+  import Modelica.Fluid.Types;
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Геометрия пучка
@@ -42,19 +43,13 @@ partial model BaseGFHE
   //Поправки
   inner parameter Real k_gamma_gas = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
     Dialog(group = "Поправки"));
-  //Используемые уравнения динамики
-  parameter Boolean flow_DynamicMomentum = false "Использовать или нет уравнение сохранения момента" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
-  parameter Boolean flow_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
-  parameter Boolean flow_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
-  parameter Boolean flow_DynamicTm = true "Использовать или нет производную по температуре металла" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
-  parameter Boolean gas_DynamicMassBalance = true "Использовать или нет уравнение сохранение массы с производными" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
-  parameter Boolean gas_DynamicEnergyBalance = true "Использовать или нет уравнение сохранения энергии с производными" annotation(
-    Dialog(group = "Используемые уравнения динамики"));
+  //Параметры уравнений динамики
+  inner parameter Types.Dynamics flowEnergyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  inner parameter Types.Dynamics flowMassDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  inner parameter Modelica.Fluid.Types.Dynamics flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState "Параметры уравнения сохранения момента вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  inner parameter Types.Dynamics metalDynamics = Types.Dynamics.FixedInitial "Параметры уравнения динамики прогрева металла" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics")); 
+  inner parameter Types.Dynamics gasEnergyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии газов" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  inner parameter Types.Dynamics gasMassDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы газов" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));  
   //Расчетные конструктивные параметры
   final parameter Modelica.SIunits.Length omega = Modelica.Constants.pi * (Din + 2 * delta) "Наружный периметр трубы";
   final parameter Modelica.SIunits.Length Dfin = Din + 2 * delta + 2 * hfin "Диаметр ребер, м";

@@ -1,6 +1,7 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой стороны газо-водяного/парового теплообменника котла-утилизатора с глобальными переменными."
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconGasSideHE;
+  import Modelica.Fluid.Types;
   import TPPSim.functions.deltaPg_lite;
   replaceable package Medium = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   parameter Integer[2] section;
@@ -18,9 +19,9 @@ model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой ст�
   final outer parameter Real Cz "Поправка на число рядов труб по ходу газов";
   final outer parameter Real H_fin "Площадь оребренной поверхности";
   final outer parameter Real Kaer "Коэффициент для расчета аэродинамического сопротивления";
-  //Настройки уравнений динамики
-  parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";
-  parameter Boolean DynamicMassBalance "Использовать или нет уравнение сохранение массы с производными";
+  //Параметры уравнений динамики
+  outer parameter Types.Dynamics gasEnergyDynamics "Параметры уравнения сохранения энергии газов" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  outer parameter Types.Dynamics gasMassDynamics "Параметры уравнения сохранения массы газов" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics")); 
   //Переменные
   outer Medium.SpecificEnthalpy hgas_gl "Энтальпия газов (глобальная переменная)";
   outer Medium.MassFlowRate Dgas_gl "Массовый расход газов (глобальная переменная)";
@@ -36,14 +37,15 @@ model GasSideHE "Gas Flow Heat Exchanger Side. Модель газовой ст�
   Medium.DerDensityByPressure drdp;
   Medium.DerDensityByTemperature drdT;
   //Интерфейс
+  outer Modelica.Fluid.System system;
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heat annotation(
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   outer Modelica.Fluid.Interfaces.FluidPort_a gasIn;
 equation
-  if DynamicEnergyBalance then
-    deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(state.T) = Dgas_gl[section[1], section[2]] * (hgas_gl[section[1], section[2]] - hgas_gl[section[1] + 1, section[2]]) + heat.Q_flow;
-  else
+  if gasEnergyDynamics == Types.Dynamics.SteadyState then
     0 = Dgas_gl[section[1], section[2]] * (hgas_gl[section[1], section[2]] - hgas_gl[section[1] + 1, section[2]]) + heat.Q_flow;
+  else
+    deltaVGas * Medium.density(state) * Medium.heatCapacity_cp(state) * der(state.T) = Dgas_gl[section[1], section[2]] * (hgas_gl[section[1], section[2]] - hgas_gl[section[1] + 1, section[2]]) + heat.Q_flow;
   end if;
   heat.Q_flow = -alfa_gas * H_fin * (state.T - heat.T);
 //Уравнения состояния
@@ -52,10 +54,10 @@ equation
   hgas_gl[section[1] + 1, section[2]] = Medium.specificEnthalpy(state);
   drdp = Medium.density_derp_T(state);
   drdT = Medium.density_derT_p(state);
-  if DynamicMassBalance then
-    (-Dgas_gl[section[1] + 1, section[2]]) + Dgas_gl[section[1], section[2]] - deltaVGas * (drdT * der(state.T) + drdp * der(pgas_gl[section[1], section[2]])) = 0 "Уравнение сплошности";
-  else
+  if gasMassDynamics == Types.Dynamics.SteadyState then
     (-Dgas_gl[section[1] + 1, section[2]]) + Dgas_gl[section[1], section[2]] = 0;
+  else
+    (-Dgas_gl[section[1] + 1, section[2]]) + Dgas_gl[section[1], section[2]] - deltaVGas * (drdT * der(state.T) + drdp * der(pgas_gl[section[1], section[2]])) = 0 "Уравнение сплошности";
   end if;
 //Коэффициент теплоотдачи
   mu = Medium.dynamicViscosity(state);
@@ -66,12 +68,16 @@ equation
   deltaP = deltaPg_lite(deltaDGas = Dgas_gl[section[1] + 1, section[2]], Kaer = Kaer, f_gas = f_gas, state = state) / numberOfFlueSections;
   pgas_gl[section[1] + 1, section[2]] = pgas_gl[section[1], section[2]] - deltaP;
 initial equation
-  if DynamicMassBalance then
+  if gasMassDynamics  == Types.Dynamics.SteadyStateInitial then
     der(state.T) = 0;
     der(pgas_gl[section[1], section[2]]) = 0;
-  end if;
-  if DynamicEnergyBalance == true and DynamicMassBalance == false then
+  elseif gasMassDynamics  == Types.Dynamics.FixedInitial then
+    state.T = system.T_start;
+    pgas_gl[section[1], section[2]] = system.p_start;
+  elseif gasEnergyDynamics == Types.Dynamics.SteadyStateInitial and gasMassDynamics == Types.Dynamics.SteadyState then
     der(state.T) = 0;
+  elseif gasEnergyDynamics == Types.Dynamics.SteadyStateInitial and gasMassDynamics == Types.Dynamics.SteadyState then
+    state.T = system.T_start;
   end if;
   annotation(
     Documentation(info = "<html>

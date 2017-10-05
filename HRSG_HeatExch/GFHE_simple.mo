@@ -24,9 +24,9 @@ model GFHE_simple
   inner Medium_G.SpecificEnthalpy hgas_gl[numberOfVolumes + 1, 1] "Энтальпия газов (глобальная переменная)";
   inner Medium_G.MassFlowRate Dgas_gl[numberOfVolumes + 1, 1] "Массовый расход газов (глобальная переменная)";
   inner Medium_G.AbsolutePressure pgas_gl[numberOfVolumes + 1, 1] "Давление газов (глобальная переменная)";
-  TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes, 1](redeclare package Medium = Medium_G, DynamicEnergyBalance = gas_DynamicEnergyBalance, DynamicMassBalance = gas_DynamicMassBalance, section = coorSecGen(numberOfVolumes, 1)) annotation(
+  TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes, 1](redeclare package Medium = Medium_G, section = coorSecGen(numberOfVolumes, 1)) annotation(
     Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[1, numberOfVolumes](redeclare package Medium = Medium_F, DynamicMomentum = flow_DynamicMomentum, DynamicMassBalance = flow_DynamicMassBalance, DynamicEnergyBalance = flow_DynamicEnergyBalance, DynamicTm = flow_DynamicTm, section = coorSecGen(1, numberOfVolumes)) annotation(
+  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[1, numberOfVolumes](redeclare package Medium = Medium_F, section = coorSecGen(1, numberOfVolumes)) annotation(
     Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
 equation
   for i in 1:numberOfVolumes loop

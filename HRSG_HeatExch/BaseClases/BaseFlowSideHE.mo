@@ -1,6 +1,7 @@
 ﻿within TPPSim.HRSG_HeatExch.BaseClases;
 partial model BaseFlowSideHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconFlowSideHE;
+  import Modelica.Fluid.Types;
   replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
   constant Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
@@ -18,10 +19,11 @@ partial model BaseFlowSideHE
   final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
   final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
   parameter Integer[2] section "Координаты участка";
-  parameter Boolean DynamicMomentum "Использовать или нет уравнение сохранения момента";
-  parameter Boolean DynamicMassBalance "Использовать или нет уравнение сохранение массы с производными";
-  parameter Boolean DynamicEnergyBalance "Использовать или нет уравнение сохранения энергии с производными";
-  parameter Boolean DynamicTm "Использовать или нет производную по температуре металла";
+  //Параметры уравнений динамики
+  outer parameter Types.Dynamics flowEnergyDynamics "Параметры уравнения сохранения энергии вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  outer parameter Types.Dynamics flowMassDynamics "Параметры уравнения сохранения массы вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  outer parameter Modelica.Fluid.Types.Dynamics flowMomentumDynamics "Параметры уравнения сохранения момента вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  outer parameter Types.Dynamics metalDynamics "Параметры уравнения динамики прогрева металла" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics")); 
   //Переменные
   outer Medium.SpecificEnthalpy h_gl "Энтальпия (глобальная переменная)";
   outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";

@@ -51,17 +51,14 @@ initial equation
   elseif energyDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;    
   end if;
-
   if massDynamics == Types.Dynamics.FixedInitial then
     stateFlow.p = system.p_start;
   elseif massDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.p) = 0;
   end if;
-
   if momentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
-  end if;
-  
+  end if; 
   der(t_m) = 0;  
   annotation(
     Documentation(info = "<html>

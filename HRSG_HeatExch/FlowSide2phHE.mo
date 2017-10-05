@@ -1,6 +1,7 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model FlowSide2phHE
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
+  import Modelica.Fluid.Types;
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
@@ -12,18 +13,18 @@ model FlowSide2phHE
   Real C1 "Показатель в числителе уравнения сплошности";
   Real C2 "Показатель в знаменателе уравнения сплошности";
 equation
-  if DynamicEnergyBalance == true then
-    0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-    0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
-  else
+  if flowEnergyDynamics == Types.Dynamics.SteadyState then
     0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]);
     0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h);
+  else
+    0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+    0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
   end if;
 //Уравнение теплового баланса металла
-  if DynamicTm == true then
-    deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
-  else
+  if metalDynamics == Types.Dynamics.SteadyState then
     0 = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T);
+  else
+    deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
   end if;
 //Уравнения для heat
   heat.Q_flow = Q_flow;
@@ -38,12 +39,12 @@ equation
   x_v = if noEvent(stateFlow.h < hl) then 0 elseif noEvent(stateFlow.h > hv) then 1 else (stateFlow.h - hl) / (hv - hl);
   D_flow_v = D_gl[section[1], section[2] + 1];
   D_gl[section[1], section[2] + 1] = D_gl[section[1], section[2]] - C1 - C2 "Уравнение сплошности (формула 3-6 диссертации Рубашкина)";
-  if DynamicMassBalance == true then
-    C1 = deltaVFlow * drdh * der(stateFlow.h);
-    C2 = deltaVFlow * drdp * der(stateFlow.p);
-  else
+  if flowMassDynamics == Types.Dynamics.SteadyState then
     C1 = 0;
     C2 = 0;
+  else
+    C1 = deltaVFlow * drdh * der(stateFlow.h);
+    C2 = deltaVFlow * drdp * der(stateFlow.p);
   end if;
   drdp = min(0.0005, Medium.density_derp_h(stateFlow));
   drdh = max(-0.002, Medium.density_derh_p(stateFlow));
@@ -55,32 +56,56 @@ equation
   lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
   Xi_flow = lambda_tr * deltaLpipe / Din;
   dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2 / Modelica.Constants.g_n;
-  if DynamicMomentum then
-    p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
-  else
+  if flowMomentumDynamics == Types.Dynamics.SteadyState then
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric;
+  else
+    p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
   dp_piez = 0 "Расчет перепада давления из-за изменения пьезометрической высоты";
 initial equation
-  if DynamicEnergyBalance == true and DynamicMassBalance == true then
+
+  if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then
+    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.p = system.p_start;
+  elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;
     der(h_gl[section[1], section[2] + 1]) = 0;
     der(stateFlow.p) = 0;
-  end if;
-  if DynamicEnergyBalance == true and DynamicMassBalance == false then
+  elseif flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
+    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    der(stateFlow.p) = 0;
+  elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.FixedInitial then
     der(stateFlow.h) = 0;
     der(h_gl[section[1], section[2] + 1]) = 0;
-  end if;
-  if DynamicEnergyBalance == false and DynamicMassBalance == true then
+    stateFlow.p = system.p_start;              
+  elseif flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.SteadyState then
+    h_gl[section[1], section[2] + 1] = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+  elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.SteadyState then
     der(stateFlow.h) = 0;
-    der(stateFlow.p) = 0;
+    der(h_gl[section[1], section[2] + 1]) = 0;
+  elseif flowEnergyDynamics == Types.Dynamics.SteadyState and flowMassDynamics == Types.Dynamics.FixedInitial then
+    stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start);
+    stateFlow.p = system.p_start;
+  elseif flowEnergyDynamics == Types.Dynamics.SteadyState and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
+    der(stateFlow.h) = 0;
+    der(stateFlow.p) = 0; 
   end if;
-  if DynamicTm == true then
+  
+  if metalDynamics == Types.Dynamics.SteadyStateInitial then
     der(t_m) = 0;
+  elseif metalDynamics == Types.Dynamics.FixedInitial then
+    t_m = system.T_start;
   end if;
-  if DynamicMomentum then
+
+  if flowMomentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
+  elseif flowMomentumDynamics == Types.Dynamics.FixedInitial then
+    D_flow_v = system.m_flow_start;
   end if;
+
   annotation(
     Documentation(info = "<html><head></head><body>Аналог FlowSideOTE3 с глобальными переменными</body></html>", revisions = "<html><head></head><body>
     <ul>
