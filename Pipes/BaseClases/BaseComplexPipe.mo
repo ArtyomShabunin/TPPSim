@@ -17,6 +17,8 @@ partial model BaseComplexPipe "Базовая модель сложной тру
     Dialog(group = "Конструктивные характеристики"));
   inner parameter Modelica.SIunits.Length ke = 0.00014 "Абсолютная эквивалентная шероховатость"  annotation(
     Dialog(group = "Конструктивные характеристики"));
+  parameter Modelica.SIunits.Length Lpiezo = 0 "Перепад высот между выходом и входом трубы"   annotation(
+    Dialog(group = "Конструктивные характеристики"));
   //Параметры уравнений динамики
   inner parameter Types.Dynamics energyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   inner parameter Types.Dynamics massDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));

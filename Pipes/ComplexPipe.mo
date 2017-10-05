@@ -9,6 +9,7 @@ model ComplexPipe
   //final parameter Integer[numberOfVolumes, 1, 2] section_set = coorSecGen(numberOfVolumes, 1);
   //Расчетные конструктивные параметры
   final inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfVolumes;
+  final inner parameter Modelica.SIunits.Length deltaLpiezo = Lpiezo / numberOfVolumes;
   final inner parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * Modelica.Constants.pi * Din "Внутренняя площадь одного участка ряда труб";
   final inner parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * Modelica.Constants.pi * Din ^ 2 / 4 "Внутренний объем одного участка ряда труб";
   final inner parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 "Масса металла участка ряда труб";
@@ -17,7 +18,7 @@ model ComplexPipe
   inner Medium.SpecificEnthalpy h[1, numberOfVolumes + 1] "Энтальпия вода/пар (глобальная переменная)";
   inner Medium.MassFlowRate D[1, numberOfVolumes + 1] "Массовый расход вода/пар (глобальная переменная)";
   inner Medium.AbsolutePressure p[1, numberOfVolumes + 1] "Давление вода/пар (глобальная переменная)";
-  TPPSim.Pipes.ElementarySteamPipe Pipe[1, numberOfVolumes](redeclare package Medium = Medium, section = coorSecGen(1, numberOfVolumes)) annotation(
+  replaceable TPPSim.Pipes.ElementarySteamPipe Pipe[1, numberOfVolumes](redeclare package Medium = Medium, section = coorSecGen(1, numberOfVolumes)) annotation(
     Placement(visible = true, transformation(origin = {-5.32907e-15, 5.32907e-15}, extent = {{-40, -40}, {40, 40}}, rotation = 0)));
 equation
   h[1, 1] = inStream(waterIn.h_outflow);

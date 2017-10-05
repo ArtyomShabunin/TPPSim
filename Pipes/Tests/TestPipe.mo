@@ -1,13 +1,13 @@
 ﻿within TPPSim.Pipes.Tests;
 model TestPipe
   package Medium = Modelica.Media.Water.StandardWater;
-  Modelica.Fluid.Sources.MassFlowSource_h Source(redeclare package Medium = Medium, h = 3.4e6, m_flow = 360, nPorts = 1)  annotation(
+  Modelica.Fluid.Sources.MassFlowSource_h Source(redeclare package Medium = Medium, h = 251e3, m_flow = 360, nPorts = 1)  annotation(
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary Sink(redeclare package Medium = Medium, T = 500 + 273.15, nPorts = 1, p = 130e5, use_T = true, use_p = true)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary Sink(redeclare package Medium = Medium, T = 500 + 273.15, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true)  annotation(
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe Pipe(energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial,momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, numberOfVolumes = 2)  annotation(
+  TPPSim.Pipes.ComplexPipe Pipe(redeclare TPPSim.Pipes.ElementaryPipe Pipe, Lpiezo = -10, energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial,momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, numberOfVolumes = 2)  annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   connect(Pipe.waterOut, Sink.ports[1]) annotation(

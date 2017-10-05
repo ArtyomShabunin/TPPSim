@@ -11,6 +11,7 @@ partial model BaseElementaryPipe
   outer parameter Modelica.SIunits.Length ke "Абсолютная эквивалентная шероховатость";
   //Расчетные конструктивные параметры
   final outer parameter Modelica.SIunits.Length deltaLpipe;
+  final outer parameter Modelica.SIunits.Length deltaLpiezo;
   final outer parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
   final outer parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
   final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
