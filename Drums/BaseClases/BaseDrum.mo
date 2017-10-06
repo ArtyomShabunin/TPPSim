@@ -113,7 +113,7 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Modelica.SIunits.Length Hw(start = Hw_start, fixed = false, max = Din, min = 0) "Уровень воды в барабане";
   Modelica.SIunits.Volume Vw(start = Vw_start, nominal = Vw_start, min = 0, max = drumWaterVolume(Din / 2, L, Din)) "Объем водяной части барабана";
   Medium.MassFlowRate D_downStr "Расход воды в опускные трубы циркуляционных контуров";
-  Medium.MassFlowRate D_upStr(min = 10, max = 500) "Расход пароводяной среды в подъемных трубах циркуляционных контуров";
+  Medium.MassFlowRate D_upStr(min = 0, max = 500) "Расход пароводяной среды в подъемных трубах циркуляционных контуров";
   Medium.AbsolutePressure ps(start = ps_start) "Давление насыщения в барабане";
   Medium.SpecificEnthalpy h_dew "Энтальпия пара на линии насыщения при давлении в барабане";
   Medium.SpecificEnthalpy h_bubble "Энтальпия воды на линии насыщения при давлении в барабане";

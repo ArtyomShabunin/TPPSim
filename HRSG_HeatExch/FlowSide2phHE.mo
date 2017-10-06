@@ -55,13 +55,13 @@ equation
   stateFlow.p = p_gl[section[1], section[2]];
   lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
   Xi_flow = lambda_tr * deltaLpipe / Din;
-  dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2 / Modelica.Constants.g_n;
+  dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
   if flowMomentumDynamics == Types.Dynamics.SteadyState then
-    p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric;
+    p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez;
   else
-    p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + der(D_flow_v) * deltaLpipe / f_flow;
+    p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
-  dp_piez = 0 "Расчет перепада давления из-за изменения пьезометрической высоты";
+  dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты";
 initial equation
 
   if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then

@@ -40,7 +40,7 @@ equation
   Xi_flow = lambda_tr * deltaLpipe / Din;
   dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
   if momentumDynamics == Types.Dynamics.SteadyState then
-    p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric;     
+    p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez;     
   else
     p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
@@ -58,6 +58,8 @@ initial equation
   end if;
   if momentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
+  elseif momentumDynamics == Types.Dynamics.FixedInitial then
+    D_flow_v = 0;
   end if; 
   der(t_m) = 0;  
   annotation(
