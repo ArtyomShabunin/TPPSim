@@ -46,7 +46,7 @@ partial model BaseFlowSideHE
   outer Modelica.Fluid.System system;
   Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
     Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  replaceable TPPSim.thermal.alfa20000 alpha;
+  replaceable TPPSim.thermal.alfaForEVO alpha;
   annotation(
     Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
     Diagram(graphics),
