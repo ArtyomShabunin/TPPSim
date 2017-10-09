@@ -55,19 +55,21 @@ equation
     h_gl[i, 1] = inStream(flowIn[i].h_outflow);
     h_gl[i, 1] = flowIn[i].h_outflow;
 
-//    if noEvent(D_gl[i, 1] < 0.01 or p_gl[i, 1] > flowIn[i].p) then
-      D_gl[i, 1] = 10;
-      flowIn[i].m_flow = 10;
+//    if noEvent(initial() or D_gl[i, 1] < 0.1 or p_gl[i, 1] > flowIn[i].p) then
+//      D_gl[i, 1] = 0.1;
+//      flowIn[i].m_flow = 0.1;
 //    else
 //      D_gl[i, 1] = flowIn[i].m_flow;     
 //      p_gl[i, 1] = flowIn[i].p;
 //    end if;
 
+      D_gl[i, 1] = 0.1 * max(flowIn[i].p - p_gl[i, 1], 0);
+      flowIn[i].m_flow = D_gl[i, 1];
 
     h_gl[i, numberOfTubeSections + 1] = flowOut[i].h_outflow;
 
     
-    D_gl[i, numberOfTubeSections + 1] = flowOut[i].m_flow;
+    D_gl[i, numberOfTubeSections + 1] = -flowOut[i].m_flow;
     p_gl[i, numberOfTubeSections + 1] = flowOut[i].p;
     
    
