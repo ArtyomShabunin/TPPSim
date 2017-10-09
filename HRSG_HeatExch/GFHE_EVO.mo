@@ -55,10 +55,13 @@ equation
     h_gl[i, 1] = inStream(flowIn[i].h_outflow);
     h_gl[i, 1] = flowIn[i].h_outflow;
 
-  
-    D_gl[i, 1] = flowIn[i].m_flow;
-    p_gl[i, 1] = flowIn[i].p;
-
+//    if noEvent(D_gl[i, 1] < 0.01 or p_gl[i, 1] > flowIn[i].p) then
+      D_gl[i, 1] = 10;
+      flowIn[i].m_flow = 10;
+//    else
+//      D_gl[i, 1] = flowIn[i].m_flow;     
+//      p_gl[i, 1] = flowIn[i].p;
+//    end if;
 
 
     h_gl[i, numberOfTubeSections + 1] = flowOut[i].h_outflow;
