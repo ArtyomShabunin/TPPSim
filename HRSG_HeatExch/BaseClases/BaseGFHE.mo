@@ -72,15 +72,7 @@ partial model BaseGFHE
   inner parameter Modelica.SIunits.Temperature T_gas_start = system.T_start "Начальная температура газов" annotation(Dialog(tab = "Initialization"));  
   inner parameter Modelica.SIunits.AbsolutePressure p_gas_start = system.p_start "Начальное давление газов" annotation(Dialog(tab = "Initialization"));    
   //Интерфейс
-  outer Modelica.Fluid.System system;
-  inner Modelica.Fluid.Interfaces.FluidPort_b gasOut(redeclare package Medium = Medium_G) annotation(
-    Placement(visible = true, transformation(origin = {50, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-50, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  inner Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
-    Placement(visible = true, transformation(origin = {-50, -50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {50, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  inner Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {50, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {40, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  inner Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {-50, 50}, extent = {{-25, -25}, {25, 25}}, rotation = 0), iconTransformation(origin = {-40, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
+  outer Modelica.Fluid.System system;  
   annotation(
     Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),

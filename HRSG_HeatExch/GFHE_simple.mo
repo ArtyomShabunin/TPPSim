@@ -1,6 +1,7 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model GFHE_simple
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
+  extends TPPSim.HRSG_HeatExch.BaseClases.GFHE_interface;  
   import TPPSim.functions.coorSecGen;
   //Параметры разбиения
   parameter Integer numberOfVolumes "Число участков разбиения" annotation(
