@@ -1,7 +1,9 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model GFHE_EVO
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
-  import TPPSim.functions.coorSecGen;
+  import TPPSim.functions.coorSecGen;  
+  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
+  replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Параметры циркуляции
   parameter Modelica.SIunits.MassFlowRate[numberOfFlueSections] flow_circ "Номинальный расход через каждый из рядов труб" annotation(
     Dialog(group = "Параметры циркуляции"));
@@ -54,11 +56,13 @@ equation
     h_gl[i, 1] = inStream(flowIn[i].h_outflow);
     h_gl[i, 1] = flowIn[i].h_outflow;
     D_gl[i, 1] = flowIn[i].m_flow;
-    if initial() then
-      D_gl[i, 1] = start_flow_circ;
-    else    
-      D_gl[i, 1] = max(flow_circ[i] * sqrt(max(flowIn[i].p - p_gl[i, 1], 0) / dp_circ[i]), start_flow_circ);
-    end if;
+//    if initial() then
+//      D_gl[i, 1] = start_flow_circ;
+//    else
+    when flowIn[i].p - p_gl[i, 1] > dp_circ[i]*(start_flow_circ / flow_circ[i])^2  then 
+      D_gl[i, 1] = flow_circ[i] * sqrt((flowIn[i].p - p_gl[i, 1]) / dp_circ[i]);
+    end when;
+//    end if;
 //    p_gl[i, 1] = flowIn[i].p;   
     h_gl[i, numberOfTubeSections + 1] = flowOut[i].h_outflow;    
     D_gl[i, numberOfTubeSections + 1] = -flowOut[i].m_flow;
@@ -74,6 +78,10 @@ equation
   gasIn.h_outflow = inStream(gasOut.h_outflow);
   gasIn.Xi_outflow = inStream(gasOut.Xi_outflow);
   inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
+initial equation
+  for i in 1:numberOfFlueSections loop  
+    D_gl[i, 1] = start_flow_circ;  
+  end for;
   annotation(
     Documentation(info = "<HTML>Модель испарителя</html>"),
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),

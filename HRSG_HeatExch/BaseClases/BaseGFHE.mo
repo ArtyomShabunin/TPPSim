@@ -2,8 +2,6 @@
 partial model BaseGFHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconHE;
   import Modelica.Fluid.Types;
-  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-  replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Геометрия пучка
   parameter TPPSim.Choices.HRSG_type HRSG_type_set = Choices.HRSG_type.horizontalBottom "Геометрия пучка (горизонтальный/вертикальный)" annotation(
     Dialog(group = "Геометрия пучка"));
