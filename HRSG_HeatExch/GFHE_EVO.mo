@@ -2,8 +2,15 @@
 model GFHE_EVO
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
   import TPPSim.functions.coorSecGen;
+  //Параметры циркуляции
+  parameter Modelica.SIunits.MassFlowRate[numberOfFlueSections] flow_circ "Номинальный расход через каждый из рядов труб" annotation(
+    Dialog(group = "Параметры циркуляции"));
+  parameter Modelica.SIunits.MassFlowRate start_flow_circ = 1 "Начальное значение расходя через ряд труб испарителя" annotation(
+    Dialog(group = "Параметры циркуляции"));    
+  parameter Modelica.SIunits.AbsolutePressure[numberOfFlueSections] dp_circ "Номинальный перепад давления на подводящем трубопроводе ряда труб" annotation(
+    Dialog(group = "Параметры циркуляции"));
   //Параметры разбиения
-  inner parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
+  inner parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы"  annotation(
     Dialog(group = "Параметры разбиения"));
   final inner parameter Integer numberOfFlueSections = z2 "Число участков разбиения газохода" annotation(
     Dialog(group = "Параметры разбиения"));    
@@ -29,11 +36,6 @@ model GFHE_EVO
     Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
   replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, section = section_set, deltaHpipe = TPPSim.functions.hSecGen(numberOfTubeSections, numberOfFlueSections, HRSG_type_set, zahod, Lpipe)) annotation(
     Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-//  replaceable TPPSim.HRSG_HeatExch.Splitter collFlow(redeclare package Medium = Medium_F, zahod = zahod) annotation(
-//    Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-//  TPPSim.HRSG_HeatExch.Mixer collFlowOut(redeclare package Medium = Medium_F, zahod = zahod, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections) annotation(
-//    Placement(visible = true, transformation(origin = {30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-
   TPPSim.HRSG_HeatExch.GasSplitter collGas(redeclare package Medium = Medium_G, numberOfTubeSections = numberOfTubeSections) annotation(
     Placement(visible = true, transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GasMixer collGasOut(redeclare package Medium = Medium_G, numberOfTubeSections = numberOfTubeSections, numberOfFlueSections = numberOfFlueSections) annotation(
@@ -48,31 +50,19 @@ model GFHE_EVO
   Modelica.Fluid.Interfaces.FluidPorts_b[numberOfFlueSections] flowOut(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {50, 34}, extent = {{-10, -40}, {10, 40}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -40}, {10, 40}}, rotation = 90)));
 equation
-//Гибы
-  for i in 1:numberOfFlueSections loop
-  
-    
+  for i in 1:numberOfFlueSections loop    
     h_gl[i, 1] = inStream(flowIn[i].h_outflow);
     h_gl[i, 1] = flowIn[i].h_outflow;
-
-//    if noEvent(initial() or D_gl[i, 1] < 0.1 or p_gl[i, 1] > flowIn[i].p) then
-//      D_gl[i, 1] = 0.1;
-//      flowIn[i].m_flow = 0.1;
-//    else
-//      D_gl[i, 1] = flowIn[i].m_flow;     
-//      p_gl[i, 1] = flowIn[i].p;
-//    end if;
-
-      D_gl[i, 1] = 0.1 * max(flowIn[i].p - p_gl[i, 1], 0);
-      flowIn[i].m_flow = D_gl[i, 1];
-
-    h_gl[i, numberOfTubeSections + 1] = flowOut[i].h_outflow;
-
-    
+    D_gl[i, 1] = flowIn[i].m_flow;
+    if initial() then
+      D_gl[i, 1] = start_flow_circ;
+    else    
+      D_gl[i, 1] = max(flow_circ[i] * sqrt(max(flowIn[i].p - p_gl[i, 1], 0) / dp_circ[i]), start_flow_circ);
+    end if;
+//    p_gl[i, 1] = flowIn[i].p;   
+    h_gl[i, numberOfTubeSections + 1] = flowOut[i].h_outflow;    
     D_gl[i, numberOfTubeSections + 1] = -flowOut[i].m_flow;
-    p_gl[i, numberOfTubeSections + 1] = flowOut[i].p;
-    
-   
+    p_gl[i, numberOfTubeSections + 1] = flowOut[i].p;   
   end for;
 //Тепловые потоки
   for i in 1:numberOfFlueSections loop
@@ -81,15 +71,11 @@ equation
     end for;
   end for;
 //Граничные условия
-
-
-
-
   gasIn.h_outflow = inStream(gasOut.h_outflow);
   gasIn.Xi_outflow = inStream(gasOut.Xi_outflow);
   inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
   annotation(
-    Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+    Documentation(info = "<HTML>Модель испарителя</html>"),
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
     version = "",
     uses);

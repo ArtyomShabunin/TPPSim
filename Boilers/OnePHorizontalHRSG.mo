@@ -13,7 +13,7 @@ model OnePHorizontalHRSG
     Placement(visible = true, transformation(origin = {-18, 24}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   TPPSim.Drums.Drum drum(Din = 1.718, Hw_start = 0.5, L = 9, delta = 0.02) annotation(
     Placement(visible = true, transformation(origin = {22, 24}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.HRSG_HeatExch.GFHE_EVO EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, delta = 0.002, delta_fin = 0.0008, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, z1 = 58, z2 = 6, zahod = 6) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_EVO EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, delta = 0.002, delta_fin = 0.0008, dp_circ = fill(1, 6), flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flow_circ = fill(15, 6), gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, z1 = 58, z2 = 6, zahod = 6) annotation(
     Placement(visible = true, transformation(origin = {-18, -22}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   //  TPPSim.Pumps.simplePump circPump(redeclare package Medium = Medium_F, setD_flow = 50) annotation(
   //    Placement(visible = true, transformation(origin = {5, -13}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -35,17 +35,22 @@ model OnePHorizontalHRSG
   TPPSim.Pipes.ComplexPipe downPipe(redeclare TPPSim.Pipes.ElementaryPipe Pipe, Din = 0.5, Lpiezo = -18.492, Lpipe = 18.492, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {16, 0}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
 equation
-
+  connect(FWCV.flowIn, ECO.flowOut) annotation(
+    Line(points = {{-4, 31}, {-4, 22}, {-6, 22}, {-6, 20}, {-8, 20}}, color = {0, 127, 255}));
+  connect(ECO.gasOut, gasSink.ports[1]) annotation(
+    Line(points = {{-18, 29}, {-18, 58}}, color = {0, 127, 255}));
+  connect(FW_In, ECO.flowIn) annotation(
+    Line(points = {{-100, 46}, {-8, 46}, {-8, 28}}));
+  connect(EVO.gasOut, ECO.gasIn) annotation(
+    Line(points = {{-18, -17}, {-18, 19}}, color = {0, 127, 255}));
   for i in 1:6 loop
     connect(downPipe.waterOut, EVO.flowIn[i]) annotation(
-    Line(points = {{0, -12}, {0, -12}, {0, 2}, {-62, 2}, {-62, -24}, {-28, -24}, {-28, -22}}, color = {0, 127, 255}));
+      Line(points = {{0, -12}, {0, -12}, {0, 2}, {-62, 2}, {-62, -24}, {-28, -24}, {-28, -22}}, color = {0, 127, 255}));
     connect(EVO.flowOut[i], drum.upStr) annotation(
-    Line(points = {{-8, -22}, {28, -22}, {28, 16}, {30, 16}}, color = {0, 127, 255}, thickness = 0.5));
+      Line(points = {{-8, -22}, {28, -22}, {28, 16}, {30, 16}}, color = {0, 127, 255}, thickness = 0.5));
   end for;
   connect(drum.downStr, downPipe.waterIn) annotation(
     Line(points = {{16, 16}, {16, 5}}, color = {0, 127, 255}));
-  connect(EVO.gasOut, ECO.gasIn) annotation(
-    Line(points = {{-18, -17}, {-18, 19}}, color = {0, 127, 255}));
   connect(EVO.gasIn, SH.gasOut) annotation(
     Line(points = {{-18, -27}, {-18, -59}}, color = {0, 127, 255}));
   connect(pipe.waterOut, SH.flowIn) annotation(
@@ -56,12 +61,6 @@ equation
     Line(points = {{-8, -68}, {51, -68}, {51, -52}, {100, -52}}, color = {0, 127, 255}));
   connect(SH.gasIn, gasIn) annotation(
     Line(points = {{-18, -69}, {-18, -22}}, color = {0, 127, 255}));
-  connect(FW_In, ECO.flowIn) annotation(
-    Line(points = {{-100, 46}, {-8, 46}, {-8, 28}, {-8, 28}}));
-  connect(ECO.gasOut, gasSink.ports[1]) annotation(
-    Line(points = {{-18, 30}, {-18, 30}, {-18, 58}, {-18, 58}}, color = {0, 127, 255}));
-  connect(FWCV.flowIn, ECO.flowOut) annotation(
-    Line(points = {{-4, 31}, {-4, 22}, {-6, 22}, {-6, 20}, {-8, 20}}, color = {0, 127, 255}));
   connect(FWCV.flowOut, drum.fedWater) annotation(
     Line(points = {{6, 31}, {8, 31}, {8, 33}, {10, 33}, {10, 36}, {14, 36}, {14, 34}, {16, 34}}, color = {0, 127, 255}));
   connect(LC.y, FWCV.D_flow_in) annotation(

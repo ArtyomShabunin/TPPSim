@@ -5,8 +5,9 @@ function hSecGen
   input TPPSim.Choices.HRSG_type HRSG_type_set "Геометрия пучка (горизонтальный/вертикальный)";
   input Integer zahod "Заходность труб теплообменника";
   input Modelica.SIunits.Length Lpipe "Длина теплообменной трубки";  
-  Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)"; 
   output Modelica.SIunits.Length deltaHpipe[numberOfFlueSections, numberOfTubeSections] "Разность высот на участке ряда труб";
+protected
+  Real hod[numberOfFlueSections] "Четность или не четность текущего хода теплообменника (минус 1 - нечетный, плюс 1 - четный)"; 
 algorithm
   for i in 1:numberOfFlueSections loop
     hod[i] := (-1) ^ (i / zahod + (if mod(i, zahod) == 0 then 0 else 1 - mod(i, zahod) / zahod)) "Расчет четный или нечетный текущий ход повехности нагева(минус 1 - нечетный, плюс 1 - четный)";
@@ -17,9 +18,9 @@ algorithm
     for i in 1:numberOfFlueSections loop
       for j in 1:numberOfTubeSections loop
         if HRSG_type_set == TPPSim.Choices.HRSG_type.horizontalBottom then
-          deltaHpipe[i, j] := (-1) * hod[i * (j - 1) + j] * Lpipe / numberOfTubeSections "Разность высотных отметок труб для горизонтального КУ с нижним входным коллектором";
+          deltaHpipe[i, j] := (-1) * hod[i] * Lpipe / numberOfTubeSections "Разность высотных отметок труб для горизонтального КУ с нижним входным коллектором";
         elseif HRSG_type_set == TPPSim.Choices.HRSG_type.horizontalTop then
-          deltaHpipe[i, j] := hod[i * (j - 1) + j] * Lpipe / numberOfTubeSections "Разность высотных отметок труб для горизонтального КУ с верхним входным коллектором";
+          deltaHpipe[i, j] := hod[i] * Lpipe / numberOfTubeSections "Разность высотных отметок труб для горизонтального КУ с верхним входным коллектором";
         end if;
       end for;
     end for;
