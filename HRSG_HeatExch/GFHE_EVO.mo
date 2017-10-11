@@ -5,11 +5,13 @@ model GFHE_EVO
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Параметры циркуляции
-  parameter Modelica.SIunits.MassFlowRate[numberOfFlueSections] flow_circ "Номинальный расход через каждый из рядов труб" annotation(
+  parameter TPPSim.Choices.circ_type circ_type_set = TPPSim.Choices.circ_type.forced "Тип механизма циркуляции в испарителе" annotation(
+    Dialog(group = "Параметры циркуляции"));  
+  parameter Modelica.SIunits.MassFlowRate[numberOfFlueSections] flow_circ "Номинальный расход через каждый из рядов труб (массив из z2 элементов)" annotation(
     Dialog(group = "Параметры циркуляции"));
   parameter Modelica.SIunits.MassFlowRate start_flow_circ = 1 "Начальное значение расходя через ряд труб испарителя" annotation(
     Dialog(group = "Параметры циркуляции"));    
-  parameter Modelica.SIunits.AbsolutePressure[numberOfFlueSections] dp_circ "Номинальный перепад давления на подводящем трубопроводе ряда труб" annotation(
+  parameter Modelica.SIunits.AbsolutePressure[numberOfFlueSections] dp_circ "Номинальный перепад давления на подводящем трубопроводе ряда труб (массив из z2 элементов)" annotation(
     Dialog(group = "Параметры циркуляции"));
   //Параметры разбиения
   inner parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы"  annotation(
@@ -51,10 +53,10 @@ model GFHE_EVO
     Placement(visible = true, transformation(origin = {-50, 32}, extent = {{-10, -40}, {10, 40}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -40}, {10, 40}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPorts_b[numberOfFlueSections] flowOut(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {50, 34}, extent = {{-10, -40}, {10, 40}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -40}, {10, 40}}, rotation = 90)));
-  Boolean forced_circ[numberOfFlueSections](start = fill(true,numberOfFlueSections), fixed = true);
+  final Boolean forced_circ[numberOfFlueSections](start = fill(true,numberOfFlueSections), fixed = true);
 algorithm
   for i in 1:numberOfFlueSections loop
-    when flowIn[i].p - p_gl[i, 1] > dp_circ[i]*(start_flow_circ / flow_circ[i])^2  then 
+    when flowIn[i].p - p_gl[i, 1] > dp_circ[i]*(start_flow_circ / flow_circ[i])^2 and circ_type_set == TPPSim.Choices.circ_type.natural then 
       forced_circ[i] := false;
     end when;
   end for;
@@ -63,18 +65,17 @@ equation
     h_gl[i, 1] = inStream(flowIn[i].h_outflow);
     h_gl[i, 1] = flowIn[i].h_outflow;
     D_gl[i, 1] = flowIn[i].m_flow;
-//    if initial() then
-//      D_gl[i, 1] = start_flow_circ;
-//    else
-    if initial() then
-      D_gl[i, 1] = start_flow_circ;
-    elseif noEvent(forced_circ[i]) then
-      D_gl[i, 1] = start_flow_circ;     
-    else    
-      D_gl[i, 1] = flow_circ[i] * sign(flowIn[i].p - p_gl[i, 1]) * sqrt(abs(flowIn[i].p - p_gl[i, 1]) / dp_circ[i]);
-    end if;
-//    end if;
-//    p_gl[i, 1] = flowIn[i].p;   
+    if circ_type_set == TPPSim.Choices.circ_type.natural then
+      if initial() then
+        D_gl[i, 1] = start_flow_circ;
+      elseif noEvent(forced_circ[i]) then
+        D_gl[i, 1] = start_flow_circ;     
+      else    
+        D_gl[i, 1] = flow_circ[i] * sign(flowIn[i].p - p_gl[i, 1]) * sqrt(abs(flowIn[i].p - p_gl[i, 1]) / dp_circ[i]);
+      end if;
+    else
+      D_gl[i, 1] = flow_circ[i];
+    end if;  
     h_gl[i, numberOfTubeSections + 1] = flowOut[i].h_outflow;    
     D_gl[i, numberOfTubeSections + 1] = -flowOut[i].m_flow;
     p_gl[i, numberOfTubeSections + 1] = flowOut[i].p;   
