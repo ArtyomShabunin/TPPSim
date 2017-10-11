@@ -10,10 +10,10 @@ model ComplexPipe
   //Расчетные конструктивные параметры
   final inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfVolumes;
   final inner parameter Modelica.SIunits.Length deltaLpiezo = Lpiezo / numberOfVolumes;
-  final inner parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * Modelica.Constants.pi * Din "Внутренняя площадь одного участка ряда труб";
-  final inner parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * Modelica.Constants.pi * Din ^ 2 / 4 "Внутренний объем одного участка ряда труб";
-  final inner parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 "Масса металла участка ряда труб";
-  final inner parameter Modelica.SIunits.Area f_flow = Modelica.Constants.pi * Din ^ 2 / 4 "Площадь для прохода теплоносителя";
+  final inner parameter Modelica.SIunits.Area deltaSFlow = n_parallel * deltaLpipe * Modelica.Constants.pi * Din "Внутренняя площадь одного участка ряда труб";
+  final inner parameter Modelica.SIunits.Volume deltaVFlow = n_parallel * deltaLpipe * Modelica.Constants.pi * Din ^ 2 / 4 "Внутренний объем одного участка ряда труб";
+  final inner parameter Modelica.SIunits.Mass deltaMMetal = n_parallel * rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 "Масса металла участка ряда труб";
+  final inner parameter Modelica.SIunits.Area f_flow = n_parallel * Modelica.Constants.pi * Din ^ 2 / 4 "Площадь для прохода теплоносителя";
   //Переменные
   inner Medium.SpecificEnthalpy h[1, numberOfVolumes + 1] "Энтальпия вода/пар (глобальная переменная)";
   inner Medium.MassFlowRate D[1, numberOfVolumes + 1] "Массовый расход вода/пар (глобальная переменная)";
