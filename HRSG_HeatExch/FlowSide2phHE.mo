@@ -7,20 +7,11 @@ model FlowSide2phHE
   Modelica.SIunits.DerDensityByPressure drdp;
   Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
   Real x_v "Степень сухости";
-  inner Real x_eco "Доля экономайзерного участка";
   inner Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
   Real C1 "Показатель в числителе уравнения сплошности";
   Real C2 "Показатель в знаменателе уравнения сплошности";
-algorithm
-  if noEvent(h_gl[section[1], section[2] + 1] < hl) then
-    x_eco := 1; 
-  elseif noEvent(h_gl[section[1], section[2]] > hl) then
-    x_eco := 0;  
-  else
-    x_eco := (hl - h_gl[section[1], section[2]]) / (h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]]);
-  end if;
 equation
   if flowEnergyDynamics == Types.Dynamics.SteadyState then
     0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]);

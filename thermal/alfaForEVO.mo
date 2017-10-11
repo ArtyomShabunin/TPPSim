@@ -7,7 +7,7 @@ model alfaForEVO
  
   outer Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
  
-  outer Medium.MassFlowRate D_flow_v; 
+  outer Medium.MassFlowRate D_gl "Массовый расход (глобальная переменная)";
   outer Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
   Medium.DynamicViscosity mu;
   Modelica.SIunits.Velocity w;
@@ -26,13 +26,13 @@ algorithm
   mu := Modelica.Media.Water.IF97_Utilities.BaseIF97.Transport.visc_dTp(rho, stateFlow.T, stateFlow.p);
   cp := Modelica.Media.Water.IF97_Utilities.cp_ph(stateFlow.p, min(stateFlow.h, hl));  
   Pr := mu * cp / k;
-  w := max(D_flow_v, 0) / rho / f_flow;
+  w := max(D_gl[section[1], section[2]], 0) / rho / f_flow;
   Re := w * Din * rho / mu;
   alfa_eco := max(0.023 * k / Din * Re ^ 0.8 * Pr ^ 0.4, 0.1);
 
   if noEvent(h_gl[section[1], section[2] + 1] < hl) then
     alfa_flow := alfa_eco; 
-  elseif noEvent(h_gl[section[1], section[2]] > hl) then
+  elseif noEvent(h_gl[section[1], section[2]] >= hl) then
     alfa_flow := 20000;  
   else
     alfa_flow := 
