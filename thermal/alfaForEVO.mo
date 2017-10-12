@@ -26,7 +26,7 @@ algorithm
   mu := Modelica.Media.Water.IF97_Utilities.BaseIF97.Transport.visc_dTp(rho, stateFlow.T, stateFlow.p);
   cp := Modelica.Media.Water.IF97_Utilities.cp_ph(stateFlow.p, min(stateFlow.h, hl));  
   Pr := mu * cp / k;
-  w := max(D_gl[section[1], section[2]], 0) / rho / f_flow;
+  w := abs(D_gl[section[1], section[2]]) / rho / f_flow;
   Re := w * Din * rho / mu;
   alfa_eco := max(0.023 * k / Din * Re ^ 0.8 * Pr ^ 0.4, 0.1);
 
@@ -39,13 +39,4 @@ algorithm
     ((hl - h_gl[section[1], section[2]]) * alfa_eco +
     (h_gl[section[1], section[2] + 1] - hl) * 20000) / (h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]]);
   end if;
-  
-
-
-  /*if noEvent(h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]] > 10) then
-    alfa_flow = min(max(1, (hl - h_gl[section[1], section[2]])/(h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]])), 0) * alfa_eco +
-                 min(max(1, (h_gl[section[1], section[2] + 1] - hl)/(h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]])), 0) * 20000;
-  else
-    alfa_flow = alfa_eco;
-  end if;*/
 end alfaForEVO;
