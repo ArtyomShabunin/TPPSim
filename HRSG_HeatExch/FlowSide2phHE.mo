@@ -9,7 +9,7 @@ model FlowSide2phHE
   Real x_v "Степень сухости";
   inner Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
-  Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
+  Real dp_piez(start = 10000 * deltaHpipe) "Перепад давления из-за изменения пьезометрической высоты";
   Real C1 "Показатель в числителе уравнения сплошности";
   Real C2 "Показатель в знаменателе уравнения сплошности";
 equation
@@ -61,7 +61,7 @@ equation
   else
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
-  dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты"; 
+  dp_piez = 1000 * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты"; 
 initial equation
 
   if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then

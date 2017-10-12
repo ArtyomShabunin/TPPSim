@@ -19,7 +19,7 @@ partial model BaseFlowSideHE
   final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
   final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
   parameter Integer[2] section "Координаты участка";
-  parameter Modelica.SIunits.Length deltaHpipe "Разность высот на участке ряда труб";
+  parameter Modelica.SIunits.Length deltaHpipe = 0 "Разность высот на участке ряда труб";
   //Параметры уравнений динамики
   outer parameter Types.Dynamics flowEnergyDynamics "Параметры уравнения сохранения энергии вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   outer parameter Types.Dynamics flowMassDynamics "Параметры уравнения сохранения массы вода/пар" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
