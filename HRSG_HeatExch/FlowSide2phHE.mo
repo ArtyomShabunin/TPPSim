@@ -8,7 +8,7 @@ model FlowSide2phHE
   Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";
   Real x_v "Степень сухости";
   inner Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
-  Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+  inner Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
   Real dp_piez(start = 10000 * deltaHpipe) "Перепад давления из-за изменения пьезометрической высоты";
   Real C1 "Показатель в числителе уравнения сплошности";
   Real C2 "Показатель в знаменателе уравнения сплошности";
