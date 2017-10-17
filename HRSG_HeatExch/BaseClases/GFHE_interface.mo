@@ -16,6 +16,6 @@ partial model GFHE_interface
     version = "",
     uses,
     Icon(coordinateSystem(extent = {{-50, -100}, {50, 100}})),
-    Diagram(coordinateSystem(extent = {{-50, -100}, {50, 100}})),
+    Diagram(coordinateSystem(extent = {{-50, -150}, {50, 150}})),
     __OpenModelica_commandLineOptions = "");
 end GFHE_interface;
