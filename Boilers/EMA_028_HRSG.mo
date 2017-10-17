@@ -62,6 +62,8 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-46, -10}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   TPPSim.Pipes.ComplexPipe IP_pipe(Din = 0.15, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 4, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {48, -10}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
+  TPPSim.Pipes.ComplexPipe IP_pipe_2(Din = 0.25, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+    Placement(visible = true, transformation(origin = {40, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 90)));
   TPPSim.Pipes.ComplexPipe LP_pipe(Din = 0.2, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 4, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {114, -10}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   //Регуляторы уровня
@@ -80,9 +82,14 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {161, -7}, extent = {{5, -5}, {-5, 5}}, rotation = -90)));
   //Клапан на продувке СД
   Modelica.Fluid.Valves.ValveCompressible vent_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.98e+06, m_flow_nominal = 17.83, p_nominal = 29.8e+05, rho_nominal = 11.44) annotation(
-    Placement(visible = true, transformation(origin = {40, 34}, extent = {{4, 4}, {-4, -4}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {40, 52}, extent = {{4, 4}, {-4, -4}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant vent_const(k = 1)  annotation(
-    Placement(visible = true, transformation(origin = {14, 34}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {14, 52}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  //Обратный клапан на паропроводе СД
+  Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, checkValve = true, dp_nominal = 0.5e5, m_flow_nominal = 17.83, p_nominal = 71e5, rho_nominal = 11.44) annotation(
+    Placement(visible = true, transformation(origin = {-20, 42}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant checkValve_const(k = 0)  annotation(
+    Placement(visible = true, transformation(origin = {-34, 54}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {190, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));    
@@ -108,6 +115,20 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Fluid.Interfaces.FluidPort_a IP_FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {200, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {72, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(checkValve_const.y, checkValve.opening) annotation(
+    Line(points = {{-28, 54}, {-20, 54}, {-20, 46}, {-20, 46}}, color = {0, 0, 127}));
+  connect(checkValve.port_b, RH_1.flowIn) annotation(
+    Line(points = {{-24, 42}, {-66, 42}, {-66, -20}, {-66, -20}}, color = {0, 127, 255}));
+  connect(IP_pipe_2.waterOut, checkValve.port_a) annotation(
+    Line(points = {{40, 0}, {28, 0}, {28, 42}, {-16, 42}, {-16, 42}}, color = {0, 127, 255}));
+  connect(IP_pipe_2.waterOut, vent_CV.port_a) annotation(
+    Line(points = {{40, 0}, {40, 0}, {40, 48}, {40, 48}}, color = {0, 127, 255}));
+  connect(IP_SH_1.flowOut, IP_pipe_2.waterIn) annotation(
+    Line(points = {{40, -20}, {40, -20}, {40, -8}, {40, -8}}, color = {0, 127, 255}));
+  connect(vent_const.y, vent_CV.opening) annotation(
+    Line(points = {{20.6, 52}, {36.6, 52}, {36.6, 52}, {36.6, 52}}, color = {0, 0, 127}));
+  connect(vent_CV.port_b, vent.ports[1]) annotation(
+    Line(points = {{40, 56}, {40, 62}, {30, 62}, {30, 80}}, color = {0, 127, 255}));
   connect(HP_FW_In, HP_ECO_2.flowIn) annotation(
     Line(points = {{200, -94}, {26, -94}, {26, -14}, {14, -14}, {14, -20}, {14, -20}}));
   connect(IP_FW_In, IP_FWCV.flowIn) annotation(
@@ -118,12 +139,6 @@ equation
     Line(points = {{80, 18}, {96, 18}, {96, -8}, {90, -8}, {90, -8}}, color = {0, 0, 127}));
   connect(IP_drum.waterLevel, IP_LC.u) annotation(
     Line(points = {{60, -2}, {50, -2}, {50, 18}, {56, 18}, {56, 18}}, color = {0, 0, 127}));
-  connect(vent_const.y, vent_CV.opening) annotation(
-    Line(points = {{20, 34}, {36, 34}, {36, 34}, {36, 34}}, color = {0, 0, 127}));
-  connect(vent_CV.port_b, vent.ports[1]) annotation(
-    Line(points = {{40, 38}, {40, 38}, {40, 62}, {30, 62}, {30, 80}, {30, 80}}, color = {0, 127, 255}));
-  connect(IP_SH_1.flowOut, vent_CV.port_a) annotation(
-    Line(points = {{40, -20}, {40, -20}, {40, 30}, {40, 30}}, color = {0, 127, 255}));
   connect(IP_pipe.waterOut, IP_SH_1.flowIn) annotation(
     Line(points = {{48, -14}, {48, -14}, {48, -20}, {48, -20}}, color = {0, 127, 255}));
   connect(IP_drum.steam, IP_pipe.waterIn) annotation(
