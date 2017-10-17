@@ -23,7 +23,13 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-10, 36}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible HP_FWP annotation(
     Placement(visible = true, transformation(origin = {17, -29}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
+  TPPSim.Pumps.simplePumpFlexible IP_FWP annotation(
+    Placement(visible = true, transformation(origin = {17, -37}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
 equation
+  connect(IP_FWP.port_b, boiler.IP_FW_In) annotation(
+    Line(points = {{14, -36}, {6, -36}, {6, -22}, {12, -22}, {12, -18}, {12, -18}}, color = {0, 127, 255}));
+  connect(boiler.FW_Out, IP_FWP.port_a) annotation(
+    Line(points = {{18, -18}, {18, -18}, {18, -22}, {24, -22}, {24, -38}, {20, -38}, {20, -36}}, color = {0, 127, 255}));
   connect(condPump.port_b, boiler.cond_In) annotation(
     Line(points = {{54, 24}, {24, 24}, {24, 8}, {26, 8}}, color = {0, 127, 255}));
   connect(HP_CV_const.y, LP_CV.opening) annotation(
