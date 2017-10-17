@@ -27,12 +27,14 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-30, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GFHE_simple RH_1(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 50.8e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalTop, Lpipe = 18.29, delta = 2.667e-3, delta_fin = 0.9906e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 12.7e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 3.123e-3, z1 = 120, z2 = 1, zahod = 1) annotation(
     Placement(visible = true, transformation(origin = {10, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));  
-  //Барабаны
+//Барабаны
   TPPSim.Drums.Drum HP_drum(Din = 1.6, Hw_start = 0.5, L = 14.05, delta = 0.0105) annotation(
     Placement(visible = true, transformation(origin = {50, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
-    Placement(visible = true, transformation(origin = {124, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  //Обратный клапан
+    Placement(visible = true, transformation(origin = {190, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+  //ГПК
+  TPPSim.HRSG_HeatExch.GFHE_simple cond_HE(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, Lpipe = 18.29, delta = 2.108e-3, delta_fin = 0.9906e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 15.88e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 2.728e-3, z1 = 120, z2 = 12, zahod = 1) annotation(
+    Placement(visible = true, transformation(origin = {150, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));  
   //Регуляторы
   TPPSim.Controls.LC HP_LC(DFmax = 95, DFmin = 0, levelSP = 0.5) annotation(
     Placement(visible = true, transformation(origin = {50, 18}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -40,7 +42,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {-100, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-300, -130}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a FW_In(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {134, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {150, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {200, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {150, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b HP_Out(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-164, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true) annotation(
@@ -52,6 +54,14 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Fluid.Interfaces.FluidPort_b RH_Out(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-190, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(cond_HE.gasOut, gasSink.ports[1]) annotation(
+    Line(points = {{156, -30}, {180, -30}, {180, -30}, {180, -30}}, color = {0, 127, 255}));
+  connect(HP_ECO_2.gasOut, cond_HE.gasIn) annotation(
+    Line(points = {{96, -30}, {144, -30}, {144, -30}, {146, -30}}, color = {0, 127, 255}));
+  connect(cond_HE.flowOut, HP_ECO_2.flowIn) annotation(
+    Line(points = {{146, -20}, {146, -20}, {146, -12}, {94, -12}, {94, -20}, {94, -20}}, color = {0, 127, 255}));
+  connect(FW_In, cond_HE.flowIn) annotation(
+    Line(points = {{200, 0}, {154, 0}, {154, -20}, {154, -20}}));
   connect(RH_3.flowOut, RH_Out) annotation(
     Line(points = {{-74, -20}, {-74, -20}, {-74, -8}, {-100, -8}, {-100, -8}}, color = {0, 127, 255}));
   connect(RH_2.flowOut, RH_3.flowIn) annotation(
@@ -84,8 +94,6 @@ equation
     Line(points = {{86, -20}, {86, -19}, {86, -19}, {86, -18}, {88, -18}, {88, -16}, {87, -16}, {87, -13}, {85, -13}, {85, -11.5}, {85, -11.5}, {85, -10.75}, {85, -10.75}, {85, -10}}, color = {0, 127, 255}));
   connect(HP_drum.waterLevel, HP_LC.u) annotation(
     Line(points = {{39, -3}, {35.5, -3}, {35.5, -3}, {32, -3}, {32, -1}, {25, -1}, {25, 19}, {37, 19}, {37, 18}, {37, 18}, {37, 17.5}, {37, 17.5}, {37, 17.25}, {37, 17.25}, {37, 17}}, color = {0, 0, 127}));
-  connect(HP_ECO_2.gasOut, gasSink.ports[1]) annotation(
-    Line(points = {{95, -30}, {114, -30}}, color = {0, 127, 255}));
   connect(HP_drum.steam, HP_pipe.waterIn) annotation(
     Line(points = {{43, -1}, {42, -1}, {42, -1}, {39, -1}, {39, 1}, {33, 1}, {33, -5}, {33, -5}, {33, -7}, {33, -7}}, color = {0, 127, 255}));
   connect(HP_pipe.waterOut, HP_SH_1.flowIn) annotation(
@@ -96,8 +104,6 @@ equation
     Line(points = {{26, -20}, {26, -12}, {-4, -12}, {-4, -16}, {-6, -16}, {-6, -20}}, color = {0, 127, 255}));
   connect(HP_EVO.gasOut, HP_ECO_2.gasIn) annotation(
     Line(points = {{55, -30}, {85, -30}}, color = {0, 127, 255}));
-  connect(HP_ECO_2.flowIn, FW_In) annotation(
-    Line(points = {{94, -20}, {104.5, -20}, {104.5, -20}, {113, -20}, {113, 0}, {123.5, 0}, {123.5, 0}, {134, 0}}, color = {0, 127, 255}));
   connect(HP_SH_2.flowOut, HP_SH_3.flowIn) annotation(
     Line(points = {{-14, -20}, {-14, -12}, {-46, -12}, {-46, -20}}, color = {0, 127, 255}));
   for i in 1:16 loop
@@ -129,6 +135,6 @@ protected
    by Artyom Shabunin:<br></li>
 </ul></body></html>"),
     Icon(coordinateSystem(extent = {{-300, -200}, {300, 200}})),
-    Diagram(coordinateSystem(extent = {{-300, -100}, {300, 100}})),
+    Diagram(coordinateSystem(extent = {{-200, -100}, {200, 100}})),
     __OpenModelica_commandLineOptions = "");
 end EMA_028_HRSG;
