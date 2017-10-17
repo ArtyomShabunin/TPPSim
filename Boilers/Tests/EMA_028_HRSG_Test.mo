@@ -1,6 +1,8 @@
 ﻿within TPPSim.Boilers.Tests;
 
 model EMA_028_HRSG_Test
+  package Medium_F = Modelica.Media.Water.WaterIF97_ph;
+  package Medium_G = TPPSim.Media.ExhaustGas;
   inner Modelica.Fluid.System system(T_start = 60 + 273.15,allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2482.5 / 3.6, Tnom = 569.1 + 273.15, Tstart = system.T_start) annotation(
@@ -26,10 +28,14 @@ model EMA_028_HRSG_Test
   TPPSim.Pumps.simplePumpFlexible IP_FWP annotation(
     Placement(visible = true, transformation(origin = {17, -37}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
 equation
+  connect(HP_FWP.port_b, boiler.HP_FW_In) annotation(
+    Line(points = {{14, -28}, {16, -28}, {16, -18}, {16, -18}}, color = {0, 127, 255}));
   connect(IP_FWP.port_b, boiler.IP_FW_In) annotation(
-    Line(points = {{14, -36}, {6, -36}, {6, -22}, {12, -22}, {12, -18}, {12, -18}}, color = {0, 127, 255}));
+    Line(points = {{14, -36}, {10, -36}, {10, -24}, {18, -24}, {18, -18}, {18, -18}}, color = {0, 127, 255}));
   connect(boiler.FW_Out, IP_FWP.port_a) annotation(
-    Line(points = {{18, -18}, {18, -18}, {18, -22}, {24, -22}, {24, -38}, {20, -38}, {20, -36}}, color = {0, 127, 255}));
+    Line(points = {{20, -18}, {20, -18}, {20, -26}, {24, -26}, {24, -36}, {20, -36}, {20, -36}}, color = {0, 127, 255}));
+  connect(boiler.FW_Out, HP_FWP.port_a) annotation(
+    Line(points = {{20, -18}, {20, -18}, {20, -28}, {20, -28}, {20, -28}}, color = {0, 127, 255}));
   connect(condPump.port_b, boiler.cond_In) annotation(
     Line(points = {{54, 24}, {24, 24}, {24, 8}, {26, 8}}, color = {0, 127, 255}));
   connect(HP_CV_const.y, LP_CV.opening) annotation(
@@ -38,10 +44,6 @@ equation
     Line(points = {{-14, 36}, {-20, 36}, {-20, 46}, {-46, 46}, {-46, 32}, {-60, 32}, {-60, 30}}, color = {0, 127, 255}));
   connect(boiler.LP_Out, LP_CV.port_a) annotation(
     Line(points = {{16, 8}, {14, 8}, {14, 36}, {-6, 36}, {-6, 36}}, color = {0, 127, 255}));
-  connect(HP_FWP.port_b, boiler.FW_In) annotation(
-    Line(points = {{14, -28}, {10, -28}, {10, -24}, {14, -24}, {14, -20}, {16, -20}, {16, -18}}, color = {0, 127, 255}));
-  connect(boiler.FW_Out, HP_FWP.port_a) annotation(
-    Line(points = {{18, -18}, {18, -24}, {22, -24}, {22, -29}, {20, -29}}, color = {0, 127, 255}));
   connect(CV.port_b, flowSink.ports[1]) annotation(
     Line(points = {{-28, 8}, {-48, 8}, {-48, 30}, {-60, 30}, {-60, 30}}, color = {0, 127, 255}));
   connect(boiler.RH_Out, CV.port_a) annotation(

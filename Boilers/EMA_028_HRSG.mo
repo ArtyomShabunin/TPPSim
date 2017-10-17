@@ -28,15 +28,15 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   TPPSim.HRSG_HeatExch.GFHE_simple RH_1(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 50.8e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalTop, Lpipe = 18.29, delta = 2.667e-3, delta_fin = 0.9906e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 12.7e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 3.123e-3, z1 = 120, z2 = 1, zahod = 1) annotation(
     Placement(visible = true, transformation(origin = {-70, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   //Пароперегреватель СД
-  TPPSim.HRSG_HeatExch.GFHE_simple IP_SH_1(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalTop, Lpipe = 18.29, delta = 4.775e-3, delta_fin = 0.9906e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 12.7e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 4.48e-3, z1 = 120, z2 = 6, zahod = 1) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_simple IP_SH_1(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalTop, Lpipe = 18.29, delta = 2.108e-3, delta_fin = 0.9906e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 12.7e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 3.195e-3, z1 = 120, z2 = 2, zahod = 1) annotation(
     Placement(visible = true, transformation(origin = {44, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   //Испаритель СД
-  TPPSim.HRSG_HeatExch.GFHE_EVO IP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.29, circ_type_set = TPPSim.Choices.circ_type.forced, delta = 2.108e-3, delta_fin = 0.9906e-3, dp_circ(displayUnit = "bar") = fill(1e5, 10), flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flow_circ = fill(15, 10), gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 15.88e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 1, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 2.815e-3, start_flow_circ = 1, z1 = 120, z2 = 10, zahod = 10) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_EVO IP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.29, circ_type_set = TPPSim.Choices.circ_type.forced, delta = 2.108e-3, delta_fin = 0.9906e-3, dp_circ(displayUnit = "bar") = fill(1e5, 10), flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flow_circ = fill(15, 10), gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 15.88e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 1, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 3.156e-3, start_flow_circ = 1, z1 = 120, z2 = 10, zahod = 10) annotation(
     Placement(visible = true, transformation(origin = {70, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));  
   //Барабаны
   TPPSim.Drums.Drum HP_drum(Din = 1.6, Hw_start = 0.5, L = 14.05, delta = 0.0105) annotation(
     Placement(visible = true, transformation(origin = {-30, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Drums.Drum IP_drum(Din = 1.4, Hw_start = 0.5, L = 13.1, delta = 16e-3) annotation(
+  TPPSim.Drums.Drum IP_drum(Din = 1.4, Hw_start = 0.5, L = 13.1, delta = 30e-3) annotation(
     Placement(visible = true, transformation(origin = {70, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Drums.Drum LP_drum(Din = 1.4, Hw_start = 0.5, L = 13.1, delta = 16e-3) annotation(
     Placement(visible = true, transformation(origin = {134, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -60,7 +60,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //Паропроводы
   TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.15, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 8, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-46, -10}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
-  TPPSim.Pipes.ComplexPipe IP_pipe(Din = 0.2, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 4, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe IP_pipe(Din = 0.15, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 4, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {48, -10}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   TPPSim.Pipes.ComplexPipe LP_pipe(Din = 0.2, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 4, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {114, -10}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
@@ -79,7 +79,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   TPPSim.Valves.simpleValve LP_FWCV(redeclare package Medium = Medium_F, dp = 100000, setD_flow = 5, use_D_flow_in = true)  annotation(
     Placement(visible = true, transformation(origin = {161, -7}, extent = {{5, -5}, {-5, 5}}, rotation = -90)));
   //Клапан на продувке СД
-  Modelica.Fluid.Valves.ValveCompressible vent_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 371000, m_flow_nominal = 12.83, p_nominal = 3.71e+05, rho_nominal = 1.61) annotation(
+  Modelica.Fluid.Valves.ValveCompressible vent_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.98e+06, m_flow_nominal = 17.83, p_nominal = 29.8e+05, rho_nominal = 11.44) annotation(
     Placement(visible = true, transformation(origin = {40, 34}, extent = {{4, 4}, {-4, -4}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant vent_const(k = 1)  annotation(
     Placement(visible = true, transformation(origin = {14, 34}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
@@ -101,13 +101,19 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-180, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-190, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b LP_Out(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-180, 66}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Interfaces.FluidPort_a FW_In(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {200, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {56, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Interfaces.FluidPort_a HP_FW_In(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {200, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b FW_Out(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {200, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {82, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {200, -58}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {106, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a IP_FW_In(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {200, -96}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {24, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {200, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {72, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(HP_FW_In, HP_ECO_2.flowIn) annotation(
+    Line(points = {{200, -94}, {26, -94}, {26, -14}, {14, -14}, {14, -20}, {14, -20}}));
+  connect(IP_FW_In, IP_FWCV.flowIn) annotation(
+    Line(points = {{200, -76}, {88, -76}, {88, -14}, {89, -14}}));
+  connect(LP_drum.HPFW, FW_Out) annotation(
+    Line(points = {{144, -14}, {154, -14}, {154, -58}, {200, -58}}, color = {0, 127, 255}));
   connect(IP_LC.y, IP_FWCV.D_flow_in) annotation(
     Line(points = {{80, 18}, {96, 18}, {96, -8}, {90, -8}, {90, -8}}, color = {0, 0, 127}));
   connect(IP_drum.waterLevel, IP_LC.u) annotation(
@@ -132,12 +138,6 @@ equation
     Line(points = {{78, -18}, {84, -18}, {84, -26}, {84, -26}}, color = {0, 127, 255}));
   connect(IP_FWCV.flowOut, IP_drum.fedWater) annotation(
     Line(points = {{90, -4}, {88, -4}, {88, 4}, {76, 4}, {76, 0}, {78, 0}}, color = {0, 127, 255}));
-  connect(IP_FW_In, IP_FWCV.flowIn) annotation(
-    Line(points = {{200, -96}, {88, -96}, {88, -14}, {89, -14}}));
-  connect(LP_drum.HPFW, FW_Out) annotation(
-    Line(points = {{144, -14}, {154, -14}, {154, -78}, {200, -78}}, color = {0, 127, 255}));
-  connect(FW_In, HP_ECO_2.flowIn) annotation(
-    Line(points = {{200, -60}, {20, -60}, {20, -20}, {14, -20}, {14, -20}}));
   connect(HP_ECO_2.flowOut, HP_FWCV.flowIn) annotation(
     Line(points = {{6, -20}, {6, -19.5}, {6, -19.5}, {6, -19}, {6, -19}, {6, -18}, {8, -18}, {8, -16}, {7, -16}, {7, -13}, {5, -13}, {5, -11.5}, {5, -11.5}, {5, -10.75}, {5, -10.75}, {5, -10.375}, {5, -10.375}, {5, -10}}, color = {0, 127, 255}));
   connect(HP_FWCV.D_flow_in, HP_LC.y) annotation(
