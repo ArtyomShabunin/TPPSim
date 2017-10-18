@@ -1,5 +1,6 @@
 ﻿within TPPSim.HRSG_HeatExch;
-model ParallelGFHE_simple
+
+model ParallelGFHE_simple "Модель двух параллельных теплообменников котла-утилизатора."
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseParallelGFHE; 
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
@@ -53,8 +54,9 @@ equation
   connect(flowIn_2, GFHE_2.flowIn) annotation(
     Line(points = {{-50, -80}, {-14, -80}, {-14, -80}, {-14, -80}}));
   annotation(
-    Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
-    experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
-    version = "",
-    uses);
+    Documentation(info = "<html><head></head><body>Расход газов между теплообменниками делится пропорционально площадям сечения для прохода газов.</body></html>", revisions = "<html><head></head><body>
+<ul>
+  <li><i>October 17, 2017</i>
+by Artyom Shabunin:<br></li>
+</ul></body></html>"));
 end ParallelGFHE_simple;

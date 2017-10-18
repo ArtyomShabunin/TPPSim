@@ -32,5 +32,4 @@ equation
     Line(points = {{-60, 0}, {-12, 0}, {-12, 0}, {-10, 0}}, color = {0, 127, 255}, thickness = 0.5));
   connect(gas_source.ports[1], parallelGFHE.gasIn) annotation(
     Line(points = {{60, 0}, {12, 0}, {12, 0}, {10, 0}}, color = {0, 127, 255}, thickness = 0.5));
-
 end ParallelGFHE_Test;

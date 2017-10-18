@@ -20,4 +20,10 @@ equation
   gasIn.p = gasOut_1.p;
   gasIn.h_outflow = inStream(gasOut_1.h_outflow);
   gasIn.Xi_outflow = inStream(gasOut_1.Xi_outflow);
+  annotation(
+    Documentation(info = "<html><head></head><body>Разделитель для использования в 'ParallelGFHE_simple'.</body></html>", revisions = "<html><head></head><body>
+<ul>
+  <li><i>October 17, 2017</i>
+by Artyom Shabunin:<br></li>
+</ul></body></html>"));
 end GasSplitterFoeParallelHE;
