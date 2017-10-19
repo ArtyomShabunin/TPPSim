@@ -3,14 +3,11 @@ model Drum "Модель барабана энергетического кот�
   extends TPPSim.Drums.BaseClases.BaseDrum;
   //Интерфейс
   Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
-    Placement(visible = true, transformation(origin = {112, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput FW_feedback annotation(
-    Placement(visible = true, transformation(origin = {112, 42}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {112, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b HPFW(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-104, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-104, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   fedWater.m_flow = D_fw;
-  FW_feedback = (-Dsteam) + m_flow_small;
   waterLevel = Hw;
 //Паровое пространство барабана
   state_eco = Medium.setState_ph(ps, inStream(fedWater.h_outflow));

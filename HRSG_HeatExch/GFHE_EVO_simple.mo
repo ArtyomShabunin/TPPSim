@@ -59,7 +59,6 @@ equation
   pgas_gl[numberOfVolumes + 1, 1] = gasOut.p;
   gasIn.Xi_outflow = inStream(gasOut.Xi_outflow);
   inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
-initial equation
    annotation(
     Documentation(info = "<html><head></head><body>Упрощенная модель испарителя - принимается, что в направлении движения газов испаритель состоит из одного элемента.</body></html>", revisions = "<html><head></head><body>
 <ul>

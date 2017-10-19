@@ -7,6 +7,7 @@ model simpleValve "Упрощенная модель клапана"
     Evaluate = true,
     Dialog(enable = not use_D_flow_in));
   parameter Modelica.SIunits.AbsolutePressure dp "Перепад давления на клапане";
+  parameter Modelica.SIunits.MassFlowRate m_flow_small = system.m_flow_small "Ограничение минимального расхода" annotation(Dialog(group="Assumptions"));
   outer Modelica.Fluid.System system;   
   Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -23,7 +24,7 @@ equation
     D_flow_in_internal = setD_flow;
   end if;
   flowOut.m_flow = -D_flow_in_internal;
-  flowIn.m_flow = max(D_flow_in_internal, system.m_flow_small);
+  flowIn.m_flow = max(D_flow_in_internal, m_flow_small);
   flowOut.h_outflow = inStream(flowIn.h_outflow);
   flowIn.h_outflow = inStream(flowOut.h_outflow);
   flowIn.p - flowOut.p = dp;

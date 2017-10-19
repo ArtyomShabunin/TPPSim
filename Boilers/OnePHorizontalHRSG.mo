@@ -21,7 +21,7 @@ model OnePHorizontalHRSG
     Placement(visible = true, transformation(origin = {70, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   //Обратный клапан
   //Регуляторы
-  TPPSim.Controls.LC LC(DFmax = 46, DFmin = 0, levelSP = 0.5) annotation(
+  TPPSim.Controls.LC LC(DFmax = 46, DFmin = 0) annotation(
     Placement(visible = true, transformation(origin = {-6, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
