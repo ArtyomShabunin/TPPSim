@@ -19,7 +19,7 @@ model EMA_028_HRSG_Test
       Placement(visible = true, transformation(origin = {-30, 20}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.861e+06, m_flow_nominal = 82.86, p_nominal = 28.61e+05, rho_nominal = 7.827) annotation(
       Placement(visible = true, transformation(origin = {-24, 8}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  TPPSim.Boilers.EMA_028_HRSG boiler annotation(
+  TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {10, 0}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible LP_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 371000, m_flow_nominal = 12.83, p_nominal = 3.71e+05, rho_nominal = 1.61) annotation(
     Placement(visible = true, transformation(origin = {-10, 36}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
