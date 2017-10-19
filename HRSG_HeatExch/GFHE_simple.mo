@@ -1,30 +1,9 @@
 ﻿within TPPSim.HRSG_HeatExch;
 model GFHE_simple
-  extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
+  extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE_simple;
   extends TPPSim.HRSG_HeatExch.BaseClases.GFHE_interface;  
   import TPPSim.functions.coorSecGen;
-  //Параметры разбиения
-  parameter Integer numberOfVolumes "Число участков разбиения" annotation(
-    Dialog(group = "Параметры разбиения"));
-  final inner parameter Integer numberOfFlueSections = numberOfVolumes "Число участков разбиения газохода";
-  //final parameter Integer[numberOfVolumes, 1, 2] section_set = coorSecGen(numberOfVolumes, 1);  
-  //Расчетные параметры
-  final inner parameter Modelica.SIunits.Area f_flow = zahod * Modelica.Constants.pi * Din ^ 2 * z1 / 4 "Площадь для прохода теплоносителя";
-  final inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe * z2 / zahod / numberOfVolumes "Длина теплообменной трубки для элемента разбиения";
-  final inner parameter Modelica.SIunits.Area deltaSFlow = deltaLpipe * zahod * Modelica.Constants.pi * Din * z1 "Внутренняя площадь одного участка ряда труб";
-  final inner parameter Modelica.SIunits.Volume deltaVFlow = deltaLpipe * f_flow "Внутренний объем одного участка ряда труб";
-  final inner parameter Modelica.SIunits.Mass deltaMMetal = rho_m * deltaLpipe * zahod * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) * z1 / 4 "Масса металла участка ряда труб";
-  final inner parameter Modelica.SIunits.Volume deltaVGas = Lpipe * (s1 * s2 - Modelica.Constants.pi * (Din + 2 * delta) ^ 2 / 4) * z1 * z2 / numberOfVolumes "Объем одного участка газового тракта";
-  final inner parameter Modelica.SIunits.Area f_gas = (1 - (Din + 2 * delta) / s1 * (1 + 2 * hfin * delta_fin / sfin / (Din + 2 * delta))) * Lpipe * s2 * z1 "Площадь для прохода газов";
-  //Характеристики оребрения
-  final inner parameter Real H_fin = (omega * Lpipe * (1 - delta_fin / sfin) + (2 * Modelica.Constants.pi * (Dfin ^ 2 - (Din + 2 * delta) ^ 2) / 4 + Modelica.Constants.pi * Dfin * delta_fin) * (Lpipe / sfin)) * z1 * z2 / numberOfVolumes "Площадь оребренной поверхности";
   //Переменные
-  inner Medium_F.SpecificEnthalpy h_gl[1, numberOfVolumes + 1] "Энтальпия вода/пар (глобальная переменная)";
-  inner Medium_F.MassFlowRate D_gl[1, numberOfVolumes + 1] "Массовый расход вода/пар (глобальная переменная)";
-  inner Medium_F.AbsolutePressure p_gl[1, numberOfVolumes + 1] "Давление вода/пар (глобальная переменная)";
-  inner Medium_G.SpecificEnthalpy hgas_gl[numberOfVolumes + 1, 1] "Энтальпия газов (глобальная переменная)";
-  inner Medium_G.MassFlowRate Dgas_gl[numberOfVolumes + 1, 1] "Массовый расход газов (глобальная переменная)";
-  inner Medium_G.AbsolutePressure pgas_gl[numberOfVolumes + 1, 1] "Давление газов (глобальная переменная)";
   TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes, 1](redeclare package Medium = Medium_G, section = coorSecGen(numberOfVolumes, 1)) annotation(
     Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
   replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[1, numberOfVolumes](redeclare package Medium = Medium_F, section = coorSecGen(1, numberOfVolumes)) annotation(

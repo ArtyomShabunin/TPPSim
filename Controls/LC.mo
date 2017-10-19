@@ -12,23 +12,15 @@ block LC "Регулятор уроня в барабане КУ"
     Placement(visible = true, transformation(origin = {36, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter(uMax = DFmax, uMin = DFmin) annotation(
     Placement(visible = true, transformation(origin = {76, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Logical.Switch switch annotation(
-    Placement(visible = true, transformation(origin = {-36, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Logical.Less less annotation(
-    Placement(visible = true, transformation(origin = {-50, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Controls.onAuto on_control annotation(
+    Placement(visible = true, transformation(origin = {-48, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(u, switch.u3) annotation(
-    Line(points = {{-120, 0}, {-80, 0}, {-80, -86}, {-48, -86}, {-48, -86}}, color = {0, 0, 127}));
-  connect(levelSet.y, switch.u1) annotation(
-    Line(points = {{-38, 0}, {-22, 0}, {-22, -60}, {-54, -60}, {-54, -70}, {-48, -70}, {-48, -70}}, color = {0, 0, 127}));
-  connect(switch.y, feedback.u2) annotation(
-    Line(points = {{-24, -78}, {0, -78}, {0, -8}, {0, -8}}, color = {0, 0, 127}));
-  connect(less.y, switch.u2) annotation(
-    Line(points = {{-38, -28}, {-32, -28}, {-32, -54}, {-60, -54}, {-60, -78}, {-48, -78}, {-48, -78}}, color = {255, 0, 255}));
-  connect(u, less.u2) annotation(
-    Line(points = {{-120, 0}, {-74, 0}, {-74, -36}, {-62, -36}, {-62, -36}}, color = {0, 0, 127}));
-  connect(levelSet.y, less.u1) annotation(
-    Line(points = {{-38, 0}, {-28, 0}, {-28, 20}, {-68, 20}, {-68, -28}, {-62, -28}, {-62, -28}}, color = {0, 0, 127}));
+  connect(on_control.y, feedback.u2) annotation(
+    Line(points = {{-36, -50}, {0, -50}, {0, -8}, {0, -8}}, color = {0, 0, 127}));
+  connect(u, on_control.u2) annotation(
+    Line(points = {{-120, 0}, {-88, 0}, {-88, -56}, {-60, -56}, {-60, -56}}, color = {0, 0, 127}));
+  connect(levelSet.y, on_control.u1) annotation(
+    Line(points = {{-38, 0}, {-30, 0}, {-30, -24}, {-68, -24}, {-68, -44}, {-60, -44}, {-60, -44}}, color = {0, 0, 127}));
   connect(limiter.y, y) annotation(
     Line(points = {{88, 0}, {102, 0}, {102, 0}, {110, 0}}, color = {0, 0, 127}));
   connect(PI.y, limiter.u) annotation(

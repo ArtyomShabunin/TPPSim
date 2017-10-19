@@ -24,9 +24,9 @@ equation
 //t_m_steam = ts "Принимаем, что верхняя стенка барабанна в каждый момент времени равна температуре насыщения в паровом пространстве барабана. Такое равенство может работать только при конденсации, т.е. росте температуры стенки барабана!!!";
   20000 * (ts - t_m_steam) = D_cond_dr * (h_dew - h_bubble);
   D_st_circ = D_upStr * x_upStr;
-  if inStream(fedWater.h_outflow) - h_bubble > 0 then
+  if noEvent(inStream(fedWater.h_outflow) - h_bubble > 0) then
     D_st_eco = D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
-  elseif inStream(fedWater.h_outflow) - h_bubble <= 0 and D_st_circ <= D_fw * (h_bubble - inStream(fedWater.h_outflow)) / (h_dew - h_bubble) then
+  elseif noEvent(inStream(fedWater.h_outflow) - h_bubble <= 0 and D_st_circ <= D_fw * (h_bubble - inStream(fedWater.h_outflow)) / (h_dew - h_bubble)) then
     D_st_eco = -D_st_circ;
   else
     D_st_eco = D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);

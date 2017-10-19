@@ -2,8 +2,6 @@
 
 model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энергоблока ПГУ-410 Ново-Салаватской ТЭЦ"
   extends TPPSim.Boilers.BaseClases.Icons.Icon3pHorizontalHRSG;
-  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-  replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   outer Modelica.Fluid.System system;
   //Контур ВД
   //Экономайзеры ВД
@@ -36,11 +34,11 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   TPPSim.HRSG_HeatExch.GFHE_EVO IP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.29, circ_type_set = TPPSim.Choices.circ_type.forced, delta = 2.108e-3, delta_fin = 0.9906e-3, dp_circ(displayUnit = "bar") = fill(1e5, 10), flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flow_circ = fill(15, 10), gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 15.88e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 1, s1 = 89.39e-3, s2 = 111.1e-3, sfin = 3.156e-3, start_flow_circ = 1, z1 = 120, z2 = 10, zahod = 10) annotation(
     Placement(visible = true, transformation(origin = {50, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));  
   //Барабаны
-  TPPSim.Drums.Drum HP_drum(Din = 1.6, Hw_start = 0.5, L = 14.05, delta = 0.0105) annotation(
+  TPPSim.Drums.Drum HP_drum(Din = 1.6, Hw_start = 0.34, L = 14.05, delta = 0.0105) annotation(
     Placement(visible = true, transformation(origin = {-50, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Drums.Drum IP_drum(Din = 1.4, Hw_start = 0.5, L = 13.1, delta = 30e-3) annotation(
+  TPPSim.Drums.Drum IP_drum(Din = 1.4, Hw_start = 0.4, L = 13.1, delta = 30e-3) annotation(
     Placement(visible = true, transformation(origin = {50, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Drums.Drum LP_drum(Din = 1.4, Hw_start = 0.5, L = 13.1, delta = 16e-3) annotation(
+  TPPSim.Drums.Drum LP_drum(Din = 1.4, Hw_start = 0.48, L = 13.1, delta = 16e-3) annotation(
     Placement(visible = true, transformation(origin = {134, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   //Контур НД
   //Пароперегреватель НД
@@ -85,12 +83,12 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //Клапан на продувке СД
   Modelica.Fluid.Valves.ValveCompressible vent_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.98e+06, m_flow_nominal = 17.83, p_nominal = 29.8e+05, rho_nominal = 11.44) annotation(
     Placement(visible = true, transformation(origin = {20, 52}, extent = {{4, 4}, {-4, -4}}, rotation = -90)));
-  Modelica.Blocks.Sources.Constant vent_const(k = 1)  annotation(
+  Modelica.Blocks.Sources.Constant vent_const(k = 0.01)  annotation(
     Placement(visible = true, transformation(origin = {-6, 52}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   //Обратный клапан на паропроводе СД
   Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, checkValve = true, dp_nominal = 0.5e5, m_flow_nominal = 17.83, p_nominal = 71e5, rho_nominal = 11.44) annotation(
     Placement(visible = true, transformation(origin = {-40, 42}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant checkValve_const(k = 0)  annotation(
+  Modelica.Blocks.Sources.Constant checkValve_const(k = 1)  annotation(
     Placement(visible = true, transformation(origin = {-54, 54}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
