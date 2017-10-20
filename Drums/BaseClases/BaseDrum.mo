@@ -69,9 +69,10 @@ model BaseDrum "Базовый класс 'барабан котла'"
     V := if area == "top" then Vtop else Vbottom;
   end drumMetallVolume;
 
+  //Ограничения
+  parameter Modelica.SIunits.MassFlowRate m_flow_small = system.m_flow_small "Ограничение минимального расхода" annotation(Dialog(group="Assumptions"));
   //Исходные данные
   replaceable package Medium = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-  parameter Medium.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
   parameter Real k = 0.9 "Доля пара, которая практически сразу выделяется из водяного объема";
   //Геометрические характеристики барабана
   parameter Modelica.SIunits.Length Din "Внутренний диаметр барабана";
@@ -153,7 +154,7 @@ equation
   HPFW.h_outflow = hw;
   downStr.p = pw;
   HPFW.p = pw;
-  downStr.m_flow + HPFW.m_flow = D_downStr;
+  downStr.m_flow + min(HPFW.m_flow, -m_flow_small) = D_downStr;
 //Подъемные трубы
   upStr.h_outflow = hw;
   upStr.p = pw;

@@ -3,7 +3,6 @@ model GFHE_EVO_simple
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE_simple;
   extends TPPSim.HRSG_HeatExch.BaseClases.GFHE_EVO_interface;
   import TPPSim.functions.coorSecGen;
-  import TPPSim.functions.hSecGen;
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Параметры циркуляции
@@ -19,7 +18,7 @@ model GFHE_EVO_simple
   //Переменные
   TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfVolumes, 1](redeclare package Medium = Medium_G, section = coorSecGen(numberOfVolumes, 1)) annotation(
     Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[1, numberOfVolumes](redeclare package Medium = Medium_F, section = coorSecGen(1, numberOfVolumes), deltaHpipe = hSecGen(numberOfVolumes, 1, HRSG_type_set, zahod, Lpipe)) annotation(
+  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[1, numberOfVolumes](redeclare package Medium = Medium_F, section = coorSecGen(1, numberOfVolumes), deltaHpipe = fill(Lpipe/numberOfVolumes, 1, numberOfVolumes)) annotation(
     Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
 algorithm
   when flowIn.p - p_gl[1, 1] > dp_circ*(start_flow_circ / flow_circ)^2 and circ_type_set == TPPSim.Choices.circ_type.natural then 

@@ -23,7 +23,7 @@ equation
   if not use_D_flow_in then
     D_flow_in_internal = setD_flow;
   end if;
-  flowOut.m_flow = -D_flow_in_internal;
+  flowOut.m_flow = -flowIn.m_flow;
   flowIn.m_flow = max(D_flow_in_internal, m_flow_small);
   flowOut.h_outflow = inStream(flowIn.h_outflow);
   flowIn.h_outflow = inStream(flowOut.h_outflow);
