@@ -96,8 +96,6 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //Обратный клапан на паропроводе СД
   Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, checkValve = true, dp_nominal = 0.5e5, m_flow_nominal = 17.83, p_nominal = 71e5, rho_nominal = 11.44) annotation(
     Placement(visible = true, transformation(origin = {-66, 42}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant checkValve_const(k = 0) annotation(
-    Placement(visible = true, transformation(origin = {-80, 54}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {190, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
@@ -126,7 +124,17 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-31, 25}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
   TPPSim.Controls.vent_control vent_control1 annotation(
     Placement(visible = true, transformation(origin = {-12, 56}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant checkValve_const annotation(
+    Placement(visible = true, transformation(origin = {-92, 58}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Math.Feedback reverse annotation(
+    Placement(visible = true, transformation(origin = {-66, 56}, extent = {{-6, 6}, {6, -6}}, rotation = -90)));
 equation
+  connect(checkValve_const.y, reverse.u1) annotation(
+    Line(points = {{-86, 58}, {-78, 58}, {-78, 62}, {-66, 62}, {-66, 60}}, color = {0, 0, 127}));
+  connect(vent_control1.y, reverse.u2) annotation(
+    Line(points = {{-18, 56}, {-22, 56}, {-22, 62}, {-52, 62}, {-52, 56}, {-62, 56}, {-62, 56}}, color = {0, 0, 127}));
+  connect(reverse.y, checkValve.opening) annotation(
+    Line(points = {{-66, 50}, {-66, 50}, {-66, 46}, {-66, 46}}, color = {0, 0, 127}));
   connect(vent_control1.y, vent_CV.opening) annotation(
     Line(points = {{-19, 56}, {-24, 56}}, color = {0, 0, 127}));
   connect(IP_massFlowRate.m_flow, vent_control1.u) annotation(
@@ -189,8 +197,6 @@ equation
     Line(points = {{13, -30}, {1, -30}}, color = {0, 127, 255}));
   connect(IP_pipe_2.waterOut, checkValve.port_a) annotation(
     Line(points = {{-44, 42}, {-62, 42}, {-62, 42}, {-62, 42}}, color = {0, 127, 255}));
-  connect(checkValve_const.y, checkValve.opening) annotation(
-    Line(points = {{-73.4, 54}, {-67.4, 54}, {-67.4, 46}, {-65.4, 46}}, color = {0, 0, 127}));
   connect(checkValve.port_b, RH_1.flowIn) annotation(
     Line(points = {{-70, 42}, {-86, 42}, {-86, -20}}, color = {0, 127, 255}));
   connect(IP_SH_2.gasIn, HP_EVO.gasOut) annotation(
