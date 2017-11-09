@@ -15,7 +15,7 @@ model OnePHorizontalHRSG
     Placement(visible = true, transformation(origin = {-20, -2}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
 //  TPPSim.HRSG_HeatExch.GFHE_EVO EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, circ_type_set = TPPSim.Choices.circ_type.forced, delta = 0.002, delta_fin = 0.0008, dp_circ(displayUnit = "bar") = fill(1e5, 6), flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flow_circ = fill(10, 6), gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, start_flow_circ = 1, z1 = 58, z2 = 6, zahod = 6) annotation(
 //    Placement(visible = true, transformation(origin = {-28, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  TPPSim.HRSG_HeatExch.GFHE_EVO_simple EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, circ_type_set = TPPSim.Choices.circ_type.forced, delta = 0.002, delta_fin = 0.0008, dp_circ(displayUnit = "bar") = 1e+10, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flow_circ = 60, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, start_flow_circ = 1, z1 = 58, z2 = 6, zahod = 6) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_simple EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, delta = 0.002, delta_fin = 0.0008, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, z1 = 58, z2 = 6, zahod = 6) annotation(
     Placement(visible = true, transformation(origin = {-24, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {70, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
@@ -34,11 +34,15 @@ model OnePHorizontalHRSG
     Placement(visible = true, transformation(origin = {21, -3}, extent = {{5, -5}, {-5, 5}}, rotation = -90)));
   TPPSim.Pipes.ComplexPipe downPipe(redeclare TPPSim.Pipes.ElementaryPipe Pipe, Din = 0.5, Lpiezo = -18.492, Lpipe = 18.492, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, n_parallel = 2, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-12, -22}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
+  TPPSim.Pumps.simplePump circulation(redeclare package Medium = Medium_F, setD_flow = 60)  annotation(
+    Placement(visible = true, transformation(origin = {-12, -44}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
 equation
+  connect(circulation.port_b, EVO.flowIn) annotation(
+    Line(points = {{-16, -44}, {-34, -44}, {-34, -20}, {-28, -20}, {-28, -20}}, color = {0, 127, 255}));
+  connect(downPipe.waterOut, circulation.port_a) annotation(
+    Line(points = {{-12, -26}, {-12, -26}, {-12, -36}, {-6, -36}, {-6, -44}, {-8, -44}, {-8, -44}}, color = {0, 127, 255}));
   connect(EVO.flowOut, drum.upStr) annotation(
     Line(points = {{-24, -20}, {-24, -15}, {-27, -15}, {-27, -11}}, color = {0, 127, 255}));
-  connect(downPipe.waterOut, EVO.flowIn) annotation(
-    Line(points = {{-12, -26}, {-12, -44}, {-24, -44}, {-24, -40}}, color = {0, 127, 255}));
   connect(SH.gasOut, EVO.gasIn) annotation(
     Line(points = {{-64, -30}, {-19, -30}}, color = {0, 127, 255}));
   connect(EVO.gasOut, ECO.gasIn) annotation(
