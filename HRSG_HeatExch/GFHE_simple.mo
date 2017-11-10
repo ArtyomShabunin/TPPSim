@@ -13,7 +13,7 @@ equation
     connect(flowHE[1, i].heat, gasHE[numberOfVolumes + 1 - i, 1].heat);
   end for;
   h_gl[1, 1] = inStream(flowIn.h_outflow);
-  flowIn.h_outflow = inStream(flowOut.h_outflow);
+  flowIn.h_outflow = h_gl[1, 1];
   D_gl[1, 1] = flowIn.m_flow;
   p_gl[1, 1] = flowIn.p;
   h_gl[1, numberOfVolumes + 1] = flowOut.h_outflow;

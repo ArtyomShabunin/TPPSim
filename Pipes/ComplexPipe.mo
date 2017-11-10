@@ -22,7 +22,7 @@ model ComplexPipe
     Placement(visible = true, transformation(origin = {-5.32907e-15, 5.32907e-15}, extent = {{-40, -40}, {40, 40}}, rotation = 0)));
 equation
   h[1, 1] = inStream(waterIn.h_outflow);
-  waterIn.h_outflow = inStream(waterOut.h_outflow);
+  waterIn.h_outflow = h[1, 1];
   D[1, 1] = waterIn.m_flow;
   p[1, 1] = waterIn.p;
   h[1, numberOfVolumes + 1] = waterOut.h_outflow;

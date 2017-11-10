@@ -1,6 +1,6 @@
 ﻿within TPPSim.Pumps;
 model simplePump "Сильно упрощеная модель насоса"
-  extends TPPSim.Pumps.BaseClases.Icons.IconPump;
+  extends TPPSim.Pumps.BaseClases.Icons.IconFixFlow;
   replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   parameter Boolean use_D_flow_in = false "Ипользвать порт 'D_flow_in' для задания расхода";
   parameter Modelica.SIunits.MassFlowRate setD_flow = 1 "Производительность насоса" annotation(
