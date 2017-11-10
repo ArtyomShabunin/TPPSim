@@ -122,7 +122,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {200, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {72, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.MassFlowRate IP_massFlowRate(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-31, 25}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
-  TPPSim.Controls.vent_control vent_control1(event_value = 0.1, finish_out = 0, start_out = 0.5) annotation(
+  TPPSim.Controls.vent_control vent_control1(event_value = 10, finish_out = 0, start_out = 0.05) annotation(
     Placement(visible = true, transformation(origin = {-12, 56}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
   //  TPPSim.Pumps.simplePump circulation_IP(redeclare package Medium = Medium_F, setD_flow = 150)  annotation(
   //    Placement(visible = true, transformation(origin = {52, -48}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
