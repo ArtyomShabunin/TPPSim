@@ -22,7 +22,23 @@ block LC "Регулятор уроня в барабане КУ"
     Placement(visible = true, transformation(origin = {-70, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Continuous.Filter filter1(f_cut = 2)  annotation(
     Placement(visible = true, transformation(origin = {-26, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput y1 annotation(
+    Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Math.Feedback feedback1 annotation(
+    Placement(visible = true, transformation(origin = {50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant min(k = DFmin)  annotation(
+    Placement(visible = true, transformation(origin = {10, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = DFmin, uMin = 0)  annotation(
+    Placement(visible = true, transformation(origin = {80, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(feedback1.y, limiter1.u) annotation(
+    Line(points = {{60, 30}, {68, 30}, {68, 30}, {68, 30}}, color = {0, 0, 127}));
+  connect(min.y, feedback1.u1) annotation(
+    Line(points = {{21, 30}, {42, 30}}, color = {0, 0, 127}));
+  connect(PI.y, feedback1.u2) annotation(
+    Line(points = {{48, 0}, {50, 0}, {50, 22}}, color = {0, 0, 127}));
+  connect(limiter1.y, y1) annotation(
+    Line(points = {{92, 30}, {110, 30}}, color = {0, 0, 127}));
   connect(filter1.y, less.u1) annotation(
     Line(points = {{-14, -50}, {-2, -50}, {-2, -50}, {-2, -50}}, color = {0, 0, 127}));
   connect(derivative1.y, filter1.u) annotation(
