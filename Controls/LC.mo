@@ -20,7 +20,7 @@ block LC "Регулятор уроня в барабане КУ"
     Placement(visible = true, transformation(origin = {-44, -8}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Blocks.Continuous.Derivative derivative1(initType = Modelica.Blocks.Types.Init.SteadyState)  annotation(
     Placement(visible = true, transformation(origin = {-70, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.Filter filter1(f_cut = 2)  annotation(
+  Modelica.Blocks.Continuous.Filter filter1(analogFilter = Modelica.Blocks.Types.AnalogFilter.CriticalDamping, f_cut = 1, order = 5)  annotation(
     Placement(visible = true, transformation(origin = {-26, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput y1 annotation(
     Placement(visible = true, transformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
