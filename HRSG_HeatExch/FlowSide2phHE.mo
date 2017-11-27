@@ -46,8 +46,10 @@ equation
     C1 = deltaVFlow * drdh * der(stateFlow.h);
     C2 = deltaVFlow * drdp * der(stateFlow.p);
   end if;
-  drdp = min(0.0005, Medium.density_derp_h(stateFlow));
-  drdh = max(-0.002, Medium.density_derh_p(stateFlow));
+//  drdp = min(0.0005, Medium.density_derp_h(stateFlow));
+//  drdh = max(-0.002, Medium.density_derh_p(stateFlow));
+  drdp = min(0.0001, Medium.density_derp_h(stateFlow));
+  drdh = max(-0.0002, Medium.density_derh_p(stateFlow));
   sat_v = Medium.setSat_p(stateFlow.p);
   hl = Medium.bubbleEnthalpy(sat_v);
   hv = Medium.dewEnthalpy(sat_v);
@@ -61,7 +63,7 @@ equation
   else
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
-  dp_piez = 1000 * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты"; 
+  dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты"; 
 initial equation
 
   if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then

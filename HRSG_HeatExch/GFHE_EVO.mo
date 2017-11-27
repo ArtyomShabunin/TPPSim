@@ -53,13 +53,13 @@ model GFHE_EVO
     Placement(visible = true, transformation(origin = {-50, 32}, extent = {{-10, -40}, {10, 40}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -40}, {10, 40}}, rotation = -90)));
   Modelica.Fluid.Interfaces.FluidPorts_b[numberOfFlueSections] flowOut(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {50, 34}, extent = {{-10, -40}, {10, 40}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -40}, {10, 40}}, rotation = 90)));
-  final Boolean forced_circ[numberOfFlueSections](start = fill(true,numberOfFlueSections), fixed = true);
-algorithm
-  for i in 1:numberOfFlueSections loop
-    when flowIn[i].p - p_gl[i, 1] > dp_circ[i]*(start_flow_circ / flow_circ[i])^2 and circ_type_set == TPPSim.Choices.circ_type.natural then 
-      forced_circ[i] := false;
-    end when;
-  end for;
+//  final Boolean forced_circ[numberOfFlueSections](start = fill(true,numberOfFlueSections), fixed = true);
+//algorithm
+//  for i in 1:numberOfFlueSections loop
+//    when flowIn[i].p - p_gl[i, 1] > dp_circ[i]*(start_flow_circ / flow_circ[i])^2 and circ_type_set == TPPSim.Choices.circ_type.natural then 
+//      forced_circ[i] := false;
+//    end when;
+//  end for;
 equation
   for i in 1:numberOfFlueSections loop    
     h_gl[i, 1] = inStream(flowIn[i].h_outflow);
@@ -68,10 +68,10 @@ equation
     if circ_type_set == TPPSim.Choices.circ_type.natural then
       if initial() then
         D_gl[i, 1] = start_flow_circ;
-      elseif noEvent(forced_circ[i]) then
-        D_gl[i, 1] = start_flow_circ;     
+//      elseif noEvent(forced_circ[i]) then
+//        D_gl[i, 1] = start_flow_circ;     
       else    
-        D_gl[i, 1] = flow_circ[i] * sign(flowIn[i].p - p_gl[i, 1]) * sqrt(abs(flowIn[i].p - p_gl[i, 1]) / dp_circ[i]);
+        D_gl[i, 1] = max(start_flow_circ, flow_circ[i] * sign(flowIn[i].p - p_gl[i, 1]) * sqrt(abs(flowIn[i].p - p_gl[i, 1]) / dp_circ[i]));
       end if;
     else
       D_gl[i, 1] = flow_circ[i];
