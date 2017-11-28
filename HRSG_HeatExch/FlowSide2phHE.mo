@@ -2,6 +2,7 @@
 model FlowSide2phHE
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
   import Modelica.Fluid.Types;
+  parameter TPPSim.Choices.piez_type piez_type;
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
@@ -48,7 +49,7 @@ equation
   end if;
 //  drdp = min(0.0005, Medium.density_derp_h(stateFlow));
 //  drdh = max(-0.002, Medium.density_derh_p(stateFlow));
-  drdp = min(0.0001, Medium.density_derp_h(stateFlow));
+  drdp = min(0.00004, Medium.density_derp_h(stateFlow));
   drdh = max(-0.0002, Medium.density_derh_p(stateFlow));
   sat_v = Medium.setSat_p(stateFlow.p);
   hl = Medium.bubbleEnthalpy(sat_v);
@@ -63,7 +64,11 @@ equation
   else
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
-  dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты"; 
+  if piez_type == TPPSim.Choices.piez_type.var then
+    dp_piez = homotopy(stateFlow.d * Modelica.Constants.g_n * deltaHpipe, pre(stateFlow.d) * Modelica.Constants.g_n * deltaHpipe * deltaHpipe) "Расчет перепада давления из-за изменения пьезометрической высоты";
+  else
+    dp_piez = 1000 * Modelica.Constants.g_n * deltaHpipe;
+  end if;
 initial equation
 
   if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then

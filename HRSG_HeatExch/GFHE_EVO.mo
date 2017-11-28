@@ -4,6 +4,7 @@ model GFHE_EVO
   import TPPSim.functions.coorSecGen;  
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
+  parameter TPPSim.Choices.piez_type piez_type = TPPSim.Choices.piez_type.const "Способ расчета пьезометрического перепада давления";
   //Параметры циркуляции
   parameter TPPSim.Choices.circ_type circ_type_set = TPPSim.Choices.circ_type.forced "Тип механизма циркуляции в испарителе" annotation(
     Dialog(group = "Параметры циркуляции"));  
@@ -38,7 +39,7 @@ model GFHE_EVO
   inner Medium_G.AbsolutePressure pgas_gl[numberOfFlueSections + 1, numberOfTubeSections] "Давление газов (глобальная переменная)";
   replaceable TPPSim.HRSG_HeatExch.GasSideHE_simple gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G, section = section_set) annotation(
     Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, section = section_set, deltaHpipe = TPPSim.functions.hSecGen(numberOfTubeSections, numberOfFlueSections, HRSG_type_set, zahod, Lpipe)) annotation(
+  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, section = section_set, deltaHpipe = TPPSim.functions.hSecGen(numberOfTubeSections, numberOfFlueSections, HRSG_type_set, zahod, Lpipe), piez_type = piez_type) annotation(
     Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GasSplitter collGas(redeclare package Medium = Medium_G, numberOfTubeSections = numberOfTubeSections) annotation(
     Placement(visible = true, transformation(origin = {-30, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
