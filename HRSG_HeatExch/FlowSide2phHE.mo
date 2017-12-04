@@ -2,7 +2,7 @@
 model FlowSide2phHE
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
   import Modelica.Fluid.Types;
-  parameter TPPSim.Choices.piez_type piez_type;
+  parameter TPPSim.Choices.piez_type piez_type = TPPSim.Choices.piez_type.const;
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
