@@ -12,7 +12,11 @@ model Desuperheater
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
   flowOut.h_outflow = Medium.specificEnthalpy_pT(flowOut.p, down_T);
-  waterIn.m_flow = -(flowIn.m_flow * inStream(flowIn.h_outflow) + flowOut.m_flow * flowOut.h_outflow)/inStream(waterIn.h_outflow);
+  if noEvent((flowOut.h_outflow - inStream(flowIn.h_outflow)) > 0) then
+    waterIn.m_flow = -(flowIn.m_flow * inStream(flowIn.h_outflow) + flowOut.m_flow * flowOut.h_outflow)/inStream(waterIn.h_outflow);
+  else
+    waterIn.m_flow = 0;
+  end if;
   flowIn.h_outflow = inStream(flowOut.h_outflow);
   waterIn.h_outflow = inStream(flowOut.h_outflow);
   flowOut.m_flow = -(flowIn.m_flow + waterIn.m_flow);
