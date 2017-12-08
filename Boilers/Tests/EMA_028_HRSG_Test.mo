@@ -31,7 +31,13 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {17, -37}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
   TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.377, Lpipe = 155, delta = 0.05, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-17, 19}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
+  TPPSim.Pipes.ComplexPipe CRH_pipe(Din = 0.487, Lpipe = 65, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+    Placement(visible = true, transformation(origin = {-35, 13}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
 equation
+  connect(CRH_pipe.waterOut, boiler.RH_In) annotation(
+    Line(points = {{-32, 14}, {-4, 14}, {-4, 12}, {-4, 12}}, color = {0, 127, 255}));
+  connect(HP_RS.flowOut, CRH_pipe.waterIn) annotation(
+    Line(points = {{-38, 20}, {-40, 20}, {-40, 12}, {-38, 12}, {-38, 14}}, color = {0, 127, 255}));
   connect(HP_RS.flowIn, HP_pipe.waterOut) annotation(
     Line(points = {{-30, 20}, {-20, 20}, {-20, 20}, {-20, 20}}, color = {0, 127, 255}));
   connect(boiler.HP_Out, HP_pipe.waterIn) annotation(
@@ -44,8 +50,6 @@ equation
     Line(points = {{-33.5, 35}, {-26, 35}, {-26, 44}, {-10, 44}, {-10, 40}}, color = {0, 0, 127}));
   connect(condPump.port_b, HP_RS.waterIn) annotation(
     Line(points = {{54, 24}, {-18, 24}, {-18, 16}, {-36, 16}}, color = {0, 127, 255}));
-  connect(HP_RS.flowOut, boiler.RH_In) annotation(
-    Line(points = {{-38, 20}, {-42, 20}, {-42, 14}, {-4, 14}, {-4, 11}}, color = {0, 127, 255}));
   connect(GT.flowOut, boiler.gasIn) annotation(
     Line(points = {{-60, -10}, {-42, -10}, {-42, -9}, {-20, -9}}, color = {0, 127, 255}));
   connect(boiler.RH_Out, CV.port_a) annotation(

@@ -13,9 +13,9 @@ model Desuperheater
 equation
   flowOut.h_outflow = Medium.specificEnthalpy_pT(flowOut.p, down_T);
   if noEvent((flowOut.h_outflow - inStream(flowIn.h_outflow)) > 0) then
-    waterIn.m_flow = -(flowIn.m_flow * inStream(flowIn.h_outflow) + flowOut.m_flow * flowOut.h_outflow)/inStream(waterIn.h_outflow);
+    waterIn.m_flow = 0;  
   else
-    waterIn.m_flow = 0;
+    waterIn.m_flow = -(flowIn.m_flow * inStream(flowIn.h_outflow) + flowOut.m_flow * flowOut.h_outflow)/inStream(waterIn.h_outflow);
   end if;
   flowIn.h_outflow = inStream(flowOut.h_outflow);
   waterIn.h_outflow = inStream(flowOut.h_outflow);
