@@ -121,7 +121,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Fluid.Interfaces.FluidPort_a IP_FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {220, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {76, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a LP_FW_In(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {220, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
+    Placement(visible = true, transformation(origin = {220, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {102, -190}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.MassFlowRate IP_massFlowRate(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-31, 25}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
   TPPSim.Controls.vent_control vent_control1(event_value = 10, finish_out = 0, start_out = 0.05) annotation(
@@ -156,27 +156,21 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {147, -55}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Tg_out_CHE(redeclare package Medium = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {179, -11}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Valves.Desuperheater condin_mix(redeclare package Medium = Medium_F, down_T = 333.15)  annotation(
-    Placement(visible = true, transformation(origin = {196, 0}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
-//  TPPSim.Pumps.simplePumpFlexible RP(redeclare package Medium = Medium_F) annotation(
-//    Placement(visible = true, transformation(origin = {208, -30}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
+  //  TPPSim.Pumps.simplePumpFlexible RP(redeclare package Medium = Medium_F) annotation(
+  //    Placement(visible = true, transformation(origin = {208, -30}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   Modelica.Fluid.Sensors.Temperature Tw_condin(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {175, 15}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Ts_IP(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-43, 75}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
-  connect(cond_HE.flowOut, condin_mix.waterIn) annotation(
-    Line(points = {{160, -20}, {156, -20}, {156, -50}, {198, -50}, {198, -6}, {198, -6}}, color = {0, 127, 255}));
+  connect(cond_In, cond_HE.flowIn) annotation(
+    Line(points = {{220, 0}, {168, 0}, {168, -20}, {168, -20}}));
   connect(IP_pipe_2.waterOut, Ts_IP.port) annotation(
     Line(points = {{-42, 42}, {-43, 42}, {-43, 70}}, color = {0, 127, 255}));
   connect(cond_HE.flowIn, Tw_condin.port) annotation(
     Line(points = {{168, -20}, {168, -20}, {168, 4}, {176, 4}, {176, 10}, {176, 10}}, color = {0, 127, 255}));
   connect(cond_HE.flowOut, cond_Out) annotation(
     Line(points = {{160, -20}, {156, -20}, {156, -58}, {220, -58}, {220, -58}}, color = {0, 127, 255}));
-  connect(condin_mix.flowOut, cond_HE.flowIn) annotation(
-    Line(points = {{190, 0}, {168, 0}, {168, -20}, {168, -20}}, color = {0, 127, 255}));
-  connect(cond_In, condin_mix.flowIn) annotation(
-    Line(points = {{220, 0}, {202, 0}, {202, 0}, {202, 0}}));
   connect(LP_FW_In, LP_FWCV.flowIn) annotation(
     Line(points = {{220, 30}, {172, 30}}));
   connect(IP_FW_In, IP_FWCV.flowIn) annotation(
