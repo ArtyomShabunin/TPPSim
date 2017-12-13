@@ -16,6 +16,8 @@ equation
     deltaTs = ts - T;
   elseif TemperatureType_set == TemperatureType.overheating then
     deltaTs = T - ts;
+  elseif TemperatureType_set == TemperatureType.saturation then
+    deltaTs = ts;
   end if;
   port.m_flow = 0;
   port.h_outflow = Medium.h_default;

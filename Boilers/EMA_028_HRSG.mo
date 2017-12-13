@@ -161,14 +161,28 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Fluid.Sensors.Temperature Tw_condin(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {175, 15}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Ts_IP(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {-43, 75}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-43, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Pumps.simplePump rec_pump(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {209, -33}, extent = {{-7, -7}, {7, 7}}, rotation = -90)));
-  Modelica.Blocks.Continuous.LimPID T_cond_control(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 10, yMin = 0, y_start = 10)  annotation(
+  Modelica.Blocks.Continuous.LimPID T_cond_control(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 30, yMin = 0, y_start = 10)  annotation(
     Placement(visible = true, transformation(origin = {196, 16}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant set_T_cond(k = 60 + 273.15)  annotation(
     Placement(visible = true, transformation(origin = {179, 47}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+  Modelica.Fluid.Valves.ValveCompressible RH_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.861e+06, m_flow_nominal = 82.86, p_nominal = 28.61e+05, rho_nominal = 7.827) annotation(
+    Placement(visible = true, transformation(origin = {-174, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
+  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 1.2431e+07, m_flow_nominal = 72, p_nominal = 124.31e+05, rho_nominal = 36.72) annotation(
+    Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
 equation
+  connect(RH_vent.port_b, vent.ports[3]) annotation(
+    Line(points = {{-174, 52}, {-174, 52}, {-174, 74}, {-28, 74}, {-28, 80}, {-28, 80}}, color = {0, 127, 255}));
+  connect(HP_vent.port_b, vent.ports[2]) annotation(
+    Line(points = {{-154, 52}, {-154, 52}, {-154, 72}, {-28, 72}, {-28, 80}, {-28, 80}}, color = {0, 127, 255}));
+  connect(HP_SH_3.flowOut, HP_vent.port_a) annotation(
+    Line(points = {{-154, -20}, {-154, 44}}, color = {0, 127, 255}));
+  connect(RH_3.flowOut, RH_vent.port_a) annotation(
+    Line(points = {{-174, -20}, {-174, -20}, {-174, 44}, {-174, 44}}, color = {0, 127, 255}));
+  connect(IP_pipe_2.waterOut, Ts_IP.port) annotation(
+    Line(points = {{-42, 42}, {-43, 42}, {-43, 52}}, color = {0, 127, 255}));
   connect(set_T_cond.y, T_cond_control.u_s) annotation(
     Line(points = {{186, 48}, {196, 48}, {196, 24}, {196, 24}}, color = {0, 0, 127}));
   connect(T_cond_control.y, rec_pump.D_flow_in) annotation(
@@ -181,8 +195,6 @@ equation
     Line(points = {{160, -20}, {156, -20}, {156, -46}, {210, -46}, {210, -40}, {209, -40}}, color = {0, 127, 255}));
   connect(cond_In, cond_HE.flowIn) annotation(
     Line(points = {{220, 0}, {168, 0}, {168, -20}, {168, -20}}));
-  connect(IP_pipe_2.waterOut, Ts_IP.port) annotation(
-    Line(points = {{-42, 42}, {-43, 42}, {-43, 70}}, color = {0, 127, 255}));
   connect(cond_HE.flowIn, Tw_condin.port) annotation(
     Line(points = {{168, -20}, {168, -20}, {168, 4}, {176, 4}, {176, 10}, {176, 10}}, color = {0, 127, 255}));
   connect(cond_HE.flowOut, cond_Out) annotation(

@@ -12,8 +12,10 @@ model ReducingStation
   parameter Modelica.SIunits.Density rho_nominal annotation(
     Dialog(group = "Параметры клапана"));
   //Параметры пароохладителя
-  parameter Modelica.SIunits.Temperature down_T "Температура пара за БРОУ" annotation(
-    Dialog(group = "Параметры пароохладителя"));
+  parameter Boolean use_T_in = false "Ипользвать порт 'T_in' для задания температуры за БРОУ" annotation(
+    Dialog(group = "Параметры пароохладителя")); 
+  parameter Modelica.SIunits.Temperature set_down_T "Температура пара за БРОУ" annotation(
+    Dialog(group = "Параметры пароохладителя"));   
   outer Modelica.Fluid.System system;  
   Modelica.Fluid.Interfaces.FluidPort_a flowIn(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -25,9 +27,12 @@ model ReducingStation
     Placement(visible = true, transformation(origin = {-30, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput opening annotation(
     Placement(visible = true, transformation(origin = {-30, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-32, 80}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
-  TPPSim.Valves.Desuperheater desuperheater(redeclare package Medium = Medium, down_T = 573.15) annotation(
+  TPPSim.Valves.Desuperheater desuperheater(redeclare package Medium = Medium, use_T_in = use_T_in, set_down_T = set_down_T) annotation(
     Placement(visible = true, transformation(origin = {30, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealInput T_in if use_T_in annotation(
+    Placement(visible = true, transformation(origin = {40, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {80, 80}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
 equation
+  connect(T_in, desuperheater.T_in);
   connect(desuperheater.flowOut, flowOut) annotation(
     Line(points = {{40, 0}, {100, 0}, {100, 0}, {100, 0}}, color = {0, 127, 255}));
   connect(desuperheater.waterIn, waterIn) annotation(

@@ -17,7 +17,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium_F, down_T = 603.15, dp_nominal = 9.451e+06, m_flow_nominal = 72, p_nominal = 1.2431e+07, rho_nominal (displayUnit = "kg/m3") = 36.72) annotation(
+  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium_F, dp_nominal = 9.451e+06, m_flow_nominal = 72, p_nominal = 1.2431e+07, rho_nominal (displayUnit = "kg/m3") = 36.72, set_down_T = 573.15, use_T_in = true) annotation(
       Placement(visible = true, transformation(origin = {-34, 20}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.861e+06, m_flow_nominal = 82.86, p_nominal = 28.61e+05, rho_nominal = 7.827) annotation(
       Placement(visible = true, transformation(origin = {-44, 6}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
@@ -61,7 +61,29 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {24, 36}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Tw_condout(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {4, -24}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  TPPSim.Sensors.Temperature ts(TemperatureType_set = TPPSim.Sensors.TemperatureType.saturation)  annotation(
+    Placement(visible = true, transformation(origin = {-44, -40}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant overheating_after_BROU(k = 5)  annotation(
+    Placement(visible = true, transformation(origin = {-45, -55}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Blocks.Math.Sum sum11(nin = 2)  annotation(
+    Placement(visible = true, transformation(origin = {-63, -45}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Blocks.Sources.CombiTimeTable T_BROUout_table(columns = {2},fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/T_BROUout.txt", tableName = "tabl", tableOnFile = true)  annotation(
+    Placement(visible = true, transformation(origin = {-63, -31}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Blocks.Math.Max set_T_BROU_out annotation(
+    Placement(visible = true, transformation(origin = {-79, -39}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
 equation
+  connect(set_T_BROU_out.y, HP_RS.T_in) annotation(
+    Line(points = {{-84, -38}, {-86, -38}, {-86, 24}, {-38, 24}, {-38, 24}}, color = {0, 0, 127}));
+  connect(sum11.y, set_T_BROU_out.u2) annotation(
+    Line(points = {{-68, -44}, {-70, -44}, {-70, -42}, {-72, -42}, {-72, -42}}, color = {0, 0, 127}));
+  connect(T_BROUout_table.y[1], set_T_BROU_out.u1) annotation(
+    Line(points = {{-68, -30}, {-70, -30}, {-70, -36}, {-72, -36}, {-72, -36}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(ts.deltaTs, sum11.u[2]) annotation(
+    Line(points = {{-46, -40}, {-54, -40}, {-54, -45}, {-57, -45}}, color = {0, 0, 127}));
+  connect(overheating_after_BROU.y, sum11.u[1]) annotation(
+    Line(points = {{-50, -54}, {-56, -54}, {-56, -48}, {-57, -48}, {-57, -45}}, color = {0, 0, 127}));
+  connect(HP_RS.flowOut, ts.port) annotation(
+    Line(points = {{-38, 20}, {-40, 20}, {-40, -44}, {-44, -44}, {-44, -44}}, color = {0, 127, 255}));
   connect(boiler.cond_Out, Tw_condout.port) annotation(
     Line(points = {{24, -14}, {24, -14}, {24, -28}, {4, -28}, {4, -28}}, color = {0, 127, 255}));
   connect(boiler.LP_Out, Ts_LP.port) annotation(
