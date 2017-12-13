@@ -13,7 +13,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-70, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Blocks.Sources.Constant HP_CV_const(k = 1) annotation(
     Placement(visible = true, transformation(origin = {-39, 35}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = system.T_start, nPorts = 1, p = system.p_ambient)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 1, p = system.p_ambient)  annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -47,7 +47,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {26, -34}, extent = {{2, -2}, {-2, 2}}, rotation = 0)));
   Modelica.Blocks.Math.Sum sum1(nin = 3)  annotation(
     Placement(visible = true, transformation(origin = {48, -2}, extent = {{-4, -4}, {4, 4}}, rotation = 90)));
-  TPPSim.Valves.simpleValve cond_CV annotation(
+  TPPSim.Valves.simpleValve cond_CV(dp = 100000, use_D_flow_in = true)  annotation(
     Placement(visible = true, transformation(origin = {32, -26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant hd(k = 588.6e3)  annotation(
     Placement(visible = true, transformation(origin = {92, -38}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));

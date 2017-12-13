@@ -1,8 +1,6 @@
 ﻿within TPPSim.Boilers.Tests;
 
 model OnePHorizontalHRSG_Test
-  package Medium_F = Modelica.Media.Water.WaterIF97_ph;
-  package Medium_G = TPPSim.Media.ExhaustGas;
   inner Modelica.Fluid.System system(T_start = 60 + 273.15,allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 1292.6 / 3.6, Tnom = 517.2 + 273.15, Tstart = system.T_start) annotation(
@@ -13,7 +11,7 @@ model OnePHorizontalHRSG_Test
     Placement(visible = true, transformation(origin = {-11, 39}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
     Placement(visible = true, transformation(origin = {-22, 12}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = system.T_start, nPorts = 1, p = system.p_ambient)  annotation(
+  Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 1, p = system.p_ambient) annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible FW_Pump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 31}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));

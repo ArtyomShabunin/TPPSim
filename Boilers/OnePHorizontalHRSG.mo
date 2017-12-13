@@ -13,7 +13,7 @@ model OnePHorizontalHRSG
     Placement(visible = true, transformation(origin = {30, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Drums.Drum drum(Din = 1.718, Hw_start = 0.48, L = 9, delta = 0.02) annotation(
     Placement(visible = true, transformation(origin = {-20, -2}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.HRSG_HeatExch.GFHE_EVO EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, circ_type_set = TPPSim.Choices.circ_type.natural, delta = 0.002, delta_fin = 0.0008, dp_circ(displayUnit = "bar") = {1.245e5, 1.2105e5, 1.205e5, 1.2121e5, 1.2067e5, 1.216e5}, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flow_circ = {1.5, 3, 4.5, 6, 8.5, 10}, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, start_flow_circ = 1, z1 = 58, z2 = 6, zahod = 6) annotation(
+  TPPSim.HRSG_HeatExch.GFHE_EVO EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, circ_type_set = TPPSim.Choices.circ_type.forced, delta = 0.002, delta_fin = 0.0008, dp_circ(displayUnit = "bar") = {1.245e5, 1.2105e5, 1.205e5, 1.2121e5, 1.2067e5, 1.216e5}, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flow_circ = {1.5, 6, 9, 12, 17, 20}, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, start_flow_circ = 1, z1 = 58, z2 = 6, zahod = 6) annotation(
     Placement(visible = true, transformation(origin = {-28, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   //  TPPSim.HRSG_HeatExch.GFHE_simple EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.038, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.492, delta = 0.002, delta_fin = 0.0008, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, hfin = 0.015, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 91.09e-3, s2 = 79e-3, sfin = 2.735e-3, z1 = 58, z2 = 6, zahod = 6) annotation(
   //    Placement(visible = true, transformation(origin = {-24, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -40,7 +40,27 @@ model OnePHorizontalHRSG
     Placement(visible = true, transformation(origin = {-7, -49}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
   Modelica.Fluid.Sources.FixedBoundary flashtank(redeclare package Medium = Medium_F, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true)  annotation(
     Placement(visible = true, transformation(origin = {-8, -76}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+  TPPSim.Pumps.simplePump rec_pump(redeclare package Medium = Medium_F, setD_flow = 10, use_D_flow_in = true) annotation(
+    Placement(visible = true, transformation(origin = {40, -58}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature T_cond(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {48, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant set_T(k = 60 + 273.15)  annotation(
+    Placement(visible = true, transformation(origin = {10, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Continuous.LimPID PID(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 10, yMin = 0, y_start = 10)  annotation(
+    Placement(visible = true, transformation(origin = {74, 88}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(PID.y, rec_pump.D_flow_in) annotation(
+    Line(points = {{86, 88}, {92, 88}, {92, -48}, {42, -48}, {42, -50}, {40, -50}}, color = {0, 0, 127}));
+  connect(T_cond.T, PID.u_m) annotation(
+    Line(points = {{56, 20}, {74, 20}, {74, 76}, {74, 76}}, color = {0, 0, 127}));
+  connect(set_T.y, PID.u_s) annotation(
+    Line(points = {{22, 90}, {62, 90}, {62, 88}, {62, 88}}, color = {0, 0, 127}));
+  connect(ECO.flowIn, T_cond.port) annotation(
+    Line(points = {{34, -20}, {36, -20}, {36, 10}, {48, 10}}, color = {0, 127, 255}));
+  connect(rec_pump.port_b, ECO.flowIn) annotation(
+    Line(points = {{48, -58}, {52, -58}, {52, -20}, {34, -20}, {34, -20}}, color = {0, 127, 255}));
+  connect(ECO.flowOut, rec_pump.port_a) annotation(
+    Line(points = {{26, -20}, {18, -20}, {18, -58}, {32, -58}, {32, -58}}, color = {0, 127, 255}));
   connect(blowdown.port_b, flashtank.ports[1]) annotation(
     Line(points = {{-6, -54}, {-8, -54}, {-8, -66}}, color = {0, 127, 255}));
   connect(LC.y1, blowdown.D_flow_in) annotation(

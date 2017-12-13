@@ -162,7 +162,23 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {175, 15}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Ts_IP(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-43, 75}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.Pumps.simplePump rec_pump(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
+    Placement(visible = true, transformation(origin = {209, -33}, extent = {{-7, -7}, {7, 7}}, rotation = -90)));
+  Modelica.Blocks.Continuous.LimPID T_cond_control(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 10, yMin = 0, y_start = 10)  annotation(
+    Placement(visible = true, transformation(origin = {196, 16}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
+  Modelica.Blocks.Sources.Constant set_T_cond(k = 60 + 273.15)  annotation(
+    Placement(visible = true, transformation(origin = {179, 47}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
 equation
+  connect(set_T_cond.y, T_cond_control.u_s) annotation(
+    Line(points = {{186, 48}, {196, 48}, {196, 24}, {196, 24}}, color = {0, 0, 127}));
+  connect(T_cond_control.y, rec_pump.D_flow_in) annotation(
+    Line(points = {{196, 10}, {196, 10}, {196, -14}, {216, -14}, {216, -32}, {216, -32}}, color = {0, 0, 127}));
+  connect(Tw_condin.T, T_cond_control.u_m) annotation(
+    Line(points = {{178, 16}, {188, 16}, {188, 16}, {188, 16}}, color = {0, 0, 127}));
+  connect(rec_pump.port_b, cond_HE.flowIn) annotation(
+    Line(points = {{209, -26}, {210, -26}, {210, -20}, {168, -20}}, color = {0, 127, 255}));
+  connect(cond_HE.flowOut, rec_pump.port_a) annotation(
+    Line(points = {{160, -20}, {156, -20}, {156, -46}, {210, -46}, {210, -40}, {209, -40}}, color = {0, 127, 255}));
   connect(cond_In, cond_HE.flowIn) annotation(
     Line(points = {{220, 0}, {168, 0}, {168, -20}, {168, -20}}));
   connect(IP_pipe_2.waterOut, Ts_IP.port) annotation(
