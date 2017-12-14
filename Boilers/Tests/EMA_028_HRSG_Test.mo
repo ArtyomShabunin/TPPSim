@@ -17,8 +17,8 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium_F, dp_nominal = 9.451e+06, m_flow_nominal = 72, p_nominal = 1.2431e+07, rho_nominal (displayUnit = "kg/m3") = 36.72, set_down_T = 573.15, use_T_in = true) annotation(
-      Placement(visible = true, transformation(origin = {-34, 20}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
+  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium_F, dp_nominal = 9.7e+06, m_flow_nominal = 77, p_nominal = 1.59e+07, rho_nominal(displayUnit = "kg/m3") = 45.13, set_down_T = 573.15, use_T_in = true) annotation(
+    Placement(visible = true, transformation(origin = {-34, 20}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.861e+06, m_flow_nominal = 82.86, p_nominal = 28.61e+05, rho_nominal = 7.827) annotation(
       Placement(visible = true, transformation(origin = {-44, 6}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G) annotation(
@@ -74,6 +74,8 @@ model EMA_028_HRSG_Test
   Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3},fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/pos_BROU.txt", tableName = "tabl", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-69, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(HP_massFlowRate.port_b, HP_RS.waterIn) annotation(
+    Line(points = {{16, -48}, {-36, -48}, {-36, 16}, {-36, 16}}, color = {0, 127, 255}));
   connect(BROU_pos_table.y[1], HP_RS.opening) annotation(
     Line(points = {{-64, 50}, {-32, 50}, {-32, 24}, {-32, 24}}, color = {0, 0, 127}, thickness = 0.5));
   connect(BROU_pos_table.y[2], CV.opening) annotation(
@@ -142,8 +144,6 @@ equation
     Line(points = {{76, 20}, {71, 20}, {71, 25}, {64, 25}}, color = {0, 127, 255}, thickness = 0.5));
   connect(condPump.port_b, boiler.cond_In) annotation(
     Line(points = {{54, 25}, {24, 25}, {24, 11}, {25, 11}}, color = {0, 127, 255}));
-  connect(condPump.port_b, HP_RS.waterIn) annotation(
-    Line(points = {{54, 25}, {-18, 25}, {-18, 16}, {-36, 16}}, color = {0, 127, 255}));
   connect(HRH_pipe.waterOut, CV.port_a) annotation(
     Line(points = {{-32, 8}, {-36, 8}, {-36, 6}, {-40, 6}, {-40, 6}}, color = {0, 127, 255}));
   connect(boiler.RH_Out, HRH_pipe.waterIn) annotation(
