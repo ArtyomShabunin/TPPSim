@@ -12,7 +12,7 @@ model EMA_028_HRSG_Test
   Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = 60 + 273.15, nPorts = 2, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-70, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Blocks.Sources.Constant HP_CV_const(k = 1) annotation(
-    Placement(visible = true, transformation(origin = {-39, 35}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-29, 61}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 1, p = system.p_ambient)  annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
@@ -71,7 +71,15 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-63, -31}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Blocks.Math.Max set_T_BROU_out annotation(
     Placement(visible = true, transformation(origin = {-79, -39}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3},fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/pos_BROU.txt", tableName = "tabl", tableOnFile = true) annotation(
+    Placement(visible = true, transformation(origin = {-69, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(BROU_pos_table.y[1], HP_RS.opening) annotation(
+    Line(points = {{-64, 50}, {-32, 50}, {-32, 24}, {-32, 24}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(BROU_pos_table.y[2], CV.opening) annotation(
+    Line(points = {{-64, 50}, {-44, 50}, {-44, 10}, {-44, 10}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(HP_CV_const.y, LP_CV.opening) annotation(
+    Line(points = {{-23.5, 61}, {-26, 61}, {-26, 44}, {10, 44}, {10, 55}}, color = {0, 0, 127}));
   connect(set_T_BROU_out.y, HP_RS.T_in) annotation(
     Line(points = {{-84, -38}, {-86, -38}, {-86, 24}, {-38, 24}, {-38, 24}}, color = {0, 0, 127}));
   connect(sum11.y, set_T_BROU_out.u2) annotation(
@@ -98,8 +106,6 @@ equation
     Line(points = {{6, 52}, {-46, 52}, {-46, 32}, {-60, 32}, {-60, 30}}, color = {0, 127, 255}));
   connect(boiler.LP_Out, LP_CV.port_a) annotation(
     Line(points = {{15, 11}, {14, 11}, {14, 52}}, color = {0, 127, 255}));
-  connect(HP_CV_const.y, LP_CV.opening) annotation(
-    Line(points = {{-33.5, 35}, {-26, 35}, {-26, 44}, {10, 44}, {10, 55}}, color = {0, 0, 127}));
   connect(hd.y, deaerator.h_in) annotation(
     Line(points = {{85, -38}, {72, -38}}, color = {0, 0, 127}));
   connect(sum1.y, cond_CV.D_flow_in) annotation(
@@ -144,8 +150,6 @@ equation
     Line(points = {{-8, 12}, {-22, 12}, {-22, 8}, {-26, 8}, {-26, 8}}, color = {0, 127, 255}));
   connect(CV.port_b, flowSink.ports[1]) annotation(
     Line(points = {{-48, 6}, {-48, 30}, {-60, 30}}, color = {0, 127, 255}));
-  connect(HP_CV_const.y, CV.opening) annotation(
-    Line(points = {{-33.5, 35}, {-44, 35}, {-44, 9}}, color = {0, 0, 127}));
   connect(CRH_pipe.waterOut, boiler.RH_In) annotation(
     Line(points = {{-32, 14}, {-4, 14}, {-4, 12}, {-4, 12}}, color = {0, 127, 255}));
   connect(HP_RS.flowOut, CRH_pipe.waterIn) annotation(
@@ -154,8 +158,6 @@ equation
     Line(points = {{-30, 20}, {-20, 20}, {-20, 20}, {-20, 20}}, color = {0, 127, 255}));
   connect(boiler.HP_Out, HP_pipe.waterIn) annotation(
     Line(points = {{-6, 12}, {-6, 12}, {-6, 20}, {-14, 20}, {-14, 20}}, color = {0, 127, 255}));
-  connect(HP_CV_const.y, HP_RS.opening) annotation(
-    Line(points = {{-33.5, 35}, {-33, 35}, {-33, 23}}, color = {0, 0, 127}));
   connect(GT.flowOut, boiler.gasIn) annotation(
     Line(points = {{-60, -10}, {-42, -10}, {-42, -9}, {-20, -9}}, color = {0, 127, 255}));
 end EMA_028_HRSG_Test;

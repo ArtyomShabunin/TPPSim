@@ -99,7 +99,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {190, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Modelica.Fluid.Sources.FixedBoundary vent(redeclare package Medium = Medium_F, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
+  Modelica.Fluid.Sources.FixedBoundary vent(redeclare package Medium = Medium_F, T = system.T_ambient, nPorts = 3, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-28, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 270)));
   //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
@@ -170,15 +170,23 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {179, 47}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible RH_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.861e+06, m_flow_nominal = 82.86, p_nominal = 28.61e+05, rho_nominal = 7.827) annotation(
     Placement(visible = true, transformation(origin = {-174, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
-  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 1.2431e+07, m_flow_nominal = 72, p_nominal = 124.31e+05, rho_nominal = 36.72) annotation(
+  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 1.2431e+07, m_flow_nominal = 140, p_nominal = 124.31e+05, rho_nominal = 36.72) annotation(
     Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
+  Modelica.Blocks.Sources.Ramp vent_HP_ramp(duration = 400, height = -1, offset = 1, startTime = 1100)  annotation(
+    Placement(visible = true, transformation(origin = {-132, 54}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
+  Modelica.Blocks.Sources.Ramp vent_RH_ramp(duration = 1170, height = -1, offset = 1, startTime = 2930) annotation(
+    Placement(visible = true, transformation(origin = {-146, 86}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
 equation
+  connect(vent_RH_ramp.y, RH_vent.opening) annotation(
+    Line(points = {{-152, 86}, {-164, 86}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
+  connect(vent_HP_ramp.y, HP_vent.opening) annotation(
+    Line(points = {{-138, 54}, {-146, 54}, {-146, 48}, {-150, 48}, {-150, 48}}, color = {0, 0, 127}));
   connect(RH_vent.port_b, vent.ports[3]) annotation(
-    Line(points = {{-174, 52}, {-174, 52}, {-174, 74}, {-28, 74}, {-28, 80}, {-28, 80}}, color = {0, 127, 255}));
+    Line(points = {{-174, 52}, {-174, 52}, {-174, 76}, {-28, 76}, {-28, 80}, {-28, 80}}, color = {0, 127, 255}));
   connect(HP_vent.port_b, vent.ports[2]) annotation(
     Line(points = {{-154, 52}, {-154, 52}, {-154, 72}, {-28, 72}, {-28, 80}, {-28, 80}}, color = {0, 127, 255}));
   connect(HP_SH_3.flowOut, HP_vent.port_a) annotation(
-    Line(points = {{-154, -20}, {-154, 44}}, color = {0, 127, 255}));
+    Line(points = {{-154, -20}, {-154, -20}, {-154, 44}, {-154, 44}}, color = {0, 127, 255}));
   connect(RH_3.flowOut, RH_vent.port_a) annotation(
     Line(points = {{-174, -20}, {-174, -20}, {-174, 44}, {-174, 44}}, color = {0, 127, 255}));
   connect(IP_pipe_2.waterOut, Ts_IP.port) annotation(
