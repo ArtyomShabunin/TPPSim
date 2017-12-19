@@ -29,7 +29,7 @@ model valve_Test
     Placement(visible = true, transformation(origin = {-70, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const(k = 300 + 273.15)  annotation(
     Placement(visible = true, transformation(origin = {-10, 32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 100, initType = Modelica.Blocks.Types.Init.SteadyState, k = 0.001, y_start = 0)  annotation(
+  Modelica.Blocks.Continuous.PI PI(T = 10, initType = Modelica.Blocks.Types.Init.SteadyState, k = 0.001, y_start = 0)  annotation(
     Placement(visible = true, transformation(origin = {36, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Feedback feedback1 annotation(
     Placement(visible = true, transformation(origin = {60, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
@@ -39,9 +39,27 @@ model valve_Test
     Placement(visible = true, transformation(origin = {-70, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = 1, uMin = 0)  annotation(
     Placement(visible = true, transformation(origin = {4, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Blocks.Logical.Greater greater1 annotation(
+    Placement(visible = true, transformation(origin = {130, 6}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const1(k = 67e5)  annotation(
+    Placement(visible = true, transformation(origin = {130, 40}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  TPPSim.Controls.pre pre1 annotation(
+    Placement(visible = true, transformation(origin = {86, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  TPPSim.Controls.onAuto onAuto1 annotation(
+    Placement(visible = true, transformation(origin = {166, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(combiTimeTable1.y[5], feedback1.u2) annotation(
-    Line(points = {{-52, 22}, {-42, 22}, {-42, 76}, {90, 76}, {90, 30}, {68, 30}, {68, 30}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(onAuto1.y, pre1.u1) annotation(
+    Line(points = {{178, 6}, {184, 6}, {184, 26}, {112, 26}, {112, 34}, {98, 34}, {98, 38}, {98, 38}}, color = {255, 0, 255}));
+  connect(greater1.y, onAuto1.u) annotation(
+    Line(points = {{142, 6}, {154, 6}, {154, 6}, {154, 6}}, color = {255, 0, 255}));
+  connect(combiTimeTable1.y[5], pre1.u2) annotation(
+    Line(points = {{-52, 22}, {34, 22}, {34, 14}, {100, 14}, {100, 22}, {98, 22}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(pre1.y, feedback1.u2) annotation(
+    Line(points = {{74, 30}, {68, 30}, {68, 30}, {68, 30}}, color = {0, 0, 127}));
+  connect(const1.y, greater1.u2) annotation(
+    Line(points = {{119, 40}, {105, 40}, {105, 14}, {117, 14}, {117, 14}, {119, 14}, {119, 14}}, color = {0, 0, 127}));
+  connect(pressure1.p, greater1.u1) annotation(
+    Line(points = {{-6, -12}, {74, -12}, {74, 6}, {118, 6}}, color = {0, 0, 127}));
   connect(limiter1.y, reducingStation1.opening) annotation(
     Line(points = {{-8, 60}, {-26, 60}, {-26, 10}, {0, 10}, {0, -20}, {0, -20}}, color = {0, 0, 127}));
   connect(PI.y, limiter1.u) annotation(
