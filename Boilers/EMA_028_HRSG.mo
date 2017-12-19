@@ -170,7 +170,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {179, 47}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible RH_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 2.861e+06) annotation(
     Placement(visible = true, transformation(origin = {-174, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
-  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 800, dp_nominal = 1.2431e+07) annotation(
+  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 1.2431e+07) annotation(
     Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Blocks.Sources.Ramp vent_HP_ramp(duration = 400, height = -1, offset = 1, startTime = 1100)  annotation(
     Placement(visible = true, transformation(origin = {-132, 54}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));

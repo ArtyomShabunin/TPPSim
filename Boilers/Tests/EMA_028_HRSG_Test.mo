@@ -19,7 +19,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 600, dp_nominal = 9e+06, min_delta = 90, set_down_T = 573.15, use_T_in = true) annotation(
     Placement(visible = true, transformation(origin = {-34, 20}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible IP_RS(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 3e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible IP_RS(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1800, dp_nominal = 3e+06) annotation(
       Placement(visible = true, transformation(origin = {-56, 2}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {10, 4}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
@@ -67,19 +67,33 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-45, 55}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   ThermoPower.Water.SteamTurbineStodola HPT(Kt = 0.0038, PRstart = 1, eta_iso_nom = 0.9, pnom = 130e5, wnom = 77)  annotation(
     Placement(visible = true, transformation(origin = {-62, 28}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible HPCV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1200, dp_nominal = 9e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible HPCV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 9e+06) annotation(
     Placement(visible = true, transformation(origin = {-46, 36}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Fittings.MultiPort multiPort1(redeclare package Medium = Medium_F, nPorts_b = 2)  annotation(
     Placement(visible = true, transformation(origin = {-25.6, 36}, extent = {{2.4, -6}, {-2.4, 6}}, rotation = 0)));
   Modelica.Fluid.Fittings.MultiPort multiPort2(redeclare package Medium = Medium_F, nPorts_b = 2) annotation(
-    Placement(visible = true, transformation(origin = {-45.6, 12}, extent = {{2.4, -6}, {-2.4, 6}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-43.6, 12}, extent = {{2.4, -6}, {-2.4, 6}}, rotation = 0)));
   Modelica.Fluid.Fittings.MultiPort multiPort3(redeclare package Medium = Medium_F, nPorts_b = 2) annotation(
     Placement(visible = true, transformation(origin = {-43.6, 2}, extent = {{2.4, -6}, {-2.4, 6}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible IPT(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 800, dp_nominal = 3e+06) annotation(
     Placement(visible = true, transformation(origin = {-68, -8}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.ConstantSpeed constantSpeed1(w_fixed = Modelica.Constants.pi * 50)  annotation(
     Placement(visible = true, transformation(origin = {-89, 27}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature Ts_HP_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-18, 50}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature Ts_HRH_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-52, -16}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
 equation
+  connect(Ts_HRH_2.port, multiPort3.port_a) annotation(
+    Line(points = {{-52, -20}, {-42, -20}, {-42, 2}, {-42, 2}}, color = {0, 127, 255}));
+  connect(multiPort1.port_a, Ts_HP_2.port) annotation(
+    Line(points = {{-24, 36}, {-18, 36}, {-18, 46}, {-18, 46}}, color = {0, 127, 255}));
+  connect(multiPort2.port_a, CRH_pipe.waterIn) annotation(
+    Line(points = {{-41, 12}, {-38, 12}, {-38, 13}, {-33, 13}}, color = {0, 127, 255}));
+  connect(HPT.outlet, multiPort2.ports_b[1]) annotation(
+    Line(points = {{-70, 36}, {-70, 12}, {-46, 12}}, color = {0, 0, 255}));
+  connect(HP_RS.flowOut, multiPort2.ports_b[2]) annotation(
+    Line(points = {{-38, 20}, {-50, 20}, {-50, 12}, {-46, 12}}, color = {0, 127, 255}));
   connect(HPT.shaft_b, constantSpeed1.flange) annotation(
     Line(points = {{-68, 28}, {-84, 28}, {-84, 27}}));
   connect(BROU_pos_table.y[4], IPT.opening) annotation(
@@ -102,12 +116,6 @@ equation
     Line(points = {{-8, 12}, {-22, 12}, {-22, 3}, {-23, 3}}, color = {0, 127, 255}));
   connect(IP_RS.port_b, flowSink.ports[1]) annotation(
     Line(points = {{-60, 2}, {-80, 2}, {-80, 54}}, color = {0, 127, 255}));
-  connect(HP_RS.flowOut, multiPort2.ports_b[2]) annotation(
-    Line(points = {{-38, 20}, {-50, 20}, {-50, 12}, {-48, 12}, {-48, 12}}, color = {0, 127, 255}));
-  connect(HPT.outlet, multiPort2.ports_b[1]) annotation(
-    Line(points = {{-70, 36}, {-70, 36}, {-70, 12}, {-48, 12}, {-48, 12}}, color = {0, 0, 255}));
-  connect(multiPort2.port_a, CRH_pipe.waterIn) annotation(
-    Line(points = {{-44, 12}, {-38, 12}, {-38, 13}, {-33, 13}}, color = {0, 127, 255}));
   connect(CRH_pipe.waterOut, boiler.RH_In) annotation(
     Line(points = {{-25, 13}, {-4, 13}, {-4, 12}}, color = {0, 127, 255}));
   connect(multiPort1.ports_b[2], HP_RS.flowIn) annotation(

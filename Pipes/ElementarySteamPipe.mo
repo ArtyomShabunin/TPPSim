@@ -25,7 +25,7 @@ equation
   drdp = Medium.density_derp_h(stateFlow);
 //Уравнения для расчета процессов теплообмена
   w_flow_v = D_flow_v / stateFlow.d / f_flow "Расчет скорости потока вода/пар в конечных объемах";
-  alfa_flow = 20000;
+//  alfa_flow = 20000;
 //Про две фазы
   D_flow_v = D[section[1], section[2] + 1];
 //Уравнения из ThermoPower.Water.Flow1DFEM2ph

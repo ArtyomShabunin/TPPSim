@@ -33,7 +33,7 @@ model ReducingStation
     Placement(visible = true, transformation(origin = {26, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {40, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
-  Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, CvData = CvData, Kv = Kv, dp_nominal = dp_nominal, m_flow_nominal = m_flow_nominal, p_nominal = p_nominal, rho_nominal = rho_nominal) annotation(
+  Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, CvData = CvData, Kv = Kv, dp_nominal = dp_nominal, filteredOpening = true, m_flow_nominal = m_flow_nominal, p_nominal = p_nominal, rho_nominal = rho_nominal, riseTime = 30) annotation(
     Placement(visible = true, transformation(origin = {-30, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput opening annotation(
     Placement(visible = true, transformation(origin = {-30, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-32, 80}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
@@ -57,7 +57,11 @@ model ReducingStation
     Placement(visible = true, transformation(origin = {38, -16}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Min min1 annotation(
     Placement(visible = true, transformation(origin = {56, 44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput opening_actual annotation(
+    Placement(visible = true, transformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {14, 46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(valve.opening_actual, opening_actual) annotation(
+    Line(points = {{-22, 2}, {58, 2}, {58, 30}, {80, 30}, {80, 70}, {110, 70}, {110, 70}}, color = {0, 0, 127}));
   connect(flowIn, T.port) annotation(
     Line(points = {{-100, 0}, {-70, 0}, {-70, 14}, {-8, 14}, {-8, 14}}));
   connect(min1.u1, T_in) annotation(
