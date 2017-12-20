@@ -1,8 +1,6 @@
 ﻿within TPPSim.Boilers.Tests;
 
 model EMA_028_HRSG_Test
-  package Medium_F = Modelica.Media.Water.WaterIF97_ph;
-  package Medium_G = TPPSim.Media.ExhaustGas;
   inner Modelica.Fluid.System system(T_start = 60 + 273.15,allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //  TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2482.5 / 3.6, Tnom = 569.1 + 273.15, Tstart = system.T_start) annotation(
@@ -83,7 +81,39 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-18, 50}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Ts_HRH_2(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-52, -16}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  Modelica.Blocks.Sources.CombiTimeTable BROU_P_table(columns = {2, 3}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/P_BROU_inlet.txt", tableName = "tabl", tableOnFile = true)  annotation(
+    Placement(visible = true, transformation(origin = {-11, 87}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  TPPSim.Controls.pressure_control HP_pressure_control(set_p = 6.7e+06)  annotation(
+    Placement(visible = true, transformation(origin = {-28, 64}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
+  Modelica.Fluid.Sensors.Pressure HP_pressure(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  TPPSim.Controls.pressure_control_2 IP_pressure_control(set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
+    Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
 equation
+  connect(HP_pressure_control.y, HP_RS.opening) annotation(
+    Line(points = {{-28, 58}, {-28, 58}, {-28, 52}, {-32, 52}, {-32, 24}, {-32, 24}}, color = {0, 0, 127}));
+  connect(BROU_pos_table.y[2], HPCV.opening) annotation(
+    Line(points = {{-78, 86}, {-46, 86}, {-46, 40}, {-46, 40}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(IP_pressure_control.y, IP_RS.opening) annotation(
+    Line(points = {{-64, 54}, {-64, 54}, {-64, 46}, {-56, 46}, {-56, 6}, {-56, 6}}, color = {0, 0, 127}));
+  connect(IP_pressure.p, IP_pressure_control.u2) annotation(
+    Line(points = {{-28, -4}, {-24, -4}, {-24, 22}, {-52, 22}, {-52, 72}, {-68, 72}, {-68, 68}, {-68, 68}}, color = {0, 0, 127}));
+  connect(BROU_P_table.y[2], IP_pressure_control.u3) annotation(
+    Line(points = {{-16, 88}, {-64, 88}, {-64, 68}, {-64, 68}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(BROU_pos_table.y[3], IP_pressure_control.u1) annotation(
+    Line(points = {{-78, 86}, {-60, 86}, {-60, 68}, {-60, 68}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(HP_pressure.p, HP_pressure_control.u2) annotation(
+    Line(points = {{-20, 26}, {-18, 26}, {-18, 44}, {-36, 44}, {-36, 72}, {-32, 72}, {-32, 72}}, color = {0, 0, 127}));
+  connect(HRH_pipe.waterOut, IP_pressure.port) annotation(
+    Line(points = {{-30, 4}, {-34, 4}, {-34, -8}, {-32, -8}, {-32, -8}}, color = {0, 127, 255}));
+  connect(HP_pressure.port, HP_pipe.waterOut) annotation(
+    Line(points = {{-24, 22}, {-24, 22}, {-24, 18}, {-20, 18}, {-20, 20}}, color = {0, 127, 255}));
+  connect(BROU_P_table.y[1], HP_pressure_control.u3) annotation(
+    Line(points = {{-16, 88}, {-28, 88}, {-28, 72}, {-28, 72}}, color = {0, 0, 127}, thickness = 0.5));
+  connect(BROU_pos_table.y[1], HP_pressure_control.u1) annotation(
+    Line(points = {{-78, 86}, {-40, 86}, {-40, 76}, {-24, 76}, {-24, 72}, {-24, 72}}, color = {0, 0, 127}, thickness = 0.5));
   connect(Ts_HRH_2.port, multiPort3.port_a) annotation(
     Line(points = {{-52, -20}, {-42, -20}, {-42, 2}, {-42, 2}}, color = {0, 127, 255}));
   connect(multiPort1.port_a, Ts_HP_2.port) annotation(
@@ -98,12 +128,6 @@ equation
     Line(points = {{-68, 28}, {-84, 28}, {-84, 27}}));
   connect(BROU_pos_table.y[4], IPT.opening) annotation(
     Line(points = {{-78, 86}, {-72, 86}, {-72, 6}, {-68, 6}, {-68, -4}, {-68, -4}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(BROU_pos_table.y[3], IP_RS.opening) annotation(
-    Line(points = {{-78, 86}, {-56, 86}, {-56, 6}, {-56, 6}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(BROU_pos_table.y[2], HPCV.opening) annotation(
-    Line(points = {{-78, 86}, {-54, 86}, {-54, 44}, {-46, 44}, {-46, 40}, {-46, 40}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(BROU_pos_table.y[1], HP_RS.opening) annotation(
-    Line(points = {{-78, 86}, {-32, 86}, {-32, 24}, {-32, 24}}, color = {0, 0, 127}, thickness = 0.5));
   connect(IPT.port_b, flowSink.ports[3]) annotation(
     Line(points = {{-72, -8}, {-76, -8}, {-76, 52}, {-80, 52}, {-80, 54}}, color = {0, 127, 255}));
   connect(multiPort3.ports_b[1], IPT.port_a) annotation(

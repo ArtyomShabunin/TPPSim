@@ -7,8 +7,8 @@ model valve_Test
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable combiTimeTable1(columns = {2, 3, 4, 5, 6, 7, 8, 9},fileName = "C:/Users/User/Documents/TPPSim/Valves/Tests/pos_BROU_HP.txt", tableName = "tabl", tableOnFile = true)  annotation(
     Placement(visible = true, transformation(origin = {-64, 22}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-//  Modelica.Fluid.Sources.Boundary_pT flowIn(redeclare package Medium = Medium, T = 500 + 273.15, nPorts = 1, p = 129e5, use_T_in = true, use_p_in = true) annotation(
-//    Placement(visible = true, transformation(origin = {-70, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  //  Modelica.Fluid.Sources.Boundary_pT flowIn(redeclare package Medium = Medium, T = 500 + 273.15, nPorts = 1, p = 129e5, use_T_in = true, use_p_in = true) annotation(
+  //    Placement(visible = true, transformation(origin = {-70, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature temperature(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {28, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   ThermoPower.Water.SteamTurbineStodola steamTurbine(Kt = 0.0038, PRstart = 1, eta_iso_nom = 0.9, pnom = 130e5, wnom = 77)  annotation(
@@ -29,53 +29,29 @@ model valve_Test
     Placement(visible = true, transformation(origin = {-70, -64}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const(k = 300 + 273.15)  annotation(
     Placement(visible = true, transformation(origin = {-10, 32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 10, initType = Modelica.Blocks.Types.Init.SteadyState, k = 0.001, y_start = 0)  annotation(
-    Placement(visible = true, transformation(origin = {36, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Math.Feedback feedback1 annotation(
-    Placement(visible = true, transformation(origin = {60, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Fluid.Sensors.Pressure pressure1(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-12, -12}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Fluid.Sources.MassFlowSource_T flowIn(redeclare package Medium = Medium, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-70, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = 1, uMin = 0)  annotation(
-    Placement(visible = true, transformation(origin = {4, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Logical.Greater greater1 annotation(
-    Placement(visible = true, transformation(origin = {130, 6}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant const1(k = 67e5)  annotation(
-    Placement(visible = true, transformation(origin = {130, 40}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Controls.pre pre1 annotation(
-    Placement(visible = true, transformation(origin = {86, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Controls.onAuto onAuto1 annotation(
-    Placement(visible = true, transformation(origin = {166, 6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Controls.pressure_control_2 pressure_control1(set_p = 6.7e+06, speed_p = 1e5 / 60)   annotation(
+    Placement(visible = true, transformation(origin = {30, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(onAuto1.y, pre1.u1) annotation(
-    Line(points = {{178, 6}, {184, 6}, {184, 26}, {112, 26}, {112, 34}, {98, 34}, {98, 38}, {98, 38}}, color = {255, 0, 255}));
-  connect(greater1.y, onAuto1.u) annotation(
-    Line(points = {{142, 6}, {154, 6}, {154, 6}, {154, 6}}, color = {255, 0, 255}));
-  connect(combiTimeTable1.y[5], pre1.u2) annotation(
-    Line(points = {{-52, 22}, {34, 22}, {34, 14}, {100, 14}, {100, 22}, {98, 22}}, color = {0, 0, 127}, thickness = 0.5));
-  connect(pre1.y, feedback1.u2) annotation(
-    Line(points = {{74, 30}, {68, 30}, {68, 30}, {68, 30}}, color = {0, 0, 127}));
-  connect(const1.y, greater1.u2) annotation(
-    Line(points = {{119, 40}, {105, 40}, {105, 14}, {117, 14}, {117, 14}, {119, 14}, {119, 14}}, color = {0, 0, 127}));
-  connect(pressure1.p, greater1.u1) annotation(
-    Line(points = {{-6, -12}, {74, -12}, {74, 6}, {118, 6}}, color = {0, 0, 127}));
-  connect(limiter1.y, reducingStation1.opening) annotation(
-    Line(points = {{-8, 60}, {-26, 60}, {-26, 10}, {0, 10}, {0, -20}, {0, -20}}, color = {0, 0, 127}));
-  connect(PI.y, limiter1.u) annotation(
-    Line(points = {{26, 60}, {16, 60}, {16, 60}, {16, 60}}, color = {0, 0, 127}));
+  connect(valveCompressible1.opening_filtered, pressure_control1.u3) annotation(
+    Line(points = {{6, -72}, {18, -72}, {18, 44}, {10, 44}, {10, 70}, {18, 70}, {18, 70}}, color = {0, 0, 127}));
+  connect(reducingStation1.opening_actual, pressure_control1.u1) annotation(
+    Line(points = {{6, -24}, {54, -24}, {54, 88}, {6, 88}, {6, 76}, {18, 76}, {18, 76}}, color = {0, 0, 127}));
+  connect(pressure_control1.y, reducingStation1.opening) annotation(
+    Line(points = {{42, 70}, {50, 70}, {50, -12}, {28, -12}, {28, -14}, {0, -14}, {0, -20}, {0, -20}}, color = {0, 0, 127}));
+  connect(pressure1.p, pressure_control1.u2) annotation(
+    Line(points = {{-6, -12}, {6, -12}, {6, 64}, {18, 64}, {18, 64}}, color = {0, 0, 127}));
   connect(combiTimeTable1.y[7], flowIn.m_flow_in) annotation(
     Line(points = {{-52, 22}, {-46, 22}, {-46, -4}, {-82, -4}, {-82, -20}, {-80, -20}}, color = {0, 0, 127}, thickness = 0.5));
   connect(combiTimeTable1.y[3], flowIn.T_in) annotation(
     Line(points = {{-52, 22}, {-50, 22}, {-50, 0}, {-92, 0}, {-92, -24}, {-82, -24}, {-82, -24}}, color = {0, 0, 127}, thickness = 0.5));
   connect(flowIn.ports[1], multiPort1.port_a) annotation(
     Line(points = {{-60, -28}, {-34, -28}}, color = {0, 127, 255}, thickness = 0.5));
-  connect(pressure1.p, feedback1.u1) annotation(
-    Line(points = {{-6, -12}, {60, -12}, {60, 22}, {60, 22}}, color = {0, 0, 127}));
   connect(reducingStation1.flowIn, pressure1.port) annotation(
     Line(points = {{-6, -28}, {-12, -28}, {-12, -18}, {-12, -18}}, color = {0, 127, 255}));
-  connect(feedback1.y, PI.u) annotation(
-    Line(points = {{60, 40}, {60, 40}, {60, 60}, {48, 60}, {48, 60}}, color = {0, 0, 127}));
   connect(const.y, reducingStation1.T_in) annotation(
     Line(points = {{1, 32}, {13, 32}, {13, -20}, {11, -20}, {11, -20}, {11, -20}}, color = {0, 0, 127}));
   connect(waterIn.ports[1], reducingStation1.waterIn) annotation(
