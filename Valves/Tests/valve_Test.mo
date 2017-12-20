@@ -36,8 +36,8 @@ model valve_Test
   TPPSim.Controls.pressure_control_2 pressure_control1(set_p = 6.7e+06, speed_p = 1e5 / 60)   annotation(
     Placement(visible = true, transformation(origin = {30, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
-  connect(valveCompressible1.opening_filtered, pressure_control1.u3) annotation(
-    Line(points = {{6, -72}, {18, -72}, {18, 44}, {10, 44}, {10, 70}, {18, 70}, {18, 70}}, color = {0, 0, 127}));
+  connect(valveCompressible1.opening_actual, pressure_control1.u3) annotation(
+    Line(points = {{6, -76}, {16, -76}, {16, 52}, {10, 52}, {10, 68}, {10, 68}, {10, 72}, {18, 72}, {18, 72}}, color = {0, 0, 127}));
   connect(reducingStation1.opening_actual, pressure_control1.u1) annotation(
     Line(points = {{6, -24}, {54, -24}, {54, 88}, {6, 88}, {6, 76}, {18, 76}, {18, 76}}, color = {0, 0, 127}));
   connect(pressure_control1.y, reducingStation1.opening) annotation(

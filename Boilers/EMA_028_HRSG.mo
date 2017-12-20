@@ -174,7 +174,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Blocks.Sources.Ramp vent_HP_ramp(duration = 400, height = -1, offset = 1, startTime = 1100)  annotation(
     Placement(visible = true, transformation(origin = {-132, 54}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp vent_RH_ramp(duration = 1170, height = -1, offset = 1, startTime = 2930) annotation(
+  Modelica.Blocks.Sources.Ramp vent_RH_ramp(duration = 1170, height = -1, offset = 1, startTime = 1400) annotation(
     Placement(visible = true, transformation(origin = {-146, 86}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
 equation
   connect(vent_RH_ramp.y, RH_vent.opening) annotation(
