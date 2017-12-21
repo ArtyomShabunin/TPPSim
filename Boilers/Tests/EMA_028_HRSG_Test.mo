@@ -91,9 +91,13 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 IP_pressure_control(P_activation = 200000, pos_start = 0.01,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_2 IP_pressure_control(P_activation = 200000, pos_start = 0.1,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
 equation
+  connect(boiler.IP_p_drum, IP_pressure_control.u2) annotation(
+    Line(points = {{8, 14}, {4, 14}, {4, 78}, {-68, 78}, {-68, 68}, {-68, 68}}, color = {0, 0, 127}));
+  connect(boiler.HP_p_drum, HP_pressure_control.u2) annotation(
+    Line(points = {{0, 16}, {-2, 16}, {-2, 80}, {-32, 80}, {-32, 72}, {-32, 72}}, color = {0, 0, 127}));
   connect(IPT.opening_actual, IP_pressure_control.u3) annotation(
     Line(points = {{-70, -8}, {-70, -8}, {-70, 10}, {-66, 10}, {-66, 40}, {-66, 40}, {-66, 70}, {-62, 70}, {-62, 68}, {-62, 68}}, color = {0, 0, 127}));
   connect(IP_RS.opening_actual, IP_pressure_control.u1) annotation(
@@ -108,10 +112,6 @@ equation
     Line(points = {{-78, 86}, {-46, 86}, {-46, 40}, {-46, 40}}, color = {0, 0, 127}, thickness = 0.5));
   connect(IP_pressure_control.y, IP_RS.opening) annotation(
     Line(points = {{-64, 54}, {-64, 54}, {-64, 46}, {-56, 46}, {-56, 6}, {-56, 6}}, color = {0, 0, 127}));
-  connect(IP_pressure.p, IP_pressure_control.u2) annotation(
-    Line(points = {{-28, -4}, {-24, -4}, {-24, 22}, {-52, 22}, {-52, 72}, {-68, 72}, {-68, 68}, {-68, 68}}, color = {0, 0, 127}));
-  connect(HP_pressure.p, HP_pressure_control.u2) annotation(
-    Line(points = {{-20, 26}, {-18, 26}, {-18, 44}, {-36, 44}, {-36, 72}, {-32, 72}, {-32, 72}}, color = {0, 0, 127}));
   connect(HRH_pipe.waterOut, IP_pressure.port) annotation(
     Line(points = {{-30, 4}, {-34, 4}, {-34, -8}, {-32, -8}, {-32, -8}}, color = {0, 127, 255}));
   connect(HP_pressure.port, HP_pipe.waterOut) annotation(

@@ -132,7 +132,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //    Placement(visible = true, transformation(origin = {142, -48}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.RelativePressure relativePressure1(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-64, 30}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  TPPSim.Controls.vent_control checkValve_control(event_value = 1e5, finish_out = 1, start_out = 0) annotation(
+  TPPSim.Controls.vent_control checkValve_control(event_value = 0.1e5, finish_out = 1, start_out = 0) annotation(
     Placement(visible = true, transformation(origin = {-74, 56}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   TPPSim.Pumps.simplePump HP_blowdown(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-33, -49}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
@@ -174,9 +174,17 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Blocks.Sources.Ramp vent_HP_ramp(duration = 400, height = -1, offset = 1, startTime = 1100)  annotation(
     Placement(visible = true, transformation(origin = {-132, 54}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp vent_RH_ramp(duration = 1170, height = -1, offset = 1, startTime = 1400) annotation(
+  Modelica.Blocks.Sources.Ramp vent_RH_ramp(duration = 1170, height = -1, offset = 1, startTime = 2930) annotation(
     Placement(visible = true, transformation(origin = {-146, 86}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput HP_p_drum annotation(
+    Placement(visible = true, transformation(origin = {-90, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-110, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+  Modelica.Blocks.Interfaces.RealOutput IP_p_drum annotation(
+    Placement(visible = true, transformation(origin = {30, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-30, 108}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
 equation
+  connect(IP_drum.p_drum, IP_p_drum) annotation(
+    Line(points = {{34, 0}, {30, 0}, {30, 100}, {30, 100}}, color = {0, 0, 127}));
+  connect(HP_drum.p_drum, HP_p_drum) annotation(
+    Line(points = {{-60, 0}, {-64, 0}, {-64, 20}, {-90, 20}, {-90, 100}, {-90, 100}}, color = {0, 0, 127}));
   connect(vent_RH_ramp.y, RH_vent.opening) annotation(
     Line(points = {{-152, 86}, {-164, 86}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
   connect(vent_HP_ramp.y, HP_vent.opening) annotation(
