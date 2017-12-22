@@ -85,17 +85,23 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-52, -16}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable BROU_P_table(columns = {2, 3}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/P_BROU_inlet.txt", tableName = "tabl", tableOnFile = true)  annotation(
     Placement(visible = true, transformation(origin = {-11, 87}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 300000, pos_start = 0.01, set_p = 6.7e+06, speed_p = 1e5 / 60)  annotation(
+  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 300000, k = 0.00001, pos_start = 0.01, set_p = 6.7e+06, speed_p = 1e5 / 60)  annotation(
     Placement(visible = true, transformation(origin = {-28, 64}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Fluid.Sensors.Pressure HP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 IP_pressure_control(P_activation = 200000, pos_start = 0.1,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_2 IP_pressure_control(P_activation = 130000, k = 0.0001, pos_start = 0.1,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false)  annotation(
+    Placement(visible = true, transformation(origin = {-82, 70}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
-  connect(boiler.IP_p_drum, IP_pressure_control.u2) annotation(
-    Line(points = {{8, 14}, {4, 14}, {4, 78}, {-68, 78}, {-68, 68}, {-68, 68}}, color = {0, 0, 127}));
+  connect(booleanConstant1.y, IP_pressure_control.u4) annotation(
+    Line(points = {{-76, 70}, {-74, 70}, {-74, 64}, {-72, 64}, {-72, 64}}, color = {255, 0, 255}));
+  connect(IP_pressure.p, IP_pressure_control.u2) annotation(
+    Line(points = {{-28, -4}, {-26, -4}, {-26, 8}, {-52, 8}, {-52, 72}, {-68, 72}, {-68, 68}, {-68, 68}}, color = {0, 0, 127}));
+  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
+    Line(points = {{-76, 70}, {-44, 70}, {-44, 68}, {-36, 68}, {-36, 68}}, color = {255, 0, 255}));
   connect(boiler.HP_p_drum, HP_pressure_control.u2) annotation(
     Line(points = {{0, 16}, {-2, 16}, {-2, 80}, {-32, 80}, {-32, 72}, {-32, 72}}, color = {0, 0, 127}));
   connect(IPT.opening_actual, IP_pressure_control.u3) annotation(

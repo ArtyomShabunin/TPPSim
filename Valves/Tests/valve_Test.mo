@@ -1,7 +1,6 @@
 ﻿within TPPSim.Valves.Tests;
 model valve_Test
-  package Medium = Modelica.Media.Water.WaterIF97_ph;
-  Modelica.Fluid.Sources.Boundary_pT flowOut(redeclare package Medium = Medium, T = 300 + 273.15, nPorts = 1, p = 30e5, use_T_in = true, use_p_in = true) annotation(
+  Modelica.Fluid.Sources.Boundary_pT flowOut(redeclare package Medium = Medium, T = 300 + 273.15, nPorts = 1, p = system.p_ambient, use_T_in = true, use_p_in = false) annotation(
     Placement(visible = true, transformation(origin = {70, -28}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -33,9 +32,13 @@ model valve_Test
     Placement(visible = true, transformation(origin = {-12, -12}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Fluid.Sources.MassFlowSource_T flowIn(redeclare package Medium = Medium, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-70, -28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 pressure_control1(set_p = 6.7e+06, speed_p = 1e5 / 60)   annotation(
+  TPPSim.Controls.pressure_control_2 pressure_control1(P_activation = 500000,pos_start = 0.01,set_p = 6.7e+06, speed_p = 1e5 / 60)   annotation(
     Placement(visible = true, transformation(origin = {30, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false)  annotation(
+    Placement(visible = true, transformation(origin = {20, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(booleanConstant1.y, pressure_control1.u4) annotation(
+    Line(points = {{32, 30}, {38, 30}, {38, 50}, {24, 50}, {24, 58}, {26, 58}}, color = {255, 0, 255}));
   connect(valveCompressible1.opening_actual, pressure_control1.u3) annotation(
     Line(points = {{6, -76}, {16, -76}, {16, 52}, {10, 52}, {10, 68}, {10, 68}, {10, 72}, {18, 72}, {18, 72}}, color = {0, 0, 127}));
   connect(reducingStation1.opening_actual, pressure_control1.u1) annotation(

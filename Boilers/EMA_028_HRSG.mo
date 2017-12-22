@@ -94,7 +94,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Fluid.Valves.ValveCompressible vent_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 2.98e+06, filteredOpening = true, m_flow_nominal = 17.83, p_nominal = 29.8e+05, rho_nominal = 11.44, riseTime = 600) annotation(
     Placement(visible = true, transformation(origin = {-28, 56}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   //Обратный клапан на паропроводе СД
-  Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, checkValve = true, dp_nominal = 0.5e5, filteredOpening = true, m_flow_nominal = 17.83, p_nominal = 71e5, rho_nominal = 11.44, riseTime = 300) annotation(
+  Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 0.5e5, filteredOpening = false, m_flow_nominal = 17.83, p_nominal = 71e5, rho_nominal = 11.44, riseTime = 300) annotation(
     Placement(visible = true, transformation(origin = {-66, 42}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
@@ -132,8 +132,6 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //    Placement(visible = true, transformation(origin = {142, -48}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.RelativePressure relativePressure1(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-64, 30}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  TPPSim.Controls.vent_control checkValve_control(event_value = 0.1e5, finish_out = 1, start_out = 0) annotation(
-    Placement(visible = true, transformation(origin = {-74, 56}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   TPPSim.Pumps.simplePump HP_blowdown(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-33, -49}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
   TPPSim.Pumps.simplePump IP_blowdown(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
@@ -180,7 +178,41 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-90, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-110, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   Modelica.Blocks.Interfaces.RealOutput IP_p_drum annotation(
     Placement(visible = true, transformation(origin = {30, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-30, 108}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
+  Modelica.Blocks.Math.Feedback feedback1 annotation(
+    Placement(visible = true, transformation(origin = {-83, 57}, extent = {{-5, 5}, {5, -5}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const(k = 0.5e5)  annotation(
+    Placement(visible = true, transformation(origin = {-105, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Blocks.Continuous.PI PI(T = 5, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.0001, y_start = 0)  annotation(
+    Placement(visible = true, transformation(origin = {-67, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = 1, uMin = 0)  annotation(
+    Placement(visible = true, transformation(origin = {-51, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Blocks.Math.Add add1(k1 = -1)  annotation(
+    Placement(visible = true, transformation(origin = {-49, 83}, extent = {{-5, -5}, {5, 5}}, rotation = 90)));
+  Modelica.Blocks.Math.Gain gain1(k = 1 / 0.0001 / 0.8)  annotation(
+    Placement(visible = true, transformation(origin = {-67, 89}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Blocks.Math.Add add2 annotation(
+    Placement(visible = true, transformation(origin = {-75, 73}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(add2.y, PI.u) annotation(
+    Line(points = {{-70, 74}, {-66, 74}, {-66, 68}, {-74, 68}, {-74, 58}, {-72, 58}}, color = {0, 0, 127}));
+  connect(gain1.y, add2.u1) annotation(
+    Line(points = {{-72, 90}, {-86, 90}, {-86, 76}, {-82, 76}, {-82, 76}}, color = {0, 0, 127}));
+  connect(feedback1.y, add2.u2) annotation(
+    Line(points = {{-78, 58}, {-76, 58}, {-76, 66}, {-86, 66}, {-86, 70}, {-82, 70}, {-82, 70}}, color = {0, 0, 127}));
+  connect(relativePressure1.p_rel, feedback1.u1) annotation(
+    Line(points = {{-64, 26}, {-80, 26}, {-80, 48}, {-88, 48}, {-88, 57}, {-87, 57}}, color = {0, 0, 127}));
+  connect(const.y, feedback1.u2) annotation(
+    Line(points = {{-100, 58}, {-94, 58}, {-94, 64}, {-80, 64}, {-80, 61}, {-83, 61}}, color = {0, 0, 127}));
+  connect(add1.y, gain1.u) annotation(
+    Line(points = {{-48, 88}, {-48, 88}, {-48, 92}, {-56, 92}, {-56, 90}, {-60, 90}, {-60, 90}}, color = {0, 0, 127}));
+  connect(PI.y, add1.u1) annotation(
+    Line(points = {{-62, 58}, {-58, 58}, {-58, 74}, {-52, 74}, {-52, 76}, {-52, 76}}, color = {0, 0, 127}));
+  connect(limiter1.y, add1.u2) annotation(
+    Line(points = {{-46, 58}, {-46, 58}, {-46, 76}, {-46, 76}}, color = {0, 0, 127}));
+  connect(limiter1.y, checkValve.opening) annotation(
+    Line(points = {{-46, 58}, {-46, 58}, {-46, 48}, {-66, 48}, {-66, 46}, {-66, 46}}, color = {0, 0, 127}));
+  connect(PI.y, limiter1.u) annotation(
+    Line(points = {{-62, 58}, {-58, 58}, {-58, 58}, {-58, 58}}, color = {0, 0, 127}));
   connect(IP_drum.p_drum, IP_p_drum) annotation(
     Line(points = {{34, 0}, {30, 0}, {30, 100}, {30, 100}}, color = {0, 0, 127}));
   connect(HP_drum.p_drum, HP_p_drum) annotation(
@@ -285,10 +317,6 @@ equation
     Line(points = {{-66, -14.84}, {-66, -20.84}}, color = {0, 127, 255}));
   connect(HP_drum.steam, HP_pipe.waterIn) annotation(
     Line(points = {{-57, -1}, {-63, -1}, {-63, -1}, {-67, -1}, {-67, -7}, {-67, -7}, {-67, -7}, {-67, -7}}, color = {0, 127, 255}));
-  connect(checkValve_control.y, checkValve.opening) annotation(
-    Line(points = {{-68, 56}, {-66, 56}, {-66, 46}, {-66, 46}}, color = {0, 0, 127}));
-  connect(relativePressure1.p_rel, checkValve_control.u) annotation(
-    Line(points = {{-64, 26}, {-82, 26}, {-82, 56}, {-82, 56}}, color = {0, 0, 127}));
   connect(relativePressure1.port_a, IP_pipe_2.waterOut) annotation(
     Line(points = {{-60, 30}, {-43, 30}, {-43, 42}}, color = {0, 127, 255}));
   connect(IP_pipe_2.waterOut, checkValve.port_a) annotation(
