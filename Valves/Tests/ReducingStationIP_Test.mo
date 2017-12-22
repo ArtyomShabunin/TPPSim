@@ -7,11 +7,11 @@ model ReducingStationIP_Test
     Placement(visible = true, transformation(origin = {-70, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.Boundary_pT flowOut(redeclare package Medium = Medium, nPorts = 2, p = system.p_ambient)  annotation(
     Placement(visible = true, transformation(origin = {70, 0}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible BROU_IP(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 3e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible BROU_IP(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1800, dp_nominal = 3e+06) annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable combiTimeTable1(columns = {2, 3, 4, 5, 6}, fileName = "C:/Users/User/Documents/TPPSim/Valves/Tests/pos_BROU_IP.txt", tableName = "tabl", tableOnFile = true)  annotation(
     Placement(visible = true, transformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible IPT(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 800, dp_nominal = 3e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible IPT(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1230, dp_nominal = 3e+06) annotation(
     Placement(visible = true, transformation(origin = {0, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Fittings.MultiPort multiPort1(redeclare package Medium = Medium, nPorts_b = 2) annotation(
     Placement(visible = true, transformation(origin = {-38, 0}, extent = {{-4, -10}, {4, 10}}, rotation = 0)));

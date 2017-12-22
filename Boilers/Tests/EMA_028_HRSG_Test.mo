@@ -75,7 +75,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-43.6, 12}, extent = {{2.4, -6}, {-2.4, 6}}, rotation = 0)));
   Modelica.Fluid.Fittings.MultiPort multiPort3(redeclare package Medium = Medium_F, nPorts_b = 2) annotation(
     Placement(visible = true, transformation(origin = {-43.6, 2}, extent = {{2.4, -6}, {-2.4, 6}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible IPT(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 800, dp_nominal = 3e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible IPT(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1230, dp_nominal = 3e+06) annotation(
     Placement(visible = true, transformation(origin = {-68, -8}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Mechanics.Rotational.Sources.ConstantSpeed constantSpeed1(w_fixed = Modelica.Constants.pi * 50)  annotation(
     Placement(visible = true, transformation(origin = {-89, 27}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -91,13 +91,21 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 IP_pressure_control(P_activation = 130000, k = 0.0001, pos_start = 0.1,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, k = 0.00005, pos_start = 0.01,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false)  annotation(
     Placement(visible = true, transformation(origin = {-82, 70}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Logical.Greater greater1 annotation(
+    Placement(visible = true, transformation(origin = {47, 51}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant check_valve_pos_const(k = 0.1)  annotation(
+    Placement(visible = true, transformation(origin = {32, 38}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
 equation
-  connect(booleanConstant1.y, IP_pressure_control.u4) annotation(
-    Line(points = {{-76, 70}, {-74, 70}, {-74, 64}, {-72, 64}, {-72, 64}}, color = {255, 0, 255}));
+  connect(greater1.y, IP_pressure_control.u4) annotation(
+    Line(points = {{52, 52}, {56, 52}, {56, 78}, {-74, 78}, {-74, 64}, {-72, 64}, {-72, 64}}, color = {255, 0, 255}));
+  connect(check_valve_pos_const.y, greater1.u2) annotation(
+    Line(points = {{36, 38}, {38, 38}, {38, 48}, {40, 48}, {40, 46}}, color = {0, 0, 127}));
+  connect(boiler.check_valve_pos, greater1.u1) annotation(
+    Line(points = {{6, 24}, {6, 24}, {6, 42}, {18, 42}, {18, 50}, {40, 50}, {40, 52}}, color = {0, 0, 127}));
   connect(IP_pressure.p, IP_pressure_control.u2) annotation(
     Line(points = {{-28, -4}, {-26, -4}, {-26, 8}, {-52, 8}, {-52, 72}, {-68, 72}, {-68, 68}, {-68, 68}}, color = {0, 0, 127}));
   connect(booleanConstant1.y, HP_pressure_control.u4) annotation(

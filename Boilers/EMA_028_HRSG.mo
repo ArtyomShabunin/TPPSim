@@ -182,7 +182,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-83, 57}, extent = {{-5, 5}, {5, -5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const(k = 0.5e5)  annotation(
     Placement(visible = true, transformation(origin = {-105, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 5, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.0001, y_start = 0)  annotation(
+  Modelica.Blocks.Continuous.PI PI(T = 5, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.00005, y_start = 0)  annotation(
     Placement(visible = true, transformation(origin = {-67, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = 1, uMin = 0)  annotation(
     Placement(visible = true, transformation(origin = {-51, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -192,7 +192,13 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-67, 89}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Blocks.Math.Add add2 annotation(
     Placement(visible = true, transformation(origin = {-75, 73}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput check_valve_pos annotation(
+    Placement(visible = true, transformation(origin = {-116, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-40, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
 equation
+  connect(checkValve.opening_actual, check_valve_pos) annotation(
+    Line(points = {{-68, 42}, {-68, 46}, {-116, 46}, {-116, 100}}, color = {0, 0, 127}));
+  connect(HP_drum.p_drum, HP_p_drum) annotation(
+    Line(points = {{-60, 0}, {-64, 0}, {-64, 20}, {-90, 20}, {-90, 100}, {-90, 100}}, color = {0, 0, 127}));
   connect(add2.y, PI.u) annotation(
     Line(points = {{-70, 74}, {-66, 74}, {-66, 68}, {-74, 68}, {-74, 58}, {-72, 58}}, color = {0, 0, 127}));
   connect(gain1.y, add2.u1) annotation(
@@ -215,8 +221,6 @@ equation
     Line(points = {{-62, 58}, {-58, 58}, {-58, 58}, {-58, 58}}, color = {0, 0, 127}));
   connect(IP_drum.p_drum, IP_p_drum) annotation(
     Line(points = {{34, 0}, {30, 0}, {30, 100}, {30, 100}}, color = {0, 0, 127}));
-  connect(HP_drum.p_drum, HP_p_drum) annotation(
-    Line(points = {{-60, 0}, {-64, 0}, {-64, 20}, {-90, 20}, {-90, 100}, {-90, 100}}, color = {0, 0, 127}));
   connect(vent_RH_ramp.y, RH_vent.opening) annotation(
     Line(points = {{-152, 86}, {-164, 86}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
   connect(vent_HP_ramp.y, HP_vent.opening) annotation(
