@@ -182,7 +182,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-83, 57}, extent = {{-5, 5}, {5, -5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const(k = 0.5e5)  annotation(
     Placement(visible = true, transformation(origin = {-105, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 5, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.00005, y_start = 0)  annotation(
+  Modelica.Blocks.Continuous.PI PI(T = 20, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.00005, y_start = 0)  annotation(
     Placement(visible = true, transformation(origin = {-67, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = 1, uMin = 0)  annotation(
     Placement(visible = true, transformation(origin = {-51, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));

@@ -85,13 +85,13 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-52, -16}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable BROU_P_table(columns = {2, 3}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/P_BROU_inlet.txt", tableName = "tabl", tableOnFile = true)  annotation(
     Placement(visible = true, transformation(origin = {-11, 87}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 300000, k = 0.000005, pos_start = 0.01, set_p = 6.7e+06, speed_p = 1e5 / 60)  annotation(
+  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 500000, T = 50, k = 0.000005, pos_start = 0.01, set_p = 6.7e+06, speed_p = 1e5 / 60)  annotation(
     Placement(visible = true, transformation(origin = {-28, 64}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Fluid.Sensors.Pressure HP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, k = 0.00005, pos_start = 0.01,set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, T = 35, k = 0.000005, pos_start = 0.01,set_p = 1.8e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false)  annotation(
     Placement(visible = true, transformation(origin = {-82, 70}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
