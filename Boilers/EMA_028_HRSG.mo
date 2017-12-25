@@ -166,9 +166,9 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {196, 16}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant set_T_cond(k = 60 + 273.15)  annotation(
     Placement(visible = true, transformation(origin = {179, 47}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible RH_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 2.861e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible RH_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 2.861e+06, filteredOpening = true, riseTime = 2300) annotation(
     Placement(visible = true, transformation(origin = {-174, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
-  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 1.2431e+07) annotation(
+  Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 1.2431e+07, filteredOpening = true, riseTime = 960) annotation(
     Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Blocks.Sources.Ramp vent_HP_ramp(duration = 400, height = -1, offset = 1, startTime = 1100)  annotation(
     Placement(visible = true, transformation(origin = {-132, 54}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
@@ -199,6 +199,10 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   Modelica.Blocks.Interfaces.RealInput RH_vent_pos annotation(
     Placement(visible = true, transformation(origin = {-190, 104}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-268, 200}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 equation
+  connect(HP_vent_pos, HP_vent.opening) annotation(
+    Line(points = {{-170, 104}, {-170, 104}, {-170, 84}, {-146, 84}, {-146, 48}, {-150, 48}, {-150, 48}}, color = {0, 0, 127}));
+  connect(RH_vent_pos, RH_vent.opening) annotation(
+    Line(points = {{-190, 104}, {-190, 104}, {-190, 80}, {-164, 80}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
   connect(checkValve.opening_actual, check_valve_pos) annotation(
     Line(points = {{-68, 42}, {-68, 46}, {-116, 46}, {-116, 100}}, color = {0, 0, 127}));
   connect(HP_drum.p_drum, HP_p_drum) annotation(
@@ -225,10 +229,6 @@ equation
     Line(points = {{-62, 58}, {-58, 58}, {-58, 58}, {-58, 58}}, color = {0, 0, 127}));
   connect(IP_drum.p_drum, IP_p_drum) annotation(
     Line(points = {{34, 0}, {30, 0}, {30, 100}, {30, 100}}, color = {0, 0, 127}));
-  connect(vent_RH_ramp.y, RH_vent.opening) annotation(
-    Line(points = {{-152, 86}, {-164, 86}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
-  connect(vent_HP_ramp.y, HP_vent.opening) annotation(
-    Line(points = {{-138, 54}, {-146, 54}, {-146, 48}, {-150, 48}, {-150, 48}}, color = {0, 0, 127}));
   connect(RH_vent.port_b, vent.ports[3]) annotation(
     Line(points = {{-174, 52}, {-174, 52}, {-174, 76}, {-28, 76}, {-28, 80}, {-28, 80}}, color = {0, 127, 255}));
   connect(HP_vent.port_b, vent.ports[2]) annotation(

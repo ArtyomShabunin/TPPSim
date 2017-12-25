@@ -59,6 +59,8 @@ block pressure_control_3
   TPPSim.Controls.onAuto onAuto2 annotation(
     Placement(visible = true, transformation(origin = {-34, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(onAuto2.y, y2) annotation(
+    Line(points = {{-22, -34}, {-20, -34}, {-20, -28}, {54, -28}, {54, -90}, {110, -90}, {110, -90}}, color = {255, 0, 255}));
   connect(pre2.y, p_set1.u2) annotation(
     Line(points = {{6, -42}, {14, -42}, {14, -62}, {20, -62}}, color = {0, 0, 127}));
   connect(p_set1.y, feedback1.u2) annotation(
@@ -77,8 +79,6 @@ equation
     Line(points = {{-81, -90}, {-72, -90}}, color = {0, 0, 127}));
   connect(u2, greater1.u1) annotation(
     Line(points = {{-120, -60}, {-96, -60}, {-96, -82}, {-72, -82}}, color = {0, 0, 127}));
-  connect(onAuto1.y, y2) annotation(
-    Line(points = {{14, -82}, {16, -82}, {16, -90}, {110, -90}}, color = {255, 0, 255}));
   connect(add1.y, gain1.u) annotation(
     Line(points = {{70, -52}, {70, -98}, {50, -98}}, color = {0, 0, 127}));
   connect(gain1.y, add2.u2) annotation(

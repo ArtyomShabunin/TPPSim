@@ -91,7 +91,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, T = 35, k = 0.000005, pos_start = 0.01,set_p = 1.8e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, T = 35, k = 0.000005, pos_start = 0.01, set_p = 1.7e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false)  annotation(
     Placement(visible = true, transformation(origin = {-82, 70}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
@@ -99,7 +99,19 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {47, 51}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant check_valve_pos_const(k = 0.1)  annotation(
     Placement(visible = true, transformation(origin = {32, 38}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  Modelica.Blocks.Math.BooleanToReal booleanToReal1(realFalse = 1, realTrue = 0)  annotation(
+    Placement(visible = true, transformation(origin = {-8, 60}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0)  annotation(
+    Placement(visible = true, transformation(origin = {6, 72}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
 equation
+  connect(booleanToReal2.y, boiler.HP_vent_pos) annotation(
+    Line(points = {{10, 72}, {14, 72}, {14, 60}, {2, 60}, {2, 40}, {-10, 40}, {-10, 24}, {-10, 24}}, color = {0, 0, 127}));
+  connect(HP_pressure_control.y2, booleanToReal2.u) annotation(
+    Line(points = {{-34, 58}, {-34, 58}, {-34, 56}, {-16, 56}, {-16, 72}, {2, 72}, {2, 72}}, color = {255, 0, 255}));
+  connect(booleanToReal1.y, boiler.RH_vent_pos) annotation(
+    Line(points = {{-4, 60}, {-4, 60}, {-4, 44}, {-16, 44}, {-16, 24}, {-16, 24}}, color = {0, 0, 127}));
+  connect(IP_pressure_control.y2, booleanToReal1.u) annotation(
+    Line(points = {{-70, 54}, {-70, 54}, {-70, 48}, {-14, 48}, {-14, 60}, {-12, 60}}, color = {255, 0, 255}));
   connect(greater1.y, IP_pressure_control.u4) annotation(
     Line(points = {{52, 52}, {56, 52}, {56, 78}, {-74, 78}, {-74, 64}, {-72, 64}, {-72, 64}}, color = {255, 0, 255}));
   connect(check_valve_pos_const.y, greater1.u2) annotation(
