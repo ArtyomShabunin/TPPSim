@@ -91,7 +91,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-24, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure IP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-32, -4}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, T = 35, k = 0.000005, pos_start = 0.01, set_p = 1.7e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, T = 35, k = 0.000005, pos_start = 0.01, set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-64, 60}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false)  annotation(
     Placement(visible = true, transformation(origin = {-82, 70}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
