@@ -2,8 +2,6 @@
 
 model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энергоблока ПГУ-410 Ново-Салаватской ТЭЦ"
   extends TPPSim.Boilers.BaseClases.Icons.Icon3pHorizontalHRSG;
-  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
-  replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   outer Modelica.Fluid.System system;
   //Контур ВД
   //Экономайзеры ВД
@@ -95,7 +93,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-28, 56}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   //Обратный клапан на паропроводе СД
   Modelica.Fluid.Valves.ValveCompressible checkValve(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 0.5e5, filteredOpening = false, m_flow_nominal = 17.83, p_nominal = 71e5, rho_nominal = 11.44, riseTime = 300) annotation(
-    Placement(visible = true, transformation(origin = {-66, 42}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-76, 42}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {190, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
@@ -131,7 +129,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
   //  TPPSim.Pumps.simplePump circulation_LP(redeclare package Medium = Medium_F, setD_flow = 150)  annotation(
   //    Placement(visible = true, transformation(origin = {142, -48}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.RelativePressure relativePressure1(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {-64, 30}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-50, 34}, extent = {{4, 4}, {-4, -4}}, rotation = 0)));
   TPPSim.Pumps.simplePump HP_blowdown(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-33, -49}, extent = {{-5, 5}, {5, -5}}, rotation = 90)));
   TPPSim.Pumps.simplePump IP_blowdown(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
@@ -170,63 +168,47 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-174, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 1.2431e+07, filteredOpening = true, riseTime = 960) annotation(
     Placement(visible = true, transformation(origin = {-154, 48}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
-  Modelica.Blocks.Sources.Ramp vent_HP_ramp(duration = 400, height = -1, offset = 1, startTime = 1100)  annotation(
-    Placement(visible = true, transformation(origin = {-132, 54}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp vent_RH_ramp(duration = 1170, height = -1, offset = 1, startTime = 2930) annotation(
-    Placement(visible = true, transformation(origin = {-146, 86}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealOutput HP_p_drum annotation(
     Placement(visible = true, transformation(origin = {-90, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-140, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Blocks.Interfaces.RealOutput IP_p_drum annotation(
     Placement(visible = true, transformation(origin = {30, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {22, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
-  Modelica.Blocks.Math.Feedback feedback1 annotation(
-    Placement(visible = true, transformation(origin = {-83, 57}, extent = {{-5, 5}, {5, -5}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant const(k = 0.5e5)  annotation(
-    Placement(visible = true, transformation(origin = {-105, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 20, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.00005, y_start = 0)  annotation(
-    Placement(visible = true, transformation(origin = {-67, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Nonlinear.Limiter limiter1(limitsAtInit = true, uMax = 1, uMin = 0)  annotation(
-    Placement(visible = true, transformation(origin = {-51, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Math.Add add1(k1 = -1)  annotation(
-    Placement(visible = true, transformation(origin = {-49, 83}, extent = {{-5, -5}, {5, 5}}, rotation = 90)));
-  Modelica.Blocks.Math.Gain gain1(k = 1 / 0.0001 / 0.8)  annotation(
-    Placement(visible = true, transformation(origin = {-67, 89}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
-  Modelica.Blocks.Math.Add add2 annotation(
-    Placement(visible = true, transformation(origin = {-75, 73}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Interfaces.RealOutput check_valve_pos annotation(
-    Placement(visible = true, transformation(origin = {-116, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-40, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
+  Modelica.Blocks.Interfaces.BooleanOutput check_valve_pos annotation(
+    Placement(visible = true, transformation(origin = {-116, 106}, extent = {{-10, -10}, {10, 10}}, rotation = 90), iconTransformation(origin = {-40, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 90)));
   Modelica.Blocks.Interfaces.RealInput HP_vent_pos annotation(
-    Placement(visible = true, transformation(origin = {-170, 104}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-204, 200}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {-140, 104}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-204, 200}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Interfaces.RealInput RH_vent_pos annotation(
-    Placement(visible = true, transformation(origin = {-190, 104}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-268, 200}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {-164, 104}, extent = {{-10, -10}, {10, 10}}, rotation = -90), iconTransformation(origin = {-268, 200}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  TPPSim.Controls.dp_control checkValve_control annotation(
+    Placement(visible = true, transformation(origin = {-62, 56}, extent = {{-6, -6}, {6, 6}}, rotation = 180)));
+  Modelica.Blocks.Logical.Greater greater1 annotation(
+    Placement(visible = true, transformation(origin = {-106, 54}, extent = {{6, 6}, {-6, -6}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant check_valve_pos_const(k = 0.1)  annotation(
+    Placement(visible = true, transformation(origin = {-62, 86}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
 equation
-  connect(HP_vent_pos, HP_vent.opening) annotation(
-    Line(points = {{-170, 104}, {-170, 104}, {-170, 84}, {-146, 84}, {-146, 48}, {-150, 48}, {-150, 48}}, color = {0, 0, 127}));
+  connect(greater1.y, check_valve_pos) annotation(
+    Line(points = {{-112, 54}, {-116, 54}, {-116, 106}}, color = {255, 0, 255}));
+  connect(checkValve.opening_actual, greater1.u1) annotation(
+    Line(points = {{-78, 42}, {-80, 42}, {-80, 54}, {-98, 54}, {-98, 54}}, color = {0, 0, 127}));
+  connect(check_valve_pos_const.y, greater1.u2) annotation(
+    Line(points = {{-68, 86}, {-94, 86}, {-94, 59}, {-99, 59}}, color = {0, 0, 127}));
+  connect(checkValve_control.y, checkValve.opening) annotation(
+    Line(points = {{-68, 56}, {-76, 56}, {-76, 46}, {-76, 46}}, color = {0, 0, 127}));
+  connect(relativePressure1.p_rel, checkValve_control.u) annotation(
+    Line(points = {{-50, 38}, {-50, 56}, {-55, 56}}, color = {0, 0, 127}));
+  connect(checkValve.port_b, RH_1.flowIn) annotation(
+    Line(points = {{-80, 42}, {-86, 42}, {-86, -20}}, color = {0, 127, 255}));
+  connect(IP_pipe_2.waterOut, checkValve.port_a) annotation(
+    Line(points = {{-43, 42}, {-72, 42}}, color = {0, 127, 255}));
+  connect(relativePressure1.port_b, RH_1.flowIn) annotation(
+    Line(points = {{-54, 34}, {-86, 34}, {-86, -20}}, color = {0, 127, 255}));
+  connect(relativePressure1.port_a, IP_pipe_2.waterOut) annotation(
+    Line(points = {{-46, 34}, {-43, 34}, {-43, 42}}, color = {0, 127, 255}));
   connect(RH_vent_pos, RH_vent.opening) annotation(
-    Line(points = {{-190, 104}, {-190, 104}, {-190, 80}, {-164, 80}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
-  connect(checkValve.opening_actual, check_valve_pos) annotation(
-    Line(points = {{-68, 42}, {-68, 46}, {-116, 46}, {-116, 100}}, color = {0, 0, 127}));
+    Line(points = {{-164, 104}, {-164, 104}, {-164, 48}, {-170, 48}, {-170, 48}}, color = {0, 0, 127}));
+  connect(HP_vent_pos, HP_vent.opening) annotation(
+    Line(points = {{-140, 104}, {-140, 104}, {-140, 48}, {-150, 48}, {-150, 48}}, color = {0, 0, 127}));
   connect(HP_drum.p_drum, HP_p_drum) annotation(
     Line(points = {{-60, 0}, {-64, 0}, {-64, 20}, {-90, 20}, {-90, 100}, {-90, 100}}, color = {0, 0, 127}));
-  connect(add2.y, PI.u) annotation(
-    Line(points = {{-70, 74}, {-66, 74}, {-66, 68}, {-74, 68}, {-74, 58}, {-72, 58}}, color = {0, 0, 127}));
-  connect(gain1.y, add2.u1) annotation(
-    Line(points = {{-72, 90}, {-86, 90}, {-86, 76}, {-82, 76}, {-82, 76}}, color = {0, 0, 127}));
-  connect(feedback1.y, add2.u2) annotation(
-    Line(points = {{-78, 58}, {-76, 58}, {-76, 66}, {-86, 66}, {-86, 70}, {-82, 70}, {-82, 70}}, color = {0, 0, 127}));
-  connect(relativePressure1.p_rel, feedback1.u1) annotation(
-    Line(points = {{-64, 26}, {-80, 26}, {-80, 48}, {-88, 48}, {-88, 57}, {-87, 57}}, color = {0, 0, 127}));
-  connect(const.y, feedback1.u2) annotation(
-    Line(points = {{-100, 58}, {-94, 58}, {-94, 64}, {-80, 64}, {-80, 61}, {-83, 61}}, color = {0, 0, 127}));
-  connect(add1.y, gain1.u) annotation(
-    Line(points = {{-48, 88}, {-48, 88}, {-48, 92}, {-56, 92}, {-56, 90}, {-60, 90}, {-60, 90}}, color = {0, 0, 127}));
-  connect(PI.y, add1.u1) annotation(
-    Line(points = {{-62, 58}, {-58, 58}, {-58, 74}, {-52, 74}, {-52, 76}, {-52, 76}}, color = {0, 0, 127}));
-  connect(limiter1.y, add1.u2) annotation(
-    Line(points = {{-46, 58}, {-46, 58}, {-46, 76}, {-46, 76}}, color = {0, 0, 127}));
-  connect(limiter1.y, checkValve.opening) annotation(
-    Line(points = {{-46, 58}, {-46, 58}, {-46, 48}, {-66, 48}, {-66, 46}, {-66, 46}}, color = {0, 0, 127}));
-  connect(PI.y, limiter1.u) annotation(
-    Line(points = {{-62, 58}, {-58, 58}, {-58, 58}, {-58, 58}}, color = {0, 0, 127}));
   connect(IP_drum.p_drum, IP_p_drum) annotation(
     Line(points = {{34, 0}, {30, 0}, {30, 100}, {30, 100}}, color = {0, 0, 127}));
   connect(RH_vent.port_b, vent.ports[3]) annotation(
@@ -325,16 +307,10 @@ equation
     Line(points = {{-66, -14.84}, {-66, -20.84}}, color = {0, 127, 255}));
   connect(HP_drum.steam, HP_pipe.waterIn) annotation(
     Line(points = {{-57, -1}, {-63, -1}, {-63, -1}, {-67, -1}, {-67, -7}, {-67, -7}, {-67, -7}, {-67, -7}}, color = {0, 127, 255}));
-  connect(relativePressure1.port_a, IP_pipe_2.waterOut) annotation(
-    Line(points = {{-60, 30}, {-43, 30}, {-43, 42}}, color = {0, 127, 255}));
-  connect(IP_pipe_2.waterOut, checkValve.port_a) annotation(
-    Line(points = {{-43, 42}, {-62, 42}}, color = {0, 127, 255}));
   connect(IP_pipe_2.waterOut, vent_CV.port_a) annotation(
     Line(points = {{-43, 42}, {-46, 42}, {-46, 48}, {-28, 48}, {-28, 52}}, color = {0, 127, 255}));
   connect(IP_massFlowRate.port_b, IP_pipe_2.waterIn) annotation(
     Line(points = {{-31, 30}, {-31, 42}, {-33, 42}}, color = {0, 127, 255}));
-  connect(relativePressure1.port_b, RH_1.flowIn) annotation(
-    Line(points = {{-68, 30}, {-86, 30}, {-86, -20}}, color = {0, 127, 255}));
 //  connect(circulation_LP.port_b, LP_EVO.flowIn) annotation(
 //    Line(points = {{138, -48}, {136, -48}, {136, -42}, {142, -42}, {142, -20}, {138, -20}, {138, -20}}, color = {0, 127, 255}));
 //  connect(LP_downPipe.waterOut, circulation_LP.port_a) annotation(
@@ -379,8 +355,6 @@ equation
     Line(points = {{51, -19}, {54, -19}, {54, -17}, {57, -17}, {57, -25}, {58, -25}, {58, -27}, {57, -27}}, color = {0, 127, 255}));
   connect(IP_SH_1.gasIn, HP_ECO_2.gasOut) annotation(
     Line(points = {{13, -30}, {1, -30}}, color = {0, 127, 255}));
-  connect(checkValve.port_b, RH_1.flowIn) annotation(
-    Line(points = {{-70, 42}, {-86, 42}, {-86, -20}}, color = {0, 127, 255}));
   connect(parallel_ECO.flowOut_1, HP_ECO_2.flowIn) annotation(
     Line(points = {{86, -20}, {86, 34}, {0, 34}, {0, -20}}, color = {0, 127, 255}));
   connect(LP_SH_1.gasIn, parallel_ECO.gasOut) annotation(
@@ -456,7 +430,7 @@ equation
       <li><i>October 11, 2017</i>
    by Artyom Shabunin:<br></li>
 </ul></body></html>"),
-    Icon(coordinateSystem(extent = {{-300, -200}, {300, 200}}, initialScale = 0.1), graphics = {Polygon(origin = {-117, 131}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{21, 69}, {21, 7}, {-13, 7}, {-13, -71}, {-21, -71}, {-21, 15}, {13, 15}, {13, 69}, {21, 69}}),  Polygon(origin = {-66, 103}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-30, 43}, {24, 43}, {24, -43}, {16, -43}, {16, 35}, {-30, 35}, {-30, 43}}), Polygon(origin = {-69, 142}, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-15, 10}, {15, -10}, {15, 10}, {-15, -10}, {-15, 10}}), Line(origin = {-49, 170.517}, points = {{-9, -20.5172}, {-9, 3.48283}, {9, 3.48283}, {9, 19.4828}}), Polygon(origin = {-237, 117}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{57, -57}, {57, -9}, {-63, -9}, {-63, -17}, {47, -17}, {47, -57}, {57, -57}}), Polygon(origin = {-237, 143}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{83, -83}, {83, -9}, {-63, -9}, {-63, -17}, {73, -17}, {73, -83}, {83, -83}}), Polygon(origin = {-177, 167}, points = {{-2, -33}, {-2, 27}, {2, 27}, {2, -33}, {-2, -33}}), Rectangle(origin = {-177, 183}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-7, 7}, {7, -7}}), Line(origin = {-181.089, 186.268}, points = {{-3, 0}, {3, 0}}), Line(origin = {-173.039, 182.548}, points = {{-3, 0}, {3, 0}}), Line(origin = {-181.063, 178.829}, points = {{-3, 0}, {3, 0}}), Rectangle(extent = {{-234, 186}, {-234, 186}}), Ellipse(extent = {{-226, 192}, {-226, 192}}, endAngle = 360), Polygon(origin = {-177, 197}, points = {{-10, -3}, {0, 3}, {10, -3}, {-10, -3}}), Rectangle(extent = {{-238, 158}, {-238, 158}}), Polygon(origin = {-238, 154}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{1, -46}, {1, -32}, {3, -30}, {5, -26}, {5, -22}, {3, -18}, {1, -16}, {1, 40}, {-3, 40}, {-3, -8}, {-3, -16}, {-1, -18}, {1, -22}, {1, -26}, {-1, -30}, {-3, -32}, {-3, -40}, {-3, -46}, {1, -46}}), Rectangle(origin = {-239, 183}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-7, 7}, {7, -7}}), Line(origin = {-243.35, 185.966}, points = {{-3, 0}, {3, 0}}), Line(origin = {-235.368, 181.978}, points = {{-3, 0}, {3, 0}}), Line(origin = {-243.392, 178.326}, points = {{-3, 0}, {3, 0}}), Polygon(origin = {-239, 197}, points = {{-10, -3}, {0, 3}, {10, -3}, {-10, -3}}), Polygon(origin = {-177, 154}, rotation = -90, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-15, 10}, {15, -10}, {15, 10}, {-15, -10}, {-15, 10}}), Polygon(origin = {-239, 154}, rotation = -90, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-15, 10}, {15, -10}, {15, 10}, {-15, -10}, {-15, 10}}), Rectangle(origin = {138, 135}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-5, 65}, {5, -75}}), Polygon(origin = {157, -23}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-15, 169}, {15, 169}, {15, -169}, {-21, -169}, {-21, -161}, {7, -161}, {7, 161}, {-15, 161}, {-15, 169}}), Polygon(origin = {169, 119}, fillColor = {0, 85, 255}, fillPattern = FillPattern.Solid, points = {{-1, 9}, {17, -9}, {-17, -9}, {-1, 9}}), Ellipse(origin = {170, 111}, lineColor = {156, 156, 156}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Sphere, extent = {{-18, 17}, {16, -17}}, endAngle = 360), Polygon(origin = {169, 119}, fillColor = {0, 85, 255}, fillPattern = FillPattern.Solid, points = {{-1, 9}, {17, -9}, {-17, -9}, {-1, 9}}), Rectangle(origin = {50, 135}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-5, 65}, {5, -75}}), Ellipse(origin = {-128, 136}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{4, -2}, {26, -24}}, endAngle = 360), Line(origin = {-106.044, 105.582}, points = {{-7.20888, 6.20888}, {-7.20888, -5.79112}, {4.79112, -5.79112}}), Text(origin = {-112, 124}, extent = {{-8, 8}, {8, -8}}, textString = "P"), Ellipse(origin = {14, 136}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{4, -2}, {26, -24}}, endAngle = 360), Text(origin = {30, 124}, extent = {{-8, 8}, {8, -8}}, textString = "P"), Line(origin = {35.5723, 105.605}, points = {{-7.20888, 6.20888}, {-7.20888, -5.79112}, {-21.2089, -5.79112}}), Line(origin = {-128.896, 163.209}, points = {{8.89567, -31.2087}, {8.89567, -3.20866}, {-11.1043, -3.20866}, {-11.1043, 26.7913}}), Line(origin = {22, 161}, points = {{0, -29}, {0, 29}}), Line(origin = {-188.897, 177}, points = {{-15, 23}, {-15, -23}, {11, -23}}), Line(origin = {-252.588, 176.707}, points = {{-15, 23}, {-15, -23}, {11, -23}})}),
+    Icon(coordinateSystem(extent = {{-300, -200}, {300, 200}}, initialScale = 0.1), graphics = {Polygon(origin = {-117, 131}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{21, 69}, {21, 7}, {-13, 7}, {-13, -71}, {-21, -71}, {-21, 15}, {13, 15}, {13, 69}, {21, 69}}),  Polygon(origin = {-66, 103}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-30, 43}, {24, 43}, {24, -43}, {16, -43}, {16, 35}, {-30, 35}, {-30, 43}}), Polygon(origin = {-69, 142}, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-15, 10}, {15, -10}, {15, 10}, {-15, -10}, {-15, 10}}), Line(origin = {-49, 170.517}, points = {{-9, -20.5172}, {-9, 3.48283}, {9, 3.48283}, {9, 19.4828}}), Polygon(origin = {-237, 117}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{57, -57}, {57, -9}, {-63, -9}, {-63, -17}, {47, -17}, {47, -57}, {57, -57}}), Polygon(origin = {-237, 143}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{83, -83}, {83, -9}, {-63, -9}, {-63, -17}, {73, -17}, {73, -83}, {83, -83}}), Polygon(origin = {-177, 167}, points = {{-2, -33}, {-2, 27}, {2, 27}, {2, -33}, {-2, -33}}), Rectangle(origin = {-177, 183}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-7, 7}, {7, -7}}), Line(origin = {-181.089, 186.268}, points = {{-3, 0}, {3, 0}}), Line(origin = {-173.039, 182.548}, points = {{-3, 0}, {3, 0}}), Line(origin = {-181.063, 178.829}, points = {{-3, 0}, {3, 0}}), Rectangle(extent = {{-234, 186}, {-234, 186}}), Ellipse(extent = {{-226, 192}, {-226, 192}}, endAngle = 360), Polygon(origin = {-177, 197}, points = {{-10, -3}, {0, 3}, {10, -3}, {-10, -3}}), Rectangle(extent = {{-238, 158}, {-238, 158}}), Polygon(origin = {-238, 154}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, points = {{1, -46}, {1, -32}, {3, -30}, {5, -26}, {5, -22}, {3, -18}, {1, -16}, {1, 40}, {-3, 40}, {-3, -8}, {-3, -16}, {-1, -18}, {1, -22}, {1, -26}, {-1, -30}, {-3, -32}, {-3, -40}, {-3, -46}, {1, -46}}), Rectangle(origin = {-239, 183}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{-7, 7}, {7, -7}}), Line(origin = {-243.35, 185.966}, points = {{-3, 0}, {3, 0}}), Line(origin = {-235.368, 181.978}, points = {{-3, 0}, {3, 0}}), Line(origin = {-243.392, 178.326}, points = {{-3, 0}, {3, 0}}), Polygon(origin = {-239, 197}, points = {{-10, -3}, {0, 3}, {10, -3}, {-10, -3}}), Polygon(origin = {-177, 154}, rotation = -90, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-15, 10}, {15, -10}, {15, 10}, {-15, -10}, {-15, 10}}), Polygon(origin = {-239, 154}, rotation = -90, fillColor = {255, 255, 255}, fillPattern = FillPattern.HorizontalCylinder, points = {{-15, 10}, {15, -10}, {15, 10}, {-15, -10}, {-15, 10}}), Rectangle(origin = {138, 135}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-5, 65}, {5, -75}}), Polygon(origin = {157, -23}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, points = {{-15, 169}, {15, 169}, {15, -169}, {-21, -169}, {-21, -161}, {7, -161}, {7, 161}, {-15, 161}, {-15, 169}}), Polygon(origin = {169, 119}, fillColor = {0, 85, 255}, fillPattern = FillPattern.Solid, points = {{-1, 9}, {17, -9}, {-17, -9}, {-1, 9}}), Ellipse(origin = {170, 111}, lineColor = {156, 156, 156}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Sphere, extent = {{-18, 17}, {16, -17}}, endAngle = 360), Polygon(origin = {169, 119}, fillColor = {0, 85, 255}, fillPattern = FillPattern.Solid, points = {{-1, 9}, {17, -9}, {-17, -9}, {-1, 9}}), Rectangle(origin = {50, 135}, fillColor = {0, 170, 255}, pattern = LinePattern.None, fillPattern = FillPattern.Solid, extent = {{-5, 65}, {5, -75}}), Ellipse(origin = {-128, 136}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{4, -2}, {26, -24}}, endAngle = 360), Line(origin = {-106.044, 105.582}, points = {{-7.20888, 6.20888}, {-7.20888, -5.79112}, {4.79112, -5.79112}}), Text(origin = {-112, 124}, extent = {{-8, 8}, {8, -8}}, textString = "P"), Ellipse(origin = {14, 136}, fillColor = {255, 255, 255}, fillPattern = FillPattern.Solid, extent = {{4, -2}, {26, -24}}, endAngle = 360), Text(origin = {30, 124}, extent = {{-8, 8}, {8, -8}}, textString = "P"), Line(origin = {35.5723, 105.605}, points = {{-7.20888, 6.20888}, {-7.20888, -5.79112}, {-21.2089, -5.79112}}), Line(origin = {-128.896, 163.209}, points = {{8.89567, -31.2087}, {8.89567, -3.20866}, {-11.1043, -3.20866}, {-11.1043, 26.7913}}), Line(origin = {22, 161}, points = {{0, -29}, {0, 29}}), Line(origin = {-188.897, 177}, points = {{-15, 23}, {-15, -19}, {11, -19}}), Line(origin = {-252.588, 176.707}, points = {{-15, 23}, {-15, -19}, {11, -19}})}),
     Diagram(coordinateSystem(extent = {{-200, -100}, {220, 100}})),
     __OpenModelica_commandLineOptions = "");
 end EMA_028_HRSG;

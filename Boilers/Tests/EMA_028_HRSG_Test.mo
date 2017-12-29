@@ -8,7 +8,7 @@ model EMA_028_HRSG_Test
   //  TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2482.5 / 3.6, Tnom = 569.1 + 273.15, Tstart = system.T_start) annotation(
   //    Placement(visible = true, transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Gas_turbine.combitable_startupGT GT(redeclare package Medium = Medium_G, fileName = "C:/Users/User/Documents/TPPSim/Gas_turbine/Tests/my.txt") annotation(
-    Placement(visible = true, transformation(origin = {-14, -34}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-16, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = 60 + 273.15, nPorts = 3, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-90, 54}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Blocks.Sources.Constant HP_CV_const(k = 1) annotation(
@@ -104,6 +104,8 @@ model EMA_028_HRSG_Test
   Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0)  annotation(
     Placement(visible = true, transformation(origin = {6, 72}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
 equation
+  connect(GT.flowOut, boiler.gasIn) annotation(
+    Line(points = {{-26, -30}, {-30, -30}, {-30, -8}, {-20, -8}}, color = {0, 127, 255}));
   connect(booleanToReal2.y, boiler.HP_vent_pos) annotation(
     Line(points = {{10, 72}, {14, 72}, {14, 60}, {2, 60}, {2, 40}, {-10, 40}, {-10, 24}, {-10, 24}}, color = {0, 0, 127}));
   connect(HP_pressure_control.y2, booleanToReal2.u) annotation(
@@ -184,8 +186,6 @@ equation
     Line(points = {{6, 52}, {0, 52}, {0, 96}, {-94, 96}, {-94, 70}, {-80, 70}, {-80, 54}, {-80, 54}}, color = {0, 127, 255}));
   connect(HP_CV_const.y, LP_CV.opening) annotation(
     Line(points = {{26, 68}, {10, 68}, {10, 56}, {10, 56}}, color = {0, 0, 127}));
-  connect(GT.flowOut, boiler.gasIn) annotation(
-    Line(points = {{-24, -34}, {-30, -34}, {-30, -8}, {-20, -8}, {-20, -8}}, color = {0, 127, 255}));
   connect(HP_massFlowRate.port_b, HP_RS.waterIn) annotation(
     Line(points = {{16, -48}, {-36, -48}, {-36, 16}, {-36, 16}}, color = {0, 127, 255}));
   connect(boiler.cond_Out, Tw_condout.port) annotation(
