@@ -2,6 +2,8 @@
 
 model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энергоблока ПГУ-410 Ново-Салаватской ТЭЦ"
   extends TPPSim.Boilers.BaseClases.Icons.Icon3pHorizontalHRSG;
+  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
+  replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   outer Modelica.Fluid.System system;
   //Контур ВД
   //Экономайзеры ВД
