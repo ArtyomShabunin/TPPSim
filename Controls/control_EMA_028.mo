@@ -8,23 +8,44 @@ block control_EMA_028
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false) annotation(
     Placement(visible = true, transformation(origin = {-70, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal1(realFalse = 1, realTrue = 0) annotation(
-    Placement(visible = true, transformation(origin = {52, -34}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-10, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0) annotation(
-    Placement(visible = true, transformation(origin = {66, -22}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant set_T_HPRS(k = 300 + 273.15) annotation(
-    Placement(visible = true, transformation(origin = {15, -39}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant HP_CV_const(k = 1) annotation(
-    Placement(visible = true, transformation(origin = {-37, -43}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {50, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant LP_CV_const(k = 1) annotation(
+    Placement(visible = true, transformation(origin = {50, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Examples.BusUsage_Utilities.Interfaces.SubControlBus sensorBus annotation(
-    Placement(visible = true, transformation(origin = {-70, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Examples.BusUsage_Utilities.Interfaces.SubControlBus actuatorsBus annotation(
+    Placement(visible = true, transformation(origin = {70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(LP_CV_const.y, actuatorsBus.LP_CV_pos) annotation(
+    Line(points = {{62, -30}, {70, -30}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(booleanToReal1.y, actuatorsBus.HP_vent_pos) annotation(
+    Line(points = {{2, 10}, {12, 10}, {12, -8}, {70, -8}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(booleanToReal2.y, actuatorsBus.IP_vent_pos) annotation(
+    Line(points = {{62, 10}, {70, 10}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(IP_pressure_control.y, actuatorsBus.IP_RS_pos) annotation(
+    Line(points = {{30, 40}, {30, 40}, {30, 32}, {70, 32}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(HP_pressure_control.y, actuatorsBus.HP_RS_pos) annotation(
+    Line(points = {{-30, 40}, {-30, 40}, {-30, 32}, {70, 32}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(IP_pressure_control.y2, booleanToReal2.u) annotation(
+    Line(points = {{22, 40}, {22, 40}, {22, 10}, {38, 10}, {38, 10}}, color = {255, 0, 255}));
+  connect(IP_pressure_control.u4, sensorBus.check_valve_pos) annotation(
+    Line(points = {{18, 54}, {0, 54}, {0, 80}, {-70, 80}, {-70, 100}}, color = {255, 0, 255}));
+  connect(IP_pressure_control.u1, sensorBus.IP_RS_apos) annotation(
+    Line(points = {{36, 62}, {36, 76}, {-70, 76}, {-70, 100}}, color = {0, 0, 127}));
+  connect(IP_pressure_control.u3, sensorBus.IP_CV_apos) annotation(
+    Line(points = {{32, 62}, {32, 76}, {-70, 76}, {-70, 100}}, color = {0, 0, 127}));
+  connect(IP_pressure_control.u2, sensorBus.IP_p_sensor) annotation(
+    Line(points = {{24, 62}, {24, 76}, {-70, 76}, {-70, 100}}, color = {0, 0, 127}));
   connect(HP_pressure_control.u1, sensorBus.HP_RS_apos) annotation(
-    Line(points = {{-24, 62}, {-24, 62}, {-24, 72}, {-70, 72}, {-70, 90}, {-70, 90}}, color = {0, 0, 127}));
+    Line(points = {{-24, 62}, {-24, 72}, {-70, 72}, {-70, 100}}, color = {0, 0, 127}));
   connect(HP_pressure_control.u3, sensorBus.HP_CV_apos) annotation(
-    Line(points = {{-28, 62}, {-28, 62}, {-28, 72}, {-70, 72}, {-70, 90}, {-70, 90}}, color = {0, 0, 127}));
+    Line(points = {{-28, 62}, {-28, 72}, {-70, 72}, {-70, 100}}, color = {0, 0, 127}));
   connect(HP_pressure_control.u2, sensorBus.HP_p_sensor) annotation(
-    Line(points = {{-36, 62}, {-36, 62}, {-36, 72}, {-70, 72}, {-70, 90}, {-70, 90}}, color = {0, 0, 127}));
+    Line(points = {{-36, 62}, {-36, 72}, {-70, 72}, {-70, 100}}, color = {0, 0, 127}));
+  connect(HP_pressure_control.y2, booleanToReal1.u) annotation(
+    Line(points = {{-38, 40}, {-38, 40}, {-38, 10}, {-22, 10}, {-22, 10}}, color = {255, 0, 255}));
   connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
     Line(points = {{-60, 50}, {-54, 50}, {-54, 54}, {-42, 54}, {-42, 56}}, color = {255, 0, 255}));
-
 end control_EMA_028;
