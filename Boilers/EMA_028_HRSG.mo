@@ -162,7 +162,7 @@ model EMA_028_HRSG "Котел-утилизатор ЭМА-028-КУ энерго
     Placement(visible = true, transformation(origin = {-43, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Pumps.simplePump rec_pump(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {209, -33}, extent = {{-7, -7}, {7, 7}}, rotation = -90)));
-  Modelica.Blocks.Continuous.LimPID T_cond_control(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 30, yMin = 0, y_start = 10)  annotation(
+  Modelica.Blocks.Continuous.LimPID T_cond_control(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 50, yMin = 0, y_start = 10)  annotation(
     Placement(visible = true, transformation(origin = {196, 16}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant set_T_cond(k = 60 + 273.15)  annotation(
     Placement(visible = true, transformation(origin = {179, 47}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));

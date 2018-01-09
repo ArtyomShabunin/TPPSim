@@ -1,6 +1,7 @@
 within TPPSim.Controls;
 
 block control_EMA_028
+  extends TPPSim.Controls.BaseClasses.Icons.IconController;
   TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 300000, T = 20, k = 0.000001, pos_start = 0.01, set_p = 6.7e+06, speed_p = 1e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 300000, T = 35, k = 0.000005, pos_start = 0.01, set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
@@ -11,15 +12,25 @@ block control_EMA_028
     Placement(visible = true, transformation(origin = {-10, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0) annotation(
     Placement(visible = true, transformation(origin = {50, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant LP_CV_const(k = 1) annotation(
-    Placement(visible = true, transformation(origin = {50, -30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Examples.BusUsage_Utilities.Interfaces.SubControlBus sensorBus annotation(
-    Placement(visible = true, transformation(origin = {-70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-50, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-42, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Examples.BusUsage_Utilities.Interfaces.SubControlBus actuatorsBus annotation(
-    Placement(visible = true, transformation(origin = {70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {50, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {44, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
+  TPPSim.Controls.pressure_control_3 LP_pressure_control(P_activation = 150000, T = 35, k = 0.00005, pos_start = 0.05, set_p = 370000, speed_p = 220) annotation(
+    Placement(visible = true, transformation(origin = {-30, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Blocks.Sources.Constant const(k = 0)  annotation(
+    Placement(visible = true, transformation(origin = {12, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
 equation
-  connect(LP_CV_const.y, actuatorsBus.LP_CV_pos) annotation(
-    Line(points = {{62, -30}, {70, -30}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(LP_pressure_control.y2, LP_pressure_control.u4) annotation(
+    Line(points = {{-38, -40}, {-38, -40}, {-38, -44}, {-60, -44}, {-60, -28}, {-42, -28}, {-42, -26}}, color = {255, 0, 255}));
+  connect(const.y, LP_pressure_control.u1) annotation(
+    Line(points = {{0, -30}, {-2, -30}, {-2, -12}, {-24, -12}, {-24, -18}, {-24, -18}}, color = {0, 0, 127}));
+  connect(const.y, LP_pressure_control.u3) annotation(
+    Line(points = {{0, -30}, {-2, -30}, {-2, -8}, {-28, -8}, {-28, -18}, {-28, -18}, {-28, -18}}, color = {0, 0, 127}));
+  connect(LP_pressure_control.y, actuatorsBus.LP_RS_pos) annotation(
+    Line(points = {{-30, -40}, {-30, -40}, {-30, -50}, {70, -50}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
+  connect(LP_pressure_control.u2, sensorBus.LP_p_sensor) annotation(
+    Line(points = {{-36, -18}, {-36, -18}, {-36, 0}, {-86, 0}, {-86, 80}, {-70, 80}, {-70, 100}, {-70, 100}}, color = {0, 0, 127}));
   connect(booleanToReal1.y, actuatorsBus.HP_vent_pos) annotation(
     Line(points = {{2, 10}, {12, 10}, {12, -8}, {70, -8}, {70, 100}, {70, 100}}, color = {0, 0, 127}));
   connect(booleanToReal2.y, actuatorsBus.IP_vent_pos) annotation(

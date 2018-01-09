@@ -33,7 +33,7 @@ model dummy_ST
     Placement(visible = true, transformation(origin = {-100, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {300, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a HRH(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-122, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible LP_CV(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 371000, m_flow_nominal = 12.83, p_nominal = 3.71e+05, rho_nominal = 1.61) annotation(
+  Modelica.Fluid.Valves.ValveCompressible LP_CV(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1100, dp_nominal = 371000, m_flow_nominal = 12.83, p_nominal = 3.71e+05, rho_nominal = 1.61) annotation(
     Placement(visible = true, transformation(origin = {-10, -80}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a LP(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {180, 200}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
