@@ -4,7 +4,7 @@ block dp_control
   extends Modelica.Blocks.Interfaces.SISO;
   Modelica.Blocks.Sources.Constant const(k = 0.5e5)  annotation(
     Placement(visible = true, transformation(origin = {-90, 32}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 20, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.00005, y_start = 0)  annotation(
+  Modelica.Blocks.Continuous.PI PI(T = 20, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 0.00001, y_start = 0)  annotation(
     Placement(visible = true, transformation(origin = {11, 5}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Feedback feedback1 annotation(
     Placement(visible = true, transformation(origin = {-65, -1}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));

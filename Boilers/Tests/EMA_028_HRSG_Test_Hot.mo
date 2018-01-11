@@ -1,13 +1,13 @@
 ﻿within TPPSim.Boilers.Tests;
 
-model EMA_028_HRSG_Test
+model EMA_028_HRSG_Test_Hot
   package Medium_F = Modelica.Media.Water.WaterIF97_ph;
   package Medium_G = TPPSim.Media.ExhaustGas;
-  inner Modelica.Fluid.System system(T_start = 60 + 273.15, allowFlowReversal = false, m_flow_small = 0.01) annotation(
+  inner Modelica.Fluid.System system(T_start = 175 + 273.15, allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //  TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2482.5 / 3.6, Tnom = 569.1 + 273.15, Tstart = system.T_start) annotation(
   //    Placement(visible = true, transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Gas_turbine.combitable_startupGT GT(redeclare package Medium = Medium_G, fileName = "C:/Users/User/Documents/TPPSim/Gas_turbine/Tests/TEC_16_GT_1.txt") annotation(
+  TPPSim.Gas_turbine.combitable_startupGT GT(redeclare package Medium = Medium_G, fileName = "C:/Users/User/Documents/TPPSim/Gas_turbine/Tests/TEC_16_GT_2.txt") annotation(
     Placement(visible = true, transformation(origin = {-16, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 1, p = system.p_ambient) annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -19,11 +19,11 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {31, -47}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible IP_FWP annotation(
     Placement(visible = true, transformation(origin = {33, -41}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.377, Lpipe = 155, delta = 0.05, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.377, Lpipe = 155, delta = 0.05, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2, p_flow_start = 900000) annotation(
     Placement(visible = true, transformation(origin = {-41, 17}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe CRH_pipe(Din = 0.48, Lpipe = 65, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe CRH_pipe(Din = 0.48, Lpipe = 65, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2, p_flow_start = 450000) annotation(
     Placement(visible = true, transformation(origin = {-71, 39}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe HRH_pipe(Din = 0.48, Lpipe = 92.8, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe HRH_pipe(Din = 0.48, Lpipe = 92.8, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2, p_flow_start = 450000) annotation(
     Placement(visible = true, transformation(origin = {-39, 1}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible LP_FWP annotation(
     Placement(visible = true, transformation(origin = {35, -35}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
@@ -51,7 +51,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {20, 36}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Tw_condout(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {4, -24}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3, 4, 5}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/pos_BROU.txt", tableName = "tabl", tableOnFile = true) annotation(
+  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3, 4, 5}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/pos_BROU_2.txt", tableName = "tabl", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-101, 85}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant set_T_HPRS(k = 300 + 273.15) annotation(
     Placement(visible = true, transformation(origin = {-115, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -65,37 +65,39 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {-50, 6}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   TPPSim.Steam_turbine.dummy_ST ST annotation(
     Placement(visible = true, transformation(origin = {-92, 2}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
-  TPPSim.Controls.control_EMA_028 control_EMA_0281(HP_P_activation = 300000, HP_pos_start = 0.01, IP_P_activation = 300000, IP_pos_start = 0.01, LP_P_activation = 150000, LP_pos_start = 0.01) annotation(
-    Placement(visible = true, transformation(origin = {-52, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Controls.control_EMA_028 control_EMA_0281(HP_P_activation = 1e+06, HP_pos_start = 0.03, IP_P_activation = 500000, IP_pos_start = 0.03, LP_P_activation = 250000, LP_pos_start = 0.01) annotation(
+    Placement(visible = true, transformation(origin = {-50, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure LP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {16, 56}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant vent_pos(k = 0)  annotation(
+    Placement(visible = true, transformation(origin = {-21, 35}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
 equation
+  connect(vent_pos.y, boiler.HP_vent_pos) annotation(
+    Line(points = {{-18, 36}, {-10, 36}, {-10, 24}, {-10, 24}}, color = {0, 0, 127}));
+  connect(vent_pos.y, boiler.RH_vent_pos) annotation(
+    Line(points = {{-18, 36}, {-16, 36}, {-16, 24}, {-16, 24}}, color = {0, 0, 127}));
   connect(boiler.HP_p_drum, control_EMA_0281.sensorBus.HP_p_sensor) annotation(
-    Line(points = {{-4, 24}, {-4, 44}, {-56, 44}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{-4, 24}, {-4, 44}, {-54, 44}, {-54, 52}}, color = {0, 0, 127}));
   connect(boiler.check_valve_pos, control_EMA_0281.sensorBus.check_valve_pos) annotation(
-    Line(points = {{6, 24}, {6, 44}, {-56, 44}, {-56, 52}}, color = {255, 0, 255}));
-  connect(control_EMA_0281.actuatorsBus.HP_vent_pos, boiler.HP_vent_pos) annotation(
-    Line(points = {{-48, 52}, {-48, 38}, {-10, 38}, {-10, 24}}, color = {255, 204, 51}, thickness = 0.5));
-  connect(control_EMA_0281.actuatorsBus.IP_vent_pos, boiler.RH_vent_pos) annotation(
-    Line(points = {{-48, 52}, {-48, 34}, {-18, 34}, {-18, 24}, {-16, 24}}, color = {255, 204, 51}, thickness = 0.5));
+    Line(points = {{6, 24}, {6, 44}, {-54, 44}, {-54, 52}}, color = {255, 0, 255}));
   connect(ST.IP_CV_apos, control_EMA_0281.sensorBus.IP_CV_apos) annotation(
-    Line(points = {{-90, -18}, {-90, -24}, {-56, -24}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{-90, -18}, {-90, -24}, {-56, -24}, {-56, 52}, {-54, 52}}, color = {0, 0, 127}));
   connect(ST.IP_RS_apos, control_EMA_0281.sensorBus.IP_RS_apos) annotation(
-    Line(points = {{-92, -18}, {-92, -28}, {-56, -28}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{-92, -18}, {-92, -28}, {-56, -28}, {-56, 52}, {-54, 52}}, color = {0, 0, 127}));
   connect(ST.HP_RS_apos, control_EMA_0281.sensorBus.HP_RS_apos) annotation(
-    Line(points = {{-96, -18}, {-96, -32}, {-56, -32}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{-96, -18}, {-96, -32}, {-56, -32}, {-56, 52}, {-54, 52}}, color = {0, 0, 127}));
   connect(ST.HP_CV_apos, control_EMA_0281.sensorBus.HP_CV_apos) annotation(
-    Line(points = {{-98, -18}, {-98, -36}, {-56, -36}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{-98, -18}, {-98, -36}, {-56, -36}, {-56, 52}, {-54, 52}}, color = {0, 0, 127}));
   connect(control_EMA_0281.actuatorsBus.HP_RS_pos, ST.HP_RS_pos) annotation(
-    Line(points = {{-48, 52}, {-48, 38}, {-98, 38}, {-98, 22}}, color = {255, 204, 51}, thickness = 0.5));
+    Line(points = {{-46, 52}, {-46, 38}, {-98, 38}, {-98, 22}}, color = {255, 204, 51}, thickness = 0.5));
   connect(control_EMA_0281.actuatorsBus.IP_RS_pos, ST.IP_RS_pos) annotation(
-    Line(points = {{-48, 52}, {-48, 34}, {-78, 34}, {-78, 26}, {-90, 26}, {-90, 22}}, color = {255, 204, 51}, thickness = 0.5));
+    Line(points = {{-46, 52}, {-46, 34}, {-78, 34}, {-78, 26}, {-90, 26}, {-90, 22}}, color = {255, 204, 51}, thickness = 0.5));
   connect(IP_pressure.p, control_EMA_0281.sensorBus.IP_p_sensor) annotation(
-    Line(points = {{-46, 6}, {-26, 6}, {-26, 42}, {-56, 42}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{-46, 6}, {-26, 6}, {-26, 42}, {-56, 42}, {-56, 52}, {-54, 52}}, color = {0, 0, 127}));
   connect(LP_pressure.p, control_EMA_0281.sensorBus.LP_p_sensor) annotation(
-    Line(points = {{12, 56}, {-26, 56}, {-26, 46}, {-56, 46}, {-56, 52}}, color = {0, 0, 127}));
+    Line(points = {{12, 56}, {-26, 56}, {-26, 46}, {-54, 46}, {-54, 52}}, color = {0, 0, 127}));
   connect(control_EMA_0281.actuatorsBus.LP_RS_pos, ST.LP_CV_pos) annotation(
-    Line(points = {{-48, 52}, {-48, 48}, {-84, 48}, {-84, 22}}, color = {255, 204, 51}, thickness = 0.5));
+    Line(points = {{-46, 52}, {-46, 48}, {-84, 48}, {-84, 22}}, color = {255, 204, 51}, thickness = 0.5));
   connect(boiler.LP_Out, LP_pressure.port) annotation(
     Line(points = {{16, 24}, {16, 24}, {16, 52}, {16, 52}}, color = {0, 127, 255}));
   connect(BROU_pos_table.y[4], ST.IP_CV_pos) annotation(
@@ -178,4 +180,4 @@ equation
     Line(points = {{54, 25}, {24, 25}, {24, 11}, {25, 11}}, color = {0, 127, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})));
-end EMA_028_HRSG_Test;
+end EMA_028_HRSG_Test_Hot;

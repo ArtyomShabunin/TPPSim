@@ -17,13 +17,13 @@ block pressure_control_3
   Modelica.Blocks.Sources.Constant const_1(k = P_activation) annotation(
     Placement(visible = true, transformation(origin = {-92, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.onAuto onAuto1 annotation(
-    Placement(visible = true, transformation(origin = {2, -82}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {18, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput u3 annotation(
     Placement(visible = true, transformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, 20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Continuous.PI PI(T = T, initType = Modelica.Blocks.Types.Init.InitialOutput, k = k, y_start = pos_start)  annotation(
     Placement(visible = true, transformation(origin = {-6, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.p_set p_set1(set_p = set_p, speed_p = speed_p) annotation(
-    Placement(visible = true, transformation(origin = {32, -70}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {48, -70}, extent = {{-10, 10}, {10, -10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const(k = 0.001)  annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Logical.Less less1 annotation(
@@ -58,17 +58,23 @@ block pressure_control_3
     Placement(visible = true, transformation(origin = {-6, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.onAuto onAuto2 annotation(
     Placement(visible = true, transformation(origin = {-34, -34}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Logical.And and11 annotation(
+    Placement(visible = true, transformation(origin = {-12, -78}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(onAuto2.y, and11.u1) annotation(
+    Line(points = {{-22, -34}, {-22, -34}, {-22, -62}, {-28, -62}, {-28, -74}, {-28, -74}, {-28, -78}, {-24, -78}, {-24, -78}}, color = {255, 0, 255}));
+  connect(u4, and11.u2) annotation(
+    Line(points = {{-34, -120}, {-34, -120}, {-34, -86}, {-24, -86}, {-24, -86}}, color = {255, 0, 255}));
+  connect(and11.y, onAuto1.u) annotation(
+    Line(points = {{-1, -78}, {6, -78}}, color = {255, 0, 255}));
+  connect(onAuto1.y, p_set1.u1) annotation(
+    Line(points = {{29, -78}, {36, -78}}, color = {255, 0, 255}));
+  connect(p_set1.y, feedback1.u2) annotation(
+    Line(points = {{60, -70}, {64, -70}, {64, -56}, {-70, -56}, {-70, -8}, {-70, -8}}, color = {0, 0, 127}));
+  connect(pre2.y, p_set1.u2) annotation(
+    Line(points = {{6, -42}, {14, -42}, {14, -62}, {36, -62}}, color = {0, 0, 127}));
   connect(onAuto2.y, y2) annotation(
     Line(points = {{-22, -34}, {-20, -34}, {-20, -28}, {54, -28}, {54, -90}, {110, -90}, {110, -90}}, color = {255, 0, 255}));
-  connect(pre2.y, p_set1.u2) annotation(
-    Line(points = {{6, -42}, {14, -42}, {14, -62}, {20, -62}}, color = {0, 0, 127}));
-  connect(p_set1.y, feedback1.u2) annotation(
-    Line(points = {{43, -70}, {44, -70}, {44, -58}, {-66, -58}, {-66, -33}, {-70, -33}, {-70, -8}}, color = {0, 0, 127}));
-  connect(onAuto1.y, p_set1.u1) annotation(
-    Line(points = {{13, -82}, {20.5, -82}, {20.5, -78}, {20, -78}}, color = {255, 0, 255}));
-  connect(u4, onAuto1.u) annotation(
-    Line(points = {{-34, -120}, {-34, -120}, {-34, -82}, {-10, -82}, {-10, -82}}, color = {255, 0, 255}));
   connect(greater1.y, onAuto2.u) annotation(
     Line(points = {{-48, -82}, {-42, -82}, {-42, -64}, {-58, -64}, {-58, -34}, {-46, -34}, {-46, -34}}, color = {255, 0, 255}));
   connect(onAuto2.y, pre2.u1) annotation(

@@ -1,6 +1,7 @@
 ﻿within TPPSim.Drums;
 model Drum "Модель барабана энергетического котла без встроенного деаэратора"
   extends TPPSim.Drums.BaseClases.BaseDrum;
+  import Modelica.Fluid.Types;
   //Интерфейс
   Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
     Placement(visible = true, transformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -63,9 +64,15 @@ equation
 //algorithm
 //D_downStr := -50;
 initial equation
-  der(t_m_water) = 0;
-  der(t_m_steam) = 0;
-  der(hw) = 0;
+  if Dynamics == Types.Dynamics.SteadyStateInitial then
+    der(t_m_water) = 0;
+    der(t_m_steam) = 0;
+    der(hw) = 0;
+  else
+    t_m_water = t_m_water_start;
+    t_m_steam = t_m_steam_start;
+    hw =  Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(ps_start);
+  end if;
 //der(Gw) = 0;
 //hw = inStream(upStr.h_outflow);
 //der(ps) = 0;

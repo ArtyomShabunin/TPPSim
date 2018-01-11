@@ -16,6 +16,8 @@ partial model BaseElementaryPipe
   final outer parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
   final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
   final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
+  //Начальные значения 
+  outer parameter Modelica.SIunits.AbsolutePressure p_flow_start = system.p_start "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
   //Переменные
   outer Medium.AbsolutePressure p "Давление потока вода/пар в узловых точках";
   outer Medium.SpecificEnthalpy h "Энтальпия потока вода/пар в узловых точках";  

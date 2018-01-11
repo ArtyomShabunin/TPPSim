@@ -52,7 +52,7 @@ initial equation
     der(stateFlow.h) = 0;    
   end if;
   if massDynamics == Types.Dynamics.FixedInitial then
-    stateFlow.p = system.p_start;
+    stateFlow.p = p_flow_start;
   elseif massDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.p) = 0;
   end if;

@@ -2,7 +2,8 @@
 model BaseDrum "Базовый класс 'барабан котла'"
   //Вспомогательные функции
   extends TPPSim.Drums.BaseClases.Icons.IconDrum;
-
+  import Modelica.Fluid.Types;
+  
   function drumWaterVolume "Формула для расчета объема воды в барабане"
     extends Modelica.Icons.Function;
     input Real R "внутренний радиус барабана";
@@ -71,6 +72,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
 
   //Ограничения
   parameter Modelica.SIunits.MassFlowRate m_flow_small = system.m_flow_small "Ограничение минимального расхода" annotation(Dialog(group="Assumptions"));
+  //Настройки уравнений динамики
+  parameter Types.Dynamics Dynamics = Types.Dynamics.SteadyStateInitial "Параметры уравнений динамики" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   //Исходные данные
   replaceable package Medium = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
   parameter Real k = 0.9 "Доля пара, которая практически сразу выделяется из водяного объема";
@@ -87,7 +90,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   parameter Modelica.SIunits.Length Hw_start = 0.5 "Начальное значение уровня воды в барабане";
   parameter Medium.AbsolutePressure ps_start = system.p_ambient "Начальное значение давления пара в барабане";
   parameter Medium.AbsolutePressure pw_start = ps_start + 0.5 * Hw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start)) * Modelica.Constants.g_n "Начальное значение давления пара в барабане";
-  parameter Medium.Temperature t_start = 100 + 273.15 "Стартовая температура";
+  parameter Medium.Temperature t_m_steam_start = 100 + 273.15 "Начальная температура металла верха барабана";
+  parameter Medium.Temperature t_m_water_start = 100 + 273.15 "Начальная температура металла низа барабана";  
   parameter Modelica.SIunits.Volume Vw_start = drumWaterVolume(Din / 2, L, Hw_start);
   parameter Modelica.SIunits.Mass Gw_start = Vw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start));
   //Переменные
@@ -98,8 +102,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Medium.ThermodynamicState state_upStr "Термодинамическое состояние потока в подъемных трубах испарительного контура";
   Real x_upStr "Степень сухости в подъемных трубах испарительного контура";
   Medium.SaturationProperties sat "State vector to compute saturation properties для парового объема";
-  Medium.Temperature t_m_steam(start = t_start) "Температура металла паровой части барабана";
-  Medium.Temperature t_m_water(start = t_start) "Температура металла водяной части барабана";
+  Medium.Temperature t_m_steam(start = t_m_steam_start) "Температура металла паровой части барабана";
+  Medium.Temperature t_m_water(start = t_m_water_start) "Температура металла водяной части барабана";
   Medium.MassFlowRate D_fw "Расход питательной воды";
   Medium.MassFlowRate D_st_circ "Пар поступающий в паровое пространство барабана из циркуляционных контуров ";
   Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";
