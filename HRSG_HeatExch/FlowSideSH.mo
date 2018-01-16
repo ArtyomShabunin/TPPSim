@@ -2,7 +2,7 @@
 model FlowSideSH
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseFlowSideHE(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium "Medium model");
   import Modelica.Fluid.Types;
-  Boolean SH_cold(start = true, fixed = true);
+  Boolean SH_cold(start = false, fixed = true);
   Modelica.SIunits.DerDensityByEnthalpy drdh "Производная плотности потока по энтальпии на участках ряда труб";
   Modelica.SIunits.DerDensityByPressure drdp "Производная плотности потока по давлению на участках ряда труб";
 algorithm

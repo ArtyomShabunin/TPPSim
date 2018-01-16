@@ -13,7 +13,7 @@ model EMA_028_HRSG_Test_Hot
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G) annotation(
+  TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G, HP_p_flow_start = 900000, HP_t_m_steam_start = 473.15, HP_t_m_water_start = 448.15, IP_p_flow_start = 450000, IP_pipe2_h_start = Modelica.Media.Water.IF97_Utilities.h_pT(4.5e5, 173 + 273.15)) annotation(
     Placement(visible = true, transformation(origin = {10, 4}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible HP_FWP annotation(
     Placement(visible = true, transformation(origin = {31, -47}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
@@ -179,5 +179,5 @@ equation
   connect(condPump.port_b, boiler.cond_In) annotation(
     Line(points = {{54, 25}, {24, 25}, {24, 11}, {25, 11}}, color = {0, 127, 255}));
   annotation(
-    Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})));
+    Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}}, initialScale = 0.1)));
 end EMA_028_HRSG_Test_Hot;

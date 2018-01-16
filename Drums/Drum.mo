@@ -23,7 +23,7 @@ equation
   h_dew = Medium.dewEnthalpy(sat);
   h_bubble = Medium.bubbleEnthalpy(sat);
 //t_m_steam = ts "Принимаем, что верхняя стенка барабанна в каждый момент времени равна температуре насыщения в паровом пространстве барабана. Такое равенство может работать только при конденсации, т.е. росте температуры стенки барабана!!!";
-  20000 * (ts - t_m_steam) = D_cond_dr * (h_dew - h_bubble);
+  max(20000 * (ts - t_m_steam), 0) = D_cond_dr * (h_dew - h_bubble);
   D_st_circ = D_upStr * x_upStr;
   if noEvent(inStream(fedWater.h_outflow) - h_bubble > 0) then
     D_st_eco = D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
@@ -69,7 +69,7 @@ initial equation
     der(t_m_steam) = 0;
     der(hw) = 0;
   else
-    t_m_water = t_m_water_start;
+    der(t_m_water) = 0;
     t_m_steam = t_m_steam_start;
     hw =  Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hl_p(ps_start);
   end if;

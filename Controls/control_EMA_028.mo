@@ -18,7 +18,7 @@ block control_EMA_028
      
   TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = HP_P_activation, T = 20, k = 0.000001, pos_start = HP_pos_start, set_p = 6.7e+06, speed_p = 1e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = IP_P_activation, T = 35, k = 0.000005, pos_start = IP_pos_start, set_p = 2e+06, speed_p = 0.4e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = IP_P_activation, T = 35, k = 0.000005, pos_start = IP_pos_start, set_p = 2e+06, speed_p = 500) annotation(
     Placement(visible = true, transformation(origin = {30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false) annotation(
     Placement(visible = true, transformation(origin = {-70, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

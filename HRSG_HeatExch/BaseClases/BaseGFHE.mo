@@ -63,7 +63,7 @@ partial model BaseGFHE
   final inner parameter Real Cz = if z2 < 8 and sigma1 / sigma2 < 2 then 3.15 * z2 ^ 0.05 - 2.5 elseif z2 < 8 and sigma1 / sigma2 >= 2 then 3.5 * z2 ^ 0.03 - 2.72 else 1 "Поправка на число рядов труб по ходу газов";
   final inner parameter Real Kaer = (Din + 2 * delta) ^ 0.611 * z2 / s1 ^ 0.412 / s2 ^ 0.515 "Коэффициент для расчета аэродинамического сопротивления";
   //Начальные значения
-  inner parameter Modelica.SIunits.SpecificEnthalpy h_flow_start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(p_flow_start) "Начальная энтальпия вода/пар" annotation(Dialog(tab = "Initialization"));    
+  inner parameter Modelica.SIunits.SpecificEnthalpy h_flow_start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(p_flow_start) + 100 "Начальная энтальпия вода/пар" annotation(Dialog(tab = "Initialization"));    
   inner parameter Modelica.SIunits.AbsolutePressure p_flow_start = system.p_start "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
   inner parameter Modelica.SIunits.MassFlowRate m_flow_start = system.m_flow_start "Начальный массовый расход вода/пар" annotation(Dialog(tab = "Initialization"));
   inner parameter Modelica.SIunits.Temperature T_m_start = system.T_start "Начальная температура металла вода/пар" annotation(Dialog(tab = "Initialization"));
