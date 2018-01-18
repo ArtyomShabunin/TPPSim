@@ -3,6 +3,8 @@ partial model BaseGFHE_simple
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
+  //Исходное состояние
+  outer parameter Boolean SH_cold_start "Исходное состояние - холодное";
   //Параметры разбиения
   parameter Integer numberOfVolumes "Число участков разбиения" annotation(
     Dialog(group = "Параметры разбиения"));

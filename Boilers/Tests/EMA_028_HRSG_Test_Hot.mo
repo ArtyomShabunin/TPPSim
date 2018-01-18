@@ -1,8 +1,8 @@
 ﻿within TPPSim.Boilers.Tests;
 
 model EMA_028_HRSG_Test_Hot
-  package Medium_F = Modelica.Media.Water.WaterIF97_ph;
-  package Medium_G = TPPSim.Media.ExhaustGas;
+  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
+  replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   inner Modelica.Fluid.System system(T_start = 175 + 273.15, allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //  TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2482.5 / 3.6, Tnom = 569.1 + 273.15, Tstart = system.T_start) annotation(
@@ -13,7 +13,7 @@ model EMA_028_HRSG_Test_Hot
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G, HP_p_flow_start = 900000, HP_t_m_steam_start = 473.15, HP_t_m_water_start = 448.15, IP_p_flow_start = 450000, IP_pipe2_h_start = Modelica.Media.Water.IF97_Utilities.h_pT(4.5e5, 173 + 273.15)) annotation(
+  TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G, HP_p_flow_start = 900000, HP_t_m_steam_start = 473.15, HP_t_m_water_start = 448.15, IP_SH_h_start = Modelica.Media.Water.IF97_Utilities.h_pT(4.5e5, 173 + 273.15), IP_p_flow_start = 450000, IP_pipe2_h_start = Modelica.Media.Water.IF97_Utilities.h_pT(4.5e5, 173 + 273.15), IP_t_m_steam_start = 428.15, IP_t_m_water_start = 418.15, LP_SH_h_start = Modelica.Media.Water.IF97_Utilities.h_pT(2.3e5, 135 + 273.15), LP_p_flow_start = 230000, LP_t_m_steam_start = 397.15, LP_t_m_water_start = 397.15, SH_cold_start = false) annotation(
     Placement(visible = true, transformation(origin = {10, 4}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible HP_FWP annotation(
     Placement(visible = true, transformation(origin = {31, -47}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
@@ -65,7 +65,7 @@ model EMA_028_HRSG_Test_Hot
     Placement(visible = true, transformation(origin = {-50, 6}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   TPPSim.Steam_turbine.dummy_ST ST annotation(
     Placement(visible = true, transformation(origin = {-92, 2}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
-  TPPSim.Controls.control_EMA_028 control_EMA_0281(HP_P_activation = 1e+06, HP_pos_start = 0.03, IP_P_activation = 500000, IP_pos_start = 0.03, LP_P_activation = 250000, LP_pos_start = 0.01) annotation(
+  TPPSim.Controls.control_EMA_028 control_EMA_0281(HP_P_activation = 1e+06, HP_pos_start = 0.03, IP_P_activation = 500000, IP_pos_start = 0.03, IP_speed_p = 500, LP_P_activation = 250000, LP_pos_start = 0.01) annotation(
     Placement(visible = true, transformation(origin = {-50, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure LP_pressure(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {16, 56}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));

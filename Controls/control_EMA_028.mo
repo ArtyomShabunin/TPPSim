@@ -3,22 +3,34 @@ within TPPSim.Controls;
 block control_EMA_028
   extends TPPSim.Controls.BaseClasses.Icons.IconController;
   
+  parameter Real HP_set_p = 6.7e+06 "Задание давления в контуре ВД" annotation(
+    Dialog(group = "Контур ВД"));
   parameter Modelica.SIunits.AbsolutePressure HP_P_activation "Давление при котором регулятор ВД переходит в автоматический режим" annotation(
     Dialog(group = "Контур ВД"));
   parameter Real HP_pos_start = 0.002 "Исходное УП регулирующего клапана ВД" annotation(
     Dialog(group = "Контур ВД"));
+  parameter Real HP_speed_p = 1e5 / 60 "Скорость роста давления в контуре ВД" annotation(
+    Dialog(group = "Контур ВД"));
+  parameter Real IP_set_p = 2e+06 "Задание давления в контуре СД" annotation(
+    Dialog(group = "Контур СД")); 
   parameter Modelica.SIunits.AbsolutePressure IP_P_activation "Давление при котором регулятор CД переходит в автоматический режим" annotation(
     Dialog(group = "Контур СД"));
   parameter Real IP_pos_start = 0.002 "Исходное УП регулирующего клапана ВД" annotation(
-    Dialog(group = "Контур СД"));    
+    Dialog(group = "Контур СД"));
+  parameter Real IP_speed_p = 0.4e5 / 60 "Скорость роста давления в контуре СД" annotation(
+    Dialog(group = "Контур СД"));   
+  parameter Real LP_set_p = 370000 "Задание давления в контуре НД" annotation(
+    Dialog(group = "Контур НД")); 
   parameter Modelica.SIunits.AbsolutePressure LP_P_activation "Давление при котором регулятор НД переходит в автоматический режим"  annotation(
     Dialog(group = "Контур НД"));  
   parameter Real LP_pos_start = 0.002 "Исходное УП регулирующего клапана ВД" annotation(
-    Dialog(group = "Контур НД")); 
+    Dialog(group = "Контур НД"));
+  parameter Real LP_speed_p = 220 "Скорость роста давления в контуре НД" annotation(
+    Dialog(group = "Контур НД"));
      
-  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = HP_P_activation, T = 20, k = 0.000001, pos_start = HP_pos_start, set_p = 6.7e+06, speed_p = 1e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = HP_P_activation, T = 20, k = 0.000001, pos_start = HP_pos_start, set_p = HP_set_p, speed_p = HP_speed_p) annotation(
     Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
-  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = IP_P_activation, T = 35, k = 0.000005, pos_start = IP_pos_start, set_p = 2e+06, speed_p = 500) annotation(
+  TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = IP_P_activation, T = 35, k = 0.000005, pos_start = IP_pos_start, set_p = IP_set_p, speed_p = IP_speed_p) annotation(
     Placement(visible = true, transformation(origin = {30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false) annotation(
     Placement(visible = true, transformation(origin = {-70, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -30,7 +42,7 @@ block control_EMA_028
     Placement(visible = true, transformation(origin = {-70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-42, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   Modelica.Blocks.Examples.BusUsage_Utilities.Interfaces.SubControlBus actuatorsBus annotation(
     Placement(visible = true, transformation(origin = {70, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {44, -60}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_3 LP_pressure_control(P_activation = LP_P_activation, T = 35, k = 0.00005, pos_start = LP_pos_start, set_p = 370000, speed_p = 220) annotation(
+  TPPSim.Controls.pressure_control_3 LP_pressure_control(P_activation = LP_P_activation, T = 35, k = 0.00005, pos_start = LP_pos_start, set_p = LP_set_p, speed_p = LP_speed_p) annotation(
     Placement(visible = true, transformation(origin = {-30, -30}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Blocks.Sources.Constant const(k = 0)  annotation(
     Placement(visible = true, transformation(origin = {12, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

@@ -11,19 +11,19 @@ model ElementarySteamPipe"Модель паропровода"
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
 equation
   if energyDynamics == Types.Dynamics.SteadyState then
-    //0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
+    0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
     
-    D_flow_v * (stateFlow.h - h[section[1], section[2]]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) ;
-    D_flow_v * (h[section[1], section[2] + 1] - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
+//    D_flow_v * (stateFlow.h - h[section[1], section[2]]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) ;
+//    D_flow_v * (h[section[1], section[2] + 1] - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
     
   else
-    //deltaVFlow * stateFlow.d * der(stateFlow.h) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
+    deltaVFlow * stateFlow.d * der(stateFlow.h) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
     
-    0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-    0.5 * deltaVFlow * stateFlow.d * der(h[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
+//    0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+//    0.5 * deltaVFlow * stateFlow.d * der(h[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
    
   end if;
-  //stateFlow.h = h[section[1], section[2] + 1];
+  stateFlow.h = h[section[1], section[2] + 1];
 //Уравнение теплового баланса металла
   deltaMMetal * C_m * der(t_m) = -alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
 //Уравнения состояния
@@ -56,10 +56,10 @@ equation
 initial equation
   if energyDynamics == Types.Dynamics.FixedInitial then
     stateFlow.h = h_start;
-    h[section[1], section[2] + 1] = h_start; 
+//    h[section[1], section[2] + 1] = h_start; 
   elseif energyDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;
-    der(h[section[1], section[2] + 1]) = 0;    
+//    der(h[section[1], section[2] + 1]) = 0;    
   end if;
   if massDynamics == Types.Dynamics.FixedInitial then
     stateFlow.p = p_flow_start;
