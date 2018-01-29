@@ -5,7 +5,7 @@ model dummy_ST
   outer Modelica.Fluid.System system;
   TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 600, dp_nominal = 9e+06, min_delta = 90, set_down_T = 573.15, use_T_in = true) annotation(
     Placement(visible = true, transformation(origin = {2, 62}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible IP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1800, dp_nominal = 3e+06) annotation(
+  Modelica.Fluid.Valves.ValveCompressible IP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1800, dp_nominal = 3e+06, filteredOpening = true, riseTime = 10) annotation(
       Placement(visible = true, transformation(origin = {12, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium, T = 60 + 273.15, nPorts = 3, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-88, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
@@ -58,6 +58,18 @@ model dummy_ST
   Modelica.Blocks.Interfaces.RealOutput LP_CV_apos annotation(
     Placement(visible = true, transformation(origin = {-100, -90}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {60, -198}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
 equation
+  connect(HP_RS.opening_actual, HP_RS_apos) annotation(
+    Line(points = {{0, 66}, {-48, 66}, {-48, 90}, {-100, 90}, {-100, 90}}, color = {0, 0, 127}));
+  connect(RP_RS_t, HP_RS.T_in) annotation(
+    Line(points = {{100, 94}, {-6, 94}, {-6, 70}, {-6, 70}}, color = {0, 0, 127}));
+  connect(HP_RS_pos, HP_RS.opening) annotation(
+    Line(points = {{100, 80}, {6, 80}, {6, 70}, {6, 70}}, color = {0, 0, 127}));
+  connect(HP_RS.flowOut, multiPort2.ports_b[2]) annotation(
+    Line(points = {{-8, 62}, {-48, 62}, {-48, 19.5}, {-76, 19.5}}, color = {0, 127, 255}));
+  connect(cooling_water, HP_RS.waterIn) annotation(
+    Line(points = {{-100, 50}, {-2, 50}, {-2, 52}, {-2, 52}}));
+  connect(multiPort1.ports_b[2], HP_RS.flowIn) annotation(
+    Line(points = {{60, 40}, {44, 40}, {44, 62}, {12, 62}, {12, 62}}, color = {0, 127, 255}, thickness = 0.5));
   connect(LP_CV.opening_actual, LP_CV_apos) annotation(
     Line(points = {{-16, -78}, {-50, -78}, {-50, -90}, {-100, -90}, {-100, -90}}, color = {0, 0, 127}));
   connect(LP_CV.port_b, flowSink.ports[3]) annotation(
@@ -78,12 +90,6 @@ equation
     Line(points = {{24, 42}, {-66, 42}, {-66, 72}, {-100, 72}, {-100, 72}}, color = {0, 0, 127}));
   connect(HP_CV_pos, HPCV.opening) annotation(
     Line(points = {{100, 62}, {58, 62}, {58, 58}, {30, 58}, {30, 48}, {30, 48}}, color = {0, 0, 127}));
-  connect(HP_RS.opening_actual, HP_RS_apos) annotation(
-    Line(points = {{0, 66}, {-48, 66}, {-48, 90}, {-100, 90}, {-100, 90}}, color = {0, 0, 127}));
-  connect(RP_RS_t, HP_RS.T_in) annotation(
-    Line(points = {{100, 94}, {-6, 94}, {-6, 70}, {-6, 70}}, color = {0, 0, 127}));
-  connect(HP_RS_pos, HP_RS.opening) annotation(
-    Line(points = {{100, 80}, {6, 80}, {6, 70}, {6, 70}}, color = {0, 0, 127}));
   connect(multiPort3.ports_b[1], IPT.port_a) annotation(
     Line(points = {{62, -10.5}, {55, -10.5}, {55, -10.5}, {48, -10.5}, {48, -30.5}, {2, -30.5}, {2, -30.5}}, color = {0, 127, 255}, thickness = 0.5));
   connect(IPT.port_b, flowSink.ports[1]) annotation(
@@ -96,14 +102,8 @@ equation
     Line(points = {{2, -10}, {-33, -10}, {-33, -10}, {-68, -10}, {-68, -28}, {-78, -28}, {-78, -30}}, color = {0, 127, 255}));
   connect(HPT.outlet, multiPort2.ports_b[1]) annotation(
     Line(points = {{-6, 40}, {-40, 40}, {-40, 19.5}, {-76, 19.5}}, color = {0, 0, 255}));
-  connect(HP_RS.flowOut, multiPort2.ports_b[2]) annotation(
-    Line(points = {{-8, 62}, {-48, 62}, {-48, 19.5}, {-76, 19.5}}, color = {0, 127, 255}));
   connect(multiPort2.port_a, CRH) annotation(
     Line(points = {{-84, 19.5}, {-85, 19.5}, {-85, 20}, {-100, 20}}, color = {0, 127, 255}));
-  connect(cooling_water, HP_RS.waterIn) annotation(
-    Line(points = {{-100, 50}, {-2, 50}, {-2, 52}, {-2, 52}}));
-  connect(multiPort1.ports_b[2], HP_RS.flowIn) annotation(
-    Line(points = {{60, 40}, {44, 40}, {44, 62}, {12, 62}, {12, 62}}, color = {0, 127, 255}, thickness = 0.5));
   connect(HPCV.port_b, HPT.inlet) annotation(
     Line(points = {{20, 40}, {10, 40}, {10, 40}, {10, 40}}, color = {0, 127, 255}));
   connect(multiPort1.ports_b[1], HPCV.port_a) annotation(

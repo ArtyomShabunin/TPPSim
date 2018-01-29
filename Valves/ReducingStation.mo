@@ -33,7 +33,7 @@ model ReducingStation
     Placement(visible = true, transformation(origin = {26, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {40, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
-  Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, CvData = CvData, Kv = Kv, dp_nominal = dp_nominal, filteredOpening = false, m_flow_nominal = m_flow_nominal, p_nominal = p_nominal, rho_nominal = rho_nominal) annotation(
+  Modelica.Fluid.Valves.ValveCompressible valve(redeclare package Medium = Medium, CvData = CvData, Kv = Kv, dp_nominal = dp_nominal, filteredOpening = true, m_flow_nominal = m_flow_nominal, p_nominal = p_nominal, rho_nominal = rho_nominal, riseTime = 10) annotation(
     Placement(visible = true, transformation(origin = {-30, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput opening annotation(
     Placement(visible = true, transformation(origin = {-30, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {-32, 80}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
