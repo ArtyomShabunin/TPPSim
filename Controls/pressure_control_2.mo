@@ -42,7 +42,7 @@ block pressure_control_2
     Placement(visible = true, transformation(origin = {34, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant max_lim(k = 1)  annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant min_lim_1(k = pos_start)  annotation(
+  Modelica.Blocks.Sources.Constant min_lim_1(k = 0)  annotation(
     Placement(visible = true, transformation(origin = {50, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant min_lim_2(k = 0)  annotation(
     Placement(visible = true, transformation(origin = {12, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

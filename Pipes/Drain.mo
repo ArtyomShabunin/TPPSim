@@ -13,10 +13,10 @@ equation
   sat = Medium.setSat_p(flowOut.p);
   h_dew = Medium.dewEnthalpy(sat);
   h_bubble = Medium.bubbleEnthalpy(sat);
-  flowOut.m_flow = -(if noEvent(inStream(flowIn.h_outflow)) > h_dew then flowIn.m_flow else max(flowIn.m_flow * (inStream(flowIn.h_outflow) - h_bubble) / (h_dew - h_bubble), 0.0001));
+  flowOut.m_flow = -(if noEvent(inStream(flowIn.h_outflow) > h_dew) then flowIn.m_flow else max(flowIn.m_flow * (inStream(flowIn.h_outflow) - h_bubble) / (h_dew - h_bubble), 0));
   flowIn.h_outflow = h_bubble;
   flowIn.p = flowOut.p;
-  flowOut.h_outflow = if noEvent(inStream(flowIn.h_outflow)) > h_dew then inStream(flowIn.h_outflow) else h_dew;
+  flowOut.h_outflow = if noEvent(inStream(flowIn.h_outflow) > h_dew) then inStream(flowIn.h_outflow) else h_dew;
   annotation(
     Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
     Diagram(graphics),

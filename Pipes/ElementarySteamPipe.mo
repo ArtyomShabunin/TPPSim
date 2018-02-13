@@ -7,6 +7,7 @@ model ElementarySteamPipe"Модель паропровода"
   outer parameter Types.Dynamics massDynamics "Параметры уравнения сохранения массы";
   outer parameter Modelica.Fluid.Types.Dynamics momentumDynamics "Параметры уравнения сохранения момента"; 
   //Переменные
+  Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
   
@@ -17,16 +18,8 @@ model ElementarySteamPipe"Модель паропровода"
 equation
   if energyDynamics == Types.Dynamics.SteadyState then
     0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
-    
-//    D_flow_v * (stateFlow.h - h[section[1], section[2]]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) ;
-//    D_flow_v * (h[section[1], section[2] + 1] - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
-    
   else
     deltaVFlow * stateFlow.d * der(stateFlow.h) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
-    
-//    0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-//    0.5 * deltaVFlow * stateFlow.d * der(h[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
-   
   end if;
   stateFlow.h = h[section[1], section[2] + 1];
 //Уравнение теплового баланса металла
@@ -35,20 +28,20 @@ equation
   stateFlow.d = Medium.density_ph(stateFlow.p, stateFlow.h);
   stateFlow.T = Medium.temperature_ph(stateFlow.p, stateFlow.h);
   stateFlow.phase = Modelica.Media.Water.IF97_Utilities.phase_ph.phase_ph(stateFlow.p, stateFlow.h);
-  drdp = Medium.density_derp_h(stateFlow);
   sat_v = Medium.setSat_p(stateFlow.p);
   hl = Medium.bubbleEnthalpy(sat_v);
   hv = Medium.dewEnthalpy(sat_v);
+  drdp = min(0.00004, Medium.density_derp_h(stateFlow));
+  drdh = max(-0.0002, Medium.density_derh_p(stateFlow));
 //Уравнения для расчета процессов теплообмена
   w_flow_v = D_flow_v / stateFlow.d / f_flow "Расчет скорости потока вода/пар в конечных объемах";
-//  alfa_flow = 20000;
 //Про две фазы
   D_flow_v = D[section[1], section[2] + 1];
 //Уравнения из ThermoPower.Water.Flow1DFEM2ph
   if massDynamics == Types.Dynamics.SteadyState then
     D[section[1], section[2] + 1] = D[section[1], section[2]];
   else
-    D[section[1], section[2] + 1] = D[section[1], section[2]] - deltaVFlow * drdp * der(stateFlow.p) "Уравнение сплошности";
+    D[section[1], section[2] + 1] = D[section[1], section[2]] - deltaVFlow * drdp * der(stateFlow.p) - deltaVFlow * drdh * der(stateFlow.h) "Уравнение сплошности";
   end if;
 //Уравнения для расчета процессов массообмена
   stateFlow.p = p[section[1], section[2]];
@@ -64,10 +57,8 @@ equation
 initial equation
   if energyDynamics == Types.Dynamics.FixedInitial then
     stateFlow.h = h_start;
-//    h[section[1], section[2] + 1] = h_start; 
   elseif energyDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;
-//    der(h[section[1], section[2] + 1]) = 0;    
   end if;
   if massDynamics == Types.Dynamics.FixedInitial then
     stateFlow.p = p_flow_start;
