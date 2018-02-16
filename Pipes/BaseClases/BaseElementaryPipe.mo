@@ -26,7 +26,7 @@ partial model BaseElementaryPipe
   inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока вода/пар";
   inner Medium.MassFlowRate D_flow_v(start = 0) "Массовый расход потока вода/пар";
   inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
-  Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
+  inner Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
   Modelica.SIunits.Velocity w_flow_v "Скорость потока вода/пар в конечных объемах";
   Real dp_fric "Потеря давления из-за сил трения";
   Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";

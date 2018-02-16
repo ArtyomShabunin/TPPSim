@@ -3,16 +3,18 @@ model alfaForPipeHeating
   package Medium = Modelica.Media.Water.WaterIF97_ph;
   final outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубок теплообменника";
   final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
-  parameter Integer[2] section "Координаты участка";  
- 
- 
+  parameter Integer[2] section "Координаты участка"; 
+   
+  outer Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
+  outer Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";   
   outer Medium.MassFlowRate D "Массовый расход (глобальная переменная)";
   outer Medium.SpecificEnthalpy h "Энтальпия (глобальная переменная)";
   outer Medium.AbsolutePressure p "Давление (глобальная переменная)"; 
-  outer Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
+  outer Modelica.SIunits.CoefficientOfHeatTransfer alfa_sat;
   outer Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   outer Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";  
-
+  outer Medium.ThermodynamicState stateFlow;
+  
   Real x_eco;  
 
   Real x_sh;
@@ -38,5 +40,7 @@ algorithm
   Re_v := w_v * Din * state_v.d / mu_v;
   alfa_v := 0.023 * k_v / Din * Re_v ^ 0.8 * Pr_v ^ 0.4;
    
-  alfa_flow := max((1 - x_sh) * 20000 + x_sh * alfa_v, 0.0001);  
+  alfa_sat :=  (1 - x_eco) * 20000;
+
+
 end alfaForPipeHeating;

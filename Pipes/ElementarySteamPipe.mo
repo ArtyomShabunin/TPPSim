@@ -11,19 +11,24 @@ model ElementarySteamPipe"Модель паропровода"
   Modelica.SIunits.DerDensityByPressure drdp;
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
   
-  Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";  
+  inner Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";  
   inner Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   inner Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
+  Real Q_sat;
+
+  TPPSim.thermal.alfaForPipeHeating alpha_sat(section=section);
+  inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_sat "Коэффициент теплопередачи со стороны потока вода/пар";
   
 equation
   if energyDynamics == Types.Dynamics.SteadyState then
     0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
   else
-    deltaVFlow * stateFlow.d * der(stateFlow.h) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
+    deltaVFlow * stateFlow.d * der(stateFlow.h) = + Q_sat - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
   end if;
   stateFlow.h = h[section[1], section[2] + 1];
 //Уравнение теплового баланса металла
-  deltaMMetal * C_m * der(t_m) = -alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+  Q_sat = deltaSFlow * alfa_sat * min((t_m - sat_v.Tsat), 0) + deltaSFlow * alfa_flow * (t_m - stateFlow.T);
+  deltaMMetal * C_m * der(t_m) =  - Q_sat "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
 //Уравнения состояния
   stateFlow.d = Medium.density_ph(stateFlow.p, stateFlow.h);
   stateFlow.T = Medium.temperature_ph(stateFlow.p, stateFlow.h);
@@ -68,7 +73,8 @@ initial equation
   if momentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
   end if; 
-  der(t_m) = 0;  
+//  der(t_m) = 0;
+  t_m = system.T_start;  
   annotation(
     Documentation(info = "<html>
         <body>
