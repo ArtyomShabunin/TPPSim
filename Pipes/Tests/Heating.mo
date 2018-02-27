@@ -22,7 +22,7 @@ model Heating
     Placement(visible = true, transformation(origin = {-70, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Controls.pressure_control_2 HP_RS_control(P_activation = 120000, T = 5, k = 0.000001, pos_start = 0, set_p = 1e+06, speed_p = 30e5 / 60 / 20) annotation(
     Placement(visible = true, transformation(origin = {30, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Modelica.Fluid.Valves.ValveCompressible HP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 450, dp_nominal = 200000, m_flow_nominal = 6, p_nominal = 2e5) annotation(
+  Modelica.Fluid.Valves.ValveCompressible HP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 200000, m_flow_nominal = 6, p_nominal = 2e5) annotation(
     Placement(visible = true, transformation(origin = {-40, 26}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false) annotation(
     Placement(visible = true, transformation(origin = {-10, 72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
