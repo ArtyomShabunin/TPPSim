@@ -30,7 +30,9 @@ model alfaForPipeHeating
 equation  
   state_v = Medium.setState_ph(p[section[1], section[2] + 1], h[section[1], section[2]] + 1);  
 algorithm
-  x_eco := if noEvent(h[section[1], section[2] + 1] < hl) then 1 elseif noEvent(h[section[1], section[2]] > hl) then 0 else (hl - h[section[1], section[2]]) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);
+//  x_eco := if noEvent(h[section[1], section[2] + 1] < hl) then 1 elseif noEvent(h[section[1], section[2]] > hl) then 0 else (hl - h[section[1], section[2]]) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);
+
+  x_eco := if noEvent(h[section[1], section[2]] < hl) then 1 elseif noEvent(h[section[1], section[2] + 1] > hl) then 0 else (hl - h[section[1], section[2]]) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);
   
   x_sh := if noEvent(h[section[1], section[2] + 1] < hv) then 0 elseif noEvent(h[section[1], section[2]] > hv) then 1 else (h[section[1], section[2] + 1] - hv) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);      
   k_v := Medium.thermalConductivity(state_v);
