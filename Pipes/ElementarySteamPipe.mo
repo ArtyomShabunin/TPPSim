@@ -27,7 +27,7 @@ equation
   end if;
   stateFlow.h = h[section[1], section[2] + 1];
 //Уравнение теплового баланса металла
-  Q_sat = deltaSFlow * alfa_sat * min((t_m - sat_v.Tsat), 0) + deltaSFlow * alfa_flow * (t_m - stateFlow.T);
+  Q_sat = deltaSFlow * alfa_sat * min((t_m - min(sat_v.Tsat, stateFlow.T)), 0) + deltaSFlow * alfa_flow * (t_m - stateFlow.T);
   deltaMMetal * C_m * der(t_m) =  - Q_sat "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
 //Уравнения состояния
   stateFlow.d = Medium.density_ph(stateFlow.p, stateFlow.h);

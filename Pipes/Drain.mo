@@ -13,7 +13,7 @@ equation
   sat = Medium.setSat_p(flowOut.p);
   h_dew = Medium.dewEnthalpy(sat);
   h_bubble = Medium.bubbleEnthalpy(sat);
-  flowOut.m_flow = -(if noEvent(inStream(flowIn.h_outflow) > h_dew) then flowIn.m_flow else max(flowIn.m_flow * (inStream(flowIn.h_outflow) - h_bubble) / (h_dew - h_bubble), 0));
+  flowOut.m_flow = -(if noEvent(inStream(flowIn.h_outflow) > h_dew) then flowIn.m_flow else max(flowIn.m_flow * (inStream(flowIn.h_outflow) - h_bubble) / (h_dew - h_bubble), 0.001));
   flowIn.h_outflow = h_bubble;
   flowIn.p = flowOut.p;
   flowOut.h_outflow = if noEvent(inStream(flowIn.h_outflow) > h_dew) then inStream(flowIn.h_outflow) else h_dew;

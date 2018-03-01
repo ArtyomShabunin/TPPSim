@@ -17,7 +17,7 @@ model alfaForPipeHeating
   
   Real x_eco;  
 
-  Real x_sh;
+  Medium.Density rho_bubble;
   Medium.ThermalConductivity k_v;
   Medium.DynamicViscosity mu_v;
   Real Pr_v;  
@@ -25,24 +25,25 @@ model alfaForPipeHeating
   Real Re_v;
   Modelica.SIunits.CoefficientOfHeatTransfer alfa_v "Коэффициент теплопередачи на пароперегревательном участке"; 
   
-  Medium.ThermodynamicState state_v;   
+  //Medium.ThermodynamicState state_v;   
 
-equation  
-  state_v = Medium.setState_ph(p[section[1], section[2] + 1], h[section[1], section[2]] + 1);  
+//equation  
+  //state_v = Medium.setState_ph(p[section[1], section[2] + 1], hl);
 algorithm
 //  x_eco := if noEvent(h[section[1], section[2] + 1] < hl) then 1 elseif noEvent(h[section[1], section[2]] > hl) then 0 else (hl - h[section[1], section[2]]) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);
 
   x_eco := if noEvent(h[section[1], section[2]] < hl) then 1 elseif noEvent(h[section[1], section[2] + 1] > hl) then 0 else (hl - h[section[1], section[2]]) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);
   
-  x_sh := if noEvent(h[section[1], section[2] + 1] < hv) then 0 elseif noEvent(h[section[1], section[2]] > hv) then 1 else (h[section[1], section[2] + 1] - hv) / (h[section[1], section[2] + 1] - h[section[1], section[2]]);      
-  k_v := Medium.thermalConductivity(state_v);
-  mu_v := Medium.dynamicViscosity(state_v);
-  Pr_v := Medium.prandtlNumber(state_v);
-  w_v := abs(D[section[1], section[2] + 1]) / state_v.d / f_flow;
-  Re_v := w_v * Din * state_v.d / mu_v;
-  alfa_v := 0.023 * k_v / Din * Re_v ^ 0.8 * Pr_v ^ 0.4;
-   
-  alfa_sat :=  (1 - x_eco) * 20000;
-
+     
+//  k_v := Medium.thermalConductivity(state_v);
+  rho_bubble := Medium.bubbleDensity(sat_v);
+  k_v := Modelica.Media.Water.IF97_Utilities.thermalConductivity(rho_bubble, sat_v.Tsat, sat_v.psat, 1);
+  mu_v := Modelica.Media.Water.IF97_Utilities.dynamicViscosity(rho_bubble, sat_v.Tsat, sat_v.psat, 1);
+//  Pr_v := Medium.prandtlNumber(state_v);
+  Pr_v := mu_v * Modelica.Media.Water.IF97_Utilities.cp_ph(sat_v.psat, hl, region = 1) / k_v;
+  w_v := abs(D[section[1], section[2] + 1]) / rho_bubble / f_flow;
+  Re_v := w_v * Din * rho_bubble / mu_v;
+  alfa_v := (0.023 * k_v / Din * Re_v ^ 0.8 * Pr_v ^ 0.4);
+  alfa_sat :=  0.5 * (1 - x_eco) * alfa_v * (rho_bubble / stateFlow.d) ^ 0.5;
 
 end alfaForPipeHeating;

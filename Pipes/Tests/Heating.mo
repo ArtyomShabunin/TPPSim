@@ -20,7 +20,7 @@ model Heating
     Placement(visible = true, transformation(origin = {-70, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.MassFlowSource_T source_1(redeclare package Medium = Medium, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-70, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 HP_RS_control(P_activation = 120000, T = 5, k = 0.000001, pos_start = 0, set_p = 1e+06, speed_p = 30e5 / 60 / 20) annotation(
+  TPPSim.Controls.pressure_control_2 HP_RS_control(P_activation = 120000, T = 5, k = 0.000001, pos_start = 0, set_p = 3.3e+06, speed_p = 30e5 / 60 / 20) annotation(
     Placement(visible = true, transformation(origin = {30, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
   Modelica.Fluid.Valves.ValveCompressible HP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 200000, m_flow_nominal = 6, p_nominal = 2e5) annotation(
     Placement(visible = true, transformation(origin = {-40, 26}, extent = {{-10, 10}, {10, -10}}, rotation = 90)));
