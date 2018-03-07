@@ -36,7 +36,7 @@ model Heating
     Placement(visible = true, transformation(origin = {-72, -58}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible HRH_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 320, dp_nominal = 200000, m_flow_nominal = 6, p_nominal = 2e5) annotation(
     Placement(visible = true, transformation(origin = {24, -194}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
-  TPPSim.Controls.pressure_control_2 HRH_control(P_activation = 120000, T = 1, k = 0.0000001, pos_start = 0, set_p = 800000, speed_p = 500) annotation(
+  TPPSim.Controls.pressure_control_2 HRH_control(P_activation = 1e+06, T = 1, k = 0.0000001, pos_start = 0, set_p = 800000, speed_p = 500) annotation(
     Placement(visible = true, transformation(origin = {-18, -194}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Blocks.Sources.BooleanConstant booleanConstant2(k = false) annotation(
     Placement(visible = true, transformation(origin = {-78, -202}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -50,10 +50,10 @@ model Heating
     Placement(visible = true, transformation(origin = {16, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Pipes.ComplexPipe HRH_pipe_2(redeclare TPPSim.Pipes.ElementarySteamPipe Pipe(redeclare TPPSim.thermal.alfaForSHandECO alpha), Din = 0.417, Lpipe = 57.617, delta = 0.020, h_start = 125.8e3, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, n_parallel = 4, numberOfVolumes = 3, p_flow_start = 101300) annotation(
     Placement(visible = true, transformation(origin = {-14, -104}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveCompressible drain_valve(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 2000, dp_nominal = 6.987e+10, dp_start = 0, m_flow_nominal = 1.55555555555555555555555555, p_nominal = 8e5, rho_nominal = 3.085) annotation(
+  Modelica.Fluid.Valves.ValveCompressible drain_valve(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1730, dp_nominal = 6.987e+10, dp_start = 0, m_flow_nominal = 1.55555555555555555555555555, p_nominal = 8e5, rho_nominal = 3.085) annotation(
     Placement(visible = true, transformation(origin = {54, -130}, extent = {{10, -10}, {-10, 10}}, rotation = 90)));
   Modelica.Blocks.Sources.Constant const2(k = 1) annotation(
-    Placement(visible = true, transformation(origin = {86, 2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {74, 2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Drain drain3 annotation(
     Placement(visible = true, transformation(origin = {44, -108}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Drain drain4 annotation(
@@ -66,7 +66,39 @@ model Heating
     Placement(visible = true, transformation(origin = {16, -6}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature RH_temp(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {36, -80}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature CRH_temp(redeclare package Medium = Medium) annotation(
+    Placement(visible = true, transformation(origin = {66, -74}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Valves.Desuperheater RS_desuperheater(redeclare package Medium = Medium, use_T_in = true) annotation(
+    Placement(visible = true, transformation(origin = {80, -44}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  Modelica.Fluid.Sources.Boundary_pT boundary(redeclare package Medium = Medium, T = 40 + 273.15, nPorts = 1, p = 2e5)  annotation(
+    Placement(visible = true, transformation(origin = {64, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Sensors.Temperature CRH_temp_2(TemperatureType_set = TPPSim.Sensors.TemperatureType.saturation)  annotation(
+    Placement(visible = true, transformation(origin = {78, -94}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Math.Add add1 annotation(
+    Placement(visible = true, transformation(origin = {112, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const3(k = 40)  annotation(
+    Placement(visible = true, transformation(origin = {92, -134}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(const2.y, heat_RS.opening) annotation(
+    Line(points = {{85, 2}, {94, 2}, {94, -14}, {58, -14}, {58, -18}}, color = {0, 0, 127}));
+  connect(add1.y, RS_desuperheater.T_in) annotation(
+    Line(points = {{124, -100}, {128, -100}, {128, -44}, {90, -44}, {90, -44}}, color = {0, 0, 127}));
+  connect(const3.y, add1.u2) annotation(
+    Line(points = {{104, -134}, {110, -134}, {110, -116}, {94, -116}, {94, -106}, {100, -106}, {100, -106}}, color = {0, 0, 127}));
+  connect(CRH_temp_2.deltaTs, add1.u1) annotation(
+    Line(points = {{86, -94}, {100, -94}}, color = {0, 0, 127}));
+  connect(CRH_pipe_1.waterIn, CRH_temp_2.port) annotation(
+    Line(points = {{46, -58}, {46, -58}, {46, -78}, {56, -78}, {56, -104}, {78, -104}, {78, -104}}, color = {0, 127, 255}));
+  connect(boundary.ports[1], RS_desuperheater.waterIn) annotation(
+    Line(points = {{74, 70}, {104, 70}, {104, -66}, {70, -66}, {70, -40}, {70, -40}}, color = {0, 127, 255}, thickness = 0.5));
+  connect(CRH_pipe_1.waterIn, RS_desuperheater.flowOut) annotation(
+    Line(points = {{46, -58}, {80, -58}, {80, -54}, {80, -54}}, color = {0, 127, 255}));
+  connect(heat_RS.port_b, RS_desuperheater.flowIn) annotation(
+    Line(points = {{68, -26}, {80, -26}, {80, -34}, {80, -34}}, color = {0, 127, 255}));
+  connect(HP_RS.port_b, Sink.ports[1]) annotation(
+    Line(points = {{-40, 36}, {-40, 52}, {88, 52}, {88, -114.5}, {80, -114.5}, {80, -170}}, color = {0, 127, 255}));
+  connect(CRH_temp.port, CRH_pipe_1.waterIn) annotation(
+    Line(points = {{66, -84}, {46, -84}, {46, -58}, {46, -58}}, color = {0, 127, 255}));
   connect(HRH_pipe_3.waterOut, RH_temp.port) annotation(
     Line(points = {{28, -104}, {36, -104}, {36, -90}, {36, -90}}, color = {0, 127, 255}));
   connect(HRH_pipe_2.waterOut, HRH_pipe_3.waterIn) annotation(
@@ -81,8 +113,6 @@ equation
     Line(points = {{-82, -58}, {-94, -58}, {-94, -104}, {-88, -104}}, color = {0, 127, 255}));
   connect(CRH_pipe_1.waterOut, CRH_pipe_2.waterIn) annotation(
     Line(points = {{21.9, -58}, {5.9, -58}}, color = {0, 127, 255}));
-  connect(heat_RS.port_b, CRH_pipe_1.waterIn) annotation(
-    Line(points = {{68, -26}, {80, -26}, {80, -58}, {46, -58}}, color = {0, 127, 255}));
   connect(HP_pipe_2.waterOut, HP_temp.port) annotation(
     Line(points = {{20, -26}, {26, -26}, {26, -16}, {16, -16}, {16, -16}}, color = {0, 127, 255}));
   connect(const.y, HP_RS_control.u3) annotation(
@@ -109,8 +139,6 @@ equation
     Line(points = {{-40, -104}, {-32, -104}, {-32, -158}, {24, -158}, {24, -184}, {24, -184}}, color = {0, 127, 255}));
   connect(drain3.flowOut, drain_valve.port_a) annotation(
     Line(points = {{48, -104}, {54, -104}, {54, -120}, {54, -120}}, color = {0, 127, 255}));
-  connect(const2.y, heat_RS.opening) annotation(
-    Line(points = {{98, 2}, {94, 2}, {94, -14}, {58, -14}, {58, -18}, {58, -18}}, color = {0, 0, 127}));
   connect(HRH_pipe_1.waterOut, pressure2.port) annotation(
     Line(points = {{-64, -104}, {-52, -104}, {-52, -146}, {22, -146}, {22, -146}}, color = {0, 127, 255}));
   connect(HRH_control.y, HRH_RS.opening) annotation(
@@ -129,8 +157,6 @@ equation
     Line(points = {{54, -140}, {54, -170}, {80, -170}}, color = {0, 127, 255}));
   connect(const1.y, drain_valve.opening) annotation(
     Line(points = {{-47, -244}, {-24.5, -244}, {-24.5, -244}, {-2, -244}, {-2, -244}, {41, -244}, {41, -130}, {45, -130}}, color = {0, 0, 127}));
-  connect(HP_RS.port_b, Sink.ports[1]) annotation(
-    Line(points = {{-40, 36}, {-40, 52}, {80, 52}, {80, -170}}, color = {0, 127, 255}));
   connect(HP_pipe_1.waterIn, pressure1.port) annotation(
     Line(points = {{-36, -26}, {-36, 6}, {4, 6}}, color = {0, 127, 255}));
   connect(HP_pipe_1.waterIn, HP_RS.port_a) annotation(
