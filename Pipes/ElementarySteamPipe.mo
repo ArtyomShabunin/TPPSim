@@ -1,5 +1,5 @@
 ﻿within TPPSim.Pipes;
-model ElementarySteamPipe"Модель паропровода"
+model ElementarySteamPipe"Модель элементарного участка паропровода"
   extends TPPSim.Pipes.BaseClases.BaseElementaryPipe(redeclare replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium "Medium model");
   import Modelica.Fluid.Types;
   //Используемые уравнения динамики
@@ -10,25 +10,18 @@ model ElementarySteamPipe"Модель паропровода"
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
-  
   inner Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";  
   inner Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   inner Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";
-  Real Q_sat;
-
-  TPPSim.thermal.alfaForPipeHeating alpha_sat(section=section);
-  inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_sat "Коэффициент теплопередачи со стороны потока вода/пар";
-  
 equation
   if energyDynamics == Types.Dynamics.SteadyState then
-    0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
+    0 = Q - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
   else
-    deltaVFlow * stateFlow.d * der(stateFlow.h) = + Q_sat - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
+    deltaVFlow * stateFlow.d * der(stateFlow.h) = Q - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
   end if;
   stateFlow.h = h[section[1], section[2] + 1];
 //Уравнение теплового баланса металла
-  Q_sat = deltaSFlow * alfa_sat * min((t_m - min(sat_v.Tsat, stateFlow.T)), 0) + deltaSFlow * alfa_flow * (t_m - stateFlow.T);
-  deltaMMetal * C_m * der(t_m) =  - Q_sat "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+  deltaMMetal * C_m * der(t_m) =  - Q "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
 //Уравнения состояния
   stateFlow.d = Medium.density_ph(stateFlow.p, stateFlow.h);
   stateFlow.T = Medium.temperature_ph(stateFlow.p, stateFlow.h);
@@ -73,14 +66,15 @@ initial equation
   if momentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
   end if; 
-//  der(t_m) = 0;
   t_m = system.T_start;  
   annotation(
-    Documentation(info = "<html>
-        <body>
-          <p>Модель паропровода с коэффициентом теплоотдачи между стенкой и паром равным 20000. Имеется ввиду,  что теплообмен происходит при конденсации что справедливо для пароотводящих труб барабанов и сепараторов во время пуска.</p>
-        </body>
-      </html>"),
+        Documentation(info = "<html><head></head><body>
+      Модель элементарного участка паропровода.
+      </body></html>", revisions = "<html><head></head><body>
+    <ul>
+      <li><i>Match 15, 2018</i>
+   by Artyom Shabunin:<br></li>
+</ul></body></html>"),
     Diagram(graphics),
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
 end ElementarySteamPipe;

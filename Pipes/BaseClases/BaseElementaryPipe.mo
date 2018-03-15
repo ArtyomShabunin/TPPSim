@@ -1,5 +1,5 @@
 ﻿within TPPSim.Pipes.BaseClases;
-partial model BaseElementaryPipe
+partial model BaseElementaryPipe "Базовая модель участка паропровода."
   extends TPPSim.Pipes.BaseClases.Icons.IconElementaryPipe;
   replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
   //Параметры разбиения
@@ -25,17 +25,23 @@ partial model BaseElementaryPipe
   outer Medium.MassFlowRate D "Массовый расход потока вода/пар в узловых точках";  
   inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока вода/пар";
   inner Medium.MassFlowRate D_flow_v(start = 0) "Массовый расход потока вода/пар";
-  inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока вода/пар";
   inner Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
+  inner Modelica.SIunits.HeatFlowRate Q "Тепло переданное стенкой паропровода потоку пара";
   Modelica.SIunits.Velocity w_flow_v "Скорость потока вода/пар в конечных объемах";
   Real dp_fric "Потеря давления из-за сил трения";
   Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";
   Real lambda_tr "Коэффициент трения";
   //Интерфейс
   outer Modelica.Fluid.System system;
-  replaceable TPPSim.thermal.alfaForSHandECO alpha;  
+  replaceable TPPSim.thermal.hfrForPipeHeating Q_calc(section=section);
   annotation(
-    Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
+    Documentation(info = "<html><head></head><body>
+      Базовая модель элемента паропровода.
+      </body></html>", revisions = "<html><head></head><body>
+    <ul>
+      <li><i>Match 15, 2018</i>
+   by Artyom Shabunin:<br></li>
+</ul></body></html>"),
     Diagram(graphics),
     experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02));
 end BaseElementaryPipe;
