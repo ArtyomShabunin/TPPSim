@@ -7,17 +7,18 @@ model ElementaryPipe "Модель паропровода"
   outer parameter Types.Dynamics massDynamics "Параметры уравнения сохранения массы";
   outer parameter Modelica.Fluid.Types.Dynamics momentumDynamics "Параметры уравнения сохранения момента"; 
   //Переменные
+  TPPSim.thermal.hfrConvHeating Q_calc;
   Modelica.SIunits.DerDensityByPressure drdp;
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
 equation
   if energyDynamics == Types.Dynamics.SteadyState then
-    0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);  
+    0 = Q - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);  
   else
-    deltaVFlow * stateFlow.d * der(stateFlow.h) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
+    deltaVFlow * stateFlow.d * der(stateFlow.h) = Q - (D[section[1], section[2] + 1] * h[section[1], section[2] + 1] - D[section[1], section[2]] * h[section[1], section[2]]);
   end if;
   stateFlow.h = h[section[1], section[2] + 1];
 //Уравнение теплового баланса металла
-  deltaMMetal * C_m * der(t_m) = -alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+  deltaMMetal * C_m * der(t_m) = -Q "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
 //Уравнения состояния
   stateFlow.d = Medium.density_ph(stateFlow.p, stateFlow.h);
   stateFlow.T = Medium.temperature_ph(stateFlow.p, stateFlow.h);

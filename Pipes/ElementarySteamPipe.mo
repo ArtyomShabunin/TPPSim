@@ -10,6 +10,7 @@ model ElementarySteamPipe"Модель элементарного участка
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
+  replaceable TPPSim.thermal.hfrConvHeating Q_calc;
   inner Medium.SaturationProperties sat_v "State vector to compute saturation properties внутри конечного объема";  
   inner Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   inner Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";

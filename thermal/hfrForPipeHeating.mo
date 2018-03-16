@@ -13,13 +13,22 @@ model hfrForPipeHeating "Тепловой поток (HeatFlowRate) к внут�
   outer Medium.SpecificEnthalpy hl "Энтальпия воды на линии насыщения";
   outer Medium.SpecificEnthalpy hv "Энтальпия пара на линии насыщения";  
   outer Medium.ThermodynamicState stateFlow;
-  Modelica.SIunits.CoefficientOfHeatTransfer alpha_sat;
-  Modelica.SIunits.CoefficientOfHeatTransfer alpha_conv;  
-  outer Modelica.SIunits.HeatFlowRate Q "Тепло переданное стенкой паропровода потоку пара";  
-equation
-  alpha_sat =  TPPSim.thermal.alpha_sat({h[section[1], section[2]], h[section[1], section[2] + 1]}, hl, sat_v, D[section[1], section[2] + 1], f_flow, Din, stateFlow.d);
-  alpha_conv = TPPSim.thermal.falfaForSHandECO(stateFlow, D[section[1], section[2] + 1], f_flow, Din); 
-  Q = deltaSFlow * alpha_sat * min((t_m - min(sat_v.Tsat, stateFlow.T)), 0) + deltaSFlow * alpha_conv * (t_m - stateFlow.T);
+  Modelica.SIunits.CoefficientOfHeatTransfer alpha_sat "Коэффициент теплопередачи при конденсации пара";
+  Modelica.SIunits.CoefficientOfHeatTransfer alpha_conv "Коэфициент теплопередачи при конвективном теплообмене";  
+  outer Modelica.SIunits.HeatFlowRate Q "Тепло переданное стенкой паропровода потоку пара";
+  
+  Modelica.SIunits.HeatFlowRate Q_cond;
+  Modelica.SIunits.HeatFlowRate Q_cond_max;
+  Modelica.SIunits.HeatFlowRate Q_conv;
+algorithm
+  alpha_sat :=  TPPSim.thermal.alpha_sat(p[section[1], section[2] + 1], D[section[1], section[2] + 1], f_flow, Din, stateFlow.d);
+  //alpha_sat :=  TPPSim.thermal.alpha_sat(hl, p[section[1], section[2] + 1], D[section[1], section[2]], f_flow, Din, Modelica.Media.Water.IF97_Utilities.rho_ph(p[section[1], section[2] + 1], h[section[1], section[2]], phase = 1));
+  alpha_conv := TPPSim.thermal.falfaForSHandECO(stateFlow, D[section[1], section[2] + 1], f_flow, Din); 
+  Q_cond := deltaSFlow * alpha_sat * max((min(sat_v.Tsat, stateFlow.T) - t_m), 0);
+  Q_cond_max := max(D[section[1], section[2] + 1] * (h[section[1], section[2]] - hl), 0);
+  Q_conv := deltaSFlow * alpha_conv * (stateFlow.T - t_m);
+  //Q := -max(Q_conv,min(Q_cond, Q_cond_max));
+  Q := -(Q_conv + min(Q_cond, Q_cond_max));
   annotation(
     Documentation(info = "<html><head></head><body>
       Модель для расчета теплового потока к внутренней стенке паропровода при прогреве. Модель учитывает конвективный теплообмен и теплообмен при конденсации пара.<br>Используются глобальные переменные, из-за чего модель может использоваться только совместно с моделью ElementarySteamPipe.

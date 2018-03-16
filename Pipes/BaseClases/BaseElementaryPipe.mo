@@ -33,7 +33,6 @@ partial model BaseElementaryPipe "Базовая модель участка п�
   Real lambda_tr "Коэффициент трения";
   //Интерфейс
   outer Modelica.Fluid.System system;
-  replaceable TPPSim.thermal.hfrForPipeHeating Q_calc(section=section);
   annotation(
     Documentation(info = "<html><head></head><body>
       Базовая модель элемента паропровода.
