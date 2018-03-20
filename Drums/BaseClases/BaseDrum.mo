@@ -78,8 +78,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   replaceable package Medium = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
   parameter Real k = 0.9 "Доля пара, которая практически сразу выделяется из водяного объема";
   //Геометрические характеристики барабана
-  parameter Modelica.SIunits.Length Din "Внутренний диаметр барабана";
-  parameter Modelica.SIunits.Length L "Длина барабана";
+  inner parameter Modelica.SIunits.Length Din "Внутренний диаметр барабана";
+  inner parameter Modelica.SIunits.Length L "Длина барабана";
   parameter Modelica.SIunits.Length delta "Толщина стенки барабана";
   //Характеристики металла
   parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
@@ -96,14 +96,15 @@ model BaseDrum "Базовый класс 'барабан котла'"
   parameter Modelica.SIunits.Mass Gw_start = Vw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start));
   //Переменные
   Modelica.SIunits.Volume Vs "Объем парового пространства барабана";
-  Medium.Temperature ts "Температура насыщения в барабане";
+  inner Medium.Temperature ts "Температура насыщения в барабане (пар)";
+  inner Medium.Temperature tw "Температура воды в барабане (пар)";  
   Medium.ThermodynamicState state_eco "Термодинамическое состояние потока питательной воды";
   Real x_eco "Степень сухости питательной воды";
   Medium.ThermodynamicState state_upStr "Термодинамическое состояние потока в подъемных трубах испарительного контура";
   Real x_upStr "Степень сухости в подъемных трубах испарительного контура";
   Medium.SaturationProperties sat "State vector to compute saturation properties для парового объема";
-  Medium.Temperature t_m_steam(start = t_m_steam_start) "Температура металла паровой части барабана";
-  Medium.Temperature t_m_water(start = t_m_water_start) "Температура металла водяной части барабана";
+  inner Medium.Temperature t_m_steam(start = t_m_steam_start) "Температура металла паровой части барабана";
+  inner Medium.Temperature t_m_water(start = t_m_water_start) "Температура металла водяной части барабана";
   Medium.MassFlowRate D_fw "Расход питательной воды";
   Medium.MassFlowRate D_st_circ "Пар поступающий в паровое пространство барабана из циркуляционных контуров ";
   Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";
@@ -115,7 +116,7 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Modelica.SIunits.Mass G_m_water(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "bottom")) "Масса металла водяной части барабана";
   Modelica.SIunits.DerDensityByPressure d_rhoDew_by_press "Производная плотности сухого пара от давления";
   Medium.MassFlowRate Dvipar "Выпар в паровой объем";
-  Modelica.SIunits.Length Hw(start = Hw_start, fixed = false, max = Din, min = 0) "Уровень воды в барабане";
+  inner Modelica.SIunits.Length Hw(start = Hw_start, fixed = false, max = Din, min = 0) "Уровень воды в барабане";
   Modelica.SIunits.Volume Vw(start = Vw_start, nominal = Vw_start, min = 0, max = drumWaterVolume(Din / 2, L, Din)) "Объем водяной части барабана";
   Medium.MassFlowRate D_downStr "Расход воды в опускные трубы циркуляционных контуров";
   Medium.MassFlowRate D_upStr(min = 0, max = 500) "Расход пароводяной среды в подъемных трубах циркуляционных контуров";
@@ -133,6 +134,10 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Medium.MassFlowRate D_w_eco "Расход воды из экономайзера, с учетом выделившегося или дополнительно конденсировавшегося пара";
   Medium.Density rhow_dew "Плотность воды на линии насыщения в водяном объеме барабана";
   Medium.Density rhow_bubble "Плотность пара на линии насыщения в водяном объеме барабана";
+  inner Modelica.SIunits.HeatFlowRate Q_top "Тепловой поток к металлу верхней части барабана";
+  inner Modelica.SIunits.HeatFlowRate Q_bot "Тепловой поток к металлу нижней части барабана";
+  Real dt_m_top_bot "Разница между температурой металла верха и низа барабана";
+  TPPSim.thermal.hfrForDrum Q_calc "Модель расчета тепловых потоков";
   //Интерфейс
   outer Modelica.Fluid.System system;   
   Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(

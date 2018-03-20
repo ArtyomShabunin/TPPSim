@@ -13,7 +13,7 @@ equation
   fedWater.m_flow = D_fw;
   waterLevel = Hw;
   p_drum = ps;
-//Паровое пространство барабана
+  //Паровое пространство барабана
   state_eco = Medium.setState_ph(ps, inStream(fedWater.h_outflow));
   x_eco = Medium.vapourQuality(state_eco);
   state_upStr = Medium.setState_ph(ps, inStream(upStr.h_outflow));
@@ -22,9 +22,7 @@ equation
   ts = Medium.saturationTemperature_sat(sat);
   h_dew = Medium.dewEnthalpy(sat);
   h_bubble = Medium.bubbleEnthalpy(sat);
-//t_m_steam = ts "Принимаем, что верхняя стенка барабанна в каждый момент времени равна температуре насыщения в паровом пространстве барабана. Такое равенство может работать только при конденсации, т.е. росте температуры стенки барабана!!!";
-  max(20000 * (ts - t_m_steam), 0) = D_cond_dr * (h_dew - h_bubble);
-//  20000 * (ts - t_m_steam) = D_cond_dr * (h_dew - h_bubble);
+  Q_top = D_cond_dr * (h_dew - h_bubble);
   D_st_circ = D_upStr * x_upStr;
   if noEvent(inStream(fedWater.h_outflow) - h_bubble > 0) then
     D_st_eco = D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
@@ -50,8 +48,8 @@ equation
   rhow = Medium.density_ph(pw, hw);
   state_w = Medium.setState_ph(pw, hw);
   x_w = Medium.vapourQuality(state_w);
-//t_m_water = Medium.saturationTemperature(pw) "Принимаем, что нижняя стенка барабанна в каждый момент времени равна температуре насыщения в водяном пространстве барабана";
-  20000 * (Medium.saturationTemperature(pw) - t_m_water) = G_m_water * C_m * der(t_m_water) "ВОЗМОЖНО имеет смысл добавить площадь теплообмена";
+  tw = Medium.saturationTemperature(pw);
+  Q_bot = G_m_water * C_m * der(t_m_water) "ВОЗМОЖНО имеет смысл добавить площадь теплообмена";
   G_m_water = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "bottom");
   D_w_circ + D_w_eco + D_cond_dr + D_st_cond_fw + D_downStr - Dvipar = der(Gw);
   D_w_circ * min(h_bubble, inStream(upStr.h_outflow)) + D_w_eco * min(h_bubble, inStream(fedWater.h_outflow)) + D_cond_dr * h_bubble + D_st_cond_fw * h_dew + D_downStr * hw - Dvipar * h_dew = der(Gw) * hw + Gw * der(hw) + G_m_water * C_m * der(t_m_water);
@@ -59,11 +57,8 @@ equation
   rhow_dew = Medium.dewDensity(sat_w);
   rhow_bubble = Medium.bubbleDensity(sat_w);
   Vw = Gw * (1 - x_w) / rhow_bubble + Gw * x_w * (1 - k) / rhow_dew;
-//Vw = drumWaterVolume(Din / 2, L, Hw);
   Hw = drumWaterLevel(Din / 2, L, Vw);
-//Уравнение циркуляции
-//algorithm
-//D_downStr := -50;
+  dt_m_top_bot = t_m_steam - t_m_water;
 initial equation
   if Dynamics == Types.Dynamics.SteadyStateInitial then
     der(t_m_water) = 0;
