@@ -25,14 +25,14 @@ equation
   sat = Medium.setSat_p(ps);
   h_dew = Medium.dewEnthalpy(sat);
   h_bubble = Medium.bubbleEnthalpy(sat);
-  Dsteam = if noEvent(inStream(fedWater.h_outflow)) > h_dew then D_fw else D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
+  Dsteam = if noEvent(inStream(fedWater.h_outflow) > h_dew) then D_fw elseif noEvent(inStream(fedWater.h_outflow) < h_bubble) then 0 else D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
 //Питательная вода
   fedWater.h_outflow = h_bubble;
   fedWater.p = ps;
   fedWater.m_flow = D_fw;
 //Выход насыщенного пара
   ps = steam.p;
-  steam.h_outflow = if noEvent(inStream(fedWater.h_outflow)) > h_dew then inStream(fedWater.h_outflow) else h_dew;
+  steam.h_outflow = if noEvent(inStream(fedWater.h_outflow) > h_dew) then inStream(fedWater.h_outflow) else h_dew;
   steam.m_flow = -Dsteam;
   annotation(
     uses(Modelica(version = "3.2.1")));

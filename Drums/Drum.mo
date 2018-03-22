@@ -24,13 +24,13 @@ equation
   h_bubble = Medium.bubbleEnthalpy(sat);
   Q_top = D_cond_dr * (h_dew - h_bubble);
   D_st_circ = D_upStr * x_upStr;
-  if noEvent(inStream(fedWater.h_outflow) - h_bubble > 0) then
-    D_st_eco = D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
-  elseif noEvent(inStream(fedWater.h_outflow) - h_bubble <= 0 and D_st_circ <= D_fw * (h_bubble - inStream(fedWater.h_outflow)) / (h_dew - h_bubble)) then
-    D_st_eco = -D_st_circ;
-  else
-    D_st_eco = D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
-  end if;
+  //if noEvent(inStream(fedWater.h_outflow)  > h_bubble and inStream(fedWater.h_outflow)  < h_dew) then
+    D_st_eco = max(min(D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble), D_fw), -D_st_circ);
+  //elseif noEvent(inStream(fedWater.h_outflow) > h_dew) then
+    //D_st_eco = D_fw;
+  //else
+    //D_st_eco = max(D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble), -(D_st_circ + Dvipar));
+  //end if;
   D_st_cond_fw_test = min(D_st_circ, max(D_fw * (h_bubble - inStream(fedWater.h_outflow)) / (h_dew - h_bubble), 0));
   D_st_cond_fw = -min(D_st_eco, 0);
   G_m_steam = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "top");
@@ -48,7 +48,7 @@ equation
   rhow = Medium.density_ph(pw, hw);
   state_w = Medium.setState_ph(pw, hw);
   x_w = Medium.vapourQuality(state_w);
-  tw = Medium.saturationTemperature(pw);
+  //tw = Medium.saturationTemperature(pw);
   Q_bot = G_m_water * C_m * der(t_m_water) "ВОЗМОЖНО имеет смысл добавить площадь теплообмена";
   G_m_water = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "bottom");
   D_w_circ + D_w_eco + D_cond_dr + D_st_cond_fw + D_downStr - Dvipar = der(Gw);

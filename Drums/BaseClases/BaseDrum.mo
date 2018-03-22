@@ -97,7 +97,7 @@ model BaseDrum "Базовый класс 'барабан котла'"
   //Переменные
   Modelica.SIunits.Volume Vs "Объем парового пространства барабана";
   inner Medium.Temperature ts "Температура насыщения в барабане (пар)";
-  inner Medium.Temperature tw "Температура воды в барабане (пар)";  
+  //inner Medium.Temperature tw "Температура воды в барабане (пар)";  
   Medium.ThermodynamicState state_eco "Термодинамическое состояние потока питательной воды";
   Real x_eco "Степень сухости питательной воды";
   Medium.ThermodynamicState state_upStr "Термодинамическое состояние потока в подъемных трубах испарительного контура";
@@ -106,8 +106,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   inner Medium.Temperature t_m_steam(start = t_m_steam_start) "Температура металла паровой части барабана";
   inner Medium.Temperature t_m_water(start = t_m_water_start) "Температура металла водяной части барабана";
   Medium.MassFlowRate D_fw "Расход питательной воды";
-  Medium.MassFlowRate D_st_circ "Пар поступающий в паровое пространство барабана из циркуляционных контуров ";
-  Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";
+  inner Medium.MassFlowRate D_st_circ "Пар поступающий в паровое пространство барабана из циркуляционных контуров ";
+  inner Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";
   Medium.MassFlowRate D_st_cond_fw "Расход пара конденсирующегося при нагреве питательной воды до энтальпии насыщения";
   Medium.MassFlowRate D_st_cond_fw_test;
   Medium.MassFlowRate Dsteam(start = 0, max = 0) "Расход пара из барабана";
@@ -115,18 +115,18 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Modelica.SIunits.Mass G_m_steam(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "top")) "Масса металла паровой части барабана";
   Modelica.SIunits.Mass G_m_water(start = rho_m * drumMetallVolume(Din / 2, delta, L, Hw_start, "bottom")) "Масса металла водяной части барабана";
   Modelica.SIunits.DerDensityByPressure d_rhoDew_by_press "Производная плотности сухого пара от давления";
-  Medium.MassFlowRate Dvipar "Выпар в паровой объем";
+  inner Medium.MassFlowRate Dvipar "Выпар в паровой объем";
   inner Modelica.SIunits.Length Hw(start = Hw_start, fixed = false, max = Din, min = 0) "Уровень воды в барабане";
   Modelica.SIunits.Volume Vw(start = Vw_start, nominal = Vw_start, min = 0, max = drumWaterVolume(Din / 2, L, Din)) "Объем водяной части барабана";
   Medium.MassFlowRate D_downStr "Расход воды в опускные трубы циркуляционных контуров";
   Medium.MassFlowRate D_upStr(min = 0, max = 500) "Расход пароводяной среды в подъемных трубах циркуляционных контуров";
   Medium.AbsolutePressure ps(start = ps_start) "Давление насыщения в барабане";
-  Medium.SpecificEnthalpy h_dew "Энтальпия пара на линии насыщения при давлении в барабане";
-  Medium.SpecificEnthalpy h_bubble "Энтальпия воды на линии насыщения при давлении в барабане";
+  inner Medium.SpecificEnthalpy h_dew "Энтальпия пара на линии насыщения при давлении в барабане";
+  inner Medium.SpecificEnthalpy h_bubble "Энтальпия воды на линии насыщения при давлении в барабане";
   Medium.AbsolutePressure pw(start = pw_start) "Давление воды в барабане";
   Medium.Density rhow "Плотность воды в барабане";
   Medium.SpecificEnthalpy hw "Энтальпия воды в водяном объеме";
-  Medium.ThermodynamicState state_w "Термодинамическое состояние воды в водяном объеме";
+  inner Medium.ThermodynamicState state_w "Термодинамическое состояние воды в водяном объеме";
   Real x_w "Степень сухости воды в водяном объеме";
   Modelica.SIunits.Mass Gw(start = Gw_start, fixed = true, nominal = drumWaterVolume(Din / 2, L, Hw_start) * Medium.bubbleDensity(Medium.setSat_p(ps_start)), min = 0) "Масса воды в барабане";
   Medium.SaturationProperties sat_w "State vector to compute saturation properties для водяного объема";
