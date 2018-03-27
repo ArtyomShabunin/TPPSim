@@ -28,11 +28,35 @@ model OnePVerticalOTHRSG
     Placement(visible = true, transformation(origin = {100, -24}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {128, -102}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, -60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Valves.simpleValve FWCV(redeclare package Medium = Medium_F, dp = 100000, m_flow_small = 0.0001, setD_flow = 20, use_D_flow_in = false) annotation(
-    Placement(visible = true, transformation(origin = {-37, 47}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.Valves.simpleValve FWCV(redeclare package Medium = Medium_F, dp = 100000, m_flow_small = 0.0001, setD_flow = 30, use_D_flow_in = true) annotation(
+    Placement(visible = true, transformation(origin = {-37, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Drums.Separator2 separator21(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {14, 4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Sensors.Temperature overheat_T(TemperatureType_set = TPPSim.Sensors.TemperatureType.overheating)  annotation(
+    Placement(visible = true, transformation(origin = {44, 6}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  TPPSim.Controls.TC tc1 annotation(
+    Placement(visible = true, transformation(origin = {30, 40}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Pressure pressure1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {67, 7}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.SpecificEnthalpy specificEnthalpy(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {92, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(specificEnthalpy.h_out, tc1.h) annotation(
+    Line(points = {{104, 14}, {106, 14}, {106, 44}, {42, 44}, {42, 46}}, color = {0, 0, 127}));
+  connect(pressure1.p, tc1.p) annotation(
+    Line(points = {{72, 8}, {76, 8}, {76, 36}, {42, 36}, {42, 36}}, color = {0, 0, 127}));
+  connect(separator21.fedWater, specificEnthalpy.port) annotation(
+    Line(points = {{8, 12}, {6, 12}, {6, 22}, {56, 22}, {56, -4}, {92, -4}, {92, 4}, {92, 4}}, color = {0, 127, 255}));
+  connect(pipe.waterIn, pressure1.port) annotation(
+    Line(points = {{30, 0}, {68, 0}, {68, 2}, {68, 2}}, color = {0, 127, 255}));
+  connect(tc1.y, FWCV.D_flow_in) annotation(
+    Line(points = {{18, 40}, {8, 40}, {8, 64}, {-37, 64}, {-37, 50}}, color = {0, 0, 127}));
+  connect(FW_In, FWCV.flowIn) annotation(
+    Line(points = {{-100, 68}, {-78, 68}, {-78, 49}, {-42, 49}}));
+  connect(FWCV.flowOut, ECO.flowIn) annotation(
+    Line(points = {{-32, 49}, {-8, 49}, {-8, 26}}, color = {0, 127, 255}));
+  connect(pipe.waterIn, overheat_T.port) annotation(
+    Line(points = {{30, 0}, {44, 0}, {44, 2}, {44, 2}}, color = {0, 127, 255}));
   connect(separator21.steam, pipe.waterIn) annotation(
     Line(points = {{14, 16}, {30, 16}, {30, 1}}, color = {0, 127, 255}));
   connect(pipe.waterOut, SH.flowIn) annotation(
@@ -51,10 +75,6 @@ equation
     Line(points = {{-18, -120}, {-18, -120}, {-18, -30}, {-18, -30}}));
   connect(SH.flowOut, steam) annotation(
     Line(points = {{-8, -30}, {80, -30}, {80, -24}, {100, -24}, {100, -24}}, color = {0, 127, 255}));
-  connect(FWCV.flowOut, ECO.flowIn) annotation(
-    Line(points = {{-32, 48}, {-8, 48}, {-8, 26}, {-8, 26}}, color = {0, 127, 255}));
-  connect(FW_In, FWCV.flowIn) annotation(
-    Line(points = {{-100, 68}, {-78, 68}, {-78, 48}, {-42, 48}, {-42, 48}}));
 protected
   annotation(
     Documentation(info = "<html>
