@@ -19,6 +19,7 @@ partial model BaseElementaryPipe "Базовая модель участка п�
   //Начальные значения 
   outer parameter Modelica.SIunits.AbsolutePressure p_flow_start "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
   outer parameter Modelica.SIunits.SpecificEnthalpy h_start "Начальная энтельпия вода/пар" annotation(Dialog(tab = "Initialization"));
+  outer parameter Modelica.SIunits.Temperature t_m_start "Начальная температура металла" annotation(Dialog(tab = "Initialization"));  
   //Переменные
   outer Medium.AbsolutePressure p "Давление потока вода/пар в узловых точках";
   outer Medium.SpecificEnthalpy h "Энтальпия потока вода/пар в узловых точках";  

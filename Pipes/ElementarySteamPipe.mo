@@ -67,7 +67,7 @@ initial equation
   if momentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
   end if; 
-  t_m = system.T_start;  
+  t_m = t_m_start;  
   annotation(
         Documentation(info = "<html><head></head><body>
       Модель элементарного участка паропровода.
