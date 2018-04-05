@@ -2,9 +2,10 @@
 
 block TC "Регулятор перегрева на выходе сепаратора прямоточного котла"
   extends TPPSim.Controls.BaseClasses.Icons.IconTC;
+  parameter Real T_sprh = 10 "Перегрев, С";
   Modelica.Blocks.Continuous.LimPID PID( Ti = 10,controllerType = Modelica.Blocks.Types.SimpleController.PI,initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = 3e-005, yMax = 50, yMin = 20, y_start = 20)  annotation(
     Placement(visible = true, transformation(origin = {60, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant const(k = 10)  annotation(
+  Modelica.Blocks.Sources.Constant const(k = T_sprh)  annotation(
     Placement(visible = true, transformation(origin = {-90, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput p annotation(
     Placement(visible = true, transformation(origin = {-120, -40}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -40}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));

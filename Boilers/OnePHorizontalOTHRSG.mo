@@ -30,7 +30,7 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
     Placement(visible = true, transformation(origin = {-48, 16}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   //Регуляторы уровня
   //РПК
-  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 100000, m_flow_small = 0.0001, setD_flow = 30, use_D_flow_in = false) annotation(
+  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 100000, m_flow_small = 0.0001, setD_flow = 30, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {41, 9}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
@@ -48,7 +48,23 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
     Placement(visible = true, transformation(origin = {-32, -10}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
   TPPSim.Sensors.Temperature temperature(TemperatureType_set = TPPSim.Sensors.TemperatureType.overheating) annotation(
     Placement(visible = true, transformation(origin = {-13, 33}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.Controls.TC tc1(T_sprh = 60)  annotation(
+    Placement(visible = true, transformation(origin = {8, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Sensors.SpecificEnthalpy specificEnthalpy(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-43, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Pressure pressure1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-29, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(tc1.y, HP_FWCV.D_flow_in) annotation(
+    Line(points = {{20, 50}, {40, 50}, {40, 10}, {42, 10}}, color = {0, 0, 127}));
+  connect(specificEnthalpy.h_out, tc1.h) annotation(
+    Line(points = {{-37.5, 49}, {-34, 49}, {-34, 54}, {-4, 54}, {-4, 55}}, color = {0, 0, 127}));
+  connect(pressure1.p, tc1.p) annotation(
+    Line(points = {{-19.5, 49}, {-14, 49}, {-14, 46}, {-4, 46}}, color = {0, 0, 127}));
+  connect(separator21.fedWater, pressure1.port) annotation(
+    Line(points = {{-28, 26}, {-29, 26}, {-29, 44}}, color = {0, 127, 255}));
+  connect(separator21.fedWater, specificEnthalpy.port) annotation(
+    Line(points = {{-28, 26}, {-30, 26}, {-30, 40}, {-42, 40}, {-42, 44}, {-42, 44}}, color = {0, 127, 255}));
   connect(HP_EVO_2.flowOut, separator21.fedWater) annotation(
     Line(points = {{-32, 0}, {-32, 0}, {-32, 12}, {-22, 12}, {-22, 20}, {-28, 20}, {-28, 26}, {-28, 26}}, color = {0, 127, 255}));
   connect(HP_EVO_1.flowOut, HP_EVO_2.flowIn) annotation(
