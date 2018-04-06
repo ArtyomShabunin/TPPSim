@@ -3,6 +3,7 @@ model GFHE_EVO_benson "Модель испарителя КУ типа Бенс�
   extends TPPSim.HRSG_HeatExch.BaseClases.BaseGFHE;
   extends TPPSim.HRSG_HeatExch.BaseClases.GFHE_EVO_interface;
   import TPPSim.functions.coorSecGen;
+  parameter TPPSim.Choices.piez_type piez_type = TPPSim.Choices.piez_type.const "Способ расчета пьезометрического перепада давления";
   //Параметры разбиения
   inner parameter Integer numberOfTubeSections = 1 "Число участков разбиения трубы" annotation(
     Dialog(group = "Параметры разбиения"));
@@ -30,7 +31,7 @@ model GFHE_EVO_benson "Модель испарителя КУ типа Бенс�
   inner Medium_G.AbsolutePressure pgas_gl[numberOfFlueSections + 1, numberOfTubeSections] "Давление газов (глобальная переменная)";
   replaceable TPPSim.HRSG_HeatExch.GasSideHE gasHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_G, section = section_set) annotation(
     Placement(visible = true, transformation(origin = {0, -36}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
-  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, section = section_set, deltaHpipe = TPPSim.functions.hSecGen(numberOfTubeSections, numberOfFlueSections, HRSG_type_set, zahod, Lpipe)) annotation(
+  replaceable TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE[numberOfFlueSections, numberOfTubeSections](redeclare package Medium = Medium_F, section = section_set, deltaHpipe = TPPSim.functions.hSecGen(numberOfTubeSections, numberOfFlueSections, HRSG_type_set, zahod, Lpipe), piez_type = piez_type) annotation(
     Placement(visible = true, transformation(origin = {0, 32}, extent = {{-30, -30}, {30, 30}}, rotation = 0)));
   replaceable TPPSim.HRSG_HeatExch.Splitter_percent collFlow(redeclare package Medium = Medium_F, zahod = zahod) annotation(
     Placement(visible = true, transformation(origin = {-30, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

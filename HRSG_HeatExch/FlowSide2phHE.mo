@@ -15,12 +15,15 @@ model FlowSide2phHE
   Real C2 "Показатель в знаменателе уравнения сплошности";
 equation
   if flowEnergyDynamics == Types.Dynamics.SteadyState then
-    0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]);
-    0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h);
+    0 = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]]);
+//    0 = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h);
   else
-    0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-    0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
+    deltaVFlow * stateFlow.d * der(stateFlow.h) = alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+//    0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
   end if;
+  
+  stateFlow.h = h_gl[section[1], section[2] + 1];
+  
 //Уравнение теплового баланса металла
   if metalDynamics == Types.Dynamics.SteadyState then
     0 = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T);
@@ -56,41 +59,55 @@ equation
   stateFlow.p = p_gl[section[1], section[2]];
   lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
   Xi_flow = lambda_tr * deltaLpipe / Din;
-  dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
+
   if flowMomentumDynamics == Types.Dynamics.SteadyState then
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez;
   else
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
-  if piez_type == TPPSim.Choices.piez_type.var then
-    dp_piez = homotopy(stateFlow.d * Modelica.Constants.g_n * deltaHpipe, pre(stateFlow.d) * Modelica.Constants.g_n * deltaHpipe) "Расчет перепада давления из-за изменения пьезометрической высоты";
+
+  
+  if initial() then
+    dp_fric = D_gl[section[1], section[2]] * abs(D_gl[section[1], section[2]])  * Xi_flow / 980 / (f_flow ^ 2) / 2;        
   else
-    dp_piez = 1000 * Modelica.Constants.g_n * deltaHpipe;
+    dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;        
+  end if;  
+  
+  if piez_type == TPPSim.Choices.piez_type.var then
+    if initial() then
+      dp_piez = Modelica.Constants.g_n * 980 * deltaHpipe;
+    else
+      dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты";
+    end if;
+  elseif piez_type == TPPSim.Choices.piez_type.const then
+    dp_piez = 980 * Modelica.Constants.g_n * deltaHpipe;
+  else
+    dp_piez = 0;
   end if;
 initial equation
 
   if flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.FixedInitial then
-    h_gl[section[1], section[2] + 1] = h_flow_start;
+//    h_gl[section[1], section[2] + 1] = h_flow_start;
     stateFlow.h = h_flow_start;
     stateFlow.p = p_flow_start;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
     der(stateFlow.h) = 0;
-    der(h_gl[section[1], section[2] + 1]) = 0;
+//    der(h_gl[section[1], section[2] + 1]) = 0;
     der(stateFlow.p) = 0;
   elseif flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.SteadyStateInitial then
-    h_gl[section[1], section[2] + 1] = h_flow_start;
+//    h_gl[section[1], section[2] + 1] = h_flow_start;
     stateFlow.h = h_flow_start;
     der(stateFlow.p) = 0;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.FixedInitial then
     der(stateFlow.h) = 0;
-    der(h_gl[section[1], section[2] + 1]) = 0;
+//    der(h_gl[section[1], section[2] + 1]) = 0;
     stateFlow.p = p_flow_start;              
   elseif flowEnergyDynamics == Types.Dynamics.FixedInitial and flowMassDynamics == Types.Dynamics.SteadyState then
-    h_gl[section[1], section[2] + 1] = h_flow_start;
+//    h_gl[section[1], section[2] + 1] = h_flow_start;
     stateFlow.h = h_flow_start;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyStateInitial and flowMassDynamics == Types.Dynamics.SteadyState then
     der(stateFlow.h) = 0;
-    der(h_gl[section[1], section[2] + 1]) = 0;
+//    der(h_gl[section[1], section[2] + 1]) = 0;
   elseif flowEnergyDynamics == Types.Dynamics.SteadyState and flowMassDynamics == Types.Dynamics.FixedInitial then
     stateFlow.h = h_flow_start;
     stateFlow.p = p_flow_start;

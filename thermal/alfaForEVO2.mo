@@ -51,6 +51,10 @@ algorithm
   w_v := abs(D_gl[section[1], section[2] + 1]) / state_v.d / f_flow;
   Re_v := w_v * Din * state_v.d / mu_v;
   alfa_v := 0.023 * k_v / Din * Re_v ^ 0.8 * Pr_v ^ 0.4;
-   
-  alfa_flow := max((1 - x_eco - x_sh) * 20000 + x_eco * alfa_l + x_sh * alfa_v, 0.0001);  
+equation   
+  //alfa_flow = if initial() then 400 else max((1 - x_eco - x_sh) * 20000 + x_eco * alfa_l + x_sh * alfa_v, 0.0001);
+
+  alfa_flow = if noEvent(h_gl[section[1], section[2]] < hl) then 1000 elseif noEvent(h_gl[section[1], section[2]] > hv) then 1000 else 20000;
+
+  //alfa_flow := 2000;
 end alfaForEVO2;

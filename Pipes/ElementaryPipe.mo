@@ -39,13 +39,23 @@ equation
   stateFlow.p = p[section[1], section[2]];
   lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
   Xi_flow = lambda_tr * deltaLpipe / Din;
-  dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
+  //dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
   if momentumDynamics == Types.Dynamics.SteadyState then
     p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez;     
   else
     p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
-  dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaLpiezo "Расчет перепада давления из-за изменения пьезометрической высоты";
+  //dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaLpiezo "Расчет перепада давления из-за изменения пьезометрической высоты";
+  
+  //dp_piez = 0;
+  
+  if initial() then
+    dp_fric = D[section[1], section[2]] * abs(D[section[1], section[2]])  * Xi_flow / 983 / (f_flow ^ 2) / 2;
+    dp_piez = 980 * Modelica.Constants.g_n * deltaLpiezo "Расчет перепада давления из-за изменения пьезометрической высоты";          
+  else
+    dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
+    dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaLpiezo "Расчет перепада давления из-за изменения пьезометрической высоты";        
+  end if; 
 initial equation
   if energyDynamics == Types.Dynamics.FixedInitial then
     stateFlow.h = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(system.p_start); 

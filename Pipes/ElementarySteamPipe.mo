@@ -5,7 +5,8 @@ model ElementarySteamPipe"Модель элементарного участка
   //Используемые уравнения динамики
   outer parameter Types.Dynamics energyDynamics "Параметры уравнения сохранения энергии";
   outer parameter Types.Dynamics massDynamics "Параметры уравнения сохранения массы";
-  outer parameter Modelica.Fluid.Types.Dynamics momentumDynamics "Параметры уравнения сохранения момента"; 
+  outer parameter Modelica.Fluid.Types.Dynamics momentumDynamics "Параметры уравнения сохранения момента";
+  outer parameter Types.Dynamics metalDynamics "Параметры уравнения динамики прогрева металла";
   //Переменные
   Modelica.SIunits.DerDensityByEnthalpy drdh;
   Modelica.SIunits.DerDensityByPressure drdp;
@@ -67,7 +68,12 @@ initial equation
   if momentumDynamics == Types.Dynamics.SteadyStateInitial then
     der(D_flow_v) = 0;
   end if; 
-  t_m = t_m_start;  
+    if metalDynamics == Types.Dynamics.SteadyStateInitial then
+    der(t_m) = 0;
+  elseif metalDynamics == Types.Dynamics.FixedInitial then
+    t_m = t_m_start;
+  end if;
+ 
   annotation(
         Documentation(info = "<html><head></head><body>
       Модель элементарного участка паропровода.
