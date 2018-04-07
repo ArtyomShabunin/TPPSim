@@ -33,4 +33,6 @@ equation
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-60, -10}, {-39, -10}, {-39, -11}, {-12, -11}}, color = {0, 127, 255}));
 annotation(
-    __OpenModelica_simulationFlags(lv = "LOG_STATS", maxStepSize = "0.1", s = "dassl", nls = "newton"));end OnePHorizontalOTHRSG_Test;
+    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
+    experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
+  end OnePHorizontalOTHRSG_Test;

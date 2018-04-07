@@ -3,7 +3,16 @@
 block TC "Регулятор перегрева на выходе сепаратора прямоточного котла"
   extends TPPSim.Controls.BaseClasses.Icons.IconTC;
   parameter Real T_sprh = 10 "Перегрев, С";
-  Modelica.Blocks.Continuous.LimPID PID( Ti = 10,controllerType = Modelica.Blocks.Types.SimpleController.PI,initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = 3e-005, yMax = 50, yMin = 20, y_start = 20)  annotation(
+  //Параметры PI-регулятора
+  parameter Real k = 3e-005 "Коэффициент усиления" annotation(
+    Dialog(group = "Параметры PI-регулятора"));
+  parameter Real Ti = 10 "Постоянная времени интегрирования" annotation(
+    Dialog(group = "Параметры PI-регулятора"));
+  parameter Modelica.SIunits.MassFlowRate yMax = 50 "Максимальный расход пара" annotation(
+    Dialog(group = "Параметры PI-регулятора"));
+  parameter Modelica.SIunits.MassFlowRate y_start = 20 "Начальный/минимальный расход пара" annotation(
+    Dialog(group = "Параметры PI-регулятора"));
+  Modelica.Blocks.Continuous.LimPID PID( Ti = Ti,controllerType = Modelica.Blocks.Types.SimpleController.PI,initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = k, yMax = yMax, yMin = y_start, y_start = y_start)  annotation(
     Placement(visible = true, transformation(origin = {60, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const(k = T_sprh)  annotation(
     Placement(visible = true, transformation(origin = {-90, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
