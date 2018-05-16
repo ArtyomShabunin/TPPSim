@@ -20,14 +20,15 @@ protected
 equation
   connect(D_flow_in, D_flow_in_internal) annotation(
     Line);
+algorithm
   if not use_D_flow_in then
-    D_flow_in_internal = setD_flow;
+    D_flow_in_internal := setD_flow;
   end if;
-  flowOut.m_flow = -flowIn.m_flow;
-  flowIn.m_flow = max(D_flow_in_internal, m_flow_small);
-  flowOut.h_outflow = inStream(flowIn.h_outflow);
-  flowIn.h_outflow = inStream(flowOut.h_outflow);
-  flowIn.p - flowOut.p = dp;
+  flowOut.m_flow := -flowIn.m_flow;
+  flowIn.m_flow := max(D_flow_in_internal, m_flow_small);
+  flowOut.h_outflow := inStream(flowIn.h_outflow);
+  flowIn.h_outflow := inStream(flowOut.h_outflow);
+  flowIn.p := flowOut.p + dp;
   annotation(
     Documentation(info = "<html><head></head><body>Модель клапана которая, по сути, является точкой с фиксирванным расходом среды и перепадом давления между портами.</body></html>", revisions = "<html><head></head><body>
     <ul>

@@ -1,6 +1,6 @@
 ﻿within TPPSim.Boilers.Tests;
 
-model EMA_028_HRSG_Test
+model ThreePBensonHRSG_Test
   package Medium_F = Modelica.Media.Water.WaterIF97_ph;
   package Medium_G = TPPSim.Media.ExhaustGas;
   inner Modelica.Fluid.System system(T_start = 60 + 273.15, allowFlowReversal = false, m_flow_small = 0.01, m_flow_start = 0.0001) annotation(
@@ -13,7 +13,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 25}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Boilers.EMA_028_HRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G) annotation(
+  TPPSim.Boilers.ThreePBensonHRSG boiler(redeclare package Medium_F = Medium_F, redeclare package Medium_G = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {10, 4}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible HP_FWP annotation(
     Placement(visible = true, transformation(origin = {31, -47}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
@@ -51,7 +51,7 @@ model EMA_028_HRSG_Test
     Placement(visible = true, transformation(origin = {20, 36}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Tw_condout(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {4, -24}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3, 4, 5}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/pos_BROU.txt", tableName = "tabl", tableOnFile = true) annotation(
+  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3, 4, 5}, fileName = "C:/Users/ASShabunin/TPPSim/Boilers/Tests/pos_BROU.txt", tableName = "tabl", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-101, 85}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant set_T_HPRS(k = 300 + 273.15) annotation(
     Placement(visible = true, transformation(origin = {-115, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -177,5 +177,7 @@ equation
   connect(condPump.port_b, boiler.cond_In) annotation(
     Line(points = {{54, 25}, {24, 25}, {24, 11}, {25, 11}}, color = {0, 127, 255}));
   annotation(
-    Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})));
-end EMA_028_HRSG_Test;
+    Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})),
+    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
+    experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
+end ThreePBensonHRSG_Test;

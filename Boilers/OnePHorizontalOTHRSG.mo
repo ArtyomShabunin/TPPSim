@@ -1,6 +1,6 @@
 ﻿within TPPSim.Boilers;
 
-model OnePHorizontalOTHRSG "Одноконтурный горизонтальный котел-утилизатор"
+model OnePHorizontalOTHRSG "Одноконтурный горизонтальный прямоточный котел-утилизатор"
   extends TPPSim.Boilers.BaseClases.Icons.Icon1pHorizontalOTHRSG;
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
@@ -29,14 +29,14 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
   TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.15, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 8, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, t_m_start = 373.15) annotation(
     Placement(visible = true, transformation(origin = {-48, 16}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   TPPSim.Pipes.ComplexPipe HP_pipe_2(redeclare TPPSim.Pipes.ElementaryPipe Pipe, Din = 0.3, Lpiezo = 0, Lpipe = 18.29, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 2, numberOfVolumes = 2) annotation(
-    Placement(visible = true, transformation(origin = {-22, 16}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {-20, 16}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   TPPSim.Pipes.ComplexPipe HP_pipe_3(redeclare TPPSim.Pipes.ElementaryPipe Pipe, Din = 0.3, Lpiezo = 0, Lpipe = 18.29, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 2, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-10, 10}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   TPPSim.Pipes.ComplexPipe HP_pipe_4(redeclare TPPSim.Pipes.ElementaryPipe Pipe, Din = 0.3, Lpiezo = 0, Lpipe = 19, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, massDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, n_parallel = 2, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {0, -8}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   //Регуляторы уровня
   //РПК
-  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 0, m_flow_small = 0.0001, setD_flow = 10, use_D_flow_in = true) annotation(
+  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 0, m_flow_small = 0.0001, setD_flow = 0, use_D_flow_in = false) annotation(
     Placement(visible = true, transformation(origin = {27, 13}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
@@ -48,21 +48,29 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
     Placement(visible = true, transformation(origin = {-82, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-168, 68}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a HP_FW_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {68, 10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {156, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Drums.Separator2 separator21(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {-36, 18}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.HRSG_HeatExch.GFHE_EVO_benson HP_EVO_2(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 38.1e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.horizontalBottom, Lpipe = 18.29, delta_fin = 0.9906e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flow_circ = {16, 17.3, 18.6, 22.4, 25.6} / 100, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, hfin = 15.88e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 1, piez_type = TPPSim.Choices.piez_type.zero, s1 = 85.15e-3, s2 = 111.1e-3, sfin = 2.921e-3, z1 = 126, z2 = 5, zahod = 5) annotation(
     Placement(visible = true, transformation(origin = {-32, -10}, extent = {{-10, 10}, {10, -10}}, rotation = 180)));
-  TPPSim.Sensors.Temperature temperature(TemperatureType_set = TPPSim.Sensors.TemperatureType.overheating) annotation(
-    Placement(visible = true, transformation(origin = {-13, 33}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Controls.TC tc1(T_sprh = 60, Ti = 10, k = 2e-005, yMax = 50, y_start = 20) annotation(
-    Placement(visible = true, transformation(origin = {8, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Sensors.SpecificEnthalpy specificEnthalpy(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {-43, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  Modelica.Fluid.Sensors.Pressure pressure1(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {-29, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_gas_start(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-67, 31}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  //  Drums.Separator2 separator21 annotation(
+  //    Placement(visible = true, transformation(origin = {-36, 18}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  TPPSim.Drums.Separator separator1(redeclare package Medium = Medium_F, Din_down_pipe = 0.2, Din_sep = 0.5, H_down_pipe = 10, H_sep = 3, L_start = 7) annotation(
+    Placement(visible = true, transformation(origin = {-34, 26}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  TPPSim.Pumps.simplePump circPump(redeclare package Medium = Medium_F, setD_flow = 20) annotation(
+    Placement(visible = true, transformation(origin = {-13, -41}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
 equation
-  connect(tc1.y, HP_FWCV.D_flow_in) annotation(
-    Line(points = {{20, 50}, {28, 50}, {28, 14}, {28, 14}}, color = {0, 0, 127}));
+  connect(circPump.port_b, HP_ECO_2.flowIn) annotation(
+    Line(points = {{-6, -40}, {32, -40}, {32, 0}, {24, 0}, {24, 0}}, color = {0, 127, 255}));
+  connect(separator1.downWater, circPump.port_a) annotation(
+    Line(points = {{-34, 16}, {-34, -41}, {-20, -41}}, color = {0, 127, 255}));
+  connect(HP_pipe_2.waterOut, separator1.fedWater) annotation(
+    Line(points = {{-20, 20}, {-20, 33}, {-27, 33}}, color = {0, 127, 255}));
+  connect(separator1.steam, HP_pipe.waterIn) annotation(
+    Line(points = {{-34, 37}, {-48, 37}, {-48, 20}}, color = {0, 127, 255}));
+  connect(HP_EVO_2.flowOut, HP_pipe_2.waterIn) annotation(
+    Line(points = {{-32, 0}, {-32, 11}, {-20, 11}}, color = {0, 127, 255}));
+  connect(HP_SH_1.gasOut, t_gas_start.port) annotation(
+    Line(points = {{-46, -10}, {-42, -10}, {-42, 26}, {-66, 26}, {-66, 26}}, color = {0, 127, 255}));
   connect(HP_ECO_2.gasOut, gasSink.ports[1]) annotation(
     Line(points = {{26, -10}, {58, -10}, {58, -10}, {58, -10}}, color = {0, 127, 255}));
   connect(HP_EVO_1.gasOut, HP_ECO_2.gasIn) annotation(
@@ -79,26 +87,10 @@ equation
     Line(points = {{-10, 14}, {-18, 14}, {-18, 2}, {-24, 2}, {-24, -28}, {-32, -28}, {-32, -20}, {-32, -20}}, color = {0, 127, 255}));
   connect(HP_EVO_1.flowOut, HP_pipe_3.waterIn) annotation(
     Line(points = {{-14, 0}, {-14, 0}, {-14, 6}, {-10, 6}, {-10, 6}}, color = {0, 127, 255}));
-  connect(HP_pipe_2.waterOut, separator21.fedWater) annotation(
-    Line(points = {{-22, 20}, {-28, 20}, {-28, 26}, {-28, 26}}, color = {0, 127, 255}));
-  connect(HP_EVO_2.flowOut, HP_pipe_2.waterIn) annotation(
-    Line(points = {{-32, 0}, {-32, 0}, {-32, 12}, {-22, 12}, {-22, 12}}, color = {0, 127, 255}));
-  connect(specificEnthalpy.h_out, tc1.h) annotation(
-    Line(points = {{-37.5, 49}, {-34, 49}, {-34, 54}, {-4, 54}, {-4, 55}}, color = {0, 0, 127}));
-  connect(pressure1.p, tc1.p) annotation(
-    Line(points = {{-19.5, 49}, {-14, 49}, {-14, 46}, {-4, 46}}, color = {0, 0, 127}));
-  connect(separator21.fedWater, pressure1.port) annotation(
-    Line(points = {{-28, 26}, {-29, 26}, {-29, 44}}, color = {0, 127, 255}));
-  connect(separator21.fedWater, specificEnthalpy.port) annotation(
-    Line(points = {{-28, 26}, {-30, 26}, {-30, 40}, {-42, 40}, {-42, 44}, {-42, 44}}, color = {0, 127, 255}));
   connect(HP_EVO_2.gasIn, HP_SH_1.gasOut) annotation(
     Line(points = {{-36, -10}, {-46, -10}, {-46, -10}, {-46, -10}}, color = {0, 127, 255}));
   connect(HP_EVO_1.gasIn, HP_EVO_2.gasOut) annotation(
     Line(points = {{-18, -10}, {-26, -10}, {-26, -10}, {-26, -10}}, color = {0, 127, 255}));
-  connect(separator21.steam, HP_pipe.waterIn) annotation(
-    Line(points = {{-36, 29}, {-36, 34}, {-48, 34}, {-48, 20}}, color = {0, 127, 255}));
-  connect(separator21.fedWater, temperature.port) annotation(
-    Line(points = {{-29, 25}, {-20.5, 25}, {-20.5, 28}, {-13, 28}}, color = {0, 127, 255}));
   connect(HP_pipe.waterOut, HP_SH_1.flowIn) annotation(
     Line(points = {{-48, 12}, {-48, 12}, {-48, 0}, {-48, 0}}, color = {0, 127, 255}));
   connect(HP_SH_1.flowOut, HP_Out) annotation(
@@ -108,8 +100,7 @@ equation
   annotation(
     Documentation(info = "<html>
   <p>
-  Модель одноконтурного котла-утилизатора для отработки моделей поверхностей нагрева, барабана и т.д.
-  </p>
+  Модель одноконтурного горизонтального котла-утилизатора для отработки модели прямоточного испарителя.
   </html>", revisions = "<html><head></head><body>
     <ul>
       <li><i>September 07, 2017</i>

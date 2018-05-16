@@ -1,5 +1,5 @@
 ﻿within TPPSim.Drums;
-model Separator2
+model Separator2 "Упрощенная модель сепаратора пара котла"
   //Вспомогательные функции
   extends TPPSim.Drums.BaseClases.Icons.Separator_Icon;
   //***Исходные данные
@@ -35,5 +35,13 @@ equation
   steam.h_outflow = if noEvent(inStream(fedWater.h_outflow) > h_dew) then inStream(fedWater.h_outflow) else h_dew;
   steam.m_flow = -Dsteam;
   annotation(
+    Documentation(info = "<html>
+  <p>
+  Модель сепаратора без измерения уровня воды. Медель имеет одиин вход среды (пар, воды, паро-водяная смесь) и один выход (пар). Отвод конденсата не моделируется.
+  </html>", revisions = "<html><head></head><body>
+    <ul>
+      <li><i>May 16, 2018</i>
+   by Artyom Shabunin:<br></li>
+</ul></body></html>"),
     uses(Modelica(version = "3.2.1")));
 end Separator2;
