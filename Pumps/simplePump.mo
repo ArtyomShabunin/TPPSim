@@ -15,16 +15,17 @@ model simplePump "Сильно упрощеная модель насоса"
     Placement(visible = true, transformation(origin = {-8, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
 protected
   Modelica.Blocks.Interfaces.RealInput D_flow_in_internal;
+equation
+  if use_D_flow_in then
+    connect(D_flow_in, D_flow_in_internal);  
+  else
+    D_flow_in_internal = setD_flow;
+  end if;  
 algorithm
-  if not use_D_flow_in then
-    D_flow_in_internal := setD_flow;
-  end if;
   port_b.m_flow := -max(D_flow_in_internal, system.m_flow_small);
   port_a.m_flow := D_flow_in_internal;
   port_b.h_outflow := inStream(port_a.h_outflow);
   port_a.h_outflow := inStream(port_b.h_outflow);
-equation
-  connect(D_flow_in, D_flow_in_internal);
   annotation(
     Documentation(info = "<html><head></head><body>Модель насоса которая, по сути, является точкой с фиксирванным расходом среды.</body></html>", revisions = "<html><head></head><body>
     <ul>

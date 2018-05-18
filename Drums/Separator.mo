@@ -2,6 +2,7 @@
 model Separator "Сепаратор пара прямоточного котла"
   extends TPPSim.Drums.BaseClases.Icons.Separator_Icon;
   //Вспомогательные функции
+
   function separatorWaterMass "Функция расчета массы воды в сепараторе"
     extends Modelica.Icons.Function;
     input Real L "отметка уровня воды от нижней точки сливного коллектора";
@@ -33,7 +34,7 @@ model Separator "Сепаратор пара прямоточного котла
 
   //Исходные данные
   replaceable package Medium = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
-//  parameter Medium.AbsolutePressure ps_start = 1.013e5 "Стартовое давление насыщения в сепараторе";
+  //  parameter Medium.AbsolutePressure ps_start = 1.013e5 "Стартовое давление насыщения в сепараторе";
   parameter Medium.MassFlowRate Dsteam_start = m_flow_small "Стартовый расход пара из сепаратора";
   parameter Modelica.SIunits.Length L_start = 1 "Начальный уровень воды в барабане";
   parameter Medium.MassFlowRate m_flow_small = 0.01 "Минимальный расход";
@@ -48,15 +49,14 @@ model Separator "Сепаратор пара прямоточного котла
     Dialog(group = "Геометрические характристики"));
   parameter Modelica.SIunits.Length H_down_pipe "Высота сливного коллектора" annotation(
     Dialog(group = "Геометрические характристики"));  
-  //Переменные
+//Переменные
   Medium.SaturationProperties sat "State vector to compute saturation properties для парового объема";
-//  Medium.MassFlowRate D_fw "Расход питательной воды";
-//  Medium.MassFlowRate Dsteam "Расход пара из сепаратора";
-//  Medium.AbsolutePressure ps "Давление насыщения в сепараторе";
+  //  Medium.MassFlowRate D_fw "Расход питательной воды";
+  //  Medium.MassFlowRate Dsteam "Расход пара из сепаратора";
+  //  Medium.AbsolutePressure ps "Давление насыщения в сепараторе";
   Medium.SpecificEnthalpy h_dew "Энтальпия пара на линии насыщения при давлении в сепараторе";
   Medium.SpecificEnthalpy h_bubble "Энтальпия воды на линии насыщения при давлении в сепараторе";
   Modelica.SIunits.Mass Gw "Масса воды в сепараторе и сливном коллекторе";
-  Modelica.SIunits.Length L "Уровень воды в сепараторе (отсчитывается от нижней точки сливного коллектора)";
   //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {90, 50}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-70, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -64,12 +64,14 @@ model Separator "Сепаратор пара прямоточного котла
     Placement(visible = true, transformation(origin = {0, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b downWater(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {0, -90}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Interfaces.RealOutput level "Уровень воды в сепараторе (отсчитывается от нижней точки сливного коллектора)" annotation(
+    Placement(visible = true, transformation(origin = {-88, 52}, extent = {{10, -10}, {-10, 10}}, rotation = 0), iconTransformation(origin = {50, 58}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 algorithm
   sat := Medium.setSat_p(steam.p);
   h_dew := Medium.dewEnthalpy(sat);
   h_bubble := Medium.bubbleEnthalpy(sat);
   steam.m_flow := if noEvent(inStream(fedWater.h_outflow) > h_dew) then - fedWater.m_flow elseif noEvent(inStream(fedWater.h_outflow) < h_bubble) then 0 else - fedWater.m_flow * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
-  L := separatorWaterLevel(Gw, Din_sep, Din_down_pipe, H_down_pipe);
+  level := separatorWaterLevel(Gw, Din_sep, Din_down_pipe, H_down_pipe);
 //Питательная вода
   fedWater.h_outflow := h_bubble;
   fedWater.p := steam.p;

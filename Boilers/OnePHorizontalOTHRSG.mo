@@ -36,7 +36,7 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
     Placement(visible = true, transformation(origin = {0, -8}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   //Регуляторы уровня
   //РПК
-  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 0, m_flow_small = 0.0001, setD_flow = 0, use_D_flow_in = false) annotation(
+  TPPSim.Valves.simpleValve HP_FWCV(redeclare package Medium = Medium_F, dp = 0, m_flow_small = 0.0001, setD_flow = 0, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {27, 13}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   //Атмосфера
   Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
@@ -56,11 +56,35 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
   //    Placement(visible = true, transformation(origin = {-36, 18}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Drums.Separator separator1(redeclare package Medium = Medium_F, Din_down_pipe = 0.2, Din_sep = 0.5, H_down_pipe = 10, H_sep = 3, L_start = 7) annotation(
     Placement(visible = true, transformation(origin = {-34, 26}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Pumps.simplePump circPump(redeclare package Medium = Medium_F, setD_flow = 20) annotation(
+  TPPSim.Pumps.simplePump circPump(redeclare package Medium = Medium_F, setD_flow = 20, use_D_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {-13, -41}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const(k = 20)  annotation(
+    Placement(visible = true, transformation(origin = {65, -47}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+  Modelica.Blocks.Math.Add add1(k1 = -1)  annotation(
+    Placement(visible = true, transformation(origin = {38, -46}, extent = {{8, -8}, {-8, 8}}, rotation = 0)));
+  Modelica.Blocks.Math.Max max1 annotation(
+    Placement(visible = true, transformation(origin = {13, -49}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const1(k = 0)  annotation(
+    Placement(visible = true, transformation(origin = {39, -71}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
+  Controls.LC HP_LC annotation(
+    Placement(visible = true, transformation(origin = {6, 36}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
-  connect(circPump.port_b, HP_ECO_2.flowIn) annotation(
-    Line(points = {{-6, -40}, {32, -40}, {32, 0}, {24, 0}, {24, 0}}, color = {0, 127, 255}));
+  connect(circPump.port_b, HP_EVO_1.flowIn) annotation(
+    Line(points = {{-6, -40}, {2, -40}, {2, -28}, {-14, -28}, {-14, -20}, {-14, -20}}, color = {0, 127, 255}));
+  connect(const1.y, max1.u2) annotation(
+    Line(points = {{32, -70}, {26, -70}, {26, -54}, {22, -54}, {22, -54}}, color = {0, 0, 127}));
+  connect(HP_LC.y, HP_FWCV.D_flow_in) annotation(
+    Line(points = {{12, 36}, {28, 36}, {28, 14}, {28, 14}}, color = {0, 0, 127}));
+  connect(separator1.level, HP_LC.u) annotation(
+    Line(points = {{-38, 32}, {-44, 32}, {-44, 42}, {-12, 42}, {-12, 36}, {-2, 36}, {-2, 36}}, color = {0, 0, 127}));
+  connect(HP_LC.y, add1.u1) annotation(
+    Line(points = {{12, 36}, {52, 36}, {52, -36}, {48, -36}, {48, -41}}, color = {0, 0, 127}));
+  connect(max1.y, circPump.D_flow_in) annotation(
+    Line(points = {{6, -48}, {-2, -48}, {-2, -30}, {-12, -30}, {-12, -34}, {-12, -34}}, color = {0, 0, 127}));
+  connect(add1.y, max1.u1) annotation(
+    Line(points = {{30, -46}, {22, -46}, {22, -44}, {22, -44}}, color = {0, 0, 127}));
+  connect(const.y, add1.u2) annotation(
+    Line(points = {{58, -46}, {54, -46}, {54, -51}, {48, -51}}, color = {0, 0, 127}));
   connect(separator1.downWater, circPump.port_a) annotation(
     Line(points = {{-34, 16}, {-34, -41}, {-20, -41}}, color = {0, 127, 255}));
   connect(HP_pipe_2.waterOut, separator1.fedWater) annotation(

@@ -18,14 +18,14 @@ model simpleValve "Упрощенная модель клапана"
 protected
   Modelica.Blocks.Interfaces.RealInput D_flow_in_internal;
 equation
-  connect(D_flow_in, D_flow_in_internal) annotation(
-    Line);
-algorithm
-  if not use_D_flow_in then
-    D_flow_in_internal := setD_flow;
+  if use_D_flow_in then
+    connect(D_flow_in, D_flow_in_internal);  
+  else
+    D_flow_in_internal = setD_flow;
   end if;
-  flowOut.m_flow := -flowIn.m_flow;
+algorithm
   flowIn.m_flow := max(D_flow_in_internal, m_flow_small);
+  flowOut.m_flow := -flowIn.m_flow;  
   flowOut.h_outflow := inStream(flowIn.h_outflow);
   flowIn.h_outflow := inStream(flowOut.h_outflow);
   flowIn.p := flowOut.p + dp;
