@@ -66,15 +66,43 @@ model OnePHorizontalOTHRSG "Одноконтурный горизонтальн�
     Placement(visible = true, transformation(origin = {13, -49}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant const1(k = 0)  annotation(
     Placement(visible = true, transformation(origin = {39, -71}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
-  Controls.LC HP_LC annotation(
+  Controls.LC HP_LC(DFmax = 50, DFmin = 0)  annotation(
     Placement(visible = true, transformation(origin = {6, 36}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  TPPSim.Controls.TC HP_TC(T_sprh = 60,yMax = 80, y_start = 0)  annotation(
+    Placement(visible = true, transformation(origin = {6, 56}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const2(k = 2000)  annotation(
+    Placement(visible = true, transformation(origin = {-34, 74}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Pressure pressure1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-17, 49}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
+  TPPSim.Sensors.Temperature overheat_T(TemperatureType_set = TPPSim.Sensors.TemperatureType.overheating)  annotation(
+    Placement(visible = true, transformation(origin = {-10, 26}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
+  Modelica.Blocks.Math.Max max2 annotation(
+    Placement(visible = true, transformation(origin = {32, 48}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Fluid.Sensors.SpecificEnthalpy specificEnthalpy(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-25, 57}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
 equation
+  connect(specificEnthalpy.h_out, HP_TC.h) annotation(
+    Line(points = {{-22, 58}, {-2, 58}, {-2, 58}, {-2, 58}}, color = {0, 0, 127}));
+  connect(separator1.fedWater, specificEnthalpy.port) annotation(
+    Line(points = {{-26, 34}, {-26, 34}, {-26, 54}, {-24, 54}}, color = {0, 127, 255}));
+  connect(separator1.fedWater, overheat_T.port) annotation(
+    Line(points = {{-26, 34}, {-18, 34}, {-18, 22}, {-10, 22}, {-10, 22}}, color = {0, 127, 255}));
+  connect(max2.y, HP_FWCV.D_flow_in) annotation(
+    Line(points = {{38, 48}, {42, 48}, {42, 28}, {26, 28}, {26, 14}, {28, 14}}, color = {0, 0, 127}));
+  connect(HP_LC.y, max2.u2) annotation(
+    Line(points = {{12, 36}, {18, 36}, {18, 44}, {24, 44}, {24, 44}}, color = {0, 0, 127}));
+  connect(HP_TC.y, max2.u1) annotation(
+    Line(points = {{12, 56}, {18, 56}, {18, 52}, {24, 52}, {24, 52}}, color = {0, 0, 127}));
+  connect(pressure1.p, HP_TC.p) annotation(
+    Line(points = {{-14, 50}, {-10, 50}, {-10, 54}, {-2, 54}, {-2, 54}}, color = {0, 0, 127}));
+  connect(separator1.fedWater, pressure1.port) annotation(
+    Line(points = {{-26, 34}, {-26, 43}, {-17, 43}, {-17, 46}}, color = {0, 127, 255}));
+  connect(const2.y, HP_TC.t_g) annotation(
+    Line(points = {{-28, 74}, {-14, 74}, {-14, 62}, {-2, 62}, {-2, 62}}, color = {0, 0, 127}));
   connect(circPump.port_b, HP_EVO_1.flowIn) annotation(
     Line(points = {{-6, -40}, {2, -40}, {2, -28}, {-14, -28}, {-14, -20}, {-14, -20}}, color = {0, 127, 255}));
   connect(const1.y, max1.u2) annotation(
     Line(points = {{32, -70}, {26, -70}, {26, -54}, {22, -54}, {22, -54}}, color = {0, 0, 127}));
-  connect(HP_LC.y, HP_FWCV.D_flow_in) annotation(
-    Line(points = {{12, 36}, {28, 36}, {28, 14}, {28, 14}}, color = {0, 0, 127}));
   connect(separator1.level, HP_LC.u) annotation(
     Line(points = {{-38, 32}, {-44, 32}, {-44, 42}, {-12, 42}, {-12, 36}, {-2, 36}, {-2, 36}}, color = {0, 0, 127}));
   connect(HP_LC.y, add1.u1) annotation(

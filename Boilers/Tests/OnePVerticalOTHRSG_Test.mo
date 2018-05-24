@@ -32,4 +32,7 @@ equation
     Line(points = {{-16, 40}, {-22, 40}, {-22, 15}}, color = {0, 0, 127}));
   connect(CV.port_b, flowSink.ports[1]) annotation(
     Line(points = {{-26, 12}, {-30, 12}, {-30, 30}, {-60, 30}}, color = {0, 127, 255}));
+annotation(
+    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
+    experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
 end OnePVerticalOTHRSG_Test;
