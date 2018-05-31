@@ -15,17 +15,15 @@ model OnePVerticalOTHRSG_Test
     Placement(visible = true, transformation(origin = {-22, 12}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 60 + 273.15, nPorts = 1, p = system.p_ambient)  annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Pumps.simplePumpFlexible FW_Pump(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {57, 9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+//  TPPSim.Pumps.simplePumpFlexible FW_Pump(redeclare package Medium = Medium_F) annotation(
+//    Placement(visible = true, transformation(origin = {57, 9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Boilers.OnePVerticalOTHRSG boiler annotation(
     Placement(visible = true, transformation(origin = {20, 10}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(flowSource.ports[1], boiler.FW_In) annotation(
+    Line(points = {{76, 20}, {58, 20}, {58, 4}, {40, 4}, {40, 4}}, color = {0, 127, 255}, thickness = 0.5));
   connect(boiler.steam, CV.port_a) annotation(
     Line(points = {{8, 0}, {-8, 0}, {-8, 12}, {-18, 12}, {-18, 12}}, color = {0, 127, 255}));
-  connect(FW_Pump.port_b, boiler.FW_In) annotation(
-    Line(points = {{52, 9}, {40, 9}, {40, 4}}, color = {0, 127, 255}));
-  connect(flowSource.ports[1], FW_Pump.port_a) annotation(
-    Line(points = {{76, 20}, {71, 20}, {71, 9}, {62, 9}}, color = {0, 127, 255}, thickness = 0.5));
   connect(GT.flowOut, boiler.gasIn) annotation(
     Line(points = {{-60, -12}, {0, -12}, {0, -12}, {0, -12}}, color = {0, 127, 255}));
   connect(CV_const.y, CV.opening) annotation(

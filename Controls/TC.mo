@@ -8,9 +8,9 @@ block TC "Регулятор перегрева на выходе сепарат
     Dialog(group = "Параметры PI-регулятора"));
   parameter Real Ti = 10 "Постоянная времени интегрирования" annotation(
     Dialog(group = "Параметры PI-регулятора"));
-  parameter Modelica.SIunits.MassFlowRate yMax = 50 "Максимальный расход пара" annotation(
+  parameter Modelica.SIunits.MassFlowRate yMax = 50 "Максимальное выходное значение" annotation(
     Dialog(group = "Параметры PI-регулятора"));
-  parameter Modelica.SIunits.MassFlowRate y_start = 20 "Начальный/минимальный расход пара" annotation(
+  parameter Modelica.SIunits.MassFlowRate y_start = 20 "Начальное/минимальное выходное значение" annotation(
     Dialog(group = "Параметры PI-регулятора"));
   Modelica.Blocks.Continuous.LimPID PID(Ti = Ti, controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = k, yMax = yMax, yMin = y_start, y_start = y_start) annotation(
     Placement(visible = true, transformation(origin = {10, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
