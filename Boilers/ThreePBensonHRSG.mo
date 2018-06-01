@@ -2,7 +2,8 @@
 
 model ThreePBensonHRSG "Котел-утилизатор с испарителем высокого давления типа 'Бенсона' для ГТУ SGT5-4000F"
   extends TPPSim.Boilers.BaseClases.Icons.Icon3pHorizontalOTHRSG;
-  replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
+  package Medium_G = TPPSim.Media.ExhaustGas;
+  package Medium_F = Modelica.Media.Water.WaterIF97_ph;
   outer Modelica.Fluid.System system;
   inner parameter Boolean SH_cold_start = true "Исходное состояние - холодное" annotation(
     Dialog(group = "Исходное состояние"));
@@ -208,9 +209,18 @@ model ThreePBensonHRSG "Котел-утилизатор с испарителе�
     Placement(visible = true, transformation(origin = {-106, 54}, extent = {{6, 6}, {-6, -6}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant check_valve_pos_const(k = 0.1) annotation(
     Placement(visible = true, transformation(origin = {-62, 86}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
+
+  Modelica.Blocks.Sources.Constant HPTC_const(k = 100 + 273.15) annotation(
+    Placement(visible = true, transformation(origin = {-130, 26}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Logical.Greater HPTC_gr annotation(
+    Placement(visible = true, transformation(origin = {-99, 21}, extent = {{-6, 6}, {6, -6}}, rotation = 0)));
 equation
-  connect(Tg_out_RH1.T, HT_TC.t_g) annotation(
-    Line(points = {{-78, 4}, {-76, 4}, {-76, 20}, {-6, 20}, {-6, 6}, {-6, 6}}, color = {0, 0, 127}));
+  connect(HPTC_gr.y, HT_TC.on) annotation(
+    Line(points = {{-92, 22}, {-6, 22}, {-6, 6}, {-6, 6}}, color = {255, 0, 255}));
+  connect(HPTC_const.y, HPTC_gr.u2) annotation(
+    Line(points = {{-123, 26}, {-106, 26}}, color = {0, 0, 127}));
+  connect(Tg_out_RH1.T, HPTC_gr.u1) annotation(
+    Line(points = {{-78, 4}, {-76, 4}, {-76, 12}, {-90, 12}, {-90, 4}, {-112, 4}, {-112, 21}, {-106, 21}}, color = {0, 0, 127}));
   connect(p_HP_EVO_out.p, HT_TC.p) annotation(
     Line(points = {{-16, 8}, {-10, 8}, {-10, -2}, {-6, -2}, {-6, -2}}, color = {0, 0, 127}));
   connect(e_HP_EVO_out.h_out, HT_TC.h) annotation(

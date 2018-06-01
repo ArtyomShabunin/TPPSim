@@ -16,7 +16,7 @@ equation
   flowIn.h_outflow = h_gl[1, 1];
   D_gl[1, 1] = flowIn.m_flow;
   p_gl[1, 1] = flowIn.p;
-  h_gl[1, numberOfVolumes + 1] = flowOut.h_outflow;
+  h_gl[1, numberOfVolumes + 1] = actualStream(flowOut.h_outflow);
   D_gl[1, numberOfVolumes + 1] = -flowOut.m_flow;
   p_gl[1, numberOfVolumes + 1] = flowOut.p;
   hgas_gl[1, 1] = inStream(gasIn.h_outflow);
@@ -29,8 +29,23 @@ equation
   gasIn.Xi_outflow = inStream(gasOut.Xi_outflow);
   inStream(gasIn.Xi_outflow) = gasOut.Xi_outflow;
   annotation(
-    Documentation(info = "<HTML>Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).</html>"),
-    experiment(StartTime = 0, StopTime = 10, Tolerance = 1e-06, Interval = 0.02),
-    version = "",
-    uses);
+    Documentation(info = "<html>
+<style>
+p {
+  text-indent: 20px;
+  text-align: 'justify';
+ }
+</style>
+Модель теплообменника с heatPort. Моделируется несколько ходов. Кипение. Модель воды - Modelica.Media.Water.WaterIF97_ph. Первый заход труб номеруется с 1, второй также с 1. Т.е. во всех заходах поток с одним знаком, и разность давлений с одним знаком (другое описание гибов).
+</ul>  
+</html>", revisions = "<html>
+<ul>
+<li><i>4 Apr 2017</i>
+by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
+   Создан.</li>
+<li><i>01 June 2017</i>
+by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
+   Скорректирована строка 19. Используется ф-ия actualStreame()</li>
+</ul>
+</html>"));
 end GFHE_simple;

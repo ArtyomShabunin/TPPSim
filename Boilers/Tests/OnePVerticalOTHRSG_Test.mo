@@ -15,8 +15,8 @@ model OnePVerticalOTHRSG_Test
     Placement(visible = true, transformation(origin = {-22, 12}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 60 + 273.15, nPorts = 1, p = system.p_ambient)  annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-//  TPPSim.Pumps.simplePumpFlexible FW_Pump(redeclare package Medium = Medium_F) annotation(
-//    Placement(visible = true, transformation(origin = {57, 9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  //  TPPSim.Pumps.simplePumpFlexible FW_Pump(redeclare package Medium = Medium_F) annotation(
+  //    Placement(visible = true, transformation(origin = {57, 9}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Boilers.OnePVerticalOTHRSG boiler annotation(
     Placement(visible = true, transformation(origin = {20, 10}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
@@ -32,5 +32,5 @@ equation
     Line(points = {{-26, 12}, {-30, 12}, {-30, 30}, {-60, 30}}, color = {0, 127, 255}));
 annotation(
     __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
-    experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
+    experiment(StartTime = 0, StopTime = 2000, Tolerance = 1e-2, Interval = 10));
 end OnePVerticalOTHRSG_Test;
