@@ -7,7 +7,7 @@ model EMA_028_HRSG_Test_Hot
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //  TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2482.5 / 3.6, Tnom = 569.1 + 273.15, Tstart = system.T_start) annotation(
   //    Placement(visible = true, transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Gas_turbine.combitable_startupGT GT(redeclare package Medium = Medium_G, fileName = "C:/Users/User/Documents/TPPSim/Gas_turbine/Tests/TEC_16_GT_2.txt") annotation(
+  TPPSim.Gas_turbine.combitable_startupGT GT(redeclare package Medium = Medium_G, fileName = "C:/Users/ASShabunin/TPPSim/Gas_turbine/Tests/TEC_16_GT_2.txt") annotation(
     Placement(visible = true, transformation(origin = {-16, -30}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 1, p = system.p_ambient) annotation(
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -51,7 +51,7 @@ model EMA_028_HRSG_Test_Hot
     Placement(visible = true, transformation(origin = {20, 36}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature Tw_condout(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {4, -24}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3, 4, 5}, fileName = "C:/Users/User/Documents/TPPSim/Boilers/Tests/pos_BROU_2.txt", tableName = "tabl", tableOnFile = true) annotation(
+  Modelica.Blocks.Sources.CombiTimeTable BROU_pos_table(columns = {2, 3, 4, 5}, fileName = "C:/Users/ASShabunin/TPPSim/Boilers/Tests/pos_BROU_2.txt", tableName = "tabl", tableOnFile = true) annotation(
     Placement(visible = true, transformation(origin = {-101, 85}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant set_T_HPRS(k = 300 + 273.15) annotation(
     Placement(visible = true, transformation(origin = {-115, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
@@ -179,5 +179,6 @@ equation
   connect(condPump.port_b, boiler.cond_In) annotation(
     Line(points = {{54, 25}, {24, 25}, {24, 11}, {25, 11}}, color = {0, 127, 255}));
   annotation(
-    Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}}, initialScale = 0.1)));
+    Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}}, initialScale = 0.1)),
+    experiment(StartTime = 0, StopTime = 2000, Tolerance = 1e-3, Interval = 10));
 end EMA_028_HRSG_Test_Hot;
