@@ -17,6 +17,8 @@ model ThreePVerticalHRSG_Test
     Placement(visible = true, transformation(origin = {-10, 12}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant IP_CV_const(k = 1) annotation(
     Placement(visible = true, transformation(origin = {-11, 39}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Fluid.Valves.ValveCompressible HP_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
+    Placement(visible = true, transformation(origin = {-34, -4}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible IP_CV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.OpPoint, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
     Placement(visible = true, transformation(origin = {-22, 6}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant HP_CV_const(k = 1) annotation(
@@ -29,21 +31,21 @@ model ThreePVerticalHRSG_Test
     Placement(visible = true, transformation(origin = {86, 20}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   TPPSim.Pumps.simplePumpFlexible condPump(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {59, 21}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium_F, down_T = 573.15, dp_nominal = 7.1e+06, m_flow_nominal = 42, p_nominal = 71e5, rho_nominal = 21.22) annotation(
-    Placement(visible = true, transformation(origin = {-36, 0}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
 equation
+  connect(HP_CV.port_b, Boiler.RH_In) annotation(
+    Line(points = {{-38, -4}, {-42, -4}, {-42, -26}, {38, -26}, {38, -12}, {52, -12}, {52, 0}, {46, 0}, {46, 2}}, color = {0, 127, 255}));
+  connect(HP_CV_const.y, HP_CV.opening) annotation(
+    Line(points = {{-38, 16}, {-34, 16}, {-34, 0}, {-34, 0}}, color = {0, 0, 127}));
+  connect(Boiler.HP_steamOut, HP_CV.port_a) annotation(
+    Line(points = {{12, 4}, {0, 4}, {0, -4}, {-30, -4}, {-30, -4}}, color = {0, 127, 255}));
+  connect(IP_CV_const.y, IP_CV.opening) annotation(
+    Line(points = {{-16, 40}, {-22, 40}, {-22, 9}}, color = {0, 0, 127}));
+  connect(IP_CV.port_b, flowSink.ports[1]) annotation(
+    Line(points = {{-26, 6}, {-26, 30}, {-60, 30}}, color = {0, 127, 255}));
   connect(Boiler.RH_Out, IP_CV.port_a) annotation(
-    Line(points = {{12, 0}, {0, 0}, {0, 6}, {-18, 6}, {-18, 6}, {-18, 6}}, color = {0, 127, 255}));
-  connect(Boiler.HP_steamOut, HP_RS.flowIn) annotation(
-    Line(points = {{12, 4}, {-8, 4}, {-8, 0}, {-32, 0}, {-32, 0}}, color = {0, 127, 255}));
+    Line(points = {{12, 0}, {-5, 0}, {-5, 6}, {-18, 6}}, color = {0, 127, 255}));
   connect(LP_CV.port_a, Boiler.LP_steamOut) annotation(
     Line(points = {{-6, 12}, {12, 12}, {12, 12}, {12, 12}}, color = {0, 127, 255}));
-  connect(HP_RS.flowOut, Boiler.RH_In) annotation(
-    Line(points = {{-40, 0}, {-44, 0}, {-44, -32}, {62, -32}, {62, 0}, {46, 0}, {46, 2}}, color = {0, 127, 255}));
-  connect(HP_CV_const.y, HP_RS.opening) annotation(
-    Line(points = {{-38, 16}, {-34, 16}, {-34, 4}, {-34, 4}}, color = {0, 0, 127}));
-  connect(HP_FW_pump.port_b, HP_RS.waterIn) annotation(
-    Line(points = {{56, -20}, {60, -20}, {60, -30}, {-38, -30}, {-38, -4}, {-38, -4}}, color = {0, 127, 255}));
   connect(flowSource.ports[1], condPump.port_a) annotation(
     Line(points = {{76, 20}, {71, 20}, {71, 21}, {64, 21}}, color = {0, 127, 255}, thickness = 0.5));
   connect(condPump.port_b, Boiler.condIn) annotation(
@@ -58,10 +60,6 @@ equation
     Line(points = {{42, -8}, {42, -8}, {42, -40}, {44, -40}, {44, -40}}, color = {0, 127, 255}));
   connect(LP_CV.port_b, flowSink.ports[2]) annotation(
     Line(points = {{-14, 12}, {-20, 12}, {-20, 32}, {-60, 32}, {-60, 30}}, color = {0, 127, 255}));
-  connect(IP_CV.port_b, flowSink.ports[1]) annotation(
-    Line(points = {{-26, 6}, {-30, 6}, {-30, 30}, {-60, 30}, {-60, 30}}, color = {0, 127, 255}));
-  connect(IP_CV_const.y, IP_CV.opening) annotation(
-    Line(points = {{-16, 40}, {-22, 40}, {-22, 10}, {-22, 10}}, color = {0, 0, 127}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-60, -12}, {6, -12}}, color = {0, 127, 255}));
   connect(LP_CV_const.y, LP_CV.opening) annotation(

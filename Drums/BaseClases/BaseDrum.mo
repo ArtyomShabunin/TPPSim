@@ -166,7 +166,7 @@ equation
   downStr.m_flow + min(HPFW.m_flow, -m_flow_small) = D_downStr;
 //Подъемные трубы
   upStr.h_outflow = hw;
-  upStr.p = pw;
+  upStr.p = ps;
   upStr.m_flow = D_upStr;
   annotation(
     Diagram(coordinateSystem(extent = {{-100, -100}, {100, 100}}, preserveAspectRatio = true, initialScale = 0.1, grid = {2, 2})),
@@ -183,6 +183,9 @@ p {
 <li><i>4 Apr 2017</i>
 by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
    Создан.</li>
+<li><i>07 June 2018</i>
+by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
+   Давление на выходе из подъемных труб приравнено ps.</li>
 </ul>
 </html>"));
 end BaseDrum;
