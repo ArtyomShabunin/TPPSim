@@ -32,7 +32,9 @@ model ThreePVerticalHRSG
   TPPSim.HRSG_HeatExch.GFHE_simple HP_SH_1(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 32e-3, Lpipe = 20.4, delta = 4e-3, delta_fin = 1e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, s1 = 82.03e-3, s2 = 110e-3, sfin = 6.4e-3, z1 = 174, z2 = 6, zahod = 3) annotation(
     Placement(visible = true, transformation(origin = {-18, -138}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   TPPSim.HRSG_HeatExch.GFHE_simple HP_SH_2(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 32e-3, Lpipe = 20.4, delta = 4e-3, delta_fin = 1e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, s1 = 82.03e-3, s2 = 110e-3, sfin = 3.6e-3, z1 = 174, z2 = 3, zahod = 3) annotation(
-    Placement(visible = true, transformation(origin = {-18, -164}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {-18, -188}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  TPPSim.HRSG_HeatExch.GFHE_simple HP_SH_3(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 32e-3, Lpipe = 20.4, delta = 4e-3, delta_fin = 1e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, s1 = 82.03e-3, s2 = 110e-3, sfin = 3.6e-3, z1 = 174, z2 = 3, zahod = 3) annotation(
+    Placement(visible = true, transformation(origin = {-18, -242}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   //Трубопроводы ВД
   TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.15, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 8, numberOfVolumes = 2, p_flow_start = HP_p_flow_start) annotation(
     Placement(visible = true, transformation(origin = {46, -126}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
@@ -57,8 +59,13 @@ model ThreePVerticalHRSG
   TPPSim.HRSG_HeatExch.GFHE_simple HP_ECO_3(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 24e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, Lpipe = 20.4, delta = 4e-3, delta_fin = 0.8e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 82.04e-3, s2 = 70e-3, sfin = 2.162e-3, z1 = 174, z2 = 5, zahod = 1) annotation(
     Placement(visible = true, transformation(origin = {-18, -58}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
 
-
-
+  //Промежуточный пароперегреватель
+  TPPSim.HRSG_HeatExch.GFHE_simple RH_1(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 32e-3, Lpipe = 20.4, delta = 4e-3, delta_fin = 1e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, s1 = 82.03e-3, s2 = 110e-3, sfin = 3.6e-3, z1 = 174, z2 = 3, zahod = 3) annotation(
+    Placement(visible = true, transformation(origin = {-18, -162}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  TPPSim.HRSG_HeatExch.GFHE_simple RH_2(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 32e-3, Lpipe = 20.4, delta = 4e-3, delta_fin = 1e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, s1 = 82.03e-3, s2 = 110e-3, sfin = 3.6e-3, z1 = 174, z2 = 3, zahod = 3) annotation(
+    Placement(visible = true, transformation(origin = {-18, -214}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  TPPSim.HRSG_HeatExch.GFHE_simple RH_3(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 32e-3, Lpipe = 20.4, delta = 4e-3, delta_fin = 1e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, p_flow_start = HP_p_flow_start, s1 = 82.03e-3, s2 = 110e-3, sfin = 3.6e-3, z1 = 174, z2 = 3, zahod = 3) annotation(
+    Placement(visible = true, transformation(origin = {-18, -266}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   //Параллельный экономайзер ВД/СД
   //Испаритель ВД
   TPPSim.HRSG_HeatExch.GFHE HP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare TPPSim.HRSG_HeatExch.GasSideHE_simple gasHE, redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 24e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalBottom, Lpipe = 20.4, delta = 4e-3, delta_fin = 0.8e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, h_flow_start = 251.2e3, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 82.04e-3, s2 = 70e-3, sfin = 3.55e-3, z1 = 174, z2 = 8, zahod = 2) annotation(
@@ -135,11 +142,11 @@ model ThreePVerticalHRSG
    
   //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
-    Placement(visible = true, transformation(origin = {-18, -200}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -224}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-18, -292}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -224}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b HP_steam(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {96, -152}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -72}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b IP_steam(redeclare package Medium = Medium_F) annotation(
-    Placement(visible = true, transformation(origin = {100, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {100, -220}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b LP_steam(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {100, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {140, -4}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a cond_In(redeclare package Medium = Medium_F) annotation(
@@ -149,6 +156,32 @@ model ThreePVerticalHRSG
   Modelica.Blocks.Sources.Ramp IP_set_flow(duration = 20, height = 25, offset = 0.01, startTime = 3) annotation(
     Placement(visible = true, transformation(origin = {18, 68}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
 equation
+  connect(RH_1.gasOut, HP_SH_1.gasIn) annotation(
+    Line(points = {{-18, -156}, {-18, -156}, {-18, -142}, {-18, -142}}, color = {0, 127, 255}));
+  connect(HP_SH_2.gasOut, RH_1.gasIn) annotation(
+    Line(points = {{-18, -182}, {-18, -182}, {-18, -166}, {-18, -166}}, color = {0, 127, 255}));
+  connect(RH_2.gasOut, HP_SH_2.gasIn) annotation(
+    Line(points = {{-18, -208}, {-18, -208}, {-18, -192}, {-18, -192}}, color = {0, 127, 255}));
+  connect(HP_SH_3.gasOut, RH_2.gasIn) annotation(
+    Line(points = {{-18, -236}, {-18, -236}, {-18, -218}, {-18, -218}}, color = {0, 127, 255}));
+  connect(RH_3.gasOut, HP_SH_3.gasIn) annotation(
+    Line(points = {{-18, -260}, {-18, -260}, {-18, -246}, {-18, -246}}, color = {0, 127, 255}));
+  connect(gasIn, RH_3.gasIn) annotation(
+    Line(points = {{-18, -292}, {-18, -292}, {-18, -270}, {-18, -270}}));
+  connect(RH_3.flowOut, IP_steam) annotation(
+    Line(points = {{-8, -270}, {72, -270}, {72, -220}, {100, -220}, {100, -220}}, color = {0, 127, 255}));
+  connect(RH_2.flowOut, RH_3.flowIn) annotation(
+    Line(points = {{-8, -218}, {6, -218}, {6, -262}, {-8, -262}, {-8, -262}}, color = {0, 127, 255}));
+  connect(RH_1.flowOut, RH_2.flowIn) annotation(
+    Line(points = {{-8, -166}, {6, -166}, {6, -210}, {-8, -210}, {-8, -210}}, color = {0, 127, 255}));
+  connect(IP_SH_2.flowOut, RH_1.flowIn) annotation(
+    Line(points = {{-8, -82}, {-4, -82}, {-4, -158}, {-8, -158}, {-8, -158}}, color = {0, 127, 255}));
+  connect(HP_SH_3.flowOut, HP_steam) annotation(
+    Line(points = {{-8, -246}, {60, -246}, {60, -152}, {96, -152}, {96, -152}}, color = {0, 127, 255}));
+  connect(HP_SH_2.flowOut, HP_SH_3.flowIn) annotation(
+    Line(points = {{-8, -192}, {-2, -192}, {-2, -238}, {-8, -238}, {-8, -238}}, color = {0, 127, 255}));
+  connect(HP_SH_1.flowOut, HP_SH_2.flowIn) annotation(
+    Line(points = {{-8, -142}, {-2, -142}, {-2, -184}, {-8, -184}}, color = {0, 127, 255}));
   connect(HP_ECO_3.flowOut, HP_drum.fedWater) annotation(
     Line(points = {{-8, -62}, {6, -62}, {6, -100}, {18, -100}, {18, -100}}, color = {0, 127, 255}));
   connect(HP_ECO_2.flowOut, HP_ECO_3.flowIn) annotation(
@@ -167,8 +200,6 @@ equation
     Line(points = {{-18, -22}, {-18, -22}, {-18, -32}, {-18, -32}}, color = {0, 127, 255}));
   connect(set_flow.y, HP_circPump.D_flow_in) annotation(
     Line(points = {{17.6, -82}, {13.6, -82}, {13.6, -92}, {7.6, -92}, {7.6, -92}, {1.6, -92}, {1.6, -104}, {2.6, -104}, {2.6, -104}, {3.6, -104}}, color = {0, 0, 127}));
-  connect(IP_SH_2.flowOut, IP_steam) annotation(
-    Line(points = {{-8, -82}, {12, -82}, {12, -8}, {100, -8}, {100, -10}}, color = {0, 127, 255}));
   connect(IP_SH_2.gasIn, HP_EVO.gasOut) annotation(
     Line(points = {{-18, -83}, {-18, -83}, {-18, -107}, {-18, -107}, {-18, -107}, {-18, -107}}, color = {0, 127, 255}));
   connect(IP_SH_1.flowOut, IP_SH_2.flowIn) annotation(
@@ -187,14 +218,6 @@ equation
     Line(points = {{46, -130.84}, {46, -130.84}, {46, -130.84}, {46, -130.84}, {46, -134.84}, {-8, -134.84}, {-8, -133.84}, {-8, -133.84}, {-8, -134.84}}, color = {0, 127, 255}));
   connect(HP_drum.steam, HP_pipe.waterIn) annotation(
     Line(points = {{31, -101}, {36, -101}, {36, -101}, {41, -101}, {41, -121}, {45, -121}, {45, -123}, {45, -123}, {45, -123}}, color = {0, 127, 255}));
-  connect(HP_SH_1.gasIn, HP_SH_2.gasOut) annotation(
-    Line(points = {{-18, -143}, {-18, -143}, {-18, -143}, {-18, -143}, {-18, -159}, {-18, -159}, {-18, -159}, {-18, -159}}, color = {0, 127, 255}));
-  connect(HP_SH_2.gasIn, gasIn) annotation(
-    Line(points = {{-18, -169}, {-18, -200}}, color = {0, 127, 255}));
-  connect(HP_SH_2.flowOut, HP_steam) annotation(
-    Line(points = {{-8, -168}, {60, -168}, {60, -154}, {96, -154}, {96, -152}}, color = {0, 127, 255}));
-  connect(HP_SH_1.flowOut, HP_SH_2.flowIn) annotation(
-    Line(points = {{-8, -142}, {-5, -142}, {-5, -142}, {-2, -142}, {-2, -160}, {-8, -160}, {-8, -163}, {-8, -163}, {-8, -160}}, color = {0, 127, 255}));
   connect(IP_pipe.waterOut, IP_SH_1.flowIn) annotation(
     Line(points = {{38, 13}, {38, 8}, {-8, 8}}, color = {0, 127, 255}));
   connect(IP_drum.steam, IP_pipe.waterIn) annotation(
@@ -305,6 +328,6 @@ protected
    by Artyom Shabunin:<br></li>
 </ul></body></html>"),
     Icon(graphics = {Text(origin = {-153, 157}, lineColor = {0, 170, 255}, extent = {{-27, 23}, {33, -17}}, textString = "LP"), Text(origin = {61, 157}, lineColor = {0, 170, 255}, extent = {{-27, 23}, {33, -17}}, textString = "IP"), Text(origin = {127, 157}, lineColor = {0, 170, 255}, extent = {{-27, 23}, {33, -17}}, textString = "HP")}, coordinateSystem(extent = {{-200, -300}, {200, 300}}, initialScale = 0.1)),
-    Diagram(coordinateSystem(extent = {{-100, -200}, {100, 200}})),
+    Diagram(coordinateSystem(extent = {{-100, -300}, {100, 200}})),
     __OpenModelica_commandLineOptions = "");
 end ThreePVerticalHRSG;
