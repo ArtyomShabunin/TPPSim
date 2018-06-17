@@ -26,14 +26,16 @@ model ThreePVerticalHRSG_Test
   ThreePVerticalHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {26, 10}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(Boiler.IP_steam, IP_CV.port_a) annotation(
+    Line(points = {{12, 6}, {-18, 6}, {-18, 6}, {-18, 6}}, color = {0, 127, 255}));
+  connect(HP_CV.port_b, flowSink.ports[3]) annotation(
+    Line(points = {{-38, -4}, {-54, -4}, {-54, 28}, {-60, 28}, {-60, 30}}, color = {0, 127, 255}));
+  connect(Boiler.HP_steam, HP_CV.port_a) annotation(
+    Line(points = {{12, 2}, {-10, 2}, {-10, -4}, {-30, -4}, {-30, -4}}, color = {0, 127, 255}));
+  connect(IP_CV.port_b, flowSink.ports[1]) annotation(
+    Line(points = {{-26, 6}, {-30, 6}, {-30, 28}, {-60, 28}, {-60, 30}}, color = {0, 127, 255}));
   connect(flowSource.ports[1], Boiler.cond_In) annotation(
     Line(points = {{76, 20}, {60, 20}, {60, 12}, {46, 12}, {46, 12}}, color = {0, 127, 255}, thickness = 0.5));
-  connect(HP_CV.port_b, flowSink.ports[3]) annotation(
-    Line(points = {{-38, -4}, {-52, -4}, {-52, 28}, {-60, 28}, {-60, 30}}, color = {0, 127, 255}));
-  connect(Boiler.HP_steam, HP_CV.port_a) annotation(
-    Line(points = {{12, 2}, {-6, 2}, {-6, -4}, {-30, -4}, {-30, -4}}, color = {0, 127, 255}));
-  connect(Boiler.IP_steam, IP_CV.port_a) annotation(
-    Line(points = {{12, 6}, {0, 6}, {0, 6}, {-18, 6}, {-18, 6}}, color = {0, 127, 255}));
   connect(Boiler.LP_steam, LP_CV.port_a) annotation(
     Line(points = {{12, 10}, {2, 10}, {2, 12}, {-6, 12}, {-6, 12}}, color = {0, 127, 255}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
@@ -42,8 +44,6 @@ equation
     Line(points = {{-38, 16}, {-34, 16}, {-34, 0}, {-34, 0}}, color = {0, 0, 127}));
   connect(IP_CV_const.y, IP_CV.opening) annotation(
     Line(points = {{-16, 40}, {-22, 40}, {-22, 9}}, color = {0, 0, 127}));
-  connect(IP_CV.port_b, flowSink.ports[1]) annotation(
-    Line(points = {{-26, 6}, {-26, 30}, {-60, 30}}, color = {0, 127, 255}));
   connect(LP_CV.port_b, flowSink.ports[2]) annotation(
     Line(points = {{-14, 12}, {-20, 12}, {-20, 32}, {-60, 32}, {-60, 30}}, color = {0, 127, 255}));
   connect(LP_CV_const.y, LP_CV.opening) annotation(
