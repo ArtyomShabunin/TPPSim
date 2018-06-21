@@ -3,11 +3,11 @@
 model ThreePVerticalHRSG_Test
   package Medium_F = Modelica.Media.Water.WaterIF97_ph;
   package Medium_G = TPPSim.Media.ExhaustGas;
-  inner Modelica.Fluid.System system(T_start = 60 + 273.15,allowFlowReversal = false, m_flow_small = 0.01) annotation(
+  inner Modelica.Fluid.System system(T_start = 60 + 273.15, allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 1292.6 / 3.6, Tnom = 517.2 + 273.15, Tstart = system.T_start) annotation(
     Placement(visible = true, transformation(origin = {-70, -12}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = 60 + 273.15, nPorts = 3, p = system.p_ambient, use_T = true, use_p = true) annotation(
+  Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, T = 60 + 273.15, nPorts = 2, p = system.p_ambient, use_T = true, use_p = true) annotation(
     Placement(visible = true, transformation(origin = {-70, 30}, extent = {{10, -10}, {-10, 10}}, rotation = 180)));
   Modelica.Blocks.Sources.Constant LP_CV_const(k = 1) annotation(
     Placement(visible = true, transformation(origin = {-3, 25}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
@@ -26,10 +26,10 @@ model ThreePVerticalHRSG_Test
   ThreePVerticalHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {26, 10}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(HP_CV.port_b, Boiler.RH_In) annotation(
+    Line(points = {{-38, -4}, {-42, -4}, {-42, -24}, {54, -24}, {54, 6}, {46, 6}, {46, 4}}, color = {0, 127, 255}));
   connect(Boiler.IP_steam, IP_CV.port_a) annotation(
     Line(points = {{12, 6}, {-18, 6}, {-18, 6}, {-18, 6}}, color = {0, 127, 255}));
-  connect(HP_CV.port_b, flowSink.ports[3]) annotation(
-    Line(points = {{-38, -4}, {-54, -4}, {-54, 28}, {-60, 28}, {-60, 30}}, color = {0, 127, 255}));
   connect(Boiler.HP_steam, HP_CV.port_a) annotation(
     Line(points = {{12, 2}, {-10, 2}, {-10, -4}, {-30, -4}, {-30, -4}}, color = {0, 127, 255}));
   connect(IP_CV.port_b, flowSink.ports[1]) annotation(
@@ -48,4 +48,5 @@ equation
     Line(points = {{-14, 12}, {-20, 12}, {-20, 32}, {-60, 32}, {-60, 30}}, color = {0, 127, 255}));
   connect(LP_CV_const.y, LP_CV.opening) annotation(
     Line(points = {{-8, 26}, {-10, 26}, {-10, 16}, {-10, 16}}, color = {0, 0, 127}));
-end ThreePVerticalHRSG_Test;
+annotation(
+    __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"));end ThreePVerticalHRSG_Test;
