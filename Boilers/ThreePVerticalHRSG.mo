@@ -175,9 +175,9 @@ model ThreePVerticalHRSG
     Placement(visible = true, transformation(origin = {100, 20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, 28}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a cond_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-100, 118}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-200, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp set_flow(duration = 20, height = 25, offset = 0.01, startTime = 3) annotation(
+  Modelica.Blocks.Sources.Ramp set_flow(duration = 60, height = 500, offset = 0.01, startTime = 1) annotation(
     Placement(visible = true, transformation(origin = {22, -82}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp IP_set_flow(duration = 20, height = 25, offset = 0.01, startTime = 3) annotation(
+  Modelica.Blocks.Sources.Ramp IP_set_flow(duration = 60, height = 200, offset = 0.01, startTime = 2) annotation(
     Placement(visible = true, transformation(origin = {18, 68}, extent = {{4, -4}, {-4, 4}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a RH_In(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {100, -140}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {202, -44}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
