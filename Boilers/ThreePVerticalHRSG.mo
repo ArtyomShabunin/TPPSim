@@ -118,6 +118,15 @@ model ThreePVerticalHRSG
   //ГПК
   TPPSim.HRSG_HeatExch.GFHE_simple cond_HE(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 24e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, Lpipe = 20.4, delta = 4e-3, delta_fin = 0.8e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfVolumes = 2, s1 = 82.04e-3, s2 = 70e-3, sfin = 2.958e-3, z1 = 174, z2 = 16, zahod = 2) annotation(
     Placement(visible = true, transformation(origin = {-18, 154}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  //Регулирование температуры перед ГПК
+  Modelica.Fluid.Sensors.Temperature Tw_condin(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {15, 179}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  TPPSim.Pumps.simplePump rec_pump(redeclare package Medium = Medium_F, use_D_flow_in = true) annotation(
+    Placement(visible = true, transformation(origin = {67, 159}, extent = {{-7, -7}, {7, 7}}, rotation = -90)));
+  Modelica.Blocks.Continuous.LimPID T_cond_control(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, yMax = 50, yMin = 0, y_start = 0) annotation(
+    Placement(visible = true, transformation(origin = {46, 180}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
+  Modelica.Blocks.Sources.Constant set_T_cond(k = 60 + 273.15) annotation(
+    Placement(visible = true, transformation(origin = {87, 187}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
   //Испаритель НД
   TPPSim.HRSG_HeatExch.GFHE LP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare TPPSim.HRSG_HeatExch.GasSideHE_simple gasHE, redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 0.032, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalBottom, Lpipe = 20.4, delta = 3e-3, delta_fin = 0.8e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 17e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 2, s1 = 82.04e-3, s2 = 110e-3, sfin = 2.868e-3, z1 = 174, z2 = 6, zahod = 3) annotation(
     Placement(visible = true, transformation(origin = {-18, 102}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
@@ -159,12 +168,12 @@ model ThreePVerticalHRSG
   Modelica.Fluid.Valves.ValveCompressible HP_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 1.2431e+07, filteredOpening = true, riseTime = 960) annotation(
     Placement(visible = true, transformation(origin = {-60, -144}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Blocks.Interfaces.RealInput HP_vent_pos annotation(
-    Placement(visible = true, transformation(origin = {-100, -176}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-128, 298}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));      
+    Placement(visible = true, transformation(origin = {-100, -176}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-128, 298}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
   Modelica.Fluid.Valves.ValveCompressible RH_vent(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 1000, dp_nominal = 2.861e+06, filteredOpening = true, riseTime = 2300) annotation(
     Placement(visible = true, transformation(origin = {-80, -144}, extent = {{4, -4}, {-4, 4}}, rotation = -90)));
   Modelica.Blocks.Interfaces.RealInput RH_vent_pos annotation(
-    Placement(visible = true, transformation(origin = {-100, -156}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-190, 298}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));  
-//Интерфейс
+    Placement(visible = true, transformation(origin = {-100, -156}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-190, 298}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+  //Интерфейс
   Modelica.Fluid.Interfaces.FluidPort_a gasIn(redeclare package Medium = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {-18, -300}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {200, -224}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b HP_Out(redeclare package Medium = Medium_F) annotation(
@@ -184,6 +193,18 @@ model ThreePVerticalHRSG
   Modelica.Blocks.Sources.Constant IP_vent_const(k = 1) annotation(
     Placement(visible = true, transformation(origin = {-78, -64}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
+  connect(cond_HE.flowIn, Tw_condin.port) annotation(
+    Line(points = {{-8, 158}, {-8, 158}, {-8, 170}, {14, 170}, {14, 174}, {16, 174}}, color = {0, 127, 255}));
+  connect(rec_pump.port_b, cond_HE.flowIn) annotation(
+    Line(points = {{68, 166}, {-8, 166}, {-8, 158}, {-8, 158}}, color = {0, 127, 255}));
+  connect(cond_HE.flowOut, rec_pump.port_a) annotation(
+    Line(points = {{-8, 150}, {66, 150}, {66, 152}, {68, 152}}, color = {0, 127, 255}));
+  connect(Tw_condin.T, T_cond_control.u_m) annotation(
+    Line(points = {{18, 180}, {38, 180}, {38, 180}, {38, 180}}, color = {0, 0, 127}));
+  connect(set_T_cond.y, T_cond_control.u_s) annotation(
+    Line(points = {{80, 188}, {66, 188}, {66, 194}, {50, 194}, {50, 194}, {46, 194}, {46, 188}, {46, 188}}, color = {0, 0, 127}));
+  connect(T_cond_control.y, rec_pump.D_flow_in) annotation(
+    Line(points = {{46, 174}, {46, 174}, {46, 170}, {80, 170}, {80, 160}, {74, 160}, {74, 160}}, color = {0, 0, 127}));
   connect(gasIn, RH_3.gasIn) annotation(
     Line(points = {{-18, -300}, {-18, -270}}));
   connect(RH_vent.port_b, vent.ports[3]) annotation(
