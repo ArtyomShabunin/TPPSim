@@ -15,10 +15,8 @@ model ThreePVerticalHRSG_Test
     Placement(visible = true, transformation(origin = {-69, 61}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 2, p = system.p_ambient) annotation(
     Placement(visible = true, transformation(origin = {86, -8}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Boilers.ThreePVerticalHRSG Boiler annotation(
+  TPPSim.Boilers.ThreePVerticalHRSG_2 Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant HP_vent_const(k = 0) annotation(
-    Placement(visible = true, transformation(origin = {33, 33}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Steam_turbine.dummy_ST ST annotation(
     Placement(visible = true, transformation(origin = {-46, -10}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
   TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.377, Lpipe = 155, delta = 0.05, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
@@ -27,8 +25,6 @@ model ThreePVerticalHRSG_Test
     Placement(visible = true, transformation(origin = {1, -21}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
   TPPSim.Pipes.ComplexPipe HRH_pipe(Din = 0.48, Lpipe = 92.8, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-1, -35}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
-  Modelica.Blocks.Sources.Constant RH_vent_const(k = 0) annotation(
-    Placement(visible = true, transformation(origin = {59, 33}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant IP_RS_cons(k = 0.2) annotation(
     Placement(visible = true, transformation(origin = {-27, 61}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant set_T_HPRS(k = 300 + 273.15) annotation(
@@ -49,15 +45,43 @@ model ThreePVerticalHRSG_Test
     Placement(visible = true, transformation(origin = {-3, 43}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
   Modelica.Fluid.Sensors.Pressure LP_p(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {11, 27}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
+  Modelica.Blocks.Math.BooleanToReal booleanToReal1(realFalse = 1, realTrue = 0)  annotation(
+    Placement(visible = true, transformation(origin = {38, -62}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0)  annotation(
+    Placement(visible = true, transformation(origin = {38, -82}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
+  connect(booleanToReal2.y, Boiler.HP_vent_pos) annotation(
+    Line(points = {{44, -82}, {62, -82}, {62, 16}, {44, 16}, {44, 10}, {42, 10}, {42, 10}}, color = {0, 0, 127}));
+  connect(booleanToReal1.y, Boiler.RH_vent_pos) annotation(
+    Line(points = {{44, -62}, {54, -62}, {54, 14}, {48, 14}, {48, 10}, {50, 10}}, color = {0, 0, 127}));
+  connect(HP_pressure_control.y2, booleanToReal2.u) annotation(
+    Line(points = {{-39, -66.5}, {-39, -82}, {30, -82}}, color = {255, 0, 255}));
+  connect(ST.HP_CV_apos, HP_pressure_control.u3) annotation(
+    Line(points = {{-52, -30}, {-52, -38}, {-34, -38}, {-34, -55}}, color = {0, 0, 127}));
+  connect(ST.HP_RS_apos, HP_pressure_control.u1) annotation(
+    Line(points = {{-50, -30}, {-50, -36}, {-32, -36}, {-32, -55}}, color = {0, 0, 127}));
+  connect(HP_pressure_control.y, ST.HP_RS_pos) annotation(
+    Line(points = {{-35, -66.5}, {-36, -66.5}, {-36, -70}, {-80, -70}, {-80, 14}, {-54, 14}, {-54, 10}, {-52, 10}}, color = {0, 0, 127}));
+  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
+    Line(points = {{-47, -59}, {-45, -59}, {-45, -58.5}, {-41, -58.5}}, color = {255, 0, 255}));
+  connect(Boiler.HP_p_drum, HP_pressure_control.u2) annotation(
+    Line(points = {{50, 4}, {58, 4}, {58, -84}, {-44, -84}, {-44, -46}, {-38, -46}, {-38, -55}}, color = {0, 0, 127}));
+  connect(IP_pressure_control.y2, booleanToReal1.u) annotation(
+    Line(points = {{0, -70}, {0, -70}, {0, -76}, {20, -76}, {20, -62}, {30, -62}, {30, -62}}, color = {255, 0, 255}));
+  connect(IP_p.p, IP_pressure_control.u2) annotation(
+    Line(points = {{-6, -52}, {2, -52}, {2, -58}, {2, -58}}, color = {0, 0, 127}));
+  connect(Boiler.check_valve_pos, IP_pressure_control.u4) annotation(
+    Line(points = {{10, -20}, {-12, -20}, {-12, -64}, {0, -64}, {0, -64}}, color = {255, 0, 255}));
+  connect(IP_pressure_control.y, ST.IP_RS_pos) annotation(
+    Line(points = {{6, -70}, {6, -70}, {6, -80}, {-86, -80}, {-86, 16}, {-44, 16}, {-44, 10}, {-44, 10}}, color = {0, 0, 127}));
+  connect(ST.IP_CV_apos, IP_pressure_control.u3) annotation(
+    Line(points = {{-44, -30}, {-44, -30}, {-44, -32}, {-22, -32}, {-22, -40}, {-10, -40}, {-10, -44}, {4, -44}, {4, -54}, {6, -54}, {6, -58}, {6, -58}}, color = {0, 0, 127}));
+  connect(ST.IP_RS_apos, IP_pressure_control.u1) annotation(
+    Line(points = {{-46, -30}, {-46, -30}, {-46, -34}, {-8, -34}, {-8, -40}, {6, -40}, {6, -52}, {8, -52}, {8, -58}, {8, -58}}, color = {0, 0, 127}));
   connect(flowSource.ports[1], Boiler.cond_In) annotation(
     Line(points = {{76, -8}, {65, -8}, {65, -10}, {50, -10}}, color = {0, 127, 255}, thickness = 0.5));
   connect(flowSource.ports[2], ST.cooling_water) annotation(
     Line(points = {{76, -8}, {64, -8}, {64, 18}, {-12, 18}, {-12, 0}, {-16, 0}, {-16, 2}}, color = {0, 127, 255}, thickness = 0.5));
-  connect(IP_p.p, IP_pressure_control.u2) annotation(
-    Line(points = {{-6, -52}, {2, -52}, {2, -58}, {2, -58}}, color = {0, 0, 127}));
-  connect(Boiler.HP_p_drum, HP_pressure_control.u2) annotation(
-    Line(points = {{50, 4}, {58, 4}, {58, -84}, {-44, -84}, {-44, -46}, {-38, -46}, {-38, -54}, {-38, -54}}, color = {0, 0, 127}));
   connect(LP_pressure_control.y2, LP_pressure_control.u4) annotation(
     Line(points = {{-8, 38}, {-10, 38}, {-10, 44}, {-8, 44}, {-8, 44}}, color = {255, 0, 255}));
   connect(LP_pressure_control.y, ST.LP_CV_pos) annotation(
@@ -68,32 +92,14 @@ equation
     Line(points = {{-32, 46}, {-36, 46}, {-36, 38}, {-14, 38}, {-14, 52}, {-2, 52}, {-2, 49}}, color = {0, 0, 127}));
   connect(IP_CV_const.y, LP_pressure_control.u1) annotation(
     Line(points = {{-32, 46}, {-36, 46}, {-36, 38}, {-14, 38}, {-14, 52}, {0, 52}, {0, 49}}, color = {0, 0, 127}));
-  connect(Boiler.check_valve_pos, IP_pressure_control.u4) annotation(
-    Line(points = {{10, -20}, {-12, -20}, {-12, -64}, {0, -64}, {0, -64}}, color = {255, 0, 255}));
   connect(Boiler.LP_Out, LP_p.port) annotation(
     Line(points = {{10, -18}, {6, -18}, {6, 24}, {12, 24}, {12, 24}}, color = {0, 127, 255}));
-  connect(IP_pressure_control.y, ST.IP_RS_pos) annotation(
-    Line(points = {{6, -70}, {6, -70}, {6, -80}, {-86, -80}, {-86, 16}, {-44, 16}, {-44, 10}, {-44, 10}}, color = {0, 0, 127}));
   connect(HRH_pipe.waterOut, IP_p.port) annotation(
     Line(points = {{-4, -34}, {-6, -34}, {-6, -56}, {-8, -56}, {-8, -56}}, color = {0, 127, 255}));
-  connect(ST.IP_CV_apos, IP_pressure_control.u3) annotation(
-    Line(points = {{-44, -30}, {-44, -30}, {-44, -32}, {-22, -32}, {-22, -40}, {-10, -40}, {-10, -44}, {4, -44}, {4, -54}, {6, -54}, {6, -58}, {6, -58}}, color = {0, 0, 127}));
-  connect(ST.IP_RS_apos, IP_pressure_control.u1) annotation(
-    Line(points = {{-46, -30}, {-46, -30}, {-46, -34}, {-8, -34}, {-8, -40}, {6, -40}, {6, -52}, {8, -52}, {8, -58}, {8, -58}}, color = {0, 0, 127}));
   connect(HP_pipe.waterOut, HP_p.port) annotation(
     Line(points = {{-4, -26}, {-14, -26}, {-14, -50}, {-22, -50}, {-22, -50}}, color = {0, 127, 255}));
-  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
-    Line(points = {{-47, -59}, {-45, -59}, {-45, -58}, {-40, -58}}, color = {255, 0, 255}));
-  connect(HP_pressure_control.y, ST.HP_RS_pos) annotation(
-    Line(points = {{-34, -66}, {-36, -66}, {-36, -70}, {-80, -70}, {-80, 14}, {-54, 14}, {-54, 10}, {-52, 10}}, color = {0, 0, 127}));
-  connect(ST.HP_RS_apos, HP_pressure_control.u1) annotation(
-    Line(points = {{-50, -30}, {-50, -36}, {-32, -36}, {-32, -55}}, color = {0, 0, 127}));
-  connect(ST.HP_CV_apos, HP_pressure_control.u3) annotation(
-    Line(points = {{-52, -30}, {-52, -38}, {-34, -38}, {-34, -55}}, color = {0, 0, 127}));
   connect(set_T_HPRS.y, ST.RP_RS_t) annotation(
     Line(points = {{-63.5, 45}, {-56.5, 45}, {-56.5, 47}, {-49.5, 47}, {-49.5, 11}, {-49.5, 11}, {-49.5, 9}, {-49.5, 9}}, color = {0, 0, 127}));
-  connect(RH_vent_const.y, Boiler.RH_vent_pos) annotation(
-    Line(points = {{53.5, 33}, {51.75, 33}, {51.75, 33}, {50, 33}, {50, 21.5}, {50, 21.5}, {50, 10}}, color = {0, 0, 127}));
   connect(Boiler.RH_Out, HRH_pipe.waterIn) annotation(
     Line(points = {{10, -32.6}, {8, -32.6}, {8, -32.6}, {6, -32.6}, {6, -35.6}, {4.5, -35.6}, {4.5, -35.6}, {3, -35.6}}, color = {0, 127, 255}));
   connect(HRH_pipe.waterOut, ST.HRH) annotation(
@@ -112,8 +118,6 @@ equation
     Line(points = {{-63.5, 61}, {-46, 61}, {-46, 10}}, color = {0, 0, 127}));
   connect(IP_CV_const.y, ST.IP_CV_pos) annotation(
     Line(points = {{-32.5, 45}, {-36.25, 45}, {-36.25, 45}, {-40, 45}, {-40, 27.5}, {-40, 27.5}, {-40, 10}}, color = {0, 0, 127}));
-  connect(HP_vent_const.y, Boiler.HP_vent_pos) annotation(
-    Line(points = {{38.5, 33}, {40.25, 33}, {40.25, 33}, {42, 33}, {42, 21.5}, {42, 21.5}, {42, 10}}, color = {0, 0, 127}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-56, -42}, {10, -42}}, color = {0, 127, 255}));
   annotation(
