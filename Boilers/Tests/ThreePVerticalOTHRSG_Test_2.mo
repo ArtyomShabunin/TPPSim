@@ -1,8 +1,8 @@
 ﻿within TPPSim.Boilers.Tests;
 
-model ThreePVerticalOTHRSG_Test
+model ThreePVerticalOTHRSG_Test_2
   extends TPPSim.Boilers.Tests.ThreePVerticalHRSG_Test_partial;
-  TPPSim.Boilers.ThreePVerticalOTHRSG Boiler annotation(
+  TPPSim.Boilers.ThreePVerticalOTHRSG_2 Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
   connect(GT.flowOut, Boiler.gasIn) annotation(
@@ -27,4 +27,4 @@ equation
     Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})),
     __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
     experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
-end ThreePVerticalOTHRSG_Test;
+end ThreePVerticalOTHRSG_Test_2;

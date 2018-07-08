@@ -21,29 +21,29 @@ model ThreePVerticalOTHRSG_2
   TPPSim.Drums.Separator HP_separator(redeclare package Medium = Medium_F, Din_down_pipe = 0.2, Din_sep = 0.5, H_down_pipe = 10, H_sep = 3, L_start = 7) annotation(
     Placement(visible = true, transformation(origin = {18, -126}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   //Регуляторы ВД
-  TPPSim.Controls.LC_sink HP_LC(DFmax = 30, DFmin = 0, L = 7) annotation(
+  TPPSim.Controls.LC HP_LC(DFmax = 1, DFmin = 0) annotation(
     Placement(visible = true, transformation(origin = {49, -127}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
-  TPPSim.Controls.TC HP_TC(T_sprh = 60, yMax = 1, y_start = 0.3) annotation(
+  TPPSim.Controls.TC HP_TC(T_sprh = 60, yMax = 1, y_start = 0) annotation(
     Placement(visible = true, transformation(origin = {49, -107}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
   TPPSim.Pumps.simplePump HP_sink_valve(redeclare package Medium = Medium_F, setD_flow = 0, use_D_flow_in = true) annotation(
-    Placement(visible = true, transformation(origin = {64, -210}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
-  Modelica.Fluid.Sources.FixedBoundary flash_tank(redeclare package Medium = Medium_F, T = system.T_ambient, nPorts = 1, p = system.p_ambient, use_T = true, use_p = true) annotation(
-    Placement(visible = true, transformation(origin = {90, -210}, extent = {{-10, -10}, {10, 10}}, rotation = 180)));
-  Modelica.Blocks.Logical.Greater HPTC_gr annotation(
-    Placement(visible = true, transformation(origin = {-41, -109}, extent = {{-6, 6}, {6, -6}}, rotation = 90)));
-  Modelica.Blocks.Sources.Constant HPTC_const(k = 100 + 273.15) annotation(
-    Placement(visible = true, transformation(origin = {-64,-94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {46, -210}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure HPTC_p(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {26, -106}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Fluid.Sensors.SpecificEnthalpy HPTC_enth(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {14, -94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   TPPSim.Sensors.Temperature HP_overheat(TemperatureType_set = TPPSim.Sensors.TemperatureType.overheating) annotation(
     Placement(visible = true, transformation(origin = {4, -104}, extent = {{-4, -4}, {4, 4}}, rotation = 0)));
-  Modelica.Fluid.Sensors.Temperature Tgt(redeclare package Medium = Medium_G) annotation(
-    Placement(visible = true, transformation(origin = {-37, -195}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.MassFlowRate massFlowRate1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {7, -79}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
+  Modelica.Blocks.Continuous.LimPID PID( controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = 0.001, yMax = 1, yMin = 0)  annotation(
+    Placement(visible = true, transformation(origin = {62, -176}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));  
+  Modelica.Blocks.Math.Product product1 annotation(
+    Placement(visible = true, transformation(origin = {66, -196}, extent = {{-6, -6}, {6, 6}}, rotation = -90)));
+  Modelica.Blocks.Sources.Ramp ramp2(duration = 60, height = 20, offset = 0, startTime = 5)  annotation(
+    Placement(visible = true, transformation(origin = {50, -148}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));  
   //Трубопроводы ВД
   TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.15, Lpipe = 5, delta = 0.01, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 8, numberOfVolumes = 2, p_flow_start = HP_p_flow_start) annotation(
-    Placement(visible = true, transformation(origin = {30, -166}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
+    Placement(visible = true, transformation(origin = {28, -166}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   //Контур СД
   //Испаритель СД
   TPPSim.HRSG_HeatExch.GFHE IP_EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare TPPSim.HRSG_HeatExch.GasSideHE_simple gasHE, redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 34e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalBottom, Lpipe = 20.4, delta = 2e-3, delta_fin = 0.8e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, hfin = 15e-3, k_gamma_gas = 1, metalDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, numberOfTubeSections = 1, s1 = 91.64e-3, s2 = 79e-3, sfin = 4.287e-3, z1 = 118, z2 = 6, zahod = 2) annotation(
@@ -68,27 +68,43 @@ model ThreePVerticalOTHRSG_2
     Placement(visible = true, transformation(origin = {-40, -68}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Blocks.Sources.Ramp ramp1(duration = 5, offset = 0, startTime = 5)  annotation(
     Placement(visible = true, transformation(origin = {-86, -36}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Math.Max max1 annotation(
+    Placement(visible = true, transformation(origin = {34, -28}, extent = {{6, -6}, {-6, 6}}, rotation = 0)));
 equation
+  connect(max1.y, HP_FWCV.opening) annotation(
+    Line(points = {{28, -28}, {-50, -28}, {-50, 0}, {-50, 0}}, color = {0, 0, 127}));
+  connect(HP_LC.y, max1.u1) annotation(
+    Line(points = {{56, -126}, {62, -126}, {62, -24}, {42, -24}, {42, -24}}, color = {0, 0, 127}));
+  connect(HP_TC.y, max1.u2) annotation(
+    Line(points = {{56, -106}, {58, -106}, {58, -32}, {42, -32}, {42, -32}}, color = {0, 0, 127}));
+  connect(HP_sink_valve.port_b, HP_ECO_3.flowIn) annotation(
+    Line(points = {{52, -210}, {78, -210}, {78, -124}, {66, -124}, {66, -54}, {-8, -54}, {-8, -54}, {-8, -54}}, color = {0, 127, 255}));
+  connect(product1.y, HP_sink_valve.D_flow_in) annotation(
+    Line(points = {{66, -202}, {66, -202}, {66, -204}, {54, -204}, {54, -194}, {46, -194}, {46, -204}, {46, -204}}, color = {0, 0, 127}));
+  connect(ramp2.y, product1.u1) annotation(
+    Line(points = {{56, -148}, {70, -148}, {70, -188}, {70, -188}}, color = {0, 0, 127}));
+  connect(PID.y, product1.u2) annotation(
+    Line(points = {{62, -182}, {62, -182}, {62, -188}, {62, -188}}, color = {0, 0, 127}));
+  connect(ramp2.y, PID.u_s) annotation(
+    Line(points = {{56, -148}, {62, -148}, {62, -168}, {62, -168}}, color = {0, 0, 127}));
+  connect(HP_separator.steam, HP_pipe.waterIn) annotation(
+    Line(points = {{18, -114}, {28, -114}, {28, -161}}, color = {0, 127, 255}));
+  connect(HP_pipe.waterOut, HP_SH_2.flowIn) annotation(
+    Line(points = {{28, -171}, {28, -184}, {-8, -184}}, color = {0, 127, 255}));
+  connect(massFlowRate1.m_flow, PID.u_m) annotation(
+    Line(points = {{12, -78}, {32, -78}, {32, -176}, {54, -176}, {54, -176}}, color = {0, 0, 127}));
+  connect(HP_separator.downWater, HP_sink_valve.port_a) annotation(
+    Line(points = {{18, -136}, {18, -210}, {40, -210}}, color = {0, 127, 255}));
+  connect(HP_ECO_3.flowOut, massFlowRate1.port_a) annotation(
+    Line(points = {{-8, -62}, {-4, -62}, {-4, -72}, {0, -72}, {0, -74}, {7, -74}}, color = {0, 127, 255}));
+  connect(massFlowRate1.port_b, HP_EVO_1.flowIn) annotation(
+    Line(points = {{7, -84}, {0, -84}, {0, -94}, {-4, -94}, {-4, -100}, {-8, -100}}, color = {0, 127, 255}));
   connect(realToBoolean1.y, HP_TC.on) annotation(
     Line(points = {{-34, -68}, {40, -68}, {40, -102}, {40, -102}}, color = {255, 0, 255}));
   connect(ramp1.y, realToBoolean1.u) annotation(
     Line(points = {{-80, -36}, {-50, -36}, {-50, -68}, {-48, -68}, {-48, -68}}, color = {0, 0, 127}));
-  connect(HPTC_const.y, HPTC_gr.u2) annotation(
-    Line(points = {{-58, -94}, {-54, -94}, {-54, -126}, {-46, -126}, {-46, -116}}, color = {0, 0, 127}));
-  connect(Tgt.T, HPTC_gr.u1) annotation(
-    Line(points = {{-40.5, -195}, {-40, -195}, {-40, -116}, {-41, -116}}, color = {0, 0, 127}));
-  connect(gasIn, Tgt.port) annotation(
-    Line(points = {{-18, -300}, {-18, -282}, {-38, -282}, {-38, -200}, {-37, -200}}));
   connect(HPTC_p.p, HP_p_drum) annotation(
     Line(points = {{32, -106}, {34, -106}, {34, -116}, {104, -116}, {104, -116}}, color = {0, 0, 127}));
-  connect(HP_sink_valve.port_b, flash_tank.ports[1]) annotation(
-    Line(points = {{70, -210}, {80, -210}, {80, -210}, {80, -210}}, color = {0, 127, 255}));
-  connect(HP_separator.downWater, HP_sink_valve.port_a) annotation(
-    Line(points = {{18, -136}, {18, -136}, {18, -210}, {58, -210}, {58, -210}}, color = {0, 127, 255}));
-  connect(HP_TC.y, HP_FWCV.opening) annotation(
-    Line(points = {{56, -106}, {60, -106}, {60, -28}, {-52, -28}, {-52, 0}, {-50, 0}}, color = {0, 0, 127}));
-  connect(HP_LC.y, HP_sink_valve.D_flow_in) annotation(
-    Line(points = {{56, -126}, {64, -126}, {64, -204}}, color = {0, 0, 127}));
   connect(HP_separator.level, HP_LC.u) annotation(
     Line(points = {{24, -120}, {36, -120}, {36, -128}, {40, -128}, {40, -126}}, color = {0, 0, 127}));
   connect(HPTC_enth.h_out, HP_TC.h) annotation(
@@ -101,16 +117,10 @@ equation
     Line(points = {{12, -118}, {10, -118}, {10, -100}, {14, -100}}, color = {0, 127, 255}));
   connect(HP_separator.fedWater, HP_overheat.port) annotation(
     Line(points = {{12, -118}, {10, -118}, {10, -108}, {4, -108}, {4, -108}}, color = {0, 127, 255}));
-  connect(HP_pipe.waterOut, HP_SH_2.flowIn) annotation(
-    Line(points = {{30, -170}, {30, -170}, {30, -184}, {-8, -184}, {-8, -184}}, color = {0, 127, 255}));
-  connect(HP_separator.steam, HP_pipe.waterIn) annotation(
-    Line(points = {{18, -114}, {30, -114}, {30, -162}, {30, -162}}, color = {0, 127, 255}));
   connect(HP_EVO_2.flowOut, HP_separator.fedWater) annotation(
     Line(points = {{-8, -134}, {0, -134}, {0, -119}, {11, -119}}, color = {0, 127, 255}));
   connect(HP_EVO_1.flowOut, HP_EVO_2.flowIn) annotation(
     Line(points = {{-8, -108}, {-4, -108}, {-4, -126}, {-8, -126}, {-8, -126}}, color = {0, 127, 255}));
-  connect(HP_ECO_3.flowOut, HP_EVO_1.flowIn) annotation(
-    Line(points = {{-8, -62}, {-4, -62}, {-4, -100}, {-8, -100}, {-8, -100}}, color = {0, 127, 255}));
   connect(HP_EVO_2.gasIn, RH_1.gasOut) annotation(
     Line(points = {{-18, -134}, {-18, -134}, {-18, -156}, {-18, -156}}, color = {0, 127, 255}));
   connect(HP_EVO_1.gasIn, HP_EVO_2.gasOut) annotation(
