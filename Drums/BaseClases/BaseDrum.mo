@@ -96,8 +96,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   parameter Modelica.SIunits.Mass Gw_start = Vw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start));
   //Переменные
   Modelica.SIunits.Volume Vs "Объем парового пространства барабана";
-  inner Medium.Temperature ts "Температура насыщения в барабане (пар)";
-  //inner Medium.Temperature tw "Температура воды в барабане (пар)";  
+  inner Medium.Temperature ts "Температура пара в барабане";
+  inner Medium.Temperature tw "Температура воды в барабане";  
   Medium.ThermodynamicState state_eco "Термодинамическое состояние потока питательной воды";
   Real x_eco "Степень сухости питательной воды";
   Medium.ThermodynamicState state_upStr "Термодинамическое состояние потока в подъемных трубах испарительного контура";

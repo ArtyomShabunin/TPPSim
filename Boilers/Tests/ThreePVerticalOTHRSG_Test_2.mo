@@ -26,5 +26,5 @@ equation
   annotation(
     Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})),
     __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
-    experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
+    experiment(StartTime = 0, StopTime = 20000, Tolerance = 1e-2, Interval = 10));
 end ThreePVerticalOTHRSG_Test_2;

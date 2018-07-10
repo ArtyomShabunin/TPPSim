@@ -5,9 +5,14 @@ block LC "Регулятор уроня в барабане КУ"
   extends TPPSim.Controls.BaseClasses.Icons.IconLC;
   parameter Modelica.SIunits.MassFlowRate DFmax "Максимальный расход питательной воды";
   parameter Modelica.SIunits.MassFlowRate DFmin "Минимальный расход питательной воды";
+  //Параметры PI-регулятора
+  parameter Real k = 100 "Коэффициент усиления" annotation(
+    Dialog(group = "Параметры PI-регулятора"));
+  parameter Real Ti = 120 "Постоянная времени интегрирования" annotation(
+    Dialog(group = "Параметры PI-регулятора"));
   Modelica.Blocks.Math.Feedback feedback annotation(
     Placement(visible = true, transformation(origin = {0, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  Modelica.Blocks.Continuous.PI PI(T = 120, initType = Modelica.Blocks.Types.Init.InitialOutput, k = 100, y_start = 0) annotation(
+  Modelica.Blocks.Continuous.PI PI(T = Ti, initType = Modelica.Blocks.Types.Init.InitialOutput, k = k, y_start = 0) annotation(
     Placement(visible = true, transformation(origin = {36, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Nonlinear.Limiter limiter(uMax = DFmax, uMin = DFmin) annotation(
     Placement(visible = true, transformation(origin = {76, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));

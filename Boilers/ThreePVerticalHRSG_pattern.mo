@@ -42,7 +42,7 @@ partial model ThreePVerticalHRSG_pattern "Шаблон вертикальног�
   //ПЭН и РПК ВД
   TPPSim.Pumps.pressurePump HP_FW_pump(redeclare package Medium = Medium_F, set_p = 6e+06, use_p_in = true) annotation(
     Placement(visible = true, transformation(origin = {-73, 5}, extent = {{7, -7}, {-7, 7}}, rotation = 0)));
-  Modelica.Fluid.Valves.ValveIncompressible HP_FWCV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 200, dp_nominal = 100000, filteredOpening = true, leakageOpening = 1e-4, m_flow_small = system.m_flow_small, riseTime = 10) annotation(
+  Modelica.Fluid.Valves.ValveIncompressible HP_FWCV(redeclare package Medium = Medium_F, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = 400, dp_nominal = 100000, filteredOpening = true, leakageOpening = 1e-4, m_flow_small = system.m_flow_small, riseTime = 10) annotation(
     Placement(visible = true, transformation(origin = {-51, 5}, extent = {{-7, 7}, {7, -7}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure HPFW_p(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-37, 19}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
