@@ -4,6 +4,25 @@ model BaseDrum "Базовый класс 'барабан котла'"
   extends TPPSim.Drums.BaseClases.Icons.IconDrum;
   import Modelica.Fluid.Types;
   
+  function drumBottomArea "Функция для расчета площади внутренней поверхности нижней части барабана"
+    extends Modelica.Icons.Function;
+    input Real R "внутренний радиус барабана";
+    input Real L "длина барабана";
+    input Real Hw "уровень воды в барабане";
+    output Real Sbot "площадь внутренней поверхности нижней части барабана";
+  protected
+    Real Lsec "длина дуги сектора";
+    Real alfa "йентральный угол сектора";
+    Real Ssec;
+    Real Str;
+  algorithm 
+    alfa := if Hw < R then 2 * acos((R - Hw) / R) else 2 * Modelica.Constants.pi - 2 * acos((Hw - R) / R);
+    Lsec := alfa * R;
+    Ssec := alfa * R ^ 2 / 2;
+    Str := (R - Hw) * R * sin(alfa / 2);
+    Sbot := Ssec - Str + Lsec * L;
+  end drumBottomArea;
+  
   function drumWaterVolume "Формула для расчета объема воды в барабане"
     extends Modelica.Icons.Function;
     input Real R "внутренний радиус барабана";
@@ -14,7 +33,6 @@ model BaseDrum "Базовый класс 'барабан котла'"
     Real alfa;
     Real Ssec;
     Real Str;
-    Real p;
     Real H;
   algorithm
     H := if Hw < R then Hw else 2 * R - Hw;
@@ -78,8 +96,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   replaceable package Medium = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialTwoPhaseMedium;
   parameter Real k = 0.9 "Доля пара, которая практически сразу выделяется из водяного объема";
   //Геометрические характеристики барабана
-  inner parameter Modelica.SIunits.Length Din "Внутренний диаметр барабана";
-  inner parameter Modelica.SIunits.Length L "Длина барабана";
+  parameter Modelica.SIunits.Length Din "Внутренний диаметр барабана";
+  parameter Modelica.SIunits.Length L "Длина барабана";
   parameter Modelica.SIunits.Length delta "Толщина стенки барабана";
   //Характеристики металла
   parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
@@ -96,6 +114,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   parameter Modelica.SIunits.Mass Gw_start = Vw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start));
   //Переменные
   Modelica.SIunits.Volume Vs "Объем парового пространства барабана";
+  inner Modelica.SIunits.Area S_top "Площадь внутренней поверхности паровой части барабана";
+  inner Modelica.SIunits.Area S_bot "Площадь внутренней поверхности водяной части барабана";  
   inner Medium.Temperature ts "Температура пара в барабане";
   inner Medium.Temperature tw "Температура воды в барабане";  
   Medium.ThermodynamicState state_eco "Термодинамическое состояние потока питательной воды";
@@ -186,6 +206,9 @@ by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
 <li><i>07 June 2018</i>
 by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
    Давление на выходе из подъемных труб приравнено ps.</li>
+<li><i>11 July 2018</i>
+by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
+   Добавлены переменные: площадь внутренней поверхности верха и низа барабана.<br>Добавлена функция для расчета площади внутренней поверхности барабана.</li>
 </ul>
 </html>"));
 end BaseDrum;
