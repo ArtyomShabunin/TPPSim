@@ -5,6 +5,8 @@ model ThreePVerticalHRSG_Test
   TPPSim.Boilers.ThreePVerticalHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(Boiler.LP_Out, LP_pipe.waterIn) annotation(
+    Line(points = {{10, -18}, {10, -18}, {10, -14}, {8, -14}}, color = {0, 127, 255}));
   connect(Boiler.HP_p_drum, HP_pressure_control.u2) annotation(
     Line(points = {{50, 4}, {54, 4}, {54, -50}, {-4, -50}, {-4, -58}, {-26, -58}, {-26, -50}, {-38, -50}, {-38, -54}, {-38, -54}}, color = {0, 0, 127}));
   connect(Boiler.check_valve_pos, IP_pressure_control.u4) annotation(
@@ -23,8 +25,6 @@ equation
     Line(points = {{2, -26}, {6, -26}, {6, -30}, {10, -30}, {10, -28}}, color = {0, 127, 255}));
   connect(Boiler.RH_In, CRH_pipe.waterOut) annotation(
     Line(points = {{10, -24}, {8, -24}, {8, -20}, {4, -20}, {4, -20}}, color = {0, 127, 255}));
-  connect(Boiler.LP_Out, ST.LP) annotation(
-    Line(points = {{10, -18}, {2, -18}, {2, 14}, {-28, 14}, {-28, 10}, {-28, 10}}, color = {0, 127, 255}));
   annotation(
     __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"));
 end ThreePVerticalHRSG_Test;

@@ -15,13 +15,13 @@ partial model ThreePVerticalHRSG_Test_partial
     Placement(visible = true, transformation(origin = {-69, 61}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSource(redeclare package Medium = Medium_F, T = 30 + 273.15, nPorts = 2, p = system.p_ambient) annotation(
     Placement(visible = true, transformation(origin = {86, -8}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
-  TPPSim.Steam_turbine.dummy_ST_2 ST(Kv_HP_RS = 400, Kv_IP_RS = 1800, Kv_LP_CV = 1100)  annotation(
+  TPPSim.Steam_turbine.dummy_ST_2 ST(Kv_HP_RS = 350, Kv_IP_RS = 1800, Kv_LP_CV = 1100)  annotation(
     Placement(visible = true, transformation(origin = {-46, -10}, extent = {{-30, -20}, {30, 20}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe HP_pipe(Din = 0.377, Lpipe = 155, delta = 0.05, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe HP_pipe(Din = 215.9e-3, Lpipe = 155, delta = 28.58e-3, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-1, -27}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe CRH_pipe(Din = 0.48, Lpipe = 65, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe CRH_pipe(Din = 333.4e-3, Lpipe = 150, delta = 11.1e-3, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {1, -21}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
-  TPPSim.Pipes.ComplexPipe HRH_pipe(Din = 0.48, Lpipe = 92.8, delta = 0.025, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+  TPPSim.Pipes.ComplexPipe HRH_pipe(Din = 428.7e-3, Lpipe = 150, delta = 14.27e-3, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {-1, -35}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant IP_RS_cons(k = 0.2) annotation(
     Placement(visible = true, transformation(origin = {-27, 61}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
@@ -47,7 +47,11 @@ partial model ThreePVerticalHRSG_Test_partial
     Placement(visible = true, transformation(origin = {38, -62}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0)  annotation(
     Placement(visible = true, transformation(origin = {38, -82}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  TPPSim.Pipes.ComplexPipe LP_pipe(Din = 381e-3, Lpipe = 155, delta = 12.7e-3, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
+    Placement(visible = true, transformation(origin = {5, -15}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
 equation
+  connect(LP_pipe.waterOut, ST.LP) annotation(
+    Line(points = {{1, -15}, {0, -15}, {0, 14}, {-28, 14}, {-28, 10}}, color = {0, 127, 255}));
   connect(ST.LP, LP_p.port) annotation(
     Line(points = {{-28, 10}, {-20, 10}, {-20, 24}, {12, 24}, {12, 24}}, color = {0, 127, 255}));
   connect(HP_pressure_control.y2, booleanToReal2.u) annotation(

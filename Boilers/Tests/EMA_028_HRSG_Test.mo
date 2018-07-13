@@ -178,5 +178,5 @@ equation
     Line(points = {{54, 25}, {24, 25}, {24, 11}, {25, 11}}, color = {0, 127, 255}));
   annotation(
     Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})),
-    experiment(StartTime = 0, StopTime = 2000, Tolerance = 1e-3, Interval = 10));
+    experiment(StartTime = 0, StopTime = 17000, Tolerance = 1e-2, Interval = 10));
 end EMA_028_HRSG_Test;

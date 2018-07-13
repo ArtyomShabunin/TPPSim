@@ -42,6 +42,12 @@ partial model BaseParallelGFHE
   //Поправки
   parameter Real k_gamma_gas_1 = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
     Dialog(tab = "1-st HE", group = "Поправки"));
+  parameter Real k_weight_metal_1 = 1 "Поправка к массе металла поверхности нагрева"  annotation(
+    Dialog(tab = "1-st HE", group = "Поправки"));
+  parameter Real k_volume_1 = 1 "Поправка к внутреннему объему трубок поверхности нагрева"  annotation(
+    Dialog(tab = "1-st HE", group = "Поправки"));
+  parameter Real k_volume_gas_1 = 1 "Поправка к объему газов поверхности нагрева"  annotation(
+    Dialog(tab = "1-st HE", group = "Поправки"));  
   //Параметры уравнений динамики
   parameter Types.Dynamics flowEnergyDynamics_1 = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии вода/пар" annotation(
   Evaluate=true, Dialog(tab = "Assumptions 1-st HE", group="Dynamics"));
@@ -121,6 +127,12 @@ partial model BaseParallelGFHE
     Dialog(tab = "2-nd HE", group = "Характеристики металла"));
   //Поправки
   parameter Real k_gamma_gas_2 = 1 "Поправка к коэффициенту теплоотдачи со стороны газов" annotation(
+    Dialog(tab = "2-nd HE", group = "Поправки"));
+  parameter Real k_weight_metal_2 = 1 "Поправка к массе металла поверхности нагрева"  annotation(
+    Dialog(tab = "2-nd HE", group = "Поправки"));
+  parameter Real k_volume_2 = 1 "Поправка к внутреннему объему трубок поверхности нагрева"  annotation(
+    Dialog(tab = "2-nd HE", group = "Поправки"));
+  parameter Real k_volume_gas_2 = 1 "Поправка к объему газов поверхности нагрева"  annotation(
     Dialog(tab = "2-nd HE", group = "Поправки"));
   //Параметры уравнений динамики
   parameter Types.Dynamics flowEnergyDynamics_2 = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии вода/пар" annotation(
