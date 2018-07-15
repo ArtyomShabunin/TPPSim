@@ -156,8 +156,6 @@ model BaseDrum "Базовый класс 'барабан котла'"
   Medium.Density rhow_bubble "Плотность пара на линии насыщения в водяном объеме барабана";
   inner Modelica.SIunits.HeatFlowRate Q_top "Тепловой поток к металлу верхней части барабана";
   inner Modelica.SIunits.HeatFlowRate Q_bot "Тепловой поток к металлу нижней части барабана";
-  Real dt_m_top_bot "Разница между температурой металла верха и низа барабана";
-  TPPSim.thermal.hfrForDrum Q_calc "Модель расчета тепловых потоков";
   //Интерфейс
   outer Modelica.Fluid.System system;   
   Modelica.Fluid.Interfaces.FluidPort_a fedWater(redeclare package Medium = Medium) annotation(
