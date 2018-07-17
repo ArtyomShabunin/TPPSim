@@ -2,6 +2,7 @@
 model Drum_2 "Модель барабана энергетического котла без встроенного деаэратора"
   extends TPPSim.Drums.BaseClases.BaseDrum;
   import Modelica.Fluid.Types;
+  TPPSim.Drums.DrumShell Shell "Модель расчета тепловых потоков"; 
   //Интерфейс
   Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
     Placement(visible = true, transformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -45,7 +46,7 @@ equation
   rhow = Medium.density_ph(pw, hw);
   state_w = Medium.setState_ph(pw, hw);
   x_w = Medium.vapourQuality(state_w);
-  tw = Medium.saturationTemperature(pw);
+//  tw = Medium.saturationTemperature(pw);
   G_m_water = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "bottom");
   D_w_circ + D_w_eco + D_cond_dr + D_st_cond_fw + D_downStr - Dvipar = der(Gw);
   D_w_circ * min(h_bubble, inStream(upStr.h_outflow)) + D_w_eco * min(h_bubble, inStream(fedWater.h_outflow)) + D_cond_dr * h_bubble + D_st_cond_fw * h_dew + D_downStr * hw - Dvipar * h_dew = der(Gw) * hw + Gw * der(hw) + Q_bot;

@@ -108,8 +108,8 @@ model BaseDrum "Базовый класс 'барабан котла'"
   parameter Modelica.SIunits.Length Hw_start = 0.5 "Начальное значение уровня воды в барабане";
   parameter Medium.AbsolutePressure ps_start = system.p_ambient "Начальное значение давления пара в барабане";
   parameter Medium.AbsolutePressure pw_start = ps_start + 0.5 * Hw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start)) * Modelica.Constants.g_n "Начальное значение давления пара в барабане";
-  parameter Medium.Temperature t_m_steam_start = 100 + 273.15 "Начальная температура металла верха барабана";
-  parameter Medium.Temperature t_m_water_start = 100 + 273.15 "Начальная температура металла низа барабана";  
+  inner parameter Medium.Temperature t_m_steam_start = 100 + 273.15 "Начальная температура металла верха барабана";
+  inner parameter Medium.Temperature t_m_water_start = 100 + 273.15 "Начальная температура металла низа барабана";  
   parameter Modelica.SIunits.Volume Vw_start = drumWaterVolume(Din / 2, L, Hw_start);
   parameter Modelica.SIunits.Mass Gw_start = Vw_start * Medium.bubbleDensity(Medium.setSat_p(ps_start));
   //Переменные
@@ -117,14 +117,12 @@ model BaseDrum "Базовый класс 'барабан котла'"
   inner Modelica.SIunits.Area S_top "Площадь внутренней поверхности паровой части барабана";
   inner Modelica.SIunits.Area S_bot "Площадь внутренней поверхности водяной части барабана";  
   inner Medium.Temperature ts "Температура пара в барабане";
-  inner Medium.Temperature tw "Температура воды в барабане";  
+//  inner Medium.Temperature tw "Температура воды в барабане";  
   Medium.ThermodynamicState state_eco "Термодинамическое состояние потока питательной воды";
   Real x_eco "Степень сухости питательной воды";
   Medium.ThermodynamicState state_upStr "Термодинамическое состояние потока в подъемных трубах испарительного контура";
   Real x_upStr "Степень сухости в подъемных трубах испарительного контура";
   Medium.SaturationProperties sat "State vector to compute saturation properties для парового объема";
-  inner Medium.Temperature t_m_steam(start = t_m_steam_start) "Температура металла паровой части барабана";
-  inner Medium.Temperature t_m_water(start = t_m_water_start) "Температура металла водяной части барабана";
   Medium.MassFlowRate D_fw "Расход питательной воды";
   inner Medium.MassFlowRate D_st_circ "Пар поступающий в паровое пространство барабана из циркуляционных контуров ";
   inner Medium.MassFlowRate D_st_eco "Расход пара из питательной воды или необходимый для нагрева до h' недогретой питательной воды";

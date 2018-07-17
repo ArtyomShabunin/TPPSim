@@ -3,7 +3,9 @@ model Drum "Модель барабана энергетического кот�
   extends TPPSim.Drums.BaseClases.BaseDrum;
   import Modelica.Fluid.Types;
   Real dt_m_top_bot "Разница между температурой металла верха и низа барабана";
-  TPPSim.thermal.hfrForDrum Q_calc "Модель расчета тепловых потоков";  
+  TPPSim.thermal.hfrForDrum Q_calc "Модель расчета тепловых потоков";
+  inner Medium.Temperature t_m_steam(start = t_m_steam_start) "Температура металла паровой части барабана";
+  inner Medium.Temperature t_m_water(start = t_m_water_start) "Температура металла водяной части барабана"; 
   //Интерфейс
   Modelica.Blocks.Interfaces.RealOutput waterLevel annotation(
     Placement(visible = true, transformation(origin = {110, 70}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {110, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -48,7 +50,7 @@ equation
   rhow = Medium.density_ph(pw, hw);
   state_w = Medium.setState_ph(pw, hw);
   x_w = Medium.vapourQuality(state_w);
-  tw = Medium.saturationTemperature(pw);
+//  tw = Medium.saturationTemperature(pw);
   Q_bot = G_m_water * C_m * der(t_m_water) "ВОЗМОЖНО имеет смысл добавить площадь теплообмена";
   G_m_water = rho_m * drumMetallVolume(Din / 2, delta, L, Hw, "bottom");
   D_w_circ + D_w_eco + D_cond_dr + D_st_cond_fw + D_downStr - Dvipar = der(Gw);
