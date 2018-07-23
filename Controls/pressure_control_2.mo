@@ -4,8 +4,13 @@ block pressure_control_2
   extends Modelica.Blocks.Interfaces.SI2SO;
   parameter Modelica.SIunits.AbsolutePressure P_activation "Давление при котором регулятор переходит в автоматический режим";
   parameter Modelica.SIunits.AbsolutePressure set_p "Поддерживаемое давление";
-  parameter Real pos_start = 0.002 "Исходное УП регулирующего клапана";
-  parameter Real speed_p "Скорость повышения давления";
+  parameter Real pos_start = 0.002 "Исходное УП регулирующего клапана";  
+  parameter Boolean use_p_speed_in = false "Ипользвать порт 'p_speed_in' для задания скорости нарастания давления";
+  parameter Real speed_p "Скорость повышения давления"  annotation(
+    Evaluate = true,
+    Dialog(enable = not use_p_speed_in));
+  Modelica.Blocks.Interfaces.RealInput p_speed_in if use_p_speed_in annotation(
+    Placement(visible = true, transformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0), iconTransformation(origin = {-120, -20}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
   parameter Real k = 0.001 "Коэффициент усиления" 
    annotation(Dialog(group = "Параметры регулятора"));
   parameter Real T = 10 "Постоянная времени" 
@@ -56,7 +61,14 @@ block pressure_control_2
     Placement(visible = true, transformation(origin = {-50, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 90), iconTransformation(origin = {-50, -120}, extent = {{-20, -20}, {20, 20}}, rotation = 90)));
   Modelica.Blocks.Sources.Constant const1(k = 0.05)  annotation(
     Placement(visible = true, transformation(origin = {-90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+protected
+  Modelica.Blocks.Interfaces.RealInput p_speed_in_internal;
 equation
+  if use_p_speed_in then
+    connect(p_speed_in, p_speed_in_internal);  
+  else
+   p_speed_in_internal = set_p;
+  end if;
   connect(and1.y, switch1.u2) annotation(
     Line(points = {{22, 50}, {34, 50}, {34, 68}, {56, 68}, {56, 60}, {56, 60}}, color = {255, 0, 255}));
   connect(switch1.y, y) annotation(

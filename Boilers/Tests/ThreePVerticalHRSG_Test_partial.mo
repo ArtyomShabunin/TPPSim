@@ -5,8 +5,12 @@ partial model ThreePVerticalHRSG_Test_partial
   package Medium_G = TPPSim.Media.ExhaustGas;
   inner Modelica.Fluid.System system(T_start = 60 + 273.15, allowFlowReversal = false, m_flow_small = 0.01) annotation(
     Placement(visible = true, transformation(origin = {90, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Gas_turbine.simple_startupGT GT(redeclare package Medium = Medium_G, Gnom = 2920.4 / 3.6, Tnom = 630.9 + 273.15, Tstart = system.T_start) annotation(
-    Placement(visible = true, transformation(origin = {-66, -42}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  TPPSim.Gas_turbine.GT_param.GT_param GT(redeclare package Medium = Medium_G, Gnom = 2920.4 / 3.6, Tnom = 630.9 + 273.15, Tmin = system.T_start) annotation(
+    Placement(visible = true, transformation(origin = {-66, -46}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant N_set(k = 300e6)  annotation(
+    Placement(visible = true, transformation(origin = {-94, -22}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant derN_set(k = 4e6 / 60)  annotation(
+    Placement(visible = true, transformation(origin = {-94, -40}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));  
   Modelica.Blocks.Sources.Constant LP_CV_const(k = 1) annotation(
     Placement(visible = true, transformation(origin = {-27, 29}, extent = {{5, -5}, {-5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant IP_CV_const(k = 0) annotation(
@@ -29,7 +33,7 @@ partial model ThreePVerticalHRSG_Test_partial
     Placement(visible = true, transformation(origin = {-69, 45}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant HP_RS_const(k = 0.2) annotation(
     Placement(visible = true, transformation(origin = {-69, 29}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 300000, T = 20, k = 0.000001, pos_start = 0.05, set_p = 1.7e+07, speed_p = 1e5 / 60) annotation(
+  TPPSim.Controls.pressure_control_2 HP_pressure_control(P_activation = 300000, T = 20, k = 0.000001, pos_start = 0.05, set_p = 1.7e+07, speed_p = 1e5 / 60, use_p_speed_in = true) annotation(
     Placement(visible = true, transformation(origin = {-35, -61}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
   Modelica.Fluid.Sensors.Pressure HP_p(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-23, -47}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
@@ -49,7 +53,15 @@ partial model ThreePVerticalHRSG_Test_partial
     Placement(visible = true, transformation(origin = {38, -82}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   TPPSim.Pipes.ComplexPipe LP_pipe(Din = 381e-3, Lpipe = 155, delta = 12.7e-3, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {5, -15}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant derP_set(k = 3e5 / 60)  annotation(
+    Placement(visible = true, transformation(origin = {-94, -72}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
+  connect(derP_set.y, HP_pressure_control.p_speed_in) annotation(
+    Line(points = {{-88, -72}, {-44, -72}, {-44, -48}, {-36, -48}, {-36, -54}, {-36, -54}}, color = {0, 0, 127}));
+  connect(derN_set.y, GT.derN_set) annotation(
+    Line(points = {{-88, -40}, {-82, -40}, {-82, -34}, {-62, -34}, {-62, -36}}, color = {0, 0, 127}));
+  connect(N_set.y, GT.N_set) annotation(
+    Line(points = {{-88, -22}, {-82, -22}, {-82, -32}, {-58, -32}, {-58, -36}, {-58, -36}}, color = {0, 0, 127}));
   connect(LP_pipe.waterOut, ST.LP) annotation(
     Line(points = {{1, -15}, {0, -15}, {0, 14}, {-28, 14}, {-28, 10}}, color = {0, 127, 255}));
   connect(ST.LP, LP_p.port) annotation(

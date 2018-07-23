@@ -5,7 +5,7 @@ model GT_param "Параметризованная модель ГТУ"
   parameter Modelica.SIunits.Temperature Tnom = 517.2 + 273.15 "Номинальная температура выхлопных газов ГТУ";
   parameter Modelica.SIunits.MassFlowRate Gnom = 1292.6 / 3.6 "Номинальный расход выхлопных газов ГТУ";
   parameter Modelica.SIunits.Power Nnom = 300e6 "Номинальная электрическая мощность ГТУ, МВт";
-  parameter Modelica.SIunits.Temperature Tstart = 60 + 273.15 "Начальная входная температура газов";
+  parameter Modelica.SIunits.Temperature Tmin = 60 + 273.15 "Минимальная температура газов";
   parameter Modelica.SIunits.Power N_sync = 6e6 "Стартовая нагрузка ГТУ";
   parameter Real derN_sync = 2000 "Скорость нагружения до стартовой нагрузки, Вт/с";
   parameter Modelica.SIunits.Time delta_time_N_sync = 5 * 60 "Продолжительность минимальной выдержки ГТУ на стартовой нагрузке";
@@ -67,7 +67,7 @@ equation
   end if;
   stage_2.u = 100 * N / Nnom;
   gasSource.m_flow_in = G_g;
-  gasSource.T_in = T_g;    
+  gasSource.T_in = max(T_g, Tmin);    
   annotation(
     Documentation(info = "<html>
 <style>
