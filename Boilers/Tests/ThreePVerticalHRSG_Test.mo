@@ -4,7 +4,17 @@ model ThreePVerticalHRSG_Test
   extends TPPSim.Boilers.Tests.ThreePVerticalHRSG_Test_partial;
   TPPSim.Boilers.ThreePVerticalHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
+  Modelica.Blocks.Continuous.LimPID PID(controllerType = Modelica.Blocks.Types.SimpleController.PI, initType = Modelica.Blocks.Types.InitPID.InitialOutput, k = 4e6 / 60, yMax = 4e6 / 60, yMin = 0, y_start = 4e6 / 60)  annotation(
+    Placement(visible = true, transformation(origin = {-75, -91}, extent = {{-7, -7}, {7, 7}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant const(k = 0.95)  annotation(
+    Placement(visible = true, transformation(origin = {-102, -106}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(PID.y, GT.derN_set) annotation(
+    Line(points = {{-68, -90}, {-66, -90}, {-66, -58}, {-84, -58}, {-84, -34}, {-62, -34}, {-62, -36}}, color = {0, 0, 127}));
+  connect(ST.HP_RS_apos, PID.u_m) annotation(
+    Line(points = {{-50, -30}, {-50, -104}, {-74, -104}, {-74, -99}, {-75, -99}}, color = {0, 0, 127}));
+  connect(const.y, PID.u_s) annotation(
+    Line(points = {{-90, -106}, {-88, -106}, {-88, -90}, {-83, -90}, {-83, -91}}, color = {0, 0, 127}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-56, -46}, {-42, -46}, {-42, -42}, {10, -42}, {10, -42}}, color = {0, 127, 255}));
   connect(Boiler.LP_Out, LP_pipe.waterIn) annotation(

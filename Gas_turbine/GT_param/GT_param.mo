@@ -22,20 +22,27 @@ model GT_param "Параметризованная модель ГТУ"
     Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
       Placement(visible = true, transformation(origin = {98, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Sources.CombiTimeTable stage_1(columns = {2, 3, 4},fileName = "C:/Users/ASShabunin/TPPSim/Gas_turbine/GT_param/GT_param_SGT_4000F.txt", startTime = 0, tableName = "tab1", tableOnFile = true)  annotation(
-    Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-70, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Tables.CombiTable1Ds stage_2(columns = {2, 3, 4},fileName = "C:/Users/ASShabunin/TPPSim/Gas_turbine/GT_param/GT_param_SGT_4000F.txt", tableName = "tab2", tableOnFile = true)  annotation(
-    Placement(visible = true, transformation(origin = {-30, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Blocks.Interfaces.RealInput derN_set annotation(
     Placement(visible = true, transformation(origin = {20, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {30, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Blocks.Interfaces.RealInput N_set annotation(
     Placement(visible = true, transformation(origin = {60, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90), iconTransformation(origin = {80, 100}, extent = {{-20, -20}, {20, 20}}, rotation = -90)));
   Modelica.Blocks.Sources.CombiTimeTable stage_1_sync(columns = {5}, fileName = "C:/Users/ASShabunin/TPPSim/Gas_turbine/GT_param/GT_param_SGT_4000F.txt", smoothness = Modelica.Blocks.Types.Smoothness.ConstantSegments, startTime = 0, tableName = "tab1", tableOnFile = true) annotation(
+    Placement(visible = true, transformation(origin = {-30, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Continuous.Filter filter1(f_cut = 1) annotation(
+    Placement(visible = true, transformation(origin = {10, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Continuous.Filter filter2(f_cut = 1) annotation(
     Placement(visible = true, transformation(origin = {10, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-
 initial equation
   time_sync = 0;
   N = if N_init < N_sync then 0 else N_init;
 equation
+  connect(filter1.y, gasSource.T_in) annotation(
+    Line(points = {{22, -10}, {30, -10}, {30, 4}, {42, 4}, {42, 4}}, color = {0, 0, 127}));
+  connect(filter2.y, gasSource.m_flow_in) annotation(
+    Line(points = {{22, 30}, {28, 30}, {28, 8}, {44, 8}, {44, 8}}, color = {0, 0, 127}));
   when N > N_sync then
     time_sync = time;
   end when;
@@ -66,8 +73,8 @@ equation
     G_g = Gnom * stage_2.y[3] / 100;    
   end if;
   stage_2.u = 100 * N / Nnom;
-  gasSource.m_flow_in = G_g;
-  gasSource.T_in = max(T_g, Tmin);    
+  filter2.u = max(G_g, 10);
+  filter1.u = max(T_g, Tmin);    
   annotation(
     Documentation(info = "<html>
 <style>

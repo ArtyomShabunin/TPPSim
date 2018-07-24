@@ -56,12 +56,10 @@ partial model ThreePVerticalHRSG_Test_partial
   Modelica.Blocks.Sources.Constant derP_set(k = 3e5 / 60)  annotation(
     Placement(visible = true, transformation(origin = {-94, -72}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
-  connect(derP_set.y, HP_pressure_control.p_speed_in) annotation(
-    Line(points = {{-88, -72}, {-44, -72}, {-44, -48}, {-36, -48}, {-36, -54}, {-36, -54}}, color = {0, 0, 127}));
-  connect(derN_set.y, GT.derN_set) annotation(
-    Line(points = {{-88, -40}, {-82, -40}, {-82, -34}, {-62, -34}, {-62, -36}}, color = {0, 0, 127}));
   connect(N_set.y, GT.N_set) annotation(
     Line(points = {{-88, -22}, {-82, -22}, {-82, -32}, {-58, -32}, {-58, -36}, {-58, -36}}, color = {0, 0, 127}));
+  connect(derP_set.y, HP_pressure_control.p_speed_in) annotation(
+    Line(points = {{-88, -72}, {-44, -72}, {-44, -48}, {-36, -48}, {-36, -54}, {-36, -54}}, color = {0, 0, 127}));
   connect(LP_pipe.waterOut, ST.LP) annotation(
     Line(points = {{1, -15}, {0, -15}, {0, 14}, {-28, 14}, {-28, 10}}, color = {0, 127, 255}));
   connect(ST.LP, LP_p.port) annotation(
