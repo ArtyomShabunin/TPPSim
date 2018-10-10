@@ -17,7 +17,7 @@ model GT_param "Параметризованная модель ГТУ"
   Modelica.SIunits.MassFlowRate G_g "Массовый расход выхлопных газов ГТУ";
   Modelica.SIunits.Time time_sync "Момент времени в который произошла синхронизация генератора ГТУ с энергосистемой";
   //Состав выхлопных газов
-  Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
+  Modelica.Fluid.Sources.MassFlowSource_T gasSource(redeclare package Medium = Medium, X = {0.11676, 0.04158, 0.09146, 1 - 0.11676 - 0.04158 - 0.09146 - 0.00892 - 0.0000000001, 0.00892, 0.0000000001}, nPorts = 1, use_T_in = true, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {54, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
       Placement(visible = true, transformation(origin = {98, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -63,10 +63,10 @@ equation
   else
     if noEvent(time < (time_sync + delta_time_N_sync) and time_sync > 0) then
       der(N) = 0;
-    elseif noEvent(N < N_set) then
-      der(N) = derN_set;
+    elseif N >= N_set then
+      der(N) = 0; 
     else
-      der(N) = 0;
+     der(N) = derN_set;      
     end if;
     T_g = ((Tnom - 273.15) * stage_2.y[1] / 100) + 273.15;
     n = 50;

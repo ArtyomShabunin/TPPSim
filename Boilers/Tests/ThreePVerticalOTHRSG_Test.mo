@@ -5,6 +5,10 @@ model ThreePVerticalOTHRSG_Test
   TPPSim.Boilers.ThreePVerticalOTHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(derN_set.y, GT.derN_set) annotation(
+    Line(points = {{-88, -40}, {-84, -40}, {-84, -34}, {-64, -34}, {-64, -36}, {-62, -36}}, color = {0, 0, 127}));
+  connect(LP_pipe.waterIn, Boiler.LP_Out) annotation(
+    Line(points = {{8, -14}, {10, -14}, {10, -18}, {10, -18}}, color = {0, 127, 255}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-56, -42}, {10, -42}, {10, -42}, {10, -42}}, color = {0, 127, 255}));
   connect(flowSource.ports[1], Boiler.cond_In) annotation(

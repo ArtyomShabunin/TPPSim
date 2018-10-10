@@ -32,7 +32,7 @@ model ThreePVerticalOTHRSG
   Modelica.Blocks.Logical.Greater HPTC_gr annotation(
     Placement(visible = true, transformation(origin = {-41, -109}, extent = {{-6, 6}, {6, -6}}, rotation = 90)));
   Modelica.Blocks.Sources.Constant HPTC_const(k = 100 + 273.15) annotation(
-    Placement(visible = true, transformation(origin = {-64,-94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-64, -94}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Fluid.Sensors.Pressure HPTC_p(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {26, -106}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   Modelica.Fluid.Sensors.SpecificEnthalpy HPTC_enth(redeclare package Medium = Medium_F) annotation(
@@ -66,9 +66,157 @@ model ThreePVerticalOTHRSG
     Placement(visible = true, transformation(origin = {38, 18}, extent = {{-4, -4}, {4, 4}}, rotation = -90)));
   Modelica.Blocks.Math.RealToBoolean realToBoolean1 annotation(
     Placement(visible = true, transformation(origin = {-40, -68}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  Modelica.Blocks.Sources.Ramp ramp1(duration = 5, offset = 0, startTime = 5)  annotation(
+  Modelica.Blocks.Sources.Ramp ramp1(duration = 5, offset = 0, startTime = 5) annotation(
     Placement(visible = true, transformation(origin = {-86, -36}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_RH_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {25, -223}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_SH_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {27, -195}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_RH_1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {11, -159}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_EVO_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {5, -141}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_EVO_1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {3, -117}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_IP_SH_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {25, -79}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_ECO_3(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {21, -49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_LP_SH_3(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {11, -33}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_ECO_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {5, -15}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_IP_SH_1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {9, 5}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_IP_EVO(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {21, 21}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_LP_SH_2(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {5, 49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_HP_ECO_1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {1, 71}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_LP_SH_1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {9, 85}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_IP_ECO_1(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {-61, 57}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_LP_EVO(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {19, 103}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_CHE(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {23, 159}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_RH_3(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-47, -245}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_HP_SH_3(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-47, -227}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_RH_2(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-51, -199}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_HP_SH_2(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-35, -173}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_RH_1(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-31, -145}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_HP_EVO_2(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-49, -135}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_HP_EVO_1(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-37, -89}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_IP_SH_2(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-43, -49}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_HP_ECO_3(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-35, -35}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_LP_SH_3(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-37, -21}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_HP_ECO_2(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-33, -5}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_IP_SH_1(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-79, 21}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_IP_EVO(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-77, 41}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_LP_SH_2(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-51, 51}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature t_g_HP_IP_ECO_1(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-63, 79}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_LP_SH_1(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-81, 99}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_LP_EVO(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-9, 127}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature tg_CHE(redeclare package Medium = Medium_G) annotation(
+    Placement(visible = true, transformation(origin = {-31, 171}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(cond_HE.gasOut, tg_CHE.port) annotation(
+    Line(points = {{-18, 160}, {-18, 160}, {-18, 166}, {-30, 166}, {-30, 166}}, color = {0, 127, 255}));
+  connect(LP_EVO.gasOut, tg_LP_EVO.port) annotation(
+    Line(points = {{-18, 108}, {-18, 108}, {-18, 122}, {-8, 122}, {-8, 122}}, color = {0, 127, 255}));
+  connect(LP_SH_1.gasOut, tg_LP_SH_1.port) annotation(
+    Line(points = {{-18, 90}, {-18, 90}, {-18, 92}, {-30, 92}, {-30, 104}, {-76, 104}, {-76, 94}, {-80, 94}, {-80, 94}}, color = {0, 127, 255}));
+  connect(IP_ECO_HP_ECO_1.gasOut, t_g_HP_IP_ECO_1.port) annotation(
+    Line(points = {{-18, 72}, {-18, 72}, {-18, 74}, {-62, 74}, {-62, 74}}, color = {0, 127, 255}));
+  connect(LP_SH_2.gasOut, tg_LP_SH_2.port) annotation(
+    Line(points = {{-18, 52}, {-18, 52}, {-18, 52}, {-40, 52}, {-40, 46}, {-50, 46}, {-50, 46}}, color = {0, 127, 255}));
+  connect(IP_EVO.gasOut, tg_IP_EVO.port) annotation(
+    Line(points = {{-18, 32}, {-18, 32}, {-18, 36}, {-76, 36}, {-76, 36}}, color = {0, 127, 255}));
+  connect(IP_SH_1.gasOut, tg_IP_SH_1.port) annotation(
+    Line(points = {{-18, 10}, {-18, 10}, {-18, 12}, {-62, 12}, {-62, 16}, {-78, 16}, {-78, 16}}, color = {0, 127, 255}));
+  connect(HP_ECO_2.gasOut, tg_HP_ECO_2.port) annotation(
+    Line(points = {{-18, -12}, {-18, -12}, {-18, -10}, {-32, -10}, {-32, -10}}, color = {0, 127, 255}));
+  connect(LP_SH_3.gasOut, tg_LP_SH_3.port) annotation(
+    Line(points = {{-18, -32}, {-18, -32}, {-18, -26}, {-36, -26}, {-36, -26}}, color = {0, 127, 255}));
+  connect(HP_ECO_3.gasOut, tg_HP_ECO_3.port) annotation(
+    Line(points = {{-18, -52}, {-18, -46}, {-35, -46}, {-35, -40}}, color = {0, 127, 255}));
+  connect(IP_SH_2.gasOut, tg_IP_SH_2.port) annotation(
+    Line(points = {{-18, -72}, {-18, -72}, {-18, -66}, {-32, -66}, {-32, -54}, {-42, -54}, {-42, -54}}, color = {0, 127, 255}));
+  connect(HP_EVO_1.gasOut, tg_HP_EVO_1.port) annotation(
+    Line(points = {{-18, -98}, {-18, -98}, {-18, -94}, {-36, -94}, {-36, -94}}, color = {0, 127, 255}));
+  connect(HP_EVO_2.gasOut, tg_HP_EVO_2.port) annotation(
+    Line(points = {{-18, -124}, {-18, -124}, {-18, -120}, {-38, -120}, {-38, -140}, {-48, -140}, {-48, -140}}, color = {0, 127, 255}));
+  connect(RH_1.gasOut, tg_RH_1.port) annotation(
+    Line(points = {{-18, -156}, {-18, -156}, {-18, -150}, {-30, -150}, {-30, -150}}, color = {0, 127, 255}));
+  connect(HP_SH_2.gasOut, tg_HP_SH_2.port) annotation(
+    Line(points = {{-18, -182}, {-18, -182}, {-18, -178}, {-34, -178}, {-34, -178}}, color = {0, 127, 255}));
+  connect(RH_2.gasOut, tg_RH_2.port) annotation(
+    Line(points = {{-18, -208}, {-18, -208}, {-18, -204}, {-50, -204}, {-50, -204}}, color = {0, 127, 255}));
+  connect(HP_SH_3.gasOut, tg_HP_SH_3.port) annotation(
+    Line(points = {{-18, -236}, {-18, -236}, {-18, -232}, {-46, -232}, {-46, -232}}, color = {0, 127, 255}));
+  connect(RH_3.gasOut, tg_RH_3.port) annotation(
+    Line(points = {{-18, -260}, {-18, -260}, {-18, -250}, {-46, -250}, {-46, -250}}, color = {0, 127, 255}));
+  connect(cond_HE.flowOut, t_CHE.port) annotation(
+    Line(points = {{-8, 150}, {24, 150}, {24, 154}, {24, 154}}, color = {0, 127, 255}));
+  connect(LP_EVO.flowOut, t_LP_EVO.port) annotation(
+    Line(points = {{-8, 98}, {19, 98}}, color = {0, 127, 255}));
+  connect(IP_ECO_HP_ECO_1.flowOut_1, t_IP_ECO_1.port) annotation(
+    Line(points = {{-28, 62}, {-42, 62}, {-42, 52}, {-60, 52}, {-60, 52}}, color = {0, 127, 255}));
+  connect(LP_SH_1.flowOut, t_LP_SH_1.port) annotation(
+    Line(points = {{-8, 80}, {8, 80}, {8, 80}, {10, 80}}, color = {0, 127, 255}));
+  connect(IP_ECO_HP_ECO_1.flowOut_2, t_HP_ECO_1.port) annotation(
+    Line(points = {{-8, 62}, {1, 62}, {1, 66}}, color = {0, 127, 255}));
+  connect(LP_SH_2.flowOut, t_LP_SH_2.port) annotation(
+    Line(points = {{-8, 42}, {-2, 42}, {-2, 44}, {6, 44}, {6, 44}}, color = {0, 127, 255}));
+  connect(IP_EVO.flowOut, t_IP_EVO.port) annotation(
+    Line(points = {{-8, 22}, {16, 22}, {16, 16}, {22, 16}, {22, 16}}, color = {0, 127, 255}));
+  connect(IP_SH_1.flowOut, t_IP_SH_1.port) annotation(
+    Line(points = {{-8, 0}, {8, 0}, {8, 0}, {10, 0}}, color = {0, 127, 255}));
+  connect(HP_ECO_2.flowOut, t_HP_ECO_2.port) annotation(
+    Line(points = {{-8, -22}, {6, -22}, {6, -20}, {6, -20}}, color = {0, 127, 255}));
+  connect(LP_SH_3.flowOut, t_LP_SH_3.port) annotation(
+    Line(points = {{-8, -42}, {12, -42}, {12, -38}, {12, -38}}, color = {0, 127, 255}));
+  connect(HP_ECO_3.flowOut, t_HP_ECO_3.port) annotation(
+    Line(points = {{-8, -62}, {-4, -62}, {-4, -56}, {20, -56}, {20, -54}, {22, -54}}, color = {0, 127, 255}));
+  connect(IP_SH_2.flowOut, t_IP_SH_2.port) annotation(
+    Line(points = {{-8, -82}, {16, -82}, {16, -84}, {26, -84}, {26, -84}}, color = {0, 127, 255}));
+  connect(HP_EVO_1.flowOut, t_HP_EVO_1.port) annotation(
+    Line(points = {{-8, -108}, {-8, -108}, {-8, -122}, {4, -122}, {4, -122}}, color = {0, 127, 255}));
+  connect(HP_EVO_2.flowOut, t_HP_EVO_2.port) annotation(
+    Line(points = {{-8, -134}, {-4, -134}, {-4, -146}, {6, -146}, {6, -146}}, color = {0, 127, 255}));
+  connect(HP_EVO_1.gasIn, HP_EVO_2.gasOut) annotation(
+    Line(points = {{-18, -108}, {-18, -108}, {-18, -124}, {-18, -124}}, color = {0, 127, 255}));
+  connect(HP_EVO_2.gasIn, RH_1.gasOut) annotation(
+    Line(points = {{-18, -134}, {-18, -134}, {-18, -156}, {-18, -156}}, color = {0, 127, 255}));
+  connect(HP_EVO_1.flowOut, HP_EVO_2.flowIn) annotation(
+    Line(points = {{-8, -108}, {-4, -108}, {-4, -126}, {-8, -126}, {-8, -126}}, color = {0, 127, 255}));
+  connect(HP_EVO_2.flowOut, HP_separator.fedWater) annotation(
+    Line(points = {{-8, -134}, {0, -134}, {0, -119}, {11, -119}}, color = {0, 127, 255}));
+  connect(RH_1.flowOut, t_HP_RH_1.port) annotation(
+    Line(points = {{-8, -166}, {6, -166}, {6, -164}, {11, -164}}, color = {0, 127, 255}));
+  connect(HP_SH_2.flowOut, t_HP_SH_2.port) annotation(
+    Line(points = {{-8, -192}, {10, -192}, {10, -200}, {28, -200}, {28, -200}}, color = {0, 127, 255}));
+  connect(RH_2.flowOut, t_RH_2.port) annotation(
+    Line(points = {{-8, -218}, {14, -218}, {14, -228}, {26, -228}, {26, -228}}, color = {0, 127, 255}));
   connect(realToBoolean1.y, HP_TC.on) annotation(
     Line(points = {{-34, -68}, {40, -68}, {40, -102}, {40, -102}}, color = {255, 0, 255}));
   connect(ramp1.y, realToBoolean1.u) annotation(
@@ -105,16 +253,8 @@ equation
     Line(points = {{30, -170}, {30, -170}, {30, -184}, {-8, -184}, {-8, -184}}, color = {0, 127, 255}));
   connect(HP_separator.steam, HP_pipe.waterIn) annotation(
     Line(points = {{18, -114}, {30, -114}, {30, -162}, {30, -162}}, color = {0, 127, 255}));
-  connect(HP_EVO_2.flowOut, HP_separator.fedWater) annotation(
-    Line(points = {{-8, -134}, {0, -134}, {0, -119}, {11, -119}}, color = {0, 127, 255}));
-  connect(HP_EVO_1.flowOut, HP_EVO_2.flowIn) annotation(
-    Line(points = {{-8, -108}, {-4, -108}, {-4, -126}, {-8, -126}, {-8, -126}}, color = {0, 127, 255}));
   connect(HP_ECO_3.flowOut, HP_EVO_1.flowIn) annotation(
     Line(points = {{-8, -62}, {-4, -62}, {-4, -100}, {-8, -100}, {-8, -100}}, color = {0, 127, 255}));
-  connect(HP_EVO_2.gasIn, RH_1.gasOut) annotation(
-    Line(points = {{-18, -134}, {-18, -134}, {-18, -156}, {-18, -156}}, color = {0, 127, 255}));
-  connect(HP_EVO_1.gasIn, HP_EVO_2.gasOut) annotation(
-    Line(points = {{-18, -108}, {-18, -108}, {-18, -124}, {-18, -124}}, color = {0, 127, 255}));
   connect(IP_SH_2.gasIn, HP_EVO_1.gasOut) annotation(
     Line(points = {{-18, -82}, {-18, -82}, {-18, -98}, {-18, -98}}, color = {0, 127, 255}));
   connect(IP_drum.p_drum, IP_p_drum) annotation(
