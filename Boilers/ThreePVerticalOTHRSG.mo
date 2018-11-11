@@ -139,6 +139,8 @@ model ThreePVerticalOTHRSG
   Modelica.Fluid.Sensors.Temperature tg_CHE(redeclare package Medium = Medium_G) annotation(
     Placement(visible = true, transformation(origin = {-31, 171}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
 equation
+  connect(IP_SH_2.flowOut, IP_massFlowRate.port_a) annotation(
+    Line(points = {{-8, -82}, {0, -82}, {0, -62}, {0, -62}}, color = {0, 127, 255}));
   connect(cond_HE.gasOut, tg_CHE.port) annotation(
     Line(points = {{-18, 160}, {-18, 160}, {-18, 166}, {-30, 166}, {-30, 166}}, color = {0, 127, 255}));
   connect(LP_EVO.gasOut, tg_LP_EVO.port) annotation(

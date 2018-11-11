@@ -79,6 +79,8 @@ model ThreePVerticalOTHRSG_2
   Modelica.Blocks.Math.Add add1 annotation(
     Placement(visible = true, transformation(origin = {10, -148}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
 equation
+  connect(IP_SH_2.flowOut, IP_massFlowRate.port_a) annotation(
+    Line(points = {{-8, -82}, {0, -82}, {0, -62}, {0, -62}}, color = {0, 127, 255}));
   connect(add1.y, HP_LC.u) annotation(
     Line(points = {{16, -148}, {34, -148}, {34, -128}, {41, -128}, {41, -129}}, color = {0, 0, 127}));
   connect(HP_LC.y, max1.u1) annotation(

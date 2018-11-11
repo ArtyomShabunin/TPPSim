@@ -1,10 +1,12 @@
 ﻿within TPPSim.Boilers.Tests;
 
 model ThreePVerticalOTHRSG_Test
-  extends TPPSim.Boilers.Tests.ThreePVerticalHRSG_Test_partial;
+  extends TPPSim.Boilers.Tests.ThreePVerticalHRSG_Test_partial(ST.Kv_HP_RS = 275, HP_pressure_control.set_p = 1e+07);
   TPPSim.Boilers.ThreePVerticalOTHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
+    Line(points = {{-48, -58}, {-42, -58}, {-42, -58}, {-40, -58}}, color = {255, 0, 255}));
   connect(derN_set.y, GT.derN_set) annotation(
     Line(points = {{-88, -40}, {-84, -40}, {-84, -34}, {-64, -34}, {-64, -36}, {-62, -36}}, color = {0, 0, 127}));
   connect(LP_pipe.waterIn, Boiler.LP_Out) annotation(
@@ -30,5 +32,5 @@ equation
   annotation(
     Diagram(coordinateSystem(extent = {{-140, -100}, {100, 100}})),
     __OpenModelica_simulationFlags(lv = "LOG_STATS", s = "dassl"),
-    experiment(StartTime = 0, StopTime = 5000, Tolerance = 1e-2, Interval = 10));
+    experiment(StartTime = 0, StopTime = 15000, Tolerance = 1e-2, Interval = 10));
 end ThreePVerticalOTHRSG_Test;

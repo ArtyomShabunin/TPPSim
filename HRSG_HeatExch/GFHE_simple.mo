@@ -20,7 +20,7 @@ equation
   D_gl[1, numberOfVolumes + 1] = -flowOut.m_flow;
   p_gl[1, numberOfVolumes + 1] = flowOut.p;
   hgas_gl[1, 1] = inStream(gasIn.h_outflow);
-  gasIn.h_outflow = inStream(gasOut.h_outflow);
+  gasIn.h_outflow = hgas_gl[1, 1];
   Dgas_gl[1, 1] = gasIn.m_flow;
   pgas_gl[1, 1] = gasIn.p;
   hgas_gl[numberOfVolumes + 1, 1] = gasOut.h_outflow;

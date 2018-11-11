@@ -7,7 +7,7 @@ model dummy_ST_2
   parameter Real Kv_HP_RS = 0 "Пропускная способность БРОУ ВД [м3/ч]";
   parameter Real Kv_IP_RS = 0 "Пропускная способность БРОУ СД [м3/ч]";
   parameter Real Kv_LP_CV = 0 "Пропускная способность РК НД [м3/ч]";
-  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = Kv_HP_RS, dp_nominal = 9e+06, min_delta = 90, set_down_T = 573.15, use_T_in = true) annotation(
+  TPPSim.Valves.ReducingStation HP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = Kv_HP_RS, dp_nominal = 9e+06, min_delta = 90, use_T_in = true) annotation(
     Placement(visible = true, transformation(origin = {2, 62}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Valves.ValveCompressible IP_RS(redeclare package Medium = Medium, CvData = Modelica.Fluid.Types.CvTypes.Kv, Kv = Kv_IP_RS, dp_nominal = 3e+06, filteredOpening = true, riseTime = 10) annotation(
       Placement(visible = true, transformation(origin = {12, -10}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));

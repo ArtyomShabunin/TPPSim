@@ -5,6 +5,8 @@ model ThreePVerticalOTHRSG_Test_2
   TPPSim.Boilers.ThreePVerticalOTHRSG_2 Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
+    Line(points = {{-48, -58}, {-42, -58}, {-42, -58}, {-40, -58}}, color = {255, 0, 255}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-56, -42}, {10, -42}, {10, -42}, {10, -42}}, color = {0, 127, 255}));
   connect(flowSource.ports[1], Boiler.cond_In) annotation(
