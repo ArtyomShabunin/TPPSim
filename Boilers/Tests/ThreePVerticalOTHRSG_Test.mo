@@ -1,7 +1,7 @@
 ﻿within TPPSim.Boilers.Tests;
 
 model ThreePVerticalOTHRSG_Test
-  extends TPPSim.Boilers.Tests.ThreePVerticalHRSG_Test_partial(ST.Kv_HP_RS = 275, HP_pressure_control.set_p = 1e+07);
+  extends TPPSim.Boilers.Tests.ThreePVerticalHRSG_Test_partial(ST.Kv_HP_RS = 275, HP_pressure_control.set_p = 1e+07, HP_pressure_control.use_p_speed_in = false);
   TPPSim.Boilers.ThreePVerticalOTHRSG Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
