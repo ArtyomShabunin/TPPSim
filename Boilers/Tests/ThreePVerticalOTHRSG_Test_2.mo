@@ -5,12 +5,14 @@ model ThreePVerticalOTHRSG_Test_2
   TPPSim.Boilers.ThreePVerticalOTHRSG_2 Boiler annotation(
     Placement(visible = true, transformation(origin = {30, -20}, extent = {{20, -30}, {-20, 30}}, rotation = 0)));
 equation
+  connect(HP_pressure_control.y2, Boiler.HP_vent_pos) annotation(
+    Line(points = {{-36, -66}, {-36, -66}, {-36, -74}, {60, -74}, {60, 14}, {44, 14}, {44, 10}, {42, 10}}, color = {0, 0, 127}));
   connect(Boiler.LP_Out, LP_pipe.waterIn) annotation(
     Line(points = {{10, -18}, {10, -18}, {10, -14}, {8, -14}, {8, -14}}, color = {0, 127, 255}));
   connect(derN_set.y, GT.derN_set) annotation(
     Line(points = {{-88, -40}, {-82, -40}, {-82, -34}, {-62, -34}, {-62, -36}, {-62, -36}}, color = {0, 0, 127}));
-  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
-    Line(points = {{-48, -58}, {-42, -58}, {-42, -58}, {-40, -58}}, color = {255, 0, 255}));
+//  connect(booleanConstant1.y, HP_pressure_control.u4) annotation(
+//    Line(points = {{-48, -58}, {-42, -58}, {-42, -58}, {-40, -58}}, color = {255, 0, 255}));
   connect(GT.flowOut, Boiler.gasIn) annotation(
     Line(points = {{-56, -42}, {10, -42}, {10, -42}, {10, -42}}, color = {0, 127, 255}));
   connect(flowSource.ports[1], Boiler.cond_In) annotation(
@@ -25,8 +27,6 @@ equation
     Line(points = {{10, -28}, {2, -28}, {2, -26}, {2, -26}}, color = {0, 127, 255}));
   connect(Boiler.RH_In, CRH_pipe.waterOut) annotation(
     Line(points = {{10, -24}, {6, -24}, {6, -22}, {4, -22}, {4, -20}}, color = {0, 127, 255}));
-  connect(booleanToReal2.y, Boiler.HP_vent_pos) annotation(
-    Line(points = {{44, -82}, {60, -82}, {60, 14}, {42, 14}, {42, 10}, {42, 10}}, color = {0, 0, 127}));
   connect(booleanToReal1.y, Boiler.RH_vent_pos) annotation(
     Line(points = {{44, -62}, {58, -62}, {58, 12}, {50, 12}, {50, 10}, {50, 10}}, color = {0, 0, 127}));
   annotation(

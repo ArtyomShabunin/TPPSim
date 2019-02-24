@@ -33,12 +33,10 @@ partial model ThreePVerticalHRSG_Test_partial
     Placement(visible = true, transformation(origin = {-69, 45}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   Modelica.Blocks.Sources.Constant HP_RS_const(k = 0.2) annotation(
     Placement(visible = true, transformation(origin = {-69, 29}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
-  TPPSim.Controls.pressure_control_4 HP_pressure_control(P_activation = 300000, T = 20, k = 0.000001, pos_start = 0.05, set_p = 1.7e+07, speed_p = 1e5 / 60, use_p_speed_in = true) annotation(
+  TPPSim.Controls.pressure_control_4 HP_pressure_control(P_activation = 300000, T = 20, k = 0.000001, pos_start = 0.05, set_p = 1.7e+07, speed_p = 6e5 / 60, use_p_speed_in = true) annotation(
     Placement(visible = true, transformation(origin = {-35, -61}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
   Modelica.Fluid.Sensors.Pressure HP_p(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {-23, -47}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
-  Modelica.Blocks.Sources.BooleanConstant booleanConstant1(k = false) annotation(
-    Placement(visible = true, transformation(origin = {-53, -59}, extent = {{-5, -5}, {5, 5}}, rotation = 0)));
   TPPSim.Controls.pressure_control_3 IP_pressure_control(P_activation = 200000, T = 35, k = 0.000001, pos_start = 0.05, set_p = 3.5e+06, speed_p = 0.4e5 / 60) annotation(
     Placement(visible = true, transformation(origin = {5, -65}, extent = {{-5, -5}, {5, 5}}, rotation = -90)));
   Modelica.Fluid.Sensors.Pressure IP_p(redeclare package Medium = Medium_F) annotation(
@@ -49,8 +47,6 @@ partial model ThreePVerticalHRSG_Test_partial
     Placement(visible = true, transformation(origin = {11, 27}, extent = {{-3, -3}, {3, 3}}, rotation = 0)));
   Modelica.Blocks.Math.BooleanToReal booleanToReal1(realFalse = 1, realTrue = 0) annotation(
     Placement(visible = true, transformation(origin = {38, -62}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
-  Modelica.Blocks.Math.BooleanToReal booleanToReal2(realFalse = 1, realTrue = 0) annotation(
-    Placement(visible = true, transformation(origin = {38, -82}, extent = {{-6, -6}, {6, 6}}, rotation = 0)));
   TPPSim.Pipes.ComplexPipe LP_pipe(Din = 381e-3, Lpipe = 155, delta = 12.7e-3, energyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, massDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, n_parallel = 1, numberOfVolumes = 2) annotation(
     Placement(visible = true, transformation(origin = {5, -15}, extent = {{3, -3}, {-3, 3}}, rotation = 0)));
   Modelica.Fluid.Sensors.Temperature HP_temp(redeclare package Medium = Medium_F) annotation(
@@ -76,8 +72,6 @@ equation
     Line(points = {{1, -15}, {0, -15}, {0, 14}, {-28, 14}, {-28, 10}}, color = {0, 127, 255}));
   connect(ST.LP, LP_p.port) annotation(
     Line(points = {{-28, 10}, {-20, 10}, {-20, 24}, {12, 24}, {12, 24}}, color = {0, 127, 255}));
-  connect(HP_pressure_control.y2, booleanToReal2.u) annotation(
-    Line(points = {{-39, -66.5}, {-39, -82}, {30, -82}}, color = {255, 0, 255}));
   connect(ST.HP_CV_apos, HP_pressure_control.u3) annotation(
     Line(points = {{-52, -30}, {-52, -38}, {-34, -38}, {-34, -55}}, color = {0, 0, 127}));
   connect(ST.HP_RS_apos, HP_pressure_control.u1) annotation(

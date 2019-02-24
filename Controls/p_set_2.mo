@@ -3,12 +3,11 @@ within TPPSim.Controls;
 block p_set_2 "Блок задания давления в регуляторе давления"
   extends Modelica.Blocks.Icons.Block;
   parameter Real set_p "Задатчик давления";
-//  parameter Real speed_p "Скорость повышения давления";
-  Modelica.Blocks.Interfaces.BooleanInput u1 "Connector of Boolean input signal"
+  Modelica.Blocks.Interfaces.BooleanInput u1 "Сигнал активации блока задания давления"
     annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-  Modelica.Blocks.Interfaces.RealInput u2 "Connector of Real input signal"
+  Modelica.Blocks.Interfaces.RealInput u2 "Давление в точке регулирования"
     annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
-  Modelica.Blocks.Interfaces.RealOutput y "Connector of Real output signal"
+  Modelica.Blocks.Interfaces.RealOutput y "Задание давления на выходе блока"
     annotation (Placement(transformation(extent={{100,-10},{120,10}})));
   Real start_time;
   Real start_p;
@@ -38,7 +37,6 @@ equation
     if speed_p == pre(speed_p) then
       start_time = pre(start_time);
       y = start_p + (time - start_time) * speed_p;
-//    y = pre(y) + (time - pre(time)) * speed_p;
       start_p = pre(start_p); 
     else
       start_time = time;
@@ -47,5 +45,25 @@ equation
     end if;  
   end if;
 annotation(
-    Documentation(info = "<html><head></head><body>Тоже что и 'p_set' но с возможностью обновления стартовой точки по давлению от которой идет расчет задаваемых значений с учетом скорости.</body></html>"));
+    Documentation(info = "<html>
+<style>
+p {
+  text-indent: 20px;
+  text-align: 'justify';
+ }
+</style>
+<p>Блок предназначен для корректировки задания по давлению с учетом ограничения по скорости его нарастания.</p>
+<p>Блок задания давления работает по следующему алгориму:</p>
+<ul>
+  <li>В случае отсутсвия сигнала активации блока 'u1', задание давление на выходе блока 'y' равно входному сигналу 'u2'. Создается условие заданное давление равно текущему давлению.</li>
+  <li>После активации блока, при условии, что текущее давление 'u2' меньше заданного 'set_p' формируется задание по давлению на выходе блока 'y' с учетом заданной скорости нарастания давления 'speed_p'.</li>
+</ul>
+<p>Алгоритм работы блок не предполагает изменения задания давления 'set_p'. Изменение заданной скорости нарастания давления обрабатывается.</p>
+<p>Предусмотрен входной сигнал 'refresh' для обновления внутренних переменных 'start_time' и 'start_p'.</p>
+<li><i>07 July 2018</i>
+by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
+   Создан.</li>
+</ul>
+</html>"));
+
 end p_set_2;
