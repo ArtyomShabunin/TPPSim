@@ -2,7 +2,7 @@
 partial model BaseFlowSideHE
   extends TPPSim.HRSG_HeatExch.BaseClases.Icons.IconFlowSideHE;
   import Modelica.Fluid.Types;
-  replaceable package Medium = Modelica.Media.Water.StandardWater constrainedby Modelica.Media.Interfaces.PartialMedium;
+  replaceable package Medium = Modelica.Media.Water.StandardWater;
   constant Modelica.SIunits.Pressure pzero = 10 "Small deltap for calculations";
   constant Medium.AbsolutePressure pc = Medium.fluidConstants[1].criticalPressure;
   constant Modelica.SIunits.SpecificEnthalpy hzero = 1e-3 "Small value for deltah";

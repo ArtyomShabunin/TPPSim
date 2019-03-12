@@ -63,9 +63,9 @@ equation
     p_gl[section[1], section[2]] - p_gl[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
   end if;
   if piez_type == TPPSim.Choices.piez_type.var then
-    dp_piez = homotopy(stateFlow.d * Modelica.Constants.g_n * deltaHpipe, pre(stateFlow.d) * Modelica.Constants.g_n * deltaHpipe) "Расчет перепада давления из-за изменения пьезометрической высоты";
+    dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты";
   else
-    dp_piez = 1000 * Modelica.Constants.g_n * deltaHpipe;
+    dp_piez = 1000 * Modelica.Constants.g_n * deltaHpipe "Расчет перепада давления из-за изменения пьезометрической высоты при постоянной плотности 1000 м3/кг";
   end if;
 initial equation
 
