@@ -3,12 +3,13 @@ within TPPSim.Boilers.Tests;
 model Glycol_HE_2
   replaceable package Medium_G = TPPSim.Media.ExhaustGas constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = TPPSim.Media.Glycol_ph;
-//  replaceable package Medium_F = Modelica.Media.Water.StandardWater;
+  //  replaceable package Medium_F = Modelica.Media.Water.StandardWater;
   parameter Real T_flow_in_set = 70 "Температура раствора этиленгликоля перед теплообменником";
   parameter Real m_flow_set = 739208 / 3600 "Массовый расход раствора этиленгликоля";
   parameter Real bypass_pos_set = 0.558 "Положение шибера на байпасе теплообменника";
   parameter Real gas_massflow_set = 192.4 "Массовый расход выхлопных газов ГТУ";
   parameter Real T_gas_in_set = 351 "Температура выхлопных газов ГТУ";
+  parameter Real HeatRate_set = 31.62 "Тепловая мощность теплообменника";
   TPPSim.HRSG_HeatExch.GFHE HE(redeclare TPPSim.HRSG_HeatExch.GlycolSideHE flowHE(redeclare TPPSim.thermal.alfaForGlycol alpha), redeclare package Medium_G = Medium_G, redeclare package Medium_F = Medium_F, Din = 36e-3, HRSG_type_set = TPPSim.Choices.HRSG_type.verticalTop, Lpipe = 5, T_gas_start = T_flow_in_set+273.15, T_m_start = T_flow_in_set+273.15, delta = 3e-3, delta_fin = 1.3e-3, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, gasEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, gasMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyState, h_flow_start = TPPSim.Media.Glycol_ph.specificEnthalpy_pT(1e5, T_flow_in_set+273.15), hfin = 16e-3, k_gamma_gas = 1, k_volume = 1.2, k_volume_gas = 1.2, k_weight_metal = 1.2, metalDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, numberOfTubeSections = 3, p_flow_start = 100000, p_gas_start = 100000, s1 = 133e-3, s2 = 78.5e-3, sfin = 6.1e-3, z1 = 26, z2 = 20, zahod = 2) annotation(
     Placement(visible = true, transformation(origin = {20, -50}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   inner Modelica.Fluid.System system annotation(
@@ -68,16 +69,26 @@ model Glycol_HE_2
   Modelica.Blocks.Math.Add add2(k2 = -1)  annotation(
     Placement(visible = true, transformation(origin = {-26, 40}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Blocks.Math.Product HeatRate annotation(
-    Placement(visible = true, transformation(origin = {-62, 34}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {-62, 26}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Blocks.Continuous.LimPID PID(controllerType = Modelica.Blocks.Types.SimpleController.PI, k = 1e-10, yMax = 0.99, yMin = 0, y_start = 0.5)  annotation(
+    Placement(visible = true, transformation(origin = {-26, 74}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Blocks.Sources.Constant HeatRate_const(k = HeatRate_set * 1e6)  annotation(
+    Placement(visible = true, transformation(origin = {-70, 60}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(HeatRate_const.y, PID.u_m) annotation(
+    Line(points = {{-58, 60}, {-26, 60}, {-26, 62}, {-26, 62}}, color = {0, 0, 127}));
+  connect(HeatRate.y, PID.u_s) annotation(
+    Line(points = {{-72, 26}, {-80, 26}, {-80, 42}, {-48, 42}, {-48, 74}, {-38, 74}, {-38, 74}}, color = {0, 0, 127}));
+  connect(PID.y, product1.u2) annotation(
+    Line(points = {{-14, 74}, {-10, 74}, {-10, 120}, {-40, 120}, {-40, 138}, {-22, 138}, {-22, 138}}, color = {0, 0, 127}));
+  connect(massFlowRate1.m_flow, HeatRate.u2) annotation(
+    Line(points = {{2, 4}, {2, 20}, {-50, 20}}, color = {0, 0, 127}));
+  connect(add2.y, HeatRate.u1) annotation(
+    Line(points = {{-38, 40}, {-44, 40}, {-44, 32}, {-50, 32}}, color = {0, 0, 127}));
   connect(HE.flowOut, specificEnthalpy_out.port) annotation(
     Line(points = {{24, -40}, {24, -40}, {24, 24}, {30, 24}, {30, 40}, {30, 40}}, color = {0, 127, 255}));
   connect(HE.flowIn, specificEnthalpy_in.port) annotation(
     Line(points = {{16, -40}, {16, -40}, {16, 12}, {10, 12}, {10, 20}, {10, 20}}, color = {0, 127, 255}));
-  connect(add2.y, HeatRate.u1) annotation(
-    Line(points = {{-38, 40}, {-50, 40}, {-50, 40}, {-50, 40}}, color = {0, 0, 127}));
-  connect(massFlowRate1.m_flow, HeatRate.u2) annotation(
-    Line(points = {{2, 4}, {2, 4}, {2, 20}, {-44, 20}, {-44, 28}, {-50, 28}, {-50, 28}}, color = {0, 0, 127}));
   connect(specificEnthalpy_in.h_out, add2.u2) annotation(
     Line(points = {{0, 30}, {-8, 30}, {-8, 34}, {-14, 34}, {-14, 34}}, color = {0, 0, 127}));
   connect(specificEnthalpy_out.h_out, add2.u1) annotation(
@@ -86,8 +97,6 @@ equation
     Line(points = {{-59, 90}, {88, 90}, {88, -46}, {82, -46}}, color = {0, 0, 127}));
   connect(T_gas_in.y, bypas.T_in) annotation(
     Line(points = {{-59, 90}, {88, 90}, {88, -76}, {82, -76}}, color = {0, 0, 127}));
-  connect(bypass_pos.y, product1.u2) annotation(
-    Line(points = {{-59, 120}, {-50, 120}, {-50, 120}, {-39, 120}, {-39, 138}, {-21, 138}, {-21, 138}, {-23, 138}, {-23, 138}}, color = {0, 0, 127}));
   connect(gas_massflow.y, product1.u1) annotation(
     Line(points = {{-59, 150}, {-50, 150}, {-50, 152}, {-41, 152}, {-41, 150}, {-21, 150}, {-21, 150}, {-23, 150}}, color = {0, 0, 127}));
   connect(gas_massflow.y, add1.u1) annotation(

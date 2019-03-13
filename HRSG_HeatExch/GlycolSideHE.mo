@@ -8,24 +8,27 @@ model GlycolSideHE
   Boolean SH_cold(start = SH_cold_start, fixed = true);
   Modelica.SIunits.DerDensityByEnthalpy drdh "Производная плотности потока по энтальпии на участках ряда труб";
   Modelica.SIunits.DerDensityByPressure drdp "Производная плотности потока по давлению на участках ряда труб";
+  Modelica.SIunits.Temperature t_r "Температура слоя загрязнения на границе с потоком";
+  parameter Real Rt(unit="K.m2/W") = 0.00035;
 algorithm
   SH_cold := false;
 equation
+  alfa_flow * (t_r - stateFlow.T) = (t_m - t_r) / Rt;
   if flowEnergyDynamics == Types.Dynamics.SteadyState then
     if noEvent(SH_cold) then
       stateFlow.h = h_gl[section[1], section[2]];
       h_gl[section[1], section[2] + 1] = stateFlow.h;
     else
-      D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) ;
-      D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
+      D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) = 0.5 * alfa_flow * deltaSFlow * (t_r - stateFlow.T);
+      D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_r - stateFlow.T);
     end if;  
   else
     if noEvent(SH_cold) then
       0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]);
       0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h);   
     else
-      0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
-      0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
+      0.5 * deltaVFlow * stateFlow.d * der(stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_r - stateFlow.T) - D_flow_v * (stateFlow.h - h_gl[section[1], section[2]]) "Уравнение баланса тепла теплоносителя (ур-е 3-1d1 диссерации Рубашкина)";
+      0.5 * deltaVFlow * stateFlow.d * der(h_gl[section[1], section[2] + 1]) = 0.5 * alfa_flow * deltaSFlow * (t_r - stateFlow.T) - D_flow_v * (h_gl[section[1], section[2] + 1] - stateFlow.h) "Уравнение баланса тепла теплоносителя (ур-е 3-1d2 диссерации Рубашкина)";
     end if;
   end if;
 //Уравнение теплового баланса металла
@@ -33,13 +36,13 @@ equation
     if noEvent(SH_cold) then
       Q_flow = 0;
     else
-      Q_flow = alfa_flow * deltaSFlow * (t_m - stateFlow.T);
+      Q_flow = deltaSFlow * (t_m - t_r) / Rt;
     end if;  
   else
     if noEvent(SH_cold) then
       deltaMMetal * C_m * der(t_m) = Q_flow;
     else
-      deltaMMetal * C_m * der(t_m) = Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T) "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
+      deltaMMetal * C_m * der(t_m) = Q_flow - deltaSFlow * (t_m - t_r) / Rt "Уравнение баланса тепла металла (формула 3-2в диссертации Рубашкина)";
     end if;
   end if;
 //Уравнения для heat
