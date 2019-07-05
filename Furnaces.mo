@@ -71,8 +71,8 @@ package Furnaces
     Modelica.SIunits.MassFlowRate D_fuel_gas "Массовый расход продуктов сгорания выделившихся из топлива";
     Real Q_fuel "Тепло полученное в результате горения топлива";
     Real D_cp "Массовый расход продуктов сгорания";
-    Real H_cp(max=5e6, min=1e5, nominal=2e6) "Энтальпия продуктов сгорания";
-    Real H_out(max=5e6, min=1e5, nominal=2e6) "Энтальпия продуктов сгорания на выходе из зоны";
+    Real H_cp(max = 5e6, min = 1e5, nominal = 2e6) "Энтальпия продуктов сгорания";
+    Real H_out(max = 5e6, min = 1e5, nominal = 2e6) "Энтальпия продуктов сгорания на выходе из зоны";
     Real epsilon "Степень черноты топки";
     Real alpha_air "Избыток воздуха";
     Medium_G.ThermodynamicState state_air;
@@ -186,13 +186,15 @@ package Furnaces
 
   package Tests
     model Furnace_Test
+      input Real input_1(start = 100);
+    
       replaceable package Medium_G = TPPSim.Media.ExhaustGas_Furnance constrainedby Modelica.Media.Interfaces.PartialMedium;
       replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
       TPPSim.Furnaces.Furnace furnace1(redeclare package Medium_G = Medium_G, betta = 1, use_fuel_port = true) annotation(
         Placement(visible = true, transformation(origin = {0, -14}, extent = {{-10, -4}, {10, 4}}, rotation = 0)));
       Modelica.Fluid.Sources.MassFlowSource_T airSource(redeclare package Medium = Medium_G, m_flow = 1000, nPorts = 1) annotation(
         Placement(visible = true, transformation(origin = {-70, -40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      TPPSim.Fuel.Sources.MassFlowSource coilSource(m_flow = 100)  annotation(
+      TPPSim.Fuel.Sources.MassFlowSource coilSource(m_flow = 100, use_m_flow_in = true) annotation(
         Placement(visible = true, transformation(origin = {-70, -10}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Fluid.Sources.FixedBoundary gasSink(redeclare package Medium = Medium_G, nPorts = 1) annotation(
         Placement(visible = true, transformation(origin = {70, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -202,7 +204,9 @@ package Furnaces
         Placement(visible = true, transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Fluid.Sources.FixedBoundary waterSink(redeclare package Medium = Medium_F, nPorts = 1, p = 1e6) annotation(
         Placement(visible = true, transformation(origin = {70, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+    
     equation
+      connect(input_1, coilSource.m_flow_in);
       connect(furnace1.gasOut, gasSink.ports[1]) annotation(
         Line(points = {{0, -10}, {0, -10}, {0, 90}, {60, 90}, {60, 90}}, color = {0, 127, 255}));
       connect(tubeFlowSide1.waterOut, waterSink.ports[1]) annotation(
@@ -275,10 +279,10 @@ package Furnaces
     parameter Modelica.SIunits.Area deltaSFlow = 1 "Внутренняя площадь одного участка ряда труб";
     parameter Real psi = 0.9 "Коэффициент тепловой эффективности экранов в зоне";
     //Переменные
-      Medium.MassFlowRate D_flow_v "Массовый расход потока вода/пар";
-      Modelica.SIunits.Temperature t_m(min=10+273.15, max=700+273.15) "Температура металла на участках трубопровода";
-      Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
-      Real alfa_flow "Коэффициент теплоотдачи";
+    Medium.MassFlowRate D_flow_v "Массовый расход потока вода/пар";
+    Modelica.SIunits.Temperature t_m(min = 10 + 273.15, max = 700 + 273.15) "Температура металла на участках трубопровода";
+    Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
+    Real alfa_flow "Коэффициент теплоотдачи";
     TPPSim.Furnaces.Interface.RadiantHeatPort_b heat annotation(
       Placement(visible = true, transformation(origin = {-98, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
@@ -288,17 +292,15 @@ package Furnaces
   equation
     alfa_flow = 10000;
     D_flow_v = waterIn.m_flow;
-    D_flow_v * (stateFlow.h - inStream(waterIn.h_outflow)) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T) ;
+    D_flow_v * (stateFlow.h - inStream(waterIn.h_outflow)) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
     D_flow_v * (waterOut.h_outflow - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
-    heat.Q_flow = Modelica.Constants.sigma * psi * heat.epsilon * F_g * (heat.T^4 - t_m^4);
+    heat.Q_flow = Modelica.Constants.sigma * psi * heat.epsilon * F_g * (heat.T ^ 4 - t_m ^ 4);
     0 = heat.Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T);
-  
     stateFlow.p = waterOut.p;
     stateFlow.d = Medium.density_ph(stateFlow.p, stateFlow.h);
     stateFlow.T = Medium.temperature_ph(stateFlow.p, stateFlow.h);
     stateFlow.phase = Modelica.Media.Water.IF97_Utilities.phase_ph.phase_ph(stateFlow.p, stateFlow.h);
-    
-  //Граничные условия
+//Граничные условия
     waterIn.p = waterOut.p;
     waterIn.h_outflow = waterOut.h_outflow;
     waterOut.m_flow = -waterIn.m_flow;
