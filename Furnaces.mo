@@ -32,6 +32,14 @@ package Furnaces
         annotation(
           Icon(graphics = {Rectangle(origin = {0, 90}, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {100, -10}}), Rectangle(origin = {0, -90}, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {100, -10}}), Rectangle(origin = {-60, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}}), Rectangle(origin = {-90, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}}), Rectangle(origin = {-30, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}}), Rectangle(origin = {0, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}}), Rectangle(origin = {30, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}}), Rectangle(origin = {60, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}}), Rectangle(origin = {90, -20}, rotation = -90, fillColor = {176, 176, 176}, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 10}, {60, -10}})}));
       end IconTubeFlowSide;
+
+      model RadiationGasSide
+      equation
+  annotation(
+          Icon(graphics = {Rectangle(origin = {0, 21}, lineColor = {255, 0, 0}, fillColor = {255, 255, 127}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, lineThickness = 0, extent = {{-100, 79}, {100, -121}}), Rectangle(origin = {0, 55}, lineColor = {81, 81, 81}, fillColor = {255, 255, 255}, pattern = LinePattern.None, fillPattern = FillPattern.HorizontalCylinder, extent = {{-100, 45}, {100, -35}}), Polygon(origin = {-30, -15.11}, lineColor = {255, 0, 0}, fillColor = {255, 85, 0}, lineThickness = 2, points = {{-6.0012, 51.1053}, {-8.0012, 41.1053}, {-8.0012, 23.1053}, {-6.0012, 11.1053}, {-2.00116, 1.10532}, {3.99884, -8.89468}, {7.99884, -20.8947}, {5.99884, -34.8947}, {-4.00116, -52.8947}, {-8.0012, -62.8947}, {-10.0012, -72.8947}, {-0.00116419, -72.8947}, {1.99884, -60.8947}, {7.99884, -46.8947}, {13.9988, -34.8947}, {15.9988, -18.8947}, {9.9988, -2.89468}, {3.99884, 7.10532}, {-0.00115991, 23.1053}, {-0.00115991, 39.1053}, {1.99884, 49.1053}, {3.99884, 59.1053}, {9.99884, 57.1053}, {1.99884, 75.1053}, {-12.0012, 57.1053}, {-4.0012, 59.1053}, {-6.0012, 51.1053}}), Polygon(origin = {2, 12.89}, lineColor = {255, 0, 0}, fillColor = {255, 85, 0}, lineThickness = 2, points = {{-6.0012, 51.1053}, {-8.0012, 41.1053}, {-8.0012, 23.1053}, {-6.0012, 11.1053}, {-2.00116, 1.10532}, {3.99884, -8.89468}, {7.99884, -20.8947}, {5.99884, -34.8947}, {-4.00116, -52.8947}, {-8.0012, -62.8947}, {-10.0012, -72.8947}, {-0.00116419, -72.8947}, {1.99884, -60.8947}, {7.99884, -46.8947}, {13.9988, -34.8947}, {15.9988, -18.8947}, {9.9988, -2.89468}, {3.99884, 7.10532}, {-0.00115991, 23.1053}, {-0.00115991, 39.1053}, {1.99884, 49.1053}, {3.99884, 59.1053}, {9.99884, 57.1053}, {1.99884, 75.1053}, {-12.0012, 57.1053}, {-4.0012, 59.1053}, {-6.0012, 51.1053}}), Polygon(origin = {34, -15.11}, lineColor = {255, 0, 0}, fillColor = {255, 85, 0}, lineThickness = 2, points = {{-6.0012, 51.1053}, {-8.0012, 41.1053}, {-8.0012, 23.1053}, {-6.0012, 11.1053}, {-2.00116, 1.10532}, {3.99884, -8.89468}, {7.99884, -20.8947}, {5.99884, -34.8947}, {-4.00116, -52.8947}, {-8.0012, -62.8947}, {-10.0012, -72.8947}, {-0.00116419, -72.8947}, {1.99884, -60.8947}, {7.99884, -46.8947}, {13.9988, -34.8947}, {15.9988, -18.8947}, {9.9988, -2.89468}, {3.99884, 7.10532}, {-0.00115991, 23.1053}, {-0.00115991, 39.1053}, {1.99884, 49.1053}, {3.99884, 59.1053}, {9.99884, 57.1053}, {1.99884, 75.1053}, {-12.0012, 57.1053}, {-4.0012, 59.1053}, {-6.0012, 51.1053}}), Text(origin = {2, -42}, extent = {{-62, 70}, {58, -50}}, textString = "R")}, coordinateSystem(initialScale = 0.1)),
+          Diagram,
+          __OpenModelica_commandLineOptions = "");
+      end RadiationGasSide;
     end Icons;
   end BaseClases;
 
@@ -86,7 +94,7 @@ package Furnaces
       Placement(visible = true, transformation(origin = {-100, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, -8}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     TPPSim.Fuel.Interfaces.CoalPort_b fuelOut if betta < 1 and use_fuel_port annotation(
       Placement(visible = true, transformation(origin = {100, -20}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-20, 40}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-    Interface.RadiantHeatPort_a heat annotation(
+    Interface.RadiantHeatPort_b heat annotation(
       Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   protected
     constant Real amC = 12.01115 "Carbon atomic mass";
@@ -184,6 +192,7 @@ package Furnaces
       __OpenModelica_commandLineOptions = "");
   end Furnace;
 
+
   package Tests
     model Furnace_Test
       input Real input_1(start = 100);
@@ -200,7 +209,7 @@ package Furnaces
         Placement(visible = true, transformation(origin = {70, 90}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
       TPPSim.Furnaces.TubeFlowSide tubeFlowSide1(redeclare package Medium = Medium_F) annotation(
         Placement(visible = true, transformation(origin = {30, -14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-      Modelica.Fluid.Sources.MassFlowSource_T waterSource(redeclare package Medium = Medium_F, T = 100 + 273.15, m_flow = 10, nPorts = 1) annotation(
+      Modelica.Fluid.Sources.MassFlowSource_T waterSource(redeclare package Medium = Medium_F, T = 100 + 273.15, m_flow = 10, nPorts = 1, use_m_flow_in = false) annotation(
         Placement(visible = true, transformation(origin = {-70, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
       Modelica.Fluid.Sources.FixedBoundary waterSink(redeclare package Medium = Medium_F, nPorts = 1, p = 1e6) annotation(
         Placement(visible = true, transformation(origin = {70, 60}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
@@ -278,12 +287,15 @@ package Furnaces
     parameter Modelica.SIunits.Area F_g = 1 "Площадь поверхности теплообмена со стороны газов";
     parameter Modelica.SIunits.Area deltaSFlow = 1 "Внутренняя площадь одного участка ряда труб";
     parameter Real psi = 0.9 "Коэффициент тепловой эффективности экранов в зоне";
-    //Переменные
+    
+
+    
+    // Переменные
     Medium.MassFlowRate D_flow_v "Массовый расход потока вода/пар";
     Modelica.SIunits.Temperature t_m(min = 10 + 273.15, max = 700 + 273.15) "Температура металла на участках трубопровода";
-    Medium.ThermodynamicState stateFlow "Термодинамическое состояние потока вода/пар на участках трубопровода";
+    Medium.ThermodynamicState stateFlow(T(min = 10 + 273.15, max = 350 + 273.15)) "Термодинамическое состояние потока вода/пар на участках трубопровода";
     Real alfa_flow "Коэффициент теплоотдачи";
-    TPPSim.Furnaces.Interface.RadiantHeatPort_b heat annotation(
+    TPPSim.Furnaces.Interface.RadiantHeatPort_a heat annotation(
       Placement(visible = true, transformation(origin = {-98, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
     Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
       Placement(visible = true, transformation(origin = {0, -98}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
@@ -292,8 +304,12 @@ package Furnaces
   equation
     alfa_flow = 10000;
     D_flow_v = waterIn.m_flow;
+    
+    
     D_flow_v * (stateFlow.h - inStream(waterIn.h_outflow)) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
     D_flow_v * (waterOut.h_outflow - stateFlow.h) = 0.5 * alfa_flow * deltaSFlow * (t_m - stateFlow.T);
+  
+    
     heat.Q_flow = Modelica.Constants.sigma * psi * heat.epsilon * F_g * (heat.T ^ 4 - t_m ^ 4);
     0 = heat.Q_flow - alfa_flow * deltaSFlow * (t_m - stateFlow.T);
     stateFlow.p = waterOut.p;
@@ -305,4 +321,56 @@ package Furnaces
     waterIn.h_outflow = waterOut.h_outflow;
     waterOut.m_flow = -waterIn.m_flow;
   end TubeFlowSide;
+
+  model FurnaceFlowSide
+  extends TPPSim.Furnaces.BaseClases.Icons.IconTubeFlowSide;
+    replaceable package Medium = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
+    TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE annotation(
+      Placement(visible = true, transformation(origin = {18, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    TPPSim.Furnaces.FurnaceGasTransfer GasTransfer annotation(
+      Placement(visible = true, transformation(origin = {-22, 0}, extent = {{-10, -10}, {10, 10}}, rotation = -90)));
+    Interface.RadiantHeatPort_a heat annotation(
+      Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
+      Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  
+    inner parameter Real psi = 0.9 "Коэффициент тепловой эффективности экранов в зоне";
+  
+  
+  equation
+    connect(heat, GasTransfer.radiantHeat) annotation(
+      Line(points = {{-100, 0}, {-32, 0}}, color = {191, 0, 0}));
+  end FurnaceFlowSide;
+
+  model FurnaceGasTransfer "Интерфейс между моделью топки и FlowSide"
+    extends TPPSim.Furnaces.BaseClases.Icons.RadiationGasSide;
+    TPPSim.Furnaces.Interface.RadiantHeatPort_a radiantHeat annotation(
+      Placement(visible = true, transformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_b heat annotation(
+      Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {2, 98}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  
+    outer parameter Real psi = 0.9 "Коэффициент тепловой эффективности экранов в зоне";
+  
+  equation
+    radiantHeat.Q_flow = Modelica.Constants.sigma * psi * radiantHeat.epsilon * F_g * (radiantHeat.T ^ 4 - heat.T ^ 4);
+    radiantHeat.Q_flow + heat.Q_flow = 0;
+  annotation(
+      Documentation(info = "<html>
+  <style>
+  p {
+    text-indent: 20px;
+    text-align: 'justify';
+   }
+  </style>
+  <p>...</p>
+  </html>", revisions = "<html>
+  <ul>
+  <li><i>14 July 2019</i>
+  by <a href=\"mailto:shabunin_a@mail.ru\">Artyom Shabunin</a>:<br>
+     Создан.</li>
+  </ul>
+  </html>"));
+  end FurnaceGasTransfer;
 end Furnaces;
