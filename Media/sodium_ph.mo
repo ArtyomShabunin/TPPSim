@@ -56,7 +56,7 @@ model Sodium_ph "теплофизические свойства жидкого 
 
   redeclare function extends dynamicViscosity "Return dynamic viscosity"
   algorithm
-    eta := 1.2162*e-5 * (state.d^(1/3)) * exp(0.6976*state.d/state.T);
+    eta := 1.2162e-5 * (state.d^(1/3)) * exp(0.6976*state.d/state.T);
     annotation (Documentation(info="<html>
 
 </html>"));
