@@ -7,7 +7,7 @@ model SodiumSideHE "Модель натриевой стороны пароге�
   parameter Integer[2] section;
   final outer parameter Real k_gamma_sodium "Поправка к коэффициенту теплоотдачи со стороны натрия";
   //Конструктивные характеристики
-//  final outer parameter Integer numberOfSections "Число участков разбиения по ходу теплоносителя";
+  final outer parameter Integer z "Кол-во теплообменных трубок";
   final outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубок теплообменника";
   final outer parameter Modelica.SIunits.Length delta "Толщина стенки трубки теплообменника";
   final outer parameter Modelica.SIunits.Diameter Dcase "Внутренний диаметр корпуса теплообменника"; 
@@ -22,12 +22,12 @@ model SodiumSideHE "Модель натриевой стороны пароге�
   outer Medium.SpecificEnthalpy hsodium_gl "Энтальпия натрия (глобальная переменная)";
   outer Medium.MassFlowRate Dsodium_gl "Массовый расход натрия (глобальная переменная)";
   outer Medium.AbsolutePressure psodium_gl "Давление натрия (глобальная переменная)";
-  Medium.ThermodynamicState state;
+  inner Medium.ThermodynamicState state;
   Medium.DynamicViscosity mu "Динамическая вязкость натрия";
   Modelica.SIunits.PerUnit Re "Число Рейнольдса";
   Medium.PrandtlNumber Pr "Число Прандтля";
-  Modelica.SIunits.CoefficientOfHeatTransfer alfa_sodium "Коэффициент теплопередачи со стороны потока натрия";
-
+  inner Modelica.SIunits.CoefficientOfHeatTransfer alfa_sodium "Коэффициент теплопередачи со стороны потока натрия";
+  replaceable TPPSim.thermal.alfaSodium_outside alpha(section = section);
 
   //Начальные значения
   final outer parameter Modelica.SIunits.Temperature T_sodium_start "Начальная температура газов";  
@@ -37,21 +37,36 @@ model SodiumSideHE "Модель натриевой стороны пароге�
     Placement(visible = true, transformation(origin = {0, 100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {0, 100}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 
 equation
+//  if sodiumEnergyDynamics == Types.Dynamics.SteadyState then
+//    0 = Dsodium_gl[section[1], section[2]] * (hsodium_gl[section[1], section[2]] - hsodium_gl[section[1] + 1, section[2]]) + heat.Q_flow;
+//  else
+//    deltaVSodium * Medium.density(state) * der(hsodium_gl[section[1] + 1, section[2]]) = Dsodium_gl[section[1], section[2]] * (hsodium_gl[section[1], section[2]] - hsodium_gl[section[1] + 1, section[2]]) + heat.Q_flow;
+//  end if;
   if sodiumEnergyDynamics == Types.Dynamics.SteadyState then
-    0 = Dsodium_gl[section[1], section[2]] * (hsodium_gl[section[1], section[2]] - hsodium_gl[section[1] + 1, section[2]]) + heat.Q_flow;
+    0 = Dsodium_gl[section[1], section[2]] * (hsodium_gl[section[1], section[2]] - state.h) + 0.5 * heat.Q_flow;
+    0 = Dsodium_gl[section[1], section[2]] * (state.h - hsodium_gl[section[1] + 1, section[2]]) + 0.5 * heat.Q_flow;
   else
-    deltaVSodium * Medium.density(state) * der(hsodium_gl[section[1] + 1, section[2]]) = Dsodium_gl[section[1], section[2]] * (hsodium_gl[section[1], section[2]] - hsodium_gl[section[1] + 1, section[2]]) + heat.Q_flow;
+    0.5 * deltaVSodium * state.d * der(state.h) = Dsodium_gl[section[1], section[2]] * (hsodium_gl[section[1], section[2]] - state.h) + 0.5 * heat.Q_flow;
+    0.5 * deltaVSodium * state.d * der(hsodium_gl[section[1] + 1, section[2]]) = Dsodium_gl[section[1], section[2]] * (state.h - hsodium_gl[section[1] + 1, section[2]]) + 0.5 * heat.Q_flow;
   end if;
-  heat.Q_flow = -alfa_sodium * H_sodium * (state.T - heat.T);
+
+  heat.Q_flow = -k_gamma_sodium * alfa_sodium * H_sodium * (state.T - heat.T);
 //Уравнения состояния
-  state = Medium.setState_phX(psodium_gl[section[1] + 1, section[2]], 0.5*(hsodium_gl[section[1], section[2]]+hsodium_gl[section[1] + 1, section[2]]));
+//  state = Medium.setState_phX(psodium_gl[section[1] + 1, section[2]], 0.5*(hsodium_gl[section[1], section[2]]+hsodium_gl[section[1] + 1, section[2]]));
+//  state = Medium.setState_phX(psodium_gl[section[1] + 1, section[2]], hsodium_gl[section[1] + 1, section[2]]);
+//  state.h = hsodium_gl[section[1] + 1, section[2]];
+  state.p = psodium_gl[section[1], section[2]];
+  state.d = Medium.density_ph(state.p, state.h);
+  state.T = Medium.temperature_ph(state.p, state.h);
+
+
   Dsodium_gl[section[1] + 1, section[2]] = Dsodium_gl[section[1], section[2]];
 
 //Коэффициент теплоотдачи
   mu = Medium.dynamicViscosity(state);
   Pr = Medium.prandtlNumber(state);
   Re = abs(Dsodium_gl[section[1], section[2]] * (Din + 2 * delta) / (f_sodium * mu)); // Проверить
-  alfa_sodium = 1; // Переписать
+  //alfa_sodium = 1; // Переписать
   psodium_gl[section[1] + 1, section[2]] = psodium_gl[section[1], section[2]];
 initial equation
   if sodiumEnergyDynamics  == Types.Dynamics.SteadyStateInitial then

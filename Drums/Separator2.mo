@@ -25,7 +25,7 @@ equation
   sat = Medium.setSat_p(ps);
   h_dew = Medium.dewEnthalpy(sat);
   h_bubble = Medium.bubbleEnthalpy(sat);
-  Dsteam = if noEvent(inStream(fedWater.h_outflow) > h_dew) then D_fw elseif noEvent(inStream(fedWater.h_outflow) < h_bubble) then 0 else D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
+  Dsteam = if noEvent(inStream(fedWater.h_outflow) > h_dew) then D_fw elseif noEvent(inStream(fedWater.h_outflow) < h_bubble) then m_flow_small else D_fw * (inStream(fedWater.h_outflow) - h_bubble) / (h_dew - h_bubble);
 //Питательная вода
   fedWater.h_outflow = h_bubble;
   fedWater.p = ps;

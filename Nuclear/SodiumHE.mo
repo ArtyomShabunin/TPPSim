@@ -1,8 +1,8 @@
 within TPPSim.Nuclear;
 
-model steam_generator
+model SodiumHE
   extends TPPSim.Nuclear.BaseClases.BaseSteamGenerator;
-  extends TPPSim.Nuclear.BaseClases.Icons.IconSteamGenerator;
+  extends TPPSim.Nuclear.BaseClases.Icons.IconSodiumHE;
   replaceable package Medium_S = TPPSim.Media.Sodium_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   replaceable package Medium_F = Modelica.Media.Water.WaterIF97_ph constrainedby Modelica.Media.Interfaces.PartialMedium;
   import Modelica.Fluid.Types;
@@ -73,4 +73,4 @@ equation
   hsodium_gl[numberOfVolumes + 1, 1] = sodiumOut.h_outflow;
   Dsodium_gl[numberOfVolumes + 1, 1] = -sodiumOut.m_flow;
   psodium_gl[numberOfVolumes + 1, 1] = sodiumOut.p;
-end steam_generator;
+end SodiumHE;
