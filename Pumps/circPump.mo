@@ -36,8 +36,8 @@ equation
   end if;
   
   port_b.m_flow = -max(D_flow_in_internal, system.m_flow_small);
-  port_b.h_outflow = actualStream(port_a.h_outflow);
-  port_a.h_outflow = actualStream(port_b.h_outflow);
+  port_b.h_outflow = inStream(port_a.h_outflow);
+  port_a.h_outflow = inStream(port_b.h_outflow);
   port_b.p = p_flow_internal;
   annotation(
     Documentation(info = "<html><head></head><body>Модель насоса которая, по сути, является точкой с фиксирванным расходом среды.</body></html>", revisions = "<html><head></head><body>

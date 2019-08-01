@@ -6,7 +6,7 @@ model SplitFlow
     Placement(visible = true, transformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b flowOut(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  parameter Integer n = 1 "Число потоков";
+  parameter Integer n "Число потоков";
 equation
   flowOut.h_outflow = actualStream(flowIn.h_outflow);
   flowIn.h_outflow = actualStream(flowOut.h_outflow);
