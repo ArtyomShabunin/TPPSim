@@ -1,7 +1,7 @@
 within TPPSim.Pipes;
 
-partial model ElementaryPipe_2
-  extends TPPSim.Pipes.BaseClases.BaseElementaryPipe();
+model ElementaryPipe_2
+  extends TPPSim.Pipes.BaseClases.BaseElementaryPipe_2;
   replaceable package Medium = TPPSim.Media.Sodium_ph;
   
   import Modelica.Fluid.Types;
@@ -13,7 +13,7 @@ partial model ElementaryPipe_2
   outer Medium.AbsolutePressure p "Давление потока вода/пар в узловых точках";
   outer Medium.SpecificEnthalpy h "Энтальпия потока вода/пар в узловых точках";  
   outer Medium.MassFlowRate D "Массовый расход потока вода/пар в узловых точках";  
-  inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока вода/пар";
+  inner Medium.ThermodynamicState stateFlow(p(start = system.p_start)) "Термодинамическое состояние потока натрия";
   inner Medium.MassFlowRate D_flow_v(start = 0) "Массовый расход потока вода/пар";
   TPPSim.thermal.hfrConvHeatingSodium Q_calc;
   Real dp_piez "Перепад давления из-за изменения пьезометрической высоты";
@@ -31,8 +31,7 @@ equation
   stateFlow.T = Medium.temperature_ph(stateFlow.p, stateFlow.h);
 //Уравнения для расчета процессов теплообмена
   w_flow_v = D_flow_v / stateFlow.d / f_flow "Расчет скорости потока вода/пар в конечных объемах";
-//  alfa_flow = 20000;
-//Про две фазы
+
   D_flow_v = D[section[1], section[2] + 1];
   D[section[1], section[2] + 1] = D[section[1], section[2]];
 //Уравнения для расчета процессов массообмена
@@ -40,11 +39,13 @@ equation
   lambda_tr = 1 / (1.14 + 2 * log10(Din / ke)) ^ 2;
   Xi_flow = lambda_tr * deltaLpipe / Din;
   dp_fric = w_flow_v * abs(w_flow_v) * Xi_flow * stateFlow.d / 2;
-  if momentumDynamics == Types.Dynamics.SteadyState then
-    p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez;     
-  else
-    p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
-  end if;
+  p[section[1], section[2]] = p[section[1], section[2] + 1];
+  
+//  if momentumDynamics == Types.Dynamics.SteadyState then
+//    p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez;     
+//  else
+//    p[section[1], section[2]] - p[section[1], section[2] + 1] = dp_fric + dp_piez + der(D_flow_v) * deltaLpipe / f_flow;
+//  end if;
   dp_piez = stateFlow.d * Modelica.Constants.g_n * deltaLpiezo "Расчет перепада давления из-за изменения пьезометрической высоты";
 initial equation
   if energyDynamics == Types.Dynamics.FixedInitial then

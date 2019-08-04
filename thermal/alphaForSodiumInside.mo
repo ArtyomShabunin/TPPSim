@@ -8,7 +8,7 @@ function alphaForSodiumInside
   output Modelica.SIunits.CoefficientOfHeatTransfer alfa_flow "Коэффициент теплопередачи со стороны потока натрия";
 protected
   package Medium = TPPSim.Media.Sodium_ph;
-  Medium.ThermalConductivity k_flow "Теплопроводность вода";
+  Medium.ThermalConductivity k "Теплопроводность";
   Modelica.SIunits.SpecificHeatCapacity Cp;
   Modelica.SIunits.Velocity w;
   Modelica.SIunits.PecletNumber Pe;
