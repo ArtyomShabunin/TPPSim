@@ -13,11 +13,11 @@ extends TPPSim.Nuclear.BaseClases.Icons.IconSteamGenerator;
     Placement(visible = true, transformation(origin = {-60, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-100, -86}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium_F) annotation(
     Placement(visible = true, transformation(origin = {60, -100}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {100, -26}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));  
-  TPPSim.Nuclear.SodiumHE EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_S = Medium_S, redeclare package Medium_F = Medium_F, T_m_start = 463.15, T_sodium_start = 463.15, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, k_gamma_sodium = 0.6, k_volume = 2, k_volume_sodium = 2, k_weight_metal = 2, m_flow_start = 20 / n_sg, metalDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, numberOfVolumes = 20, p_flow_start = system.p_ambient, p_sodium_start = 250000, sodiumEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
+  TPPSim.Nuclear.SodiumHE EVO(redeclare TPPSim.HRSG_HeatExch.FlowSide2phHE flowHE(redeclare TPPSim.thermal.alfaForEVO2 alpha(section = section)), redeclare package Medium_S = Medium_S, redeclare package Medium_F = Medium_F, T_m_start = 463.15, T_sodium_start = 463.15, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, k_gamma_sodium = 0.7, k_volume = 2, k_volume_sodium = 2, k_weight_metal = 2, m_flow_start = 20 / n_sg, metalDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, numberOfVolumes = 20, p_flow_start = system.p_ambient, p_sodium_start = 250000, sodiumEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial) annotation(
     Placement(visible = true, transformation(origin = {0, 2}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Drums.Separator2 separator(redeclare package Medium = Medium_F, ps_start = 140e5) annotation(
     Placement(visible = true, transformation(origin = {22, 14}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
-  TPPSim.Nuclear.SodiumHE SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_S = Medium_S, redeclare package Medium_F = Medium_F, Dcase = 0.745, Din = 0.016, Lpipe = 7.9, T_m_start = 463.15, T_sodium_start = 463.15, delta = 0.003, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, k_gamma_sodium = 0.6, k_volume = 2, k_volume_sodium = 2, k_weight_metal = 2, m_flow_start = 0.01, metalDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, numberOfVolumes = 10, p_flow_start = system.p_ambient, p_sodium_start = 250000, sodiumEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, z = 349) annotation(
+  TPPSim.Nuclear.SodiumHE SH(redeclare TPPSim.HRSG_HeatExch.FlowSideSH flowHE(redeclare TPPSim.thermal.alfaForSHandECO alpha), redeclare package Medium_S = Medium_S, redeclare package Medium_F = Medium_F, Dcase = 0.745, Din = 0.016, Lpipe = 7.9, T_m_start = 463.15, T_sodium_start = 463.15, delta = 0.003, flowEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMassDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, flowMomentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyStateInitial, k_gamma_sodium = 0.7, k_volume = 2, k_volume_sodium = 2, k_weight_metal = 2, m_flow_start = 0.01, metalDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, numberOfVolumes = 10, p_flow_start = system.p_ambient, p_sodium_start = 250000, sodiumEnergyDynamics = Modelica.Fluid.Types.Dynamics.FixedInitial, z = 349) annotation(
     Placement(visible = true, transformation(origin = {0, 32}, extent = {{-10, -10}, {10, 10}}, rotation = 0))); 
   parameter Integer n_sg = 1 "Число включенных параллельно секций парогенератора";
   SplitFlow splitSodium(redeclare package Medium = Medium_S, n =  n_sg) annotation(
@@ -28,7 +28,15 @@ extends TPPSim.Nuclear.BaseClases.Icons.IconSteamGenerator;
     Placement(visible = true, transformation(origin = {-30, -70}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   TPPSim.Nuclear.SplitFlow mixWater(redeclare package Medium = Medium_F, n = n_sg)  annotation(
     Placement(visible = true, transformation(origin = {44, -70}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature s_temp_evo_input(redeclare package Medium = Medium_S) annotation(
+    Placement(visible = true, transformation(origin = {-50, 30}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+  Modelica.Fluid.Sensors.Temperature w_temp_evo_output(redeclare package Medium = Medium_F) annotation(
+    Placement(visible = true, transformation(origin = {50, 38}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
 equation
+  connect(separator.steam, w_temp_evo_output.port) annotation(
+    Line(points = {{22, 26}, {50, 26}, {50, 28}, {50, 28}}, color = {0, 127, 255}));
+  connect(SH.sodiumOut, s_temp_evo_input.port) annotation(
+    Line(points = {{-4, 22}, {-6, 22}, {-6, 20}, {-50, 20}, {-50, 20}}, color = {0, 127, 255}));
   connect(waterIn, splitWater.flowIn) annotation(
     Line(points = {{-60, -100}, {-60, -70}, {-40, -70}}, color = {0, 127, 255}));
   connect(splitWater.flowOut, EVO.flowIn) annotation(
@@ -64,4 +72,5 @@ equation
 //  actualStream(EVO.sodiumOut.h_outflow) = actualStream(sodiumOut.h_outflow);
 //  EVO.sodiumOut.m_flow = -sodiumOut.m_flow;
 //  EVO.sodiumOut.p = sodiumOut.p;
-end SteamGenerator;
+  annotation(
+    experiment(StartTime = 0, StopTime = 1, Tolerance = 1e-6, Interval = 0.002));end SteamGenerator;

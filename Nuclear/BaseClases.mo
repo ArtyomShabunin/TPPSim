@@ -27,7 +27,7 @@ package BaseClases
 
     partial model IconReactor
       annotation(
-        Icon(graphics = {Polygon(lineColor = {85, 170, 0}, fillColor = {213, 255, 167}, fillPattern = FillPattern.VerticalCylinder, lineThickness = 1, points = {{-100, 0}, {-100, -60}, {-92, -72}, {-76, -82}, {-54, -92}, {-34, -98}, {-12, -100}, {0, -100}, {12, -100}, {34, -98}, {54, -92}, {70, -86}, {82, -80}, {92, -72}, {100, -60}, {100, 0}, {96, 6}, {60, 6}, {56, 12}, {56, 34}, {60, 40}, {64, 42}, {68, 46}, {68, 94}, {64, 98}, {56, 100}, {-58, 100}, {-66, 96}, {-68, 92}, {-68, 46}, {-64, 42}, {-58, 40}, {-56, 34}, {-56, 12}, {-60, 6}, {-96, 6}, {-100, 0}}, smooth = Smooth.Bezier), Rectangle(origin = {2, -28}, fillColor = {255, 0, 0}, fillPattern = FillPattern.Vertical, extent = {{-42, 16}, {38, -32}})}));
+        Icon(graphics = {Polygon(lineColor = {108, 108, 108}, fillColor = {213, 255, 167}, fillPattern = FillPattern.VerticalCylinder, lineThickness = 1, points = {{-100, 0}, {-100, -60}, {-92, -72}, {-76, -82}, {-54, -92}, {-34, -98}, {-12, -100}, {0, -100}, {12, -100}, {34, -98}, {54, -92}, {70, -86}, {82, -80}, {92, -72}, {100, -60}, {100, 0}, {96, 6}, {60, 6}, {56, 12}, {56, 34}, {60, 40}, {64, 42}, {68, 46}, {68, 94}, {64, 98}, {56, 100}, {-58, 100}, {-66, 96}, {-68, 92}, {-68, 46}, {-64, 42}, {-58, 40}, {-56, 34}, {-56, 12}, {-60, 6}, {-96, 6}, {-100, 0}}, smooth = Smooth.Bezier), Rectangle(origin = {2, -28}, fillColor = {255, 0, 0}, fillPattern = FillPattern.Vertical, extent = {{-42, 16}, {38, -32}})}, coordinateSystem(initialScale = 0.1)));
     end IconReactor;
   end Icons;
 
