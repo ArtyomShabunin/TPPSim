@@ -4,7 +4,7 @@ model SteamGenerator_Test
   package Medium_S = TPPSim.Media.Sodium_ph;
   package Medium_F = Modelica.Media.Water.WaterIF97_ph;
   inner Modelica.Fluid.System system(m_flow_start = 10, p_ambient = 1.3e+06) annotation(
-    Placement(visible = true, transformation(origin = {190, 110}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
+    Placement(visible = true, transformation(origin = {170, 90}, extent = {{-10, -10}, {10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.MassFlowSource_T flowSource(redeclare package Medium = Medium_F, T = 190 + 273.15, m_flow = 315.25, nPorts = 2, use_T_in = true, use_m_flow_in = true) annotation(
     Placement(visible = true, transformation(origin = {120, -12}, extent = {{10, -10}, {-10, 10}}, rotation = 0)));
   Modelica.Fluid.Sources.FixedBoundary flowSink(redeclare package Medium = Medium_F, nPorts = 1, p = system.p_ambient) annotation(
