@@ -6,10 +6,10 @@ partial model BaseComplexPipe_2 "Базовая модель сложной тр
   //Характеристики металла
   parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
     Dialog(group = "Характеристики металла"));
-  inner parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
+  parameter Modelica.SIunits.SpecificHeatCapacity C_m = 578.05 "Удельная теплоемкость металла" annotation(
     Dialog(group = "Характеристики металла"));
   //Конструктивные характеристики
-  inner parameter Modelica.SIunits.Diameter Din = 0.3 "Внутренний диаметр трубопровода" annotation(
+  parameter Modelica.SIunits.Diameter Din = 0.3 "Внутренний диаметр трубопровода" annotation(
     Dialog(group = "Конструктивные характеристики"));
   parameter Modelica.SIunits.Length delta = 0.01 "Толщина стенки трубопровода" annotation(
     Dialog(group = "Конструктивные характеристики"));
@@ -28,13 +28,13 @@ partial model BaseComplexPipe_2 "Базовая модель сложной тр
     Dialog(group = "Поправки"));
   
   //Параметры уравнений динамики
-  inner parameter Types.Dynamics energyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
-  inner parameter Types.Dynamics massDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
-  inner parameter Modelica.Fluid.Types.Dynamics momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState "Параметры уравнения сохранения момента" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  parameter Types.Dynamics energyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  parameter Types.Dynamics massDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  parameter Modelica.Fluid.Types.Dynamics momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState "Параметры уравнения сохранения момента" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   //Начальные значения
-  inner parameter Modelica.SIunits.AbsolutePressure p_flow_start = system.p_ambient "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
-  inner parameter Modelica.SIunits.SpecificEnthalpy h_start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(p_flow_start) + 100 "Начальная энтельпия вода/пар" annotation(Dialog(tab = "Initialization"));
-  inner parameter Modelica.SIunits.Temperature t_m_start = system.T_start "Начальная температура металла" annotation(Dialog(tab = "Initialization"));
+  parameter Modelica.SIunits.AbsolutePressure p_flow_start = system.p_ambient "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
+  parameter Modelica.SIunits.SpecificEnthalpy h_start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(p_flow_start) + 100 "Начальная энтельпия вода/пар" annotation(Dialog(tab = "Initialization"));
+  parameter Modelica.SIunits.Temperature t_m_start = system.T_start "Начальная температура металла" annotation(Dialog(tab = "Initialization"));
   //Интерфейс
   outer Modelica.Fluid.System system;
   annotation(

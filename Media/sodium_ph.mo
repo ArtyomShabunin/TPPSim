@@ -12,6 +12,7 @@ model Sodium_ph "теплофизические свойства жидкого 
     Temperature(
       min=373.15,
       max=1473.15,
+      nominal=673.15,
       start=673.15));
 
   redeclare model extends BaseProperties(final standardOrderComponents=true)

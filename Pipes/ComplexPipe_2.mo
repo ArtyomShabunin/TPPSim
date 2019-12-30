@@ -8,30 +8,71 @@ model ComplexPipe_2
   parameter Integer numberOfVolumes "Число участков разбиения" annotation(
     Dialog(group = "Параметры разбиения"));
   //Расчетные конструктивные параметры
-  final inner parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfVolumes;
-  final inner parameter Modelica.SIunits.Length deltaLpiezo = Lpiezo / numberOfVolumes;
-  final inner parameter Modelica.SIunits.Area deltaSFlow = n_parallel * deltaLpipe * Modelica.Constants.pi * Din "Внутренняя площадь одного участка ряда труб";
-  final inner parameter Modelica.SIunits.Volume deltaVFlow = k_volume * n_parallel * deltaLpipe * Modelica.Constants.pi * Din ^ 2 / 4 "Внутренний объем одного участка ряда труб";
-  final inner parameter Modelica.SIunits.Mass deltaMMetal = k_weight_metal * n_parallel * rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 "Масса металла участка ряда труб";
-  final inner parameter Modelica.SIunits.Area f_flow = n_parallel * Modelica.Constants.pi * Din ^ 2 / 4 "Площадь для прохода теплоносителя";
+  final parameter Modelica.SIunits.Length deltaLpipe = Lpipe / numberOfVolumes;
+  final parameter Modelica.SIunits.Length deltaLpiezo = Lpiezo / numberOfVolumes;
+  final parameter Modelica.SIunits.Area deltaSFlow = n_parallel * deltaLpipe * Modelica.Constants.pi * Din "Внутренняя площадь одного участка ряда труб";
+  final parameter Modelica.SIunits.Volume deltaVFlow = k_volume * n_parallel * deltaLpipe * Modelica.Constants.pi * Din ^ 2 / 4 "Внутренний объем одного участка ряда труб";
+  final parameter Modelica.SIunits.Mass deltaMMetal = k_weight_metal * n_parallel * rho_m * deltaLpipe * Modelica.Constants.pi * ((Din + delta) ^ 2 - Din ^ 2) / 4 "Масса металла участка ряда труб";
+  final parameter Modelica.SIunits.Area f_flow = n_parallel * Modelica.Constants.pi * Din ^ 2 / 4 "Площадь для прохода теплоносителя";
   //Переменные
-  inner Medium.SpecificEnthalpy h[1, numberOfVolumes + 1] "Энтальпия вода/пар (глобальная переменная)";
-  inner Medium.MassFlowRate D[1, numberOfVolumes + 1] "Массовый расход вода/пар (глобальная переменная)";
-  inner Medium.AbsolutePressure p[1, numberOfVolumes + 1] "Давление вода/пар (глобальная переменная)";
-  replaceable TPPSim.Pipes.ElementaryPipe_2 Pipe[1, numberOfVolumes](redeclare package Medium = Medium, section = coorSecGen(1, numberOfVolumes)) annotation(
+  replaceable TPPSim.Pipes.ElementaryPipe_2 Pipe[1, numberOfVolumes](redeclare package Medium = Medium,
+                                                                     ke = fill(ke,1, numberOfVolumes),
+                                                                     Din = fill(Din,1, numberOfVolumes),
+                                                                     f_flow = fill(f_flow,1, numberOfVolumes), 
+                                                                     C_m = fill(C_m, 1, numberOfVolumes),
+                                                                     deltaLpipe = fill(deltaLpipe, 1, numberOfVolumes),
+                                                                     deltaLpiezo = fill(deltaLpiezo, 1, numberOfVolumes),
+                                                                     deltaSFlow = fill(deltaSFlow, 1, numberOfVolumes),
+                                                                     deltaVFlow = fill(deltaVFlow, 1, numberOfVolumes),
+                                                                     deltaMMetal = fill(deltaMMetal, 1, numberOfVolumes),
+                                                                     p_flow_start = fill(p_flow_start, 1, numberOfVolumes),
+                                                                     h_start = fill(h_start, 1, numberOfVolumes),
+                                                                     t_m_start = fill(t_m_start, 1, numberOfVolumes),
+                                                                     energyDynamics = fill(energyDynamics, 1, numberOfVolumes),
+                                                                     massDynamics = fill(energyDynamics, 1, numberOfVolumes),
+                                                                     momentumDynamics = fill(momentumDynamics, 1, numberOfVolumes))
+                                                                     annotation(
     Placement(visible = true, transformation(origin = {-5.32907e-15, 5.32907e-15}, extent = {{-40, -40}, {40, 40}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_b waterOut(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {100, 0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {121, 0}, extent = {{-21, -20}, {21, 20}}, rotation = 0)));
   Modelica.Fluid.Interfaces.FluidPort_a waterIn(redeclare package Medium = Medium) annotation(
     Placement(visible = true, transformation(origin = {-100,0}, extent = {{-10, -10}, {10, 10}}, rotation = 0), iconTransformation(origin = {-120, 0}, extent = {{-20, -20}, {20, 20}}, rotation = 0)));
 equation
-  h[1, 1] = inStream(waterIn.h_outflow);
-  waterIn.h_outflow = h[1, 1];
-  D[1, 1] = waterIn.m_flow;
-  p[1, 1] = waterIn.p;
-  h[1, numberOfVolumes + 1] = waterOut.h_outflow;
-  D[1, numberOfVolumes + 1] = -waterOut.m_flow;
-  p[1, numberOfVolumes + 1] = waterOut.p;
+
+  // Объединение элементарных моделей трубопровода
+  for i in 1:(numberOfVolumes-1) loop
+    Pipe[1,i].p[2] = Pipe[1,i+1].p[1];
+    Pipe[1,i].D[2] + Pipe[1,i+1].D[1] = 0;
+    
+    Pipe[1,i].H[2] = semiLinear(Pipe[1,i].D_flow_v, Pipe[1,i].stateFlow.h, Pipe[1,i+1].H[1] / Pipe[1,i].D_flow_v);
+    Pipe[1,i+1].H[1] = semiLinear(Pipe[1,i+1].D_flow_v, Pipe[1,i].H[2] / Pipe[1,i+1].D_flow_v, Pipe[1,i+1].stateFlow.h);
+    
+  end for;
+  
+  
+  Pipe[1, 1].H[1] = semiLinear(Pipe[1,1].D_flow_v, inStream(waterIn.h_outflow), Pipe[1,1].stateFlow.h);
+  Pipe[1, numberOfVolumes].H[2] = semiLinear(Pipe[1,numberOfVolumes].D_flow_v, Pipe[1,numberOfVolumes].stateFlow.h, inStream(waterOut.h_outflow));
+
+
+  for i in 1:numberOfVolumes loop
+//    Pipe[1,i].stateFlow.p = semiLinear(Pipe[1,i].D_flow_v, Pipe[1,i].p[1]/Pipe[1,i].D_flow_v, Pipe[1,i].p[2]/Pipe[1,i].D_flow_v);
+//    Pipe[1,i].D_flow_v + semiLinear((Pipe[1,i].p[1] - Pipe[1,i].p[2]), Pipe[1,i].D[2]/(Pipe[1,i].p[1] - Pipe[1,i].p[2]), Pipe[1,i].D[1]/(Pipe[1,i].p[1] - Pipe[1,i].p[2])) = 0;
+    Pipe[1,i].stateFlow.p = Pipe[1,i].p[1];
+    Pipe[1,i].D_flow_v + Pipe[1,i].D[2] = 0;
+  end for;
+  
+  
+  
+ 
+  
+  
+
+  waterIn.h_outflow = Pipe[1,1].stateFlow.h;
+  Pipe[1, 1].D[1] = waterIn.m_flow;
+  Pipe[1, 1].p[1] = waterIn.p;
+  Pipe[1, numberOfVolumes].stateFlow.h = waterOut.h_outflow;
+  Pipe[1, numberOfVolumes].D[2] = waterOut.m_flow;
+  Pipe[1, numberOfVolumes].p[2] = waterOut.p;
   annotation(
     Documentation(info = "<html>
 <style>

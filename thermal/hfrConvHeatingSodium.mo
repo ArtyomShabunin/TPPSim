@@ -2,9 +2,9 @@ within TPPSim.thermal;
 
 model hfrConvHeatingSodium
   package Medium = TPPSim.Media.Sodium_ph;
-  final outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубок теплообменника";
-  final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
-  final outer parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
+  outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубок теплообменника";
+  outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
+  outer parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
   outer Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
   outer Medium.MassFlowRate D_flow_v "Массовый расход (глобальная переменная)";
   outer Medium.ThermodynamicState stateFlow;

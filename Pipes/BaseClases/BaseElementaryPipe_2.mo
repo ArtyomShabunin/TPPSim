@@ -2,28 +2,29 @@ within TPPSim.Pipes.BaseClases;
 
 partial model BaseElementaryPipe_2
   extends TPPSim.Pipes.BaseClases.Icons.IconElementaryPipe;
+  replaceable package Medium = TPPSim.Media.Sodium_ph;
   //Параметры разбиения
   parameter Integer[2] section "Координаты участка";
   //Характеристики металла
-  outer parameter Modelica.SIunits.SpecificHeatCapacity C_m "Удельная теплоемкость металла";
+  parameter Modelica.SIunits.SpecificHeatCapacity C_m "Удельная теплоемкость металла";
   //Конструктивные характеристики
-  outer parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубопровода";
-  outer parameter Modelica.SIunits.Length ke "Абсолютная эквивалентная шероховатость";
+  parameter Modelica.SIunits.Diameter Din "Внутренний диаметр трубопровода";
+  parameter Modelica.SIunits.Length ke "Абсолютная эквивалентная шероховатость";
   //Расчетные конструктивные параметры
-  final outer parameter Modelica.SIunits.Length deltaLpipe;
-  final outer parameter Modelica.SIunits.Length deltaLpiezo;
-  final outer parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
-  final outer parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
-  final outer parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
-  final outer parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
+  parameter Modelica.SIunits.Length deltaLpipe;
+  parameter Modelica.SIunits.Length deltaLpiezo;
+  parameter Modelica.SIunits.Area deltaSFlow "Внутренняя площадь одного участка ряда труб";
+  parameter Modelica.SIunits.Volume deltaVFlow "Внутренний объем одного участка ряда труб";
+  parameter Modelica.SIunits.Mass deltaMMetal "Масса металла участка ряда труб";
+  parameter Modelica.SIunits.Area f_flow "Площадь для прохода теплоносителя";
   //Начальные значения 
-  outer parameter Modelica.SIunits.AbsolutePressure p_flow_start "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
-  outer parameter Modelica.SIunits.SpecificEnthalpy h_start "Начальная энтельпия вода/пар" annotation(Dialog(tab = "Initialization"));
-  outer parameter Modelica.SIunits.Temperature t_m_start "Начальная температура металла" annotation(Dialog(tab = "Initialization"));  
+  parameter Medium.AbsolutePressure p_flow_start "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
+  parameter Medium.SpecificEnthalpy h_start "Начальная энтельпия вода/пар" annotation(Dialog(tab = "Initialization"));
+  parameter Medium.Temperature t_m_start "Начальная температура металла" annotation(Dialog(tab = "Initialization"));  
   //Переменные
 
-  inner Modelica.SIunits.Temperature t_m "Температура металла на участках трубопровода";
-  inner Modelica.SIunits.HeatFlowRate Q "Тепло переданное стенкой паропровода потоку пара";
+  Medium.Temperature t_m "Температура металла на участках трубопровода";
+  Modelica.SIunits.HeatFlowRate Q "Тепло переданное стенкой паропровода потоку пара";
   Modelica.SIunits.Velocity w_flow_v "Скорость потока вода/пар в конечных объемах";
   Real dp_fric "Потеря давления из-за сил трения";
   Real Xi_flow "Коэффициент гидравлического сопротивления участка трубы";
