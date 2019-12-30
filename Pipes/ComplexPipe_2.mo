@@ -2,8 +2,7 @@ within TPPSim.Pipes;
 
 model ComplexPipe_2
   extends TPPSim.Pipes.BaseClases.BaseComplexPipe_2;
-  replaceable package Medium = TPPSim.Media.Sodium_ph;
-  import TPPSim.functions.coorSecGen;
+
   //Параметры разбиения
   parameter Integer numberOfVolumes "Число участков разбиения" annotation(
     Dialog(group = "Параметры разбиения"));
@@ -45,14 +44,11 @@ equation
     Pipe[1,i].D[2] + Pipe[1,i+1].D[1] = 0;
     
     Pipe[1,i].H[2] = semiLinear(Pipe[1,i].D_flow_v, Pipe[1,i].stateFlow.h, Pipe[1,i+1].H[1] / Pipe[1,i].D_flow_v);
-    Pipe[1,i+1].H[1] = semiLinear(Pipe[1,i+1].D_flow_v, Pipe[1,i].H[2] / Pipe[1,i+1].D_flow_v, Pipe[1,i+1].stateFlow.h);
-    
+    Pipe[1,i+1].H[1] = semiLinear(Pipe[1,i+1].D_flow_v, Pipe[1,i].H[2] / Pipe[1,i+1].D_flow_v, Pipe[1,i+1].stateFlow.h);    
   end for;
-  
-  
+   
   Pipe[1, 1].H[1] = semiLinear(Pipe[1,1].D_flow_v, inStream(waterIn.h_outflow), Pipe[1,1].stateFlow.h);
   Pipe[1, numberOfVolumes].H[2] = semiLinear(Pipe[1,numberOfVolumes].D_flow_v, Pipe[1,numberOfVolumes].stateFlow.h, inStream(waterOut.h_outflow));
-
 
   for i in 1:numberOfVolumes loop
 //    Pipe[1,i].stateFlow.p = semiLinear(Pipe[1,i].D_flow_v, Pipe[1,i].p[1]/Pipe[1,i].D_flow_v, Pipe[1,i].p[2]/Pipe[1,i].D_flow_v);
@@ -61,12 +57,6 @@ equation
     Pipe[1,i].D_flow_v + Pipe[1,i].D[2] = 0;
   end for;
   
-  
-  
- 
-  
-  
-
   waterIn.h_outflow = Pipe[1,1].stateFlow.h;
   Pipe[1, 1].D[1] = waterIn.m_flow;
   Pipe[1, 1].p[1] = waterIn.p;

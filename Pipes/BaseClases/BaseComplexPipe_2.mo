@@ -1,8 +1,9 @@
 within TPPSim.Pipes.BaseClases;
 
 partial model BaseComplexPipe_2 "Базовая модель сложной трубы (второй вариант)"
-  extends TPPSim.Pipes.BaseClases.Icons.IconComplexPipe;
-  import Modelica.Fluid.Types;
+  extends TPPSim.Pipes.BaseClases.Icons.IconComplexPipe;  
+  replaceable package Medium = TPPSim.Media.Sodium_ph;
+  import Modelica.Fluid.Types.*;
   //Характеристики металла
   parameter Modelica.SIunits.Density rho_m = 7800 "Плотность металла" annotation(
     Dialog(group = "Характеристики металла"));
@@ -28,9 +29,9 @@ partial model BaseComplexPipe_2 "Базовая модель сложной тр
     Dialog(group = "Поправки"));
   
   //Параметры уравнений динамики
-  parameter Types.Dynamics energyDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения энергии" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
-  parameter Types.Dynamics massDynamics = Types.Dynamics.FixedInitial "Параметры уравнения сохранения массы" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
-  parameter Modelica.Fluid.Types.Dynamics momentumDynamics = Modelica.Fluid.Types.Dynamics.SteadyState "Параметры уравнения сохранения момента" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  parameter Dynamics energyDynamics = Dynamics.FixedInitial "Параметры уравнения сохранения энергии" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  parameter Dynamics massDynamics = Dynamics.FixedInitial "Параметры уравнения сохранения массы" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
+  parameter Dynamics momentumDynamics = Dynamics.SteadyState "Параметры уравнения сохранения момента" annotation(Evaluate=true, Dialog(tab = "Assumptions", group="Dynamics"));
   //Начальные значения
   parameter Modelica.SIunits.AbsolutePressure p_flow_start = system.p_ambient "Начальное давление вода/пар" annotation(Dialog(tab = "Initialization"));
   parameter Modelica.SIunits.SpecificEnthalpy h_start = Modelica.Media.Water.IF97_Utilities.BaseIF97.Regions.hv_p(p_flow_start) + 100 "Начальная энтельпия вода/пар" annotation(Dialog(tab = "Initialization"));
